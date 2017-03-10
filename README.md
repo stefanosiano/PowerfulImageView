@@ -9,7 +9,8 @@ Add different interpolations for indeterminate progress
 Add horizontal progressBar as option  
 Add options (spacing, gravity, colors, etc...)  
 Add multiple colors to show indeterminate progress through  
-Implement custom listener for Glide?  
+Add zoom support  
+Implement custom listener/module for Glide?  
 Improve Performances  
 Add square and circle ProgressImageViews  
 Add support for AppCompatImageView through option, to enable vectorDrawable support  
