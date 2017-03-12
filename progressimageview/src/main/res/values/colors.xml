@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="piv_default_progress_color">#00A000</color>
+    <color name="piv_default_remaining_progress_color">#CCCCCC</color>
+    <array name="piv_default_indeterminate_progress_colors">
+        <item>#A0A0A0</item>
+        <item>#D0D0D0</item>
+    </array>
+</resources>

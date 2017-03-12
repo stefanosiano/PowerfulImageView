@@ -10,12 +10,14 @@
     tools:context="com.stefanosiano.progressimageviewsample.MainActivity">
 
     <TableRow>
+        <!--
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="center"
         android:src="@android:drawable/ic_input_get"
 
+        app:piv_indeterminate_progress_color_array="@array/piv_default_indeterminate_progress_colors"
         app:piv_progress_state="indeterminate"
         app:piv_progress_color="#00A000"
         app:piv_progress_percent="22"
@@ -29,12 +31,57 @@
         android:scaleType="center"
         android:src="@android:drawable/ic_input_get"
 
+        app:piv_indeterminate_progress_color_array="@array/indeterminate_progress_colors"
         app:piv_progress_state="indeterminate"
         app:piv_progress_percent="10"
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
-        
-        
+        -->
+
+
+    <com.stefanosiano.progressimageview.ProgressImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="center"
+        android:src="@android:drawable/ic_input_get"
+
+        app:piv_indeterminate_progress_color_array="@array/indeterminate_progress_colors2"
+        app:piv_progress_state="indeterminate"
+        app:piv_progress_color="@color/colorPrimary"
+        app:piv_progress_percent="10"
+        app:piv_progress_circle_border_width="5dp"
+        app:piv_progress_circle_size="64dp" />
+
+    </TableRow>
+
+<!--
+    <TableRow>
+    <com.stefanosiano.progressimageview.ProgressImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="center"
+        android:src="@android:drawable/ic_input_get"
+
+        app:piv_progress_remaining_color="@color/colorPrimary"
+        app:piv_progress_color="@color/colorAccent"
+        app:piv_progress_state="indeterminate"
+        app:piv_progress_percent="10"
+        app:piv_progress_circle_border_width="5dp"
+        app:piv_progress_circle_size="64dp" />
+
+
+    <com.stefanosiano.progressimageview.ProgressImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="center"
+        android:src="@android:drawable/ic_input_get"
+
+        app:piv_progress_state="indeterminate"
+        app:piv_progress_percent="10"
+        app:piv_progress_circle_border_width="5dp"
+        app:piv_progress_circle_size="64dp" />
+
+
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -60,20 +107,8 @@
         app:piv_progress_percent="10"
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
-        
-        
-    <com.stefanosiano.progressimageview.ProgressImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="center"
-        android:src="@android:drawable/ic_input_get"
 
-        app:piv_progress_state="indeterminate"
-        app:piv_progress_percent="10"
-        app:piv_progress_circle_border_width="5dp"
-        app:piv_progress_circle_size="64dp" />
-        
-        
+
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -85,34 +120,7 @@
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
 
-    </TableRow>
 
-
-    <TableRow>
-    <com.stefanosiano.progressimageview.ProgressImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="center"
-        android:src="@android:drawable/ic_input_get"
-
-        app:piv_progress_state="indeterminate"
-        app:piv_progress_percent="10"
-        app:piv_progress_circle_border_width="5dp"
-        app:piv_progress_circle_size="64dp" />
-        
-        
-    <com.stefanosiano.progressimageview.ProgressImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="center"
-        android:src="@android:drawable/ic_input_get"
-
-        app:piv_progress_state="indeterminate"
-        app:piv_progress_percent="10"
-        app:piv_progress_circle_border_width="5dp"
-        app:piv_progress_circle_size="64dp" />
-        
-        
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -138,8 +146,8 @@
         app:piv_progress_percent="10"
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
-        
-        
+
+
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -150,8 +158,8 @@
         app:piv_progress_percent="10"
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
-        
-        
+
+
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -177,8 +185,8 @@
         app:piv_progress_percent="10"
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
-        
-        
+
+
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -189,8 +197,8 @@
         app:piv_progress_percent="10"
         app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
-        
-        
+
+
     <com.stefanosiano.progressimageview.ProgressImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -203,5 +211,5 @@
         app:piv_progress_circle_size="64dp" />
 
     </TableRow>
-
+-->
 </TableLayout>
