@@ -3,5 +3,13 @@
     <declare-styleable name="ProgressImageView">
         <attr name="piv_progress_circle_border_width" format="dimension" />
         <attr name="piv_progress_circle_size" format="dimension" />
+        <attr name="piv_progress_percent" format="float" />
+        <attr name="piv_progress_color" format="color" />
+        <attr name="piv_progress_remaining_color" format="color" />
+        <attr name="piv_progress_state" format="enum" >
+            <enum name="indeterminate" value="1"/>
+            <enum name="determinate" value="2"/>
+            <enum name="disabled" value="0"/>
+        </attr>
     </declare-styleable>
 </resources>
