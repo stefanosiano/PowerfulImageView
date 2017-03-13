@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ProgressImageView">
+        <attr name="piv_use_determinate_progress_animation" format="boolean" />
         <attr name="piv_progress_circle_border_width" format="dimension" />
         <attr name="piv_progress_circle_size" format="dimension" />
         <attr name="piv_progress_percent" format="float" />

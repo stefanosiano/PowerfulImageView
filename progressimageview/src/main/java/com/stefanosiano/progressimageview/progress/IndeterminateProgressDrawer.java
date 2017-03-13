@@ -22,9 +22,11 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     private Paint mProgressPaint, mProgressRemainingPaint;
     private int mRemainingProgressStartAngle, mRemainingProgressSweepAngle, mProgressSweepAngle;
     private int[] mIndeterminateProgressColorArray;
+    private int colorIndex;
 
     public IndeterminateProgressDrawer(ProgressImageView piw) {
         this.piw = piw;
+        this.colorIndex = 0;
     }
 
     public void setProgressAngle(int progressAngle) {
@@ -46,14 +48,15 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressRemainingPaint == null) mProgressRemainingPaint = new Paint();
 
         mIndeterminateProgressColorArray = indeterminateProgressColorArray;
-        mProgressPaint.setColor(progressColor);
-        mProgressPaint.setStrokeWidth(progressCircleBorderWidth);
-        mProgressPaint.setAntiAlias(true);
-        mProgressPaint.setStyle(Paint.Style.STROKE);
-        mProgressRemainingPaint.setColor(remainingProgressColor);
+        mProgressRemainingPaint.setColor(indeterminateProgressColorArray[0]);
         mProgressRemainingPaint.setStrokeWidth(progressCircleBorderWidth);
         mProgressRemainingPaint.setAntiAlias(true);
         mProgressRemainingPaint.setStyle(Paint.Style.STROKE);
+        mProgressPaint.setColor(indeterminateProgressColorArray[1]);
+        mProgressPaint.setStrokeWidth(progressCircleBorderWidth);
+        mProgressPaint.setAntiAlias(true);
+        mProgressPaint.setStyle(Paint.Style.STROKE);
+        colorIndex = 0;
 
         piw.clearAnimation();
         piw.startAnimation(progressAnimation);
@@ -89,7 +92,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
         progressAnimation.setDuration(1000);
         progressAnimation.setAnimationListener(new Animation.AnimationListener() {
-            int i = 0;
+            private int i1, i2;
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -101,10 +104,9 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                i = (i+1) % mIndeterminateProgressColorArray.length;
-                int i1 = i;
-                int i2 = i+1;
-                i2 = i2 % mIndeterminateProgressColorArray.length;
+                colorIndex = (colorIndex + 1) % mIndeterminateProgressColorArray.length;
+                i1 = colorIndex;
+                i2 = (colorIndex + 1) % mIndeterminateProgressColorArray.length;
 
                 mProgressRemainingPaint.setColor(mIndeterminateProgressColorArray[i1]);
                 mProgressPaint.setColor(mIndeterminateProgressColorArray[i2]);

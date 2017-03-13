@@ -19,6 +19,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     private int mRemainingProgressStartAngle, mRemainingProgressSweepAngle, mProgressSweepAngle, mCurrentProgressSweepAngle, mOldProgressSweepAngle;
     private Paint mProgressPaint, mProgressRemainingPaint;
     private Animation progressAnimation;
+    private boolean mUseProgressAnimation;
 
     public DeterminateProgressDrawer(ProgressImageView piw) {
         this.piw = piw;
@@ -32,7 +33,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
         this.piw.postInvalidate();
     }
 
-    public void setProgressAngle(int progressAngle, boolean withAnimation) {
+    public void setProgressAngle(int progressAngle) {
         int mProgressAngle = progressAngle;
         if(mProgressAngle > 360)
             mProgressAngle = mProgressAngle % 360;
@@ -43,7 +44,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
             this.mOldProgressSweepAngle = 0;
         }
 
-        if(withAnimation){
+        if(this.mUseProgressAnimation){
             createAnimationIfNeeded();
             piw.clearAnimation();
             piw.startAnimation(progressAnimation);
@@ -51,6 +52,10 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
         else {
             setRealProgressAngle(mProgressAngle);
         }
+    }
+
+    public void setUseAnimation(boolean useAnimation){
+        this.mUseProgressAnimation = useAnimation;
     }
 
     @Override
