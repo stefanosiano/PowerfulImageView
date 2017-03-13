@@ -26,13 +26,12 @@ public class ProgressImageView extends ImageView {
     private static final int PROGRESS_STATE_INDETERMINATE = 1;
     private static final int PROGRESS_STATE_DETERMINATE = 2;
 
-    private static final int DEFAULT_PROGRESS_CIRCLE_BORDER_WIDTH = 2;
     private static final int DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE = 16;
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
 
     private final RectF progressBounds;
 
-    private int mProgressCircleBorderWidth = DEFAULT_PROGRESS_CIRCLE_BORDER_WIDTH;
+    private int mProgressCircleBorderWidth = 0;
     private int mProgressCircleSize = DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE;
     private int mProgressState = PROGRESS_STATE_DISABLED;
     private int mProgressColor = 0;
@@ -64,8 +63,9 @@ public class ProgressImageView extends ImageView {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
 
         this.mUseDeterminateProgressAnimation = a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, false);
-        this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, DEFAULT_PROGRESS_CIRCLE_BORDER_WIDTH);
         this.mProgressCircleSize = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_size, DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE);
+        this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round((float)mProgressCircleSize / 8f));
+        if(this.mProgressCircleBorderWidth < 1) this.mProgressCircleBorderWidth = 1;
         this.mProgressState = a.getInteger(R.styleable.ProgressImageView_piv_progress_state, PROGRESS_STATE_DISABLED);
         this.mProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_color,
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_color) : getResources().getColor(R.color.piv_default_progress_color, getContext().getTheme()));

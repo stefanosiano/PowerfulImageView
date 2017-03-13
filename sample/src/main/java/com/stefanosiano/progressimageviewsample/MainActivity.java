@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progress += 10;
-                piw.showProgressPercent(progress, true);
+                piw.showProgressPercent(progress);
 
                 piw.postDelayed(this, 1000);
             }

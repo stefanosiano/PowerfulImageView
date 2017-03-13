@@ -50,7 +50,6 @@
         app:piv_progress_state="indeterminate"
         app:piv_progress_color="@color/colorPrimary"
         app:piv_progress_percent="10"
-        app:piv_progress_circle_border_width="5dp"
         app:piv_progress_circle_size="64dp" />
 
     </TableRow>
