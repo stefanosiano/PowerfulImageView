@@ -18,4 +18,9 @@ public class DummyProgressDrawer implements ProgressDrawer {
     public void draw(Canvas canvas, RectF progressBounds) {
 
     }
+
+    @Override
+    public void clear() {
+
+    }
 }

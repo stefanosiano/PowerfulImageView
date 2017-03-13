@@ -40,9 +40,6 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
 
         this.mOldProgressSweepAngle = this.mCurrentProgressSweepAngle;
         this.mProgressSweepAngle = mProgressAngle;
-        if(mProgressAngle < this.mOldProgressSweepAngle){
-            this.mOldProgressSweepAngle = 0;
-        }
 
         if(this.mUseProgressAnimation){
             createAnimationIfNeeded();
@@ -78,6 +75,13 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     public void draw(Canvas canvas, RectF progressBounds) {
         canvas.drawArc(progressBounds, mRemainingProgressStartAngle, mRemainingProgressSweepAngle, false, mProgressRemainingPaint);
         canvas.drawArc(progressBounds, -90, mCurrentProgressSweepAngle, false, mProgressPaint);
+    }
+
+    @Override
+    public void clear() {
+        piw.clearAnimation();
+        progressAnimation.reset();
+        mCurrentProgressSweepAngle = 0;
     }
 
     private int getOldSweepAngle(){

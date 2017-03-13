@@ -122,6 +122,9 @@ public class ProgressImageView extends ImageView {
     }
 
     private void changeProgressState(int progressState){
+        if(progressDrawer != null)
+            progressDrawer.clear();
+
         mProgressState = progressState;
         switch (mProgressState){
             case PROGRESS_STATE_INDETERMINATE:
@@ -146,7 +149,7 @@ public class ProgressImageView extends ImageView {
     }
 
 
-    public final void setProgressPercent(double progressPercent) {
+    public final void showProgressPercent(double progressPercent) {
         changeProgressState(PROGRESS_STATE_DETERMINATE);
         int angle = (int) (progressPercent * 3.6f);
         determinateProgressDrawer.setProgressAngle(angle);

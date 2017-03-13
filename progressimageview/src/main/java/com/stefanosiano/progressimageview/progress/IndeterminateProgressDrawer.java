@@ -69,6 +69,12 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         canvas.drawArc(progressBounds, -90, mProgressSweepAngle, false, mProgressPaint);
     }
 
+    @Override
+    public void clear() {
+        piw.clearAnimation();
+        progressAnimation.reset();
+        colorIndex = 0;
+    }
 
 
     public void setProgressAnimationInterpolator (Interpolator interpolator){
