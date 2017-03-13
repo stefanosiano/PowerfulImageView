@@ -2,6 +2,7 @@
 Custom Android ImageView with a circle indicating a progress (e.g. download progress of the image)  
   
 To do:  
+Add progress circle size as a percentage of the imageview size  
 Change names: back/front, state/mode  
 Draw dark transparent frontground  
 Switch to AppCompatImageView: better contextCompat stuff, and vectorDrawable support  
