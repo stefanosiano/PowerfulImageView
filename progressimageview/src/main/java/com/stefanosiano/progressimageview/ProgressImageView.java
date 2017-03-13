@@ -70,7 +70,7 @@ public class ProgressImageView extends ImageView {
         this.mRemainingProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_remaining_color,
                 Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_remaining_progress_color) : getResources().getColor(R.color.piv_default_remaining_progress_color, getContext().getTheme()));
         int angle = (int) (a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT) * 3.6f);
-        this.determinateProgressDrawer.setProgressAngle(angle);
+        this.determinateProgressDrawer.setProgressAngle(angle, false);
 
         final int id = a.getResourceId(R.styleable.ProgressImageView_piv_indeterminate_progress_color_array, R.array.piv_default_indeterminate_progress_colors);
 
@@ -144,10 +144,10 @@ public class ProgressImageView extends ImageView {
     }
 
 
-    public final void setProgressPercent(double progressPercent) {
+    public final void setProgressPercent(double progressPercent, boolean withAnimation) {
         changeProgressState(PROGRESS_STATE_DETERMINATE);
         int angle = (int) (progressPercent * 3.6f);
-        determinateProgressDrawer.setProgressAngle(angle);
+        determinateProgressDrawer.setProgressAngle(angle, withAnimation);
     }
 
     public final void disableProgress(){

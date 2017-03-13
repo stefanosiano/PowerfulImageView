@@ -40,6 +40,7 @@
 
 
     <com.stefanosiano.progressimageview.ProgressImageView
+        android:id="@+id/piw"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="center"
