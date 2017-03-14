@@ -10,7 +10,7 @@ import android.graphics.RectF;
 public class DummyProgressDrawer implements ProgressDrawer {
 
     @Override
-    public void init(int progressColor, int progressCircleBorderWidth, int remainingProgressColor, int[] indeterminateProgressColorArray) {
+    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int[] indeterminateProgressColorArray) {
 
     }
 

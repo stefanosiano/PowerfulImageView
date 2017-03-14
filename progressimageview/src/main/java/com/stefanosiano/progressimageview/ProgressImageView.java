@@ -34,8 +34,8 @@ public class ProgressImageView extends AppCompatImageView {
     private int mProgressCircleBorderWidth = 0;
     private int mProgressCircleSize = DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE;
     private PivProgressMode mProgressMode = null;
-    private int mProgressColor = 0;
-    private int mRemainingProgressColor = 0;
+    private int mProgressFrontColor = 0;
+    private int mProgressBackColor = 0;
     private boolean mUseDeterminateProgressAnimation;
     private int[] mIndeterminateProgressColorArray = {};
 
@@ -64,8 +64,8 @@ public class ProgressImageView extends AppCompatImageView {
         this.mUseDeterminateProgressAnimation = a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, true);
         this.mProgressCircleSize = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_size, DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE);
         this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round(mProgressCircleSize / 8f));
-        this.mProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_color, ContextCompat.getColor(context, R.color.piv_default_progress_color));
-        this.mRemainingProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_remaining_color, ContextCompat.getColor(context, R.color.piv_default_remaining_progress_color));
+        this.mProgressFrontColor = a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color));
+        this.mProgressBackColor = a.getColor(R.styleable.ProgressImageView_piv_progress_back_color, ContextCompat.getColor(context, R.color.piv_default_progress_back_color));
         this.mProgressMode = null;
 
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.PROGRESS_MODE_DETERMINATE.getValue()));
@@ -77,16 +77,24 @@ public class ProgressImageView extends AppCompatImageView {
         final int id = a.getResourceId(R.styleable.ProgressImageView_piv_indeterminate_progress_color_array, R.array.piv_default_indeterminate_progress_colors);
 
         try{
-            //todo check why layout editor doesn't get these
-            mIndeterminateProgressColorArray = a.getResources().getIntArray(id);
-            if(mIndeterminateProgressColorArray.length < 2){
-                mIndeterminateProgressColorArray = new int[]{this.mRemainingProgressColor, this.mProgressColor};
+            if(isInEditMode()){
+                //layout editor doesn't get these colors, if i take getIntArray()
+                String[] colors = a.getResources().getStringArray(id);
+                mIndeterminateProgressColorArray = new int[colors.length];
+                for(int i = 0; i < mIndeterminateProgressColorArray.length; i++){
+                    mIndeterminateProgressColorArray[i] = Color.parseColor(colors[i]);
+                }
             }
-
+            else {
+                mIndeterminateProgressColorArray = a.getResources().getIntArray(id);
+            }
+            if (mIndeterminateProgressColorArray.length < 2) {
+                mIndeterminateProgressColorArray = new int[]{this.mProgressBackColor, this.mProgressFrontColor};
+            }
         }
         catch (NullPointerException|Resources.NotFoundException|IllegalArgumentException e){
             e.printStackTrace();
-            mIndeterminateProgressColorArray = new int[]{this.mRemainingProgressColor, this.mProgressColor};
+            mIndeterminateProgressColorArray = new int[]{this.mProgressBackColor, this.mProgressFrontColor};
         }
 
         a.recycle();
@@ -103,6 +111,15 @@ public class ProgressImageView extends AppCompatImageView {
                 w - mProgressCircleBorderWidth - getPaddingRight(),
                 h - mProgressCircleBorderWidth - getPaddingBottom());
     }
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        mProgressDrawer.draw(canvas, mProgressBounds);
+    }
+
+
 
     public void changeProgressMode(PivProgressMode progressMode){
         if(mProgressMode != null && mProgressMode == progressMode)
@@ -124,14 +141,7 @@ public class ProgressImageView extends AppCompatImageView {
                 mProgressDrawer = mDummyProgressDrawer;
                 break;
         }
-        mProgressDrawer.init(mProgressColor, mProgressCircleBorderWidth, mRemainingProgressColor, mIndeterminateProgressColorArray);
-    }
-
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        mProgressDrawer.draw(canvas, mProgressBounds);
+        mProgressDrawer.init(mProgressFrontColor, mProgressCircleBorderWidth, mProgressBackColor, mIndeterminateProgressColorArray);
     }
 
 

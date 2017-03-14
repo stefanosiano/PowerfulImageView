@@ -3,10 +3,8 @@ package com.stefanosiano.progressimageview.progress;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
@@ -17,17 +15,17 @@ import com.stefanosiano.progressimageview.ProgressImageView;
 
 public class IndeterminateProgressDrawer implements ProgressDrawer {
 
-    private final ProgressImageView piw;
+    private final ProgressImageView piv;
     private final RectF mProgressBounds;
 
-    private Animation progressAnimation;
-    private Paint mProgressPaint, mProgressRemainingPaint;
-    private int mRemainingProgressStartAngle, mRemainingProgressSweepAngle, mProgressSweepAngle;
+    private Animation mProgressAnimation;
+    private Paint mProgressFrontPaint, mProgressBackPaint;
+    private int mProgressBackStartAngle, mProgressBackSweepAngle, mProgressFrontSweepAngle;
     private int[] mIndeterminateProgressColorArray;
     private int colorIndex;
 
-    public IndeterminateProgressDrawer(ProgressImageView piw, RectF progressBounds) {
-        this.piw = piw;
+    public IndeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
+        this.piv = piv;
         this.mProgressBounds = progressBounds;
         this.colorIndex = 0;
     }
@@ -37,67 +35,67 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressAngle > 360)
             mProgressAngle = mProgressAngle % 360;
 
-        this.mRemainingProgressStartAngle = mProgressAngle - 90;
-        this.mRemainingProgressSweepAngle = 360 - mProgressAngle;
-        this.mProgressSweepAngle = mProgressAngle;
-        this.piw.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        this.mProgressBackStartAngle = mProgressAngle - 90;
+        this.mProgressBackSweepAngle = 360 - mProgressAngle;
+        this.mProgressFrontSweepAngle = mProgressAngle;
+        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
     @Override
-    public void init(int progressColor, int progressCircleBorderWidth, int remainingProgressColor, int[] indeterminateProgressColorArray) {
+    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int[] indeterminateProgressColorArray) {
 
         createAnimationIfNeeded();
-        if(mProgressPaint == null) mProgressPaint = new Paint();
-        if(mProgressRemainingPaint == null) mProgressRemainingPaint = new Paint();
+        if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
+        if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
         mIndeterminateProgressColorArray = indeterminateProgressColorArray;
-        mProgressRemainingPaint.setColor(indeterminateProgressColorArray[0]);
-        mProgressRemainingPaint.setStrokeWidth(progressCircleBorderWidth);
-        mProgressRemainingPaint.setAntiAlias(true);
-        mProgressRemainingPaint.setStyle(Paint.Style.STROKE);
-        mProgressPaint.setColor(indeterminateProgressColorArray[1]);
-        mProgressPaint.setStrokeWidth(progressCircleBorderWidth);
-        mProgressPaint.setAntiAlias(true);
-        mProgressPaint.setStyle(Paint.Style.STROKE);
+        mProgressBackPaint.setColor(indeterminateProgressColorArray[0]);
+        mProgressBackPaint.setStrokeWidth(progressCircleBorderWidth);
+        mProgressBackPaint.setAntiAlias(true);
+        mProgressBackPaint.setStyle(Paint.Style.STROKE);
+        mProgressFrontPaint.setColor(indeterminateProgressColorArray[1]);
+        mProgressFrontPaint.setStrokeWidth(progressCircleBorderWidth);
+        mProgressFrontPaint.setAntiAlias(true);
+        mProgressFrontPaint.setStyle(Paint.Style.STROKE);
         colorIndex = 0;
         setProgressAngle(0);
 
-        piw.clearAnimation();
-        piw.startAnimation(progressAnimation);
+        piv.clearAnimation();
+        piv.startAnimation(mProgressAnimation);
     }
 
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawArc(progressBounds, mRemainingProgressStartAngle, mRemainingProgressSweepAngle, false, mProgressRemainingPaint);
-        canvas.drawArc(progressBounds, -90, mProgressSweepAngle, false, mProgressPaint);
+        canvas.drawArc(progressBounds, mProgressBackStartAngle, mProgressBackSweepAngle, false, mProgressBackPaint);
+        canvas.drawArc(progressBounds, -90, mProgressFrontSweepAngle, false, mProgressFrontPaint);
     }
 
     @Override
     public void clear() {
-        piw.clearAnimation();
-        if(progressAnimation != null)
-            progressAnimation.reset();
+        piv.clearAnimation();
+        if(mProgressAnimation != null)
+            mProgressAnimation.reset();
         colorIndex = 0;
     }
 
 
     private void createAnimationIfNeeded(){
 
-        if(progressAnimation != null)
+        if(mProgressAnimation != null)
             return;
 
-        progressAnimation = new Animation(){
+        mProgressAnimation = new Animation(){
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 setProgressAngle((int) (360 * interpolatedTime));
             }
         };
-        progressAnimation.setRepeatCount(Animation.INFINITE);
-        progressAnimation.setRepeatMode(Animation.INFINITE);
-        progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        progressAnimation.setDuration(1000);
-        progressAnimation.setAnimationListener(new Animation.AnimationListener() {
+        mProgressAnimation.setRepeatCount(Animation.INFINITE);
+        mProgressAnimation.setRepeatMode(Animation.INFINITE);
+        mProgressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        mProgressAnimation.setDuration(1000);
+        mProgressAnimation.setAnimationListener(new Animation.AnimationListener() {
             private int i1, i2;
             @Override
             public void onAnimationStart(Animation animation) {
@@ -114,8 +112,8 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
                 i1 = colorIndex;
                 i2 = (colorIndex + 1) % mIndeterminateProgressColorArray.length;
 
-                mProgressRemainingPaint.setColor(mIndeterminateProgressColorArray[i1]);
-                mProgressPaint.setColor(mIndeterminateProgressColorArray[i2]);
+                mProgressBackPaint.setColor(mIndeterminateProgressColorArray[i1]);
+                mProgressFrontPaint.setColor(mIndeterminateProgressColorArray[i2]);
             }
         });
     }

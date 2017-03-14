@@ -5,8 +5,8 @@
         <attr name="piv_progress_circle_border_width" format="dimension" />
         <attr name="piv_progress_circle_size" format="dimension" />
         <attr name="piv_progress_percent" format="float" />
-        <attr name="piv_progress_color" format="color" />
-        <attr name="piv_progress_remaining_color" format="color" />
+        <attr name="ProgressImageView_piv_progress_front_color" format="color" />
+        <attr name="ProgressImageView_piv_progress_back_color" format="color" />
         <attr name="piv_indeterminate_progress_color_array" format="reference" />
         <attr name="piv_progress_mode" format="enum" >
             <enum name="disabled" value="0"/>
