@@ -5,8 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <array name="indeterminate_progress_colors">
-        <item>#808080</item>
         <item>@color/colorAccent</item>
+        <item>#808080</item>
     </array>
 
     <array name="indeterminate_progress_colors1">

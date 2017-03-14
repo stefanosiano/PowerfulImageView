@@ -82,11 +82,6 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     }
 
 
-    public void setProgressAnimationInterpolator (Interpolator interpolator){
-        createAnimationIfNeeded();
-        progressAnimation.setInterpolator(interpolator);
-    }
-
     private void createAnimationIfNeeded(){
 
         if(progressAnimation != null)

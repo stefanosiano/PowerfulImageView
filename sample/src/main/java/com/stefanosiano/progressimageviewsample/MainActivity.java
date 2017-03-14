@@ -23,6 +23,6 @@ public class MainActivity extends AppCompatActivity {
                 piw.postDelayed(this, 1000);
             }
         };
-        runnable.run();
+        //runnable.run();
     }
 }

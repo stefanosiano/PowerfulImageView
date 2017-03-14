@@ -6,44 +6,39 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.animation.Interpolator;
-import android.widget.ImageView;
 
 import com.stefanosiano.progressimageview.progress.DeterminateProgressDrawer;
 import com.stefanosiano.progressimageview.progress.DummyProgressDrawer;
 import com.stefanosiano.progressimageview.progress.IndeterminateProgressDrawer;
 import com.stefanosiano.progressimageview.progress.ProgressDrawer;
+import com.stefanosiano.progressimageview.progress.PivProgressMode;
 
 /**
  * Created by stefano on 10/03/17.
  */
 public class ProgressImageView extends AppCompatImageView {
 
-    private static final int PROGRESS_STATE_DISABLED = 0;
-    private static final int PROGRESS_STATE_INDETERMINATE = 1;
-    private static final int PROGRESS_STATE_DETERMINATE = 2;
-
     private static final int DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE = 16;
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
 
-    private final RectF progressBounds;
+    private final RectF mProgressBounds;
+    private final DummyProgressDrawer mDummyProgressDrawer;
+    private final DeterminateProgressDrawer mDeterminateProgressDrawer;
+    private final IndeterminateProgressDrawer mIndeterminateProgressDrawer;
+
+    private ProgressDrawer mProgressDrawer;
 
     private int mProgressCircleBorderWidth = 0;
     private int mProgressCircleSize = DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE;
-    private int mProgressState = PROGRESS_STATE_DISABLED;
+    private PivProgressMode mProgressMode = null;
     private int mProgressColor = 0;
     private int mRemainingProgressColor = 0;
     private boolean mUseDeterminateProgressAnimation;
     private int[] mIndeterminateProgressColorArray = {};
 
-    private final DummyProgressDrawer dummyProgressDrawer;
-    private final DeterminateProgressDrawer determinateProgressDrawer;
-    private final IndeterminateProgressDrawer indeterminateProgressDrawer;
-    private ProgressDrawer progressDrawer;
 
     public ProgressImageView(Context context) {
         this(context, null, 0);
@@ -53,28 +48,32 @@ public class ProgressImageView extends AppCompatImageView {
         this(context, attrs, 0);
     }
 
+    public ProgressImageView(Context context, AttributeSet attrs, int defStyle, int defStyleRes){
+        this(context, attrs, defStyle);
+    }
     public ProgressImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        this.progressBounds = new RectF();
-        this.dummyProgressDrawer = new DummyProgressDrawer();
-        this.determinateProgressDrawer = new DeterminateProgressDrawer(this, progressBounds);
-        this.indeterminateProgressDrawer = new IndeterminateProgressDrawer(this, progressBounds);
+        this.mProgressBounds = new RectF();
+        this.mDummyProgressDrawer = new DummyProgressDrawer();
+        this.mDeterminateProgressDrawer = new DeterminateProgressDrawer(this, mProgressBounds);
+        this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer(this, mProgressBounds);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
 
         this.mUseDeterminateProgressAnimation = a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, true);
         this.mProgressCircleSize = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_size, DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE);
         this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round(mProgressCircleSize / 8f));
-        if(this.mProgressCircleBorderWidth < 1) this.mProgressCircleBorderWidth = 1;
-        this.mProgressState = a.getInteger(R.styleable.ProgressImageView_piv_progress_state, PROGRESS_STATE_DISABLED);
-        this.mProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_color,
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_color) : getResources().getColor(R.color.piv_default_progress_color, getContext().getTheme()));
-        this.mRemainingProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_remaining_color,
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_remaining_progress_color) : getResources().getColor(R.color.piv_default_remaining_progress_color, getContext().getTheme()));
+        this.mProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_color, ContextCompat.getColor(context, R.color.piv_default_progress_color));
+        this.mRemainingProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_remaining_color, ContextCompat.getColor(context, R.color.piv_default_remaining_progress_color));
+        this.mProgressMode = null;
+
+        //todo this line doesn't work in layout editor!
+        PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.PROGRESS_MODE_DETERMINATE.getValue()));
         int angle = (int) (a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT) * 3.6f);
-        this.determinateProgressDrawer.setProgressAngle(angle);
-        determinateProgressDrawer.setUseAnimation(mUseDeterminateProgressAnimation);
+        this.mDeterminateProgressDrawer.setProgressAngle(angle);
+        mDeterminateProgressDrawer.setUseAnimation(mUseDeterminateProgressAnimation);
+        if(this.mProgressCircleBorderWidth < 1) this.mProgressCircleBorderWidth = 1;
 
         final int id = a.getResourceId(R.styleable.ProgressImageView_piv_indeterminate_progress_color_array, R.array.piv_default_indeterminate_progress_colors);
 
@@ -85,78 +84,67 @@ public class ProgressImageView extends AppCompatImageView {
             }
 
         }
-        catch (Resources.NotFoundException e){
+        catch (NullPointerException|Resources.NotFoundException|IllegalArgumentException e){
             e.printStackTrace();
             mIndeterminateProgressColorArray = new int[]{this.mRemainingProgressColor, this.mProgressColor};
         }
 
         a.recycle();
 
-        changeProgressState(mProgressState);
+        changeProgressMode(progressMode);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        progressBounds.set(
+        mProgressBounds.set(
                 w - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingRight(),
                 h - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingBottom(),
                 w - mProgressCircleBorderWidth - getPaddingRight(),
                 h - mProgressCircleBorderWidth - getPaddingBottom());
     }
 
-    private void changeProgressState(int progressState){
-        if(mProgressState == progressState)
+    public void changeProgressMode(PivProgressMode progressMode){
+        if(mProgressMode != null && mProgressMode == progressMode)
             return;
 
-        if(progressDrawer != null)
-            progressDrawer.clear();
+        if(mProgressDrawer != null)
+            mProgressDrawer.clear();
 
-        mProgressState = progressState;
-        switch (mProgressState){
-            case PROGRESS_STATE_INDETERMINATE:
-                progressDrawer = indeterminateProgressDrawer;
+        mProgressMode = progressMode;
+        switch (mProgressMode){
+            case PROGRESS_MODE_INDETERMINATE:
+                mProgressDrawer = mIndeterminateProgressDrawer;
                 break;
-            case PROGRESS_STATE_DETERMINATE:
-                progressDrawer = determinateProgressDrawer;
+            case PROGRESS_MODE_DETERMINATE:
+                mProgressDrawer = mDeterminateProgressDrawer;
                 break;
             default:
-            case PROGRESS_STATE_DISABLED:
-                progressDrawer = dummyProgressDrawer;
+            case PROGRESS_MODE_DISABLED:
+                mProgressDrawer = mDummyProgressDrawer;
                 break;
         }
-        progressDrawer.init(mProgressColor, mProgressCircleBorderWidth, mRemainingProgressColor, mIndeterminateProgressColorArray);
+        mProgressDrawer.init(mProgressColor, mProgressCircleBorderWidth, mRemainingProgressColor, mIndeterminateProgressColorArray);
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        progressDrawer.draw(canvas, progressBounds);
+        mProgressDrawer.draw(canvas, mProgressBounds);
     }
 
 
     public final void showProgressPercent(double progressPercent) {
-        changeProgressState(PROGRESS_STATE_DETERMINATE);
+        changeProgressMode(PivProgressMode.PROGRESS_MODE_DETERMINATE);
         int angle = (int) (progressPercent * 3.6f);
-        determinateProgressDrawer.setProgressAngle(angle);
+        mDeterminateProgressDrawer.setProgressAngle(angle);
     }
 
     public void setUseDeterminateProgressAnimation(boolean useDeterminateProgressAnimation) {
         this.mUseDeterminateProgressAnimation = useDeterminateProgressAnimation;
-        determinateProgressDrawer.setUseAnimation(useDeterminateProgressAnimation);
+        mDeterminateProgressDrawer.setUseAnimation(useDeterminateProgressAnimation);
     }
 
-    public final void disableProgress(){
-        this.mProgressState = PROGRESS_STATE_DISABLED;
-    }
-
-    public final void setProgressIndeterminate(){
-        this.mProgressState = PROGRESS_STATE_INDETERMINATE;
-    }
-
-    public final void setIndeterminateProgressInterpolator(Interpolator interpolator){
-        indeterminateProgressDrawer.setProgressAnimationInterpolator(interpolator);
-    }
 }
 
