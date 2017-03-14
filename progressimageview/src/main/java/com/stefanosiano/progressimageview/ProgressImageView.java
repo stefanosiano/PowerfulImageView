@@ -68,7 +68,6 @@ public class ProgressImageView extends AppCompatImageView {
         this.mRemainingProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_remaining_color, ContextCompat.getColor(context, R.color.piv_default_remaining_progress_color));
         this.mProgressMode = null;
 
-        //todo this line doesn't work in layout editor!
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.PROGRESS_MODE_DETERMINATE.getValue()));
         int angle = (int) (a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT) * 3.6f);
         this.mDeterminateProgressDrawer.setProgressAngle(angle);
@@ -78,6 +77,7 @@ public class ProgressImageView extends AppCompatImageView {
         final int id = a.getResourceId(R.styleable.ProgressImageView_piv_indeterminate_progress_color_array, R.array.piv_default_indeterminate_progress_colors);
 
         try{
+            //todo check why layout editor doesn't get these
             mIndeterminateProgressColorArray = a.getResources().getIntArray(id);
             if(mIndeterminateProgressColorArray.length < 2){
                 mIndeterminateProgressColorArray = new int[]{this.mRemainingProgressColor, this.mProgressColor};

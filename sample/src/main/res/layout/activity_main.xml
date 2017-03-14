@@ -58,6 +58,7 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
+            app:piv_indeterminate_progress_color_array="@array/indeterminate_progress_colors2"
             app:piv_progress_remaining_color="@color/colorPrimary"
             app:piv_progress_color="@color/colorAccent"
             app:piv_progress_mode="indeterminate"
