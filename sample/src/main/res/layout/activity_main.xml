@@ -39,16 +39,15 @@
         -->
 
 
-    <com.stefanosiano.progressimageview.ProgressImageView
+        <com.stefanosiano.progressimageview.ProgressImageView
         android:id="@+id/piw"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="center"
         android:src="@android:drawable/ic_input_get"
 
-        app:piv_indeterminate_progress_color_array="@array/indeterminate_progress_colors2"
+        app:piv_indeterminate_progress_color_array="@array/indeterminate_progress_colors3"
         app:piv_progress_state="indeterminate"
-        app:piv_progress_color="@color/colorPrimary"
         app:piv_progress_percent="10"
         app:piv_progress_circle_size="64dp" />
 

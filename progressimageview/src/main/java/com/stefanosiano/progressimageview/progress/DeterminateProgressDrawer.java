@@ -16,13 +16,16 @@ import com.stefanosiano.progressimageview.ProgressImageView;
 public class DeterminateProgressDrawer implements ProgressDrawer {
 
     private final ProgressImageView piw;
+    private final RectF mProgressBounds;
+
     private int mRemainingProgressStartAngle, mRemainingProgressSweepAngle, mProgressSweepAngle, mCurrentProgressSweepAngle, mOldProgressSweepAngle;
     private Paint mProgressPaint, mProgressRemainingPaint;
     private Animation progressAnimation;
     private boolean mUseProgressAnimation;
 
-    public DeterminateProgressDrawer(ProgressImageView piw) {
+    public DeterminateProgressDrawer(ProgressImageView piw, RectF progressBounds) {
         this.piw = piw;
+        this.mProgressBounds = progressBounds;
     }
 
     private void setRealProgressAngle(int progressAngle) {
@@ -30,7 +33,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
         this.mRemainingProgressStartAngle = progressAngle - 90;
         this.mRemainingProgressSweepAngle = 360 - progressAngle;
         this.mCurrentProgressSweepAngle = progressAngle;
-        this.piw.postInvalidate();
+        this.piw.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
     public void setProgressAngle(int progressAngle) {
@@ -80,7 +83,8 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     @Override
     public void clear() {
         piw.clearAnimation();
-        progressAnimation.reset();
+        if(progressAnimation != null)
+            progressAnimation.reset();
         mCurrentProgressSweepAngle = 0;
     }
 
@@ -104,6 +108,6 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
             }
         };
         progressAnimation.setInterpolator(new LinearInterpolator());
-        progressAnimation.setDuration(3000);
+        progressAnimation.setDuration(100);
     }
 }

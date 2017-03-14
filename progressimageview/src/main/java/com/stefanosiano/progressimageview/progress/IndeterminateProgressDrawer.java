@@ -18,18 +18,21 @@ import com.stefanosiano.progressimageview.ProgressImageView;
 public class IndeterminateProgressDrawer implements ProgressDrawer {
 
     private final ProgressImageView piw;
+    private final RectF mProgressBounds;
+
     private Animation progressAnimation;
     private Paint mProgressPaint, mProgressRemainingPaint;
     private int mRemainingProgressStartAngle, mRemainingProgressSweepAngle, mProgressSweepAngle;
     private int[] mIndeterminateProgressColorArray;
     private int colorIndex;
 
-    public IndeterminateProgressDrawer(ProgressImageView piw) {
+    public IndeterminateProgressDrawer(ProgressImageView piw, RectF progressBounds) {
         this.piw = piw;
+        this.mProgressBounds = progressBounds;
         this.colorIndex = 0;
     }
 
-    public void setProgressAngle(int progressAngle) {
+    private void setProgressAngle(int progressAngle) {
         int mProgressAngle = progressAngle;
         if(mProgressAngle > 360)
             mProgressAngle = mProgressAngle % 360;
@@ -37,7 +40,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         this.mRemainingProgressStartAngle = mProgressAngle - 90;
         this.mRemainingProgressSweepAngle = 360 - mProgressAngle;
         this.mProgressSweepAngle = mProgressAngle;
-        this.piw.postInvalidate();
+        this.piw.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
     @Override
@@ -57,6 +60,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
         colorIndex = 0;
+        setProgressAngle(0);
 
         piw.clearAnimation();
         piw.startAnimation(progressAnimation);
@@ -72,7 +76,8 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     @Override
     public void clear() {
         piw.clearAnimation();
-        progressAnimation.reset();
+        if(progressAnimation != null)
+            progressAnimation.reset();
         colorIndex = 0;
     }
 

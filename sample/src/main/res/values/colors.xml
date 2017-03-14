@@ -8,6 +8,15 @@
         <item>#808080</item>
         <item>@color/colorAccent</item>
     </array>
+
+    <array name="indeterminate_progress_colors1">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorAccent</item>
+    </array>
+    <array name="indeterminate_progress_colors3">
+        <item>#a0a020</item>
+        <item>#ff0000</item>
+    </array>
     <array name="indeterminate_progress_colors2">
         <item>#a0a020</item>
     </array>

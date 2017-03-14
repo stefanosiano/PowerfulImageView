@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.animation.Interpolator;
@@ -20,7 +21,7 @@ import com.stefanosiano.progressimageview.progress.ProgressDrawer;
 /**
  * Created by stefano on 10/03/17.
  */
-public class ProgressImageView extends ImageView {
+public class ProgressImageView extends AppCompatImageView {
 
     private static final int PROGRESS_STATE_DISABLED = 0;
     private static final int PROGRESS_STATE_INDETERMINATE = 1;
@@ -57,14 +58,14 @@ public class ProgressImageView extends ImageView {
 
         this.progressBounds = new RectF();
         this.dummyProgressDrawer = new DummyProgressDrawer();
-        this.determinateProgressDrawer = new DeterminateProgressDrawer(this);
-        this.indeterminateProgressDrawer = new IndeterminateProgressDrawer(this);
+        this.determinateProgressDrawer = new DeterminateProgressDrawer(this, progressBounds);
+        this.indeterminateProgressDrawer = new IndeterminateProgressDrawer(this, progressBounds);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
 
-        this.mUseDeterminateProgressAnimation = a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, false);
+        this.mUseDeterminateProgressAnimation = a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, true);
         this.mProgressCircleSize = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_size, DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE);
-        this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round((float)mProgressCircleSize / 8f));
+        this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round(mProgressCircleSize / 8f));
         if(this.mProgressCircleBorderWidth < 1) this.mProgressCircleBorderWidth = 1;
         this.mProgressState = a.getInteger(R.styleable.ProgressImageView_piv_progress_state, PROGRESS_STATE_DISABLED);
         this.mProgressColor = a.getColor(R.styleable.ProgressImageView_piv_progress_color,
@@ -97,31 +98,17 @@ public class ProgressImageView extends ImageView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        setup();
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding(left, top, right, bottom);
-        setup();
-    }
-
-    @Override
-    public void setPaddingRelative(int start, int top, int end, int bottom) {
-        super.setPaddingRelative(start, top, end, bottom);
-        setup();
-    }
-
-    private void setup(){
-
         progressBounds.set(
-                getWidth() - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingRight(),
-                getHeight() - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingBottom(),
-                getWidth() - mProgressCircleBorderWidth - getPaddingRight(),
-                getHeight() - mProgressCircleBorderWidth - getPaddingBottom());
+                w - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingRight(),
+                h - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingBottom(),
+                w - mProgressCircleBorderWidth - getPaddingRight(),
+                h - mProgressCircleBorderWidth - getPaddingBottom());
     }
 
     private void changeProgressState(int progressState){
+        if(mProgressState == progressState)
+            return;
+
         if(progressDrawer != null)
             progressDrawer.clear();
 
