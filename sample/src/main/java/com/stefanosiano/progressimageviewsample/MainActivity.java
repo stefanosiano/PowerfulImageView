@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final ProgressImageView piw = (ProgressImageView) findViewById(R.id.piw);
+        final ProgressImageView piw = (ProgressImageView) findViewById(R.id.piv);
 
         final Runnable runnable = new Runnable() {
             @Override

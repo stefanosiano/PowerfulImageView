@@ -18,7 +18,7 @@
 
             app:piv_indeterminate_progress_color_array="@array/piv_default_indeterminate_progress_colors"
             app:piv_progress_mode="indeterminate"
-            app:piv_progress_color="#00A000"
+            app:piv_progress_front_color="#00A000"
             app:piv_progress_percent="22"
             app:piv_progress_circle_border_width="5dp"
             app:piv_progress_circle_size="64dp" />
@@ -59,8 +59,8 @@
             android:src="@android:drawable/ic_input_get"
 
             app:piv_indeterminate_progress_color_array="@array/indeterminate_progress_colors2"
-            app:piv_progress_remaining_color="@color/colorPrimary"
-            app:piv_progress_color="@color/colorAccent"
+            app:piv_progress_back_color="@color/colorPrimary"
+            app:piv_progress_front_color="@color/colorAccent"
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
             app:piv_progress_circle_border_width="5dp"
