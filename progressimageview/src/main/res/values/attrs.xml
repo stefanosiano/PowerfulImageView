@@ -7,7 +7,7 @@
         <attr name="piv_progress_percent" format="float" />
         <attr name="piv_progress_front_color" format="color" />
         <attr name="piv_progress_back_color" format="color" />
-        <attr name="piv_indeterminate_progress_color_array" format="reference" />
+        <attr name="piv_indeterminate_progress_color" format="color" />
         <attr name="piv_progress_mode" format="enum" >
             <enum name="disabled" value="0"/>
             <enum name="indeterminate" value="1"/>

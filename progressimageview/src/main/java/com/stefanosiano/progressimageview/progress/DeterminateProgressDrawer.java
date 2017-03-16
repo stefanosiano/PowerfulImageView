@@ -59,7 +59,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int[] indeterminateProgressColorArray) {
+    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int indeterminateProgressColor) {
 
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();

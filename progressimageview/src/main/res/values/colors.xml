@@ -2,8 +2,5 @@
 <resources>
     <color name="piv_default_progress_front_color">#00A000</color>
     <color name="piv_default_progress_back_color">#CCCCCC</color>
-    <array name="piv_default_indeterminate_progress_colors">
-        <item>#A0A0A0</item>
-        <item>#D0D0D0</item>
-    </array>
+    <color name="piv_default_indeterminate_progress_color">#CCCCCC</color>
 </resources>

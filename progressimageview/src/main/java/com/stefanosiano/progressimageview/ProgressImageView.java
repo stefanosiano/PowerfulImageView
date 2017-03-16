@@ -36,8 +36,8 @@ public class ProgressImageView extends AppCompatImageView {
     private PivProgressMode mProgressMode = null;
     private int mProgressFrontColor = 0;
     private int mProgressBackColor = 0;
+    private int mIndeterminateProgressColor = 0;
     private boolean mUseDeterminateProgressAnimation;
-    private int[] mIndeterminateProgressColorArray = {};
 
 
     public ProgressImageView(Context context) {
@@ -66,6 +66,7 @@ public class ProgressImageView extends AppCompatImageView {
         this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round(mProgressCircleSize / 8f));
         this.mProgressFrontColor = a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color));
         this.mProgressBackColor = a.getColor(R.styleable.ProgressImageView_piv_progress_back_color, ContextCompat.getColor(context, R.color.piv_default_progress_back_color));
+        this.mIndeterminateProgressColor = a.getColor(R.styleable.ProgressImageView_piv_indeterminate_progress_color, ContextCompat.getColor(context, R.color.piv_default_indeterminate_progress_color));
         this.mProgressMode = null;
 
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.PROGRESS_MODE_DETERMINATE.getValue()));
@@ -73,29 +74,6 @@ public class ProgressImageView extends AppCompatImageView {
         this.mDeterminateProgressDrawer.setProgressAngle(angle);
         mDeterminateProgressDrawer.setUseAnimation(mUseDeterminateProgressAnimation);
         if(this.mProgressCircleBorderWidth < 1) this.mProgressCircleBorderWidth = 1;
-
-        final int id = a.getResourceId(R.styleable.ProgressImageView_piv_indeterminate_progress_color_array, R.array.piv_default_indeterminate_progress_colors);
-
-        try{
-            if(isInEditMode()){
-                //layout editor doesn't get these colors, if i take getIntArray()
-                String[] colors = a.getResources().getStringArray(id);
-                mIndeterminateProgressColorArray = new int[colors.length];
-                for(int i = 0; i < mIndeterminateProgressColorArray.length; i++){
-                    mIndeterminateProgressColorArray[i] = Color.parseColor(colors[i]);
-                }
-            }
-            else {
-                mIndeterminateProgressColorArray = a.getResources().getIntArray(id);
-            }
-            if (mIndeterminateProgressColorArray.length < 2) {
-                mIndeterminateProgressColorArray = new int[]{this.mProgressBackColor, this.mProgressFrontColor};
-            }
-        }
-        catch (NullPointerException|Resources.NotFoundException|IllegalArgumentException e){
-            e.printStackTrace();
-            mIndeterminateProgressColorArray = new int[]{this.mProgressBackColor, this.mProgressFrontColor};
-        }
 
         a.recycle();
 
@@ -141,7 +119,7 @@ public class ProgressImageView extends AppCompatImageView {
                 mProgressDrawer = mDummyProgressDrawer;
                 break;
         }
-        mProgressDrawer.init(mProgressFrontColor, mProgressCircleBorderWidth, mProgressBackColor, mIndeterminateProgressColorArray);
+        mProgressDrawer.init(mProgressFrontColor, mProgressCircleBorderWidth, mProgressBackColor, mIndeterminateProgressColor);
     }
 
 
