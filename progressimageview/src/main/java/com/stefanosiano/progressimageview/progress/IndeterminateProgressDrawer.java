@@ -59,8 +59,8 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
 
     @Override
     public void clear() {
-        if(mProgressAnimator != null)
-            this.mProgressAnimator.cancel();
+        if(mOffsetAnimator != null)
+            this.mOffsetAnimator.cancel();
         if(mProgressAnimator != null)
             this.mProgressAnimator.cancel();
 
@@ -74,13 +74,13 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     private void createAnimationIfNeeded(){
 
         if(mOffsetAnimator == null) {
-            mOffsetAnimator = ValueAnimator.ofFloat(0f, 1f);
+            mOffsetAnimator = ValueAnimator.ofInt(0, 360);
             mOffsetAnimator.setDuration(3000);
             mOffsetAnimator.setInterpolator(new LinearInterpolator());
             mOffsetAnimator.setRepeatCount(ValueAnimator.INFINITE);
             mOffsetAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    offset = (int) (360 * (float) animation.getAnimatedValue());
+                    offset = (int) (360 * animation.getAnimatedFraction());
                 }
             });
         }
@@ -107,7 +107,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
             });
             mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    setProgressAngle((int) (360 * (float) animation.getAnimatedValue()), (int) (290 * (float) animation.getAnimatedValue()));
+                    setProgressAngle((int) (360 * animation.getAnimatedFraction()), (int) (290 * animation.getAnimatedFraction()));
                 }
             });
         }
