@@ -16,11 +16,10 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
-            app:piv_progress_mode="indeterminate"
+            app:piv_progress_mode="determinate"
             app:piv_progress_front_color="#00A000"
-            app:piv_progress_percent="22"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_percent="221"
+            app:piv_progress_circle_size_percent="0.30"/>
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -59,7 +58,6 @@
             app:piv_progress_back_color="@color/colorPrimary"
             app:piv_progress_front_color="@color/colorAccent"
             app:piv_progress_mode="indeterminate"
-            app:piv_progress_percent="10"
             app:piv_progress_circle_border_width="5dp"
             app:piv_progress_circle_size="64dp" />
 

@@ -8,7 +8,8 @@ import android.graphics.RectF;
  */
 
 public interface ProgressDrawer {
-    void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int indeterminateProgressColor);
+    void setup(ProgressOptions progressOptions);
     void draw(Canvas canvas, RectF progressBounds);
-    void clear();
+    void start();
+    void stop();
 }

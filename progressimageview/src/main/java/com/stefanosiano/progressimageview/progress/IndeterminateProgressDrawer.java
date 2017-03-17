@@ -35,30 +35,23 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int indeterminateProgressColor) {
+    public void setup(ProgressOptions progressOptions) {
 
         createAnimationIfNeeded();
         if(mProgressPaint == null) mProgressPaint = new Paint();
 
-        mProgressPaint.setColor(indeterminateProgressColor);
-        mProgressPaint.setStrokeWidth(progressCircleBorderWidth);
+        mProgressPaint.setColor(progressOptions.indeterminateColor);
+        mProgressPaint.setStrokeWidth(progressOptions.circleBorderWidth);
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
 
+        this.offset = 0;
+        this.isShrinking = false;
         setProgressAngle(0, 0);
-
-        mProgressAnimator.start();
-        mOffsetAnimator.start();
-    }
-
-
-    @Override
-    public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawArc(progressBounds, mProgressStartAngle, mProgressSweepAngle, false, mProgressPaint);
     }
 
     @Override
-    public void clear() {
+    public void start() {
         if(mOffsetAnimator != null)
             this.mOffsetAnimator.cancel();
         if(mProgressAnimator != null)
@@ -66,15 +59,45 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
 
         this.offset = 0;
         this.isShrinking = false;
-        this.mProgressStartAngle = -90;
-        this.mProgressSweepAngle = 180;
+        setProgressAngle(0, 0);
+
+        mProgressAnimator.start();
+        mOffsetAnimator.start();
+    }
+
+    private void setProgressAngle(int startAngleOffset, int sweepAngleOffset) {
+        if(isShrinking) {
+            this.mProgressStartAngle = -90 + startAngleOffset + offset;
+            this.mProgressSweepAngle = 340 - sweepAngleOffset;
+        }
+        else {
+            this.mProgressStartAngle = -90 + offset;
+            this.mProgressSweepAngle = sweepAngleOffset + 50;
+        }
+        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+    }
+
+
+    @Override
+    public void draw(Canvas canvas, RectF progressBounds) {
+        canvas.drawArc(progressBounds, mProgressStartAngle, mProgressSweepAngle, false, mProgressPaint);
+        //canvas.drawLine((mProgressStartAngle + 90)*canvas.getWidth()/360, 1, (mProgressStartAngle + 90)*canvas.getWidth()/360 + (mProgressSweepAngle + 90)*canvas.getWidth()/360, 1, mProgressPaint);
+
+    }
+
+    @Override
+    public void stop() {
+        if(mOffsetAnimator != null)
+            this.mOffsetAnimator.cancel();
+        if(mProgressAnimator != null)
+            this.mProgressAnimator.cancel();
     }
 
 
     private void createAnimationIfNeeded(){
 
         if(mOffsetAnimator == null) {
-            mOffsetAnimator = ValueAnimator.ofInt(0, 360);
+            mOffsetAnimator = ValueAnimator.ofFloat(0f, 1f);
             mOffsetAnimator.setDuration(3000);
             mOffsetAnimator.setInterpolator(new LinearInterpolator());
             mOffsetAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -112,17 +135,5 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
             });
         }
 
-    }
-
-    private void setProgressAngle(int startAngleOffset, int sweepAngleOffset) {
-        if(isShrinking) {
-            this.mProgressStartAngle = -90 + startAngleOffset + offset;
-            this.mProgressSweepAngle = 340 - sweepAngleOffset;
-        }
-        else {
-            this.mProgressStartAngle = -90 + offset;
-            this.mProgressSweepAngle = sweepAngleOffset + 50;
-        }
-        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 }

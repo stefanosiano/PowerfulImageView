@@ -1,10 +1,8 @@
 package com.stefanosiano.progressimageview;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
@@ -15,6 +13,7 @@ import com.stefanosiano.progressimageview.progress.DummyProgressDrawer;
 import com.stefanosiano.progressimageview.progress.IndeterminateProgressDrawer;
 import com.stefanosiano.progressimageview.progress.ProgressDrawer;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
+import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 /**
  * Created by stefano on 10/03/17.
@@ -23,6 +22,7 @@ public class ProgressImageView extends AppCompatImageView {
 
     private static final int DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE = 16;
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
+    private static final float DEFAULT_PROGRESS_CIRCLE_SIZE_PERCENT = -1;
 
     private final RectF mProgressBounds;
     private final DummyProgressDrawer mDummyProgressDrawer;
@@ -31,13 +31,8 @@ public class ProgressImageView extends AppCompatImageView {
 
     private ProgressDrawer mProgressDrawer;
 
-    private int mProgressCircleBorderWidth = 0;
-    private int mProgressCircleSize = DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE;
     private PivProgressMode mProgressMode = null;
-    private int mProgressFrontColor = 0;
-    private int mProgressBackColor = 0;
-    private int mIndeterminateProgressColor = 0;
-    private boolean mUseDeterminateProgressAnimation;
+    private ProgressOptions mProgressOptions;
 
 
     public ProgressImageView(Context context) {
@@ -48,46 +43,47 @@ public class ProgressImageView extends AppCompatImageView {
         this(context, attrs, 0);
     }
 
-    public ProgressImageView(Context context, AttributeSet attrs, int defStyle, int defStyleRes){
-        this(context, attrs, defStyle);
-    }
     public ProgressImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
+
+        mProgressOptions = new ProgressOptions(
+                a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, true),
+                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, -1),
+                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_size, DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE),
+                a.getFloat(R.styleable.ProgressImageView_piv_progress_circle_size_percent, DEFAULT_PROGRESS_CIRCLE_SIZE_PERCENT),
+                a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT),
+                a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color)),
+                a.getColor(R.styleable.ProgressImageView_piv_progress_back_color, ContextCompat.getColor(context, R.color.piv_default_progress_back_color)),
+                a.getColor(R.styleable.ProgressImageView_piv_indeterminate_progress_color, ContextCompat.getColor(context, R.color.piv_default_indeterminate_progress_color)),
+                a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.PROGRESS_MODE_DETERMINATE.getValue())
+        );
+
 
         this.mProgressBounds = new RectF();
         this.mDummyProgressDrawer = new DummyProgressDrawer();
         this.mDeterminateProgressDrawer = new DeterminateProgressDrawer(this, mProgressBounds);
         this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer(this, mProgressBounds);
-
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
-
-        this.mUseDeterminateProgressAnimation = a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, true);
-        this.mProgressCircleSize = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_size, DEFAULT_PROGRESS_CIRCLE_BORDER_SIZE);
-        this.mProgressCircleBorderWidth = a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_circle_border_width, Math.round(mProgressCircleSize / 8f));
-        this.mProgressFrontColor = a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color));
-        this.mProgressBackColor = a.getColor(R.styleable.ProgressImageView_piv_progress_back_color, ContextCompat.getColor(context, R.color.piv_default_progress_back_color));
-        this.mIndeterminateProgressColor = a.getColor(R.styleable.ProgressImageView_piv_indeterminate_progress_color, ContextCompat.getColor(context, R.color.piv_default_indeterminate_progress_color));
-        this.mProgressMode = null;
-
-        PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.PROGRESS_MODE_DETERMINATE.getValue()));
-        int angle = (int) (a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT) * 3.6f);
-        this.mDeterminateProgressDrawer.setProgressAngle(angle);
-        mDeterminateProgressDrawer.setUseAnimation(mUseDeterminateProgressAnimation);
-        if(this.mProgressCircleBorderWidth < 1) this.mProgressCircleBorderWidth = 1;
+        this.mDeterminateProgressDrawer.setProgressAngle(mProgressOptions.getProgressAngle());
+        this.mDeterminateProgressDrawer.setUseAnimation(mProgressOptions.isDeterminateAnimationEnabled());
 
         a.recycle();
 
-        changeProgressMode(progressMode);
+        changeProgressMode(mProgressOptions.getMode());
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        mProgressOptions.calculateValues(w, h);
         mProgressBounds.set(
-                w - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingRight(),
-                h - mProgressCircleSize - mProgressCircleBorderWidth - getPaddingBottom(),
-                w - mProgressCircleBorderWidth - getPaddingRight(),
-                h - mProgressCircleBorderWidth - getPaddingBottom());
+                w - mProgressOptions.getCircleBorderWidth() - getPaddingRight() - mProgressOptions.getCircleSize(),
+                h - mProgressOptions.getCircleBorderWidth() - getPaddingBottom() - mProgressOptions.getCircleSize(),
+                w - mProgressOptions.getCircleBorderWidth() - getPaddingRight(),
+                h - mProgressOptions.getCircleBorderWidth() - getPaddingBottom());
+
+        mProgressDrawer.setup(mProgressOptions);
     }
 
 
@@ -104,7 +100,7 @@ public class ProgressImageView extends AppCompatImageView {
             return;
 
         if(mProgressDrawer != null)
-            mProgressDrawer.clear();
+            mProgressDrawer.stop();
 
         mProgressMode = progressMode;
         switch (mProgressMode){
@@ -119,7 +115,8 @@ public class ProgressImageView extends AppCompatImageView {
                 mProgressDrawer = mDummyProgressDrawer;
                 break;
         }
-        mProgressDrawer.init(mProgressFrontColor, mProgressCircleBorderWidth, mProgressBackColor, mIndeterminateProgressColor);
+        mProgressDrawer.setup(mProgressOptions);
+        mProgressDrawer.start();
     }
 
 
@@ -130,7 +127,7 @@ public class ProgressImageView extends AppCompatImageView {
     }
 
     public void setUseDeterminateProgressAnimation(boolean useDeterminateProgressAnimation) {
-        this.mUseDeterminateProgressAnimation = useDeterminateProgressAnimation;
+        mProgressOptions.setDeterminateAnimationEnabled(useDeterminateProgressAnimation);
         mDeterminateProgressDrawer.setUseAnimation(useDeterminateProgressAnimation);
     }
 

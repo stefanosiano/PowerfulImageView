@@ -10,7 +10,7 @@ import android.graphics.RectF;
 public class DummyProgressDrawer implements ProgressDrawer {
 
     @Override
-    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int indeterminateProgressArray) {
+    public void setup(ProgressOptions progressOptions) {
 
     }
 
@@ -20,7 +20,12 @@ public class DummyProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void clear() {
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
 
     }
 }

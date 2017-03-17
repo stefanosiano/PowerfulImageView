@@ -1,5 +1,6 @@
 package com.stefanosiano.progressimageview.progress;
 
+import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -18,9 +19,9 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     private final ProgressImageView piv;
     private final RectF mProgressBounds;
 
-    private int mProgressBackStartAngle, mProgressBackSweepAngle, mProgressFrontSweepAngle, mCurrentProgressFrontSweepAngle, mOldProgressFrontSweepAngle;
     private Paint mProgressFrontPaint, mProgressBackPaint;
-    private Animation mProgressAnimation;
+    private ValueAnimator mProgressAnimation;
+    private int mProgressBackStartAngle, mProgressBackSweepAngle, mProgressFrontSweepAngle, mCurrentProgressFrontSweepAngle, mOldProgressFrontSweepAngle;
     private boolean mUseProgressAnimation;
 
     public DeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
@@ -46,8 +47,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
 
         if(this.mUseProgressAnimation){
             createAnimationIfNeeded();
-            piv.clearAnimation();
-            piv.startAnimation(mProgressAnimation);
+            mProgressAnimation.start();
         }
         else {
             setRealProgressAngle(mProgressAngle);
@@ -59,19 +59,26 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void init(int progressFrontColor, int progressCircleBorderWidth, int progressBackColor, int indeterminateProgressColor) {
+    public void setup(ProgressOptions progressOptions) {
 
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
-        mProgressFrontPaint.setColor(progressFrontColor);
-        mProgressFrontPaint.setStrokeWidth(progressCircleBorderWidth);
+        mProgressFrontPaint.setColor(progressOptions.frontColor);
+        mProgressFrontPaint.setStrokeWidth(progressOptions.circleBorderWidth);
         mProgressFrontPaint.setAntiAlias(true);
         mProgressFrontPaint.setStyle(Paint.Style.STROKE);
-        mProgressBackPaint.setColor(progressBackColor);
-        mProgressBackPaint.setStrokeWidth(progressCircleBorderWidth);
+        mProgressBackPaint.setColor(progressOptions.backColor);
+        mProgressBackPaint.setStrokeWidth(progressOptions.circleBorderWidth);
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
+
+        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled;
+    }
+
+    @Override
+    public void start() {
+
     }
 
     @Override
@@ -81,10 +88,10 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void clear() {
+    public void stop() {
         piv.clearAnimation();
         if(mProgressAnimation != null)
-            mProgressAnimation.reset();
+            mProgressAnimation.cancel();
         mCurrentProgressFrontSweepAngle = 0;
     }
 
@@ -101,13 +108,14 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressAnimation != null)
             return;
 
-        mProgressAnimation = new Animation(){
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                setRealProgressAngle((int) (getOldSweepAngle() + ((getSweepAngle() - getOldSweepAngle()) * interpolatedTime)));
-            }
-        };
+        mProgressAnimation = ValueAnimator.ofFloat(0f, 1f);
         mProgressAnimation.setInterpolator(new LinearInterpolator());
         mProgressAnimation.setDuration(100);
+        mProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setRealProgressAngle((int) (getOldSweepAngle() + ((getSweepAngle() - getOldSweepAngle()) * animation.getAnimatedFraction())));
+            }
+        });
     }
 }
