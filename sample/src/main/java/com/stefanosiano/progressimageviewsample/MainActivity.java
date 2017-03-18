@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progress += 10;
-                piw.showProgressPercent(progress);
+                piw.setProgressPercent(progress);
 
                 piw.postDelayed(this, 1000);
             }
         };
-        //runnable.run();
+        runnable.run();
     }
 }

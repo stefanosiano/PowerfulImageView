@@ -13,6 +13,8 @@
             <enum name="disabled" value="0"/>
             <enum name="indeterminate" value="1"/>
             <enum name="determinate" value="2"/>
+            <enum name="horizontal_determinate" value="3"/>
+            <enum name="horizontal_indeterminate" value="4"/>
         </attr>
     </declare-styleable>
 </resources>

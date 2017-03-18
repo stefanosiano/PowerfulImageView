@@ -10,6 +10,7 @@ import android.graphics.RectF;
 public interface ProgressDrawer {
     void setup(ProgressOptions progressOptions);
     void draw(Canvas canvas, RectF progressBounds);
-    void start();
-    void stop();
+    void startIndeterminateAnimation();
+    void stopIndeterminateAnimation();
+    void setProgressPercent(float progressPercent);
 }

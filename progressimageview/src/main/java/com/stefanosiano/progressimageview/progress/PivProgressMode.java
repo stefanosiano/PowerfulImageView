@@ -7,7 +7,9 @@ package com.stefanosiano.progressimageview.progress;
 public enum PivProgressMode {
     PROGRESS_MODE_DISABLED(0),
     PROGRESS_MODE_INDETERMINATE(1),
-    PROGRESS_MODE_DETERMINATE(2);
+    PROGRESS_MODE_DETERMINATE(2),
+    PROGRESS_MODE_HORIZONTAL_DETERMINATE(3),
+    PROGRESS_MODE_HORIZONTAL_INDETERMINATE(4);
 
     public int value;
     PivProgressMode(int value){this.value = value;}
@@ -21,6 +23,10 @@ public enum PivProgressMode {
                 return PROGRESS_MODE_INDETERMINATE;
             case 2:
                 return PROGRESS_MODE_DETERMINATE;
+            case 3:
+                return PROGRESS_MODE_HORIZONTAL_DETERMINATE;
+            case 4:
+                return PROGRESS_MODE_HORIZONTAL_INDETERMINATE;
             default:
             case 0:
                 return PROGRESS_MODE_DISABLED;

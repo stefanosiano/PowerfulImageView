@@ -8,8 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import com.stefanosiano.progressimageview.progress.DeterminateHorizontalProgressDrawer;
 import com.stefanosiano.progressimageview.progress.DeterminateProgressDrawer;
 import com.stefanosiano.progressimageview.progress.DummyProgressDrawer;
+import com.stefanosiano.progressimageview.progress.IndeterminateHorizontalProgressDrawer;
 import com.stefanosiano.progressimageview.progress.IndeterminateProgressDrawer;
 import com.stefanosiano.progressimageview.progress.ProgressDrawer;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
@@ -27,6 +29,8 @@ public class ProgressImageView extends AppCompatImageView {
     private final RectF mProgressBounds;
     private final DummyProgressDrawer mDummyProgressDrawer;
     private final DeterminateProgressDrawer mDeterminateProgressDrawer;
+    private final DeterminateHorizontalProgressDrawer mDeterminateHorizontalProgressDrawer;
+    private final IndeterminateHorizontalProgressDrawer mIndeterminateHorizontalProgressDrawer;
     private final IndeterminateProgressDrawer mIndeterminateProgressDrawer;
 
     private ProgressDrawer mProgressDrawer;
@@ -64,9 +68,9 @@ public class ProgressImageView extends AppCompatImageView {
         this.mProgressBounds = new RectF();
         this.mDummyProgressDrawer = new DummyProgressDrawer();
         this.mDeterminateProgressDrawer = new DeterminateProgressDrawer(this, mProgressBounds);
+        this.mDeterminateHorizontalProgressDrawer = new DeterminateHorizontalProgressDrawer(this, mProgressBounds);
+        this.mIndeterminateHorizontalProgressDrawer = new IndeterminateHorizontalProgressDrawer(this, mProgressBounds);
         this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer(this, mProgressBounds);
-        this.mDeterminateProgressDrawer.setProgressAngle(mProgressOptions.getProgressAngle());
-        this.mDeterminateProgressDrawer.setUseAnimation(mProgressOptions.isDeterminateAnimationEnabled());
 
         a.recycle();
 
@@ -100,7 +104,7 @@ public class ProgressImageView extends AppCompatImageView {
             return;
 
         if(mProgressDrawer != null)
-            mProgressDrawer.stop();
+            mProgressDrawer.stopIndeterminateAnimation();
 
         mProgressMode = progressMode;
         switch (mProgressMode){
@@ -110,26 +114,24 @@ public class ProgressImageView extends AppCompatImageView {
             case PROGRESS_MODE_DETERMINATE:
                 mProgressDrawer = mDeterminateProgressDrawer;
                 break;
+            case PROGRESS_MODE_HORIZONTAL_DETERMINATE:
+                mProgressDrawer = mDeterminateHorizontalProgressDrawer;
+                break;
+            case PROGRESS_MODE_HORIZONTAL_INDETERMINATE:
+                mProgressDrawer = mIndeterminateHorizontalProgressDrawer;
+                break;
             default:
             case PROGRESS_MODE_DISABLED:
                 mProgressDrawer = mDummyProgressDrawer;
                 break;
         }
         mProgressDrawer.setup(mProgressOptions);
-        mProgressDrawer.start();
+        mProgressDrawer.startIndeterminateAnimation();
     }
 
 
-    public final void showProgressPercent(double progressPercent) {
-        changeProgressMode(PivProgressMode.PROGRESS_MODE_DETERMINATE);
-        int angle = (int) (progressPercent * 3.6f);
-        mDeterminateProgressDrawer.setProgressAngle(angle);
+    public final void setProgressPercent(float progressPercent) {
+        mProgressDrawer.setProgressPercent(progressPercent);
     }
-
-    public void setUseDeterminateProgressAnimation(boolean useDeterminateProgressAnimation) {
-        mProgressOptions.setDeterminateAnimationEnabled(useDeterminateProgressAnimation);
-        mDeterminateProgressDrawer.setUseAnimation(useDeterminateProgressAnimation);
-    }
-
 }
 

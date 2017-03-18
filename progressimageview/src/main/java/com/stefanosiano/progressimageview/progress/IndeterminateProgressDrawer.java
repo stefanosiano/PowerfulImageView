@@ -51,7 +51,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void start() {
+    public void startIndeterminateAnimation() {
         if(mOffsetAnimator != null)
             this.mOffsetAnimator.cancel();
         if(mProgressAnimator != null)
@@ -86,19 +86,22 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void stop() {
+    public void stopIndeterminateAnimation() {
         if(mOffsetAnimator != null)
             this.mOffsetAnimator.cancel();
         if(mProgressAnimator != null)
             this.mProgressAnimator.cancel();
     }
 
+    @Override
+    public void setProgressPercent(float progressPercent) {}
+
 
     private void createAnimationIfNeeded(){
 
         if(mOffsetAnimator == null) {
             mOffsetAnimator = ValueAnimator.ofFloat(0f, 1f);
-            mOffsetAnimator.setDuration(3000);
+            mOffsetAnimator.setDuration(2500);
             mOffsetAnimator.setInterpolator(new LinearInterpolator());
             mOffsetAnimator.setRepeatCount(ValueAnimator.INFINITE);
             mOffsetAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

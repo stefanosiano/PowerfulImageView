@@ -20,12 +20,17 @@ public class DummyProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void start() {
+    public void startIndeterminateAnimation() {
 
     }
 
     @Override
-    public void stop() {
+    public void stopIndeterminateAnimation() {
+
+    }
+
+    @Override
+    public void setProgressPercent(float progressPercent) {
 
     }
 }
