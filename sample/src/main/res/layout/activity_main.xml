@@ -19,8 +19,7 @@
             app:piv_progress_mode="horizontal_determinate"
             app:piv_progress_front_color="#00A000"
             app:piv_progress_percent="70"
-            app:piv_progress_circle_size_percent="1"
-            app:piv_progress_circle_border_width="5dp"/>
+            app:piv_progress_size_percent="100"/>
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -31,8 +30,8 @@
 
             app:piv_progress_mode="determinate"
             app:piv_progress_percent="38"
-            app:piv_progress_circle_border_width="8dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="8dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -42,11 +41,11 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
-            app:piv_indeterminate_progress_color="@color/colorAccent"
+            app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_mode="horizontal_indeterminate"
             app:piv_progress_percent="18"
-            app:piv_progress_circle_size_percent="1"
-            app:piv_progress_circle_border_width="5dp"/>
+            app:piv_progress_size_percent="50"
+            app:piv_progress_width="5dp"/>
 
     </TableRow>
 
@@ -60,8 +59,8 @@
             app:piv_progress_back_color="@color/colorPrimary"
             app:piv_progress_front_color="@color/colorAccent"
             app:piv_progress_mode="indeterminate"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -72,8 +71,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -84,8 +83,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
     </TableRow>
 
@@ -99,8 +98,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -111,8 +110,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -123,8 +122,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
     </TableRow>
 
@@ -138,8 +137,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -150,8 +149,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -162,8 +161,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
     </TableRow>
 
@@ -177,8 +176,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -189,8 +188,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -201,8 +200,8 @@
 
             app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="10"
-            app:piv_progress_circle_border_width="5dp"
-            app:piv_progress_circle_size="64dp" />
+            app:piv_progress_width="5dp"
+            app:piv_progress_size="64dp" />
 
     </TableRow>
 

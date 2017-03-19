@@ -7,115 +7,83 @@ package com.stefanosiano.progressimageview.progress;
 public class ProgressOptions {
 
     boolean isDeterminateAnimationEnabled;
-    int circleBorderWidth;
-    int circleSize;
-    float circleSizePercent;
+    int borderWidth;
+    int size;
+    float sizePercent;
     float valuePercent;
     int frontColor;
     int backColor;
     int indeterminateColor;
-    PivProgressMode mode;
+    PivProgressGravity gravity;
 
-    private final boolean isCircleBorderWidthFixed;
+    private float left, top, right, bottom;
+    private final boolean isCircleBorderWidthFixed, isRtl;
 
-    public ProgressOptions(boolean isDeterminateAnimationEnabled, int circleBorderWidth, int circleSize, float circleSizePercent, float valuePercent, int frontColor, int backColor, int indeterminateColor, int mode) {
+    public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, int size, float sizePercent, float valuePercent, int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl) {
         this.isDeterminateAnimationEnabled = isDeterminateAnimationEnabled;
-        this.circleBorderWidth = circleBorderWidth;
-        this.isCircleBorderWidthFixed = circleBorderWidth > 0;
-        this.circleSize = circleSize;
-        this.circleSizePercent = circleSizePercent;
+        this.borderWidth = borderWidth;
+        this.isCircleBorderWidthFixed = borderWidth > 0;
+        this.size = size;
+        this.sizePercent = sizePercent;
         this.valuePercent = valuePercent;
         this.frontColor = frontColor;
         this.backColor = backColor;
         this.indeterminateColor = indeterminateColor;
-        this.mode = PivProgressMode.fromValue(mode);
+        this.gravity = PivProgressGravity.fromValue(gravity);
+        this.isRtl = rtl;
 
-        calculateValues(0, 0);
+        calculateBounds(0, 0, PivProgressMode.NONE);
     }
 
-    public void calculateValues(int w, int h){
-        if(circleSizePercent >= 0){
-            circleSize = (int) (w * (double)circleSizePercent);
+    public void calculateBounds(int w, int h, PivProgressMode mode){
+        if(sizePercent >= 0){
+            size = (int) (w * (double) sizePercent / 100);
         }
         if(!isCircleBorderWidthFixed){
-            circleBorderWidth = Math.round(circleSize/10);
+            borderWidth = Math.round(size /10);
         }
-        if(circleBorderWidth < 1)
-            circleBorderWidth = 1;
+        if(borderWidth < 1)
+            borderWidth = 1;
+
+        switch(mode){
+            case DETERMINATE:
+            case INDETERMINATE:
+                left = w - size - borderWidth;
+                right = w - borderWidth;
+                top = h - size - borderWidth;
+                bottom = h - borderWidth;
+                break;
+            case HORIZONTAL_DETERMINATE:
+            case HORIZONTAL_INDETERMINATE:
+                left = w - size;
+                right = w;
+                top = h - borderWidth;
+                bottom = h;
+                break;
+            case NONE:
+            default:
+                left = 0;
+                right = 0;
+                top = 0;
+                bottom = 0;
+                break;
+        }
     }
 
-    public int getProgressAngle(){
-        return (int) (valuePercent * 3.6f);
-    }
-    public boolean isDeterminateAnimationEnabled() {
-        return isDeterminateAnimationEnabled;
+
+    public float getLeft() {
+        return left;
     }
 
-    public void setDeterminateAnimationEnabled(boolean determinateAnimationEnabled) {
-        isDeterminateAnimationEnabled = determinateAnimationEnabled;
+    public float getTop() {
+        return top;
     }
 
-    public int getCircleBorderWidth() {
-        return circleBorderWidth;
+    public float getRight() {
+        return right;
     }
 
-    public void setCircleBorderWidth(int circleBorderWidth) {
-        this.circleBorderWidth = circleBorderWidth;
-    }
-
-    public int getCircleSize() {
-        return circleSize;
-    }
-
-    public void setCircleSize(int circleSize) {
-        this.circleSize = circleSize;
-    }
-
-    public float getCircleSizePercent() {
-        return circleSizePercent;
-    }
-
-    public void setCircleSizePercent(float circleSizePercent) {
-        this.circleSizePercent = circleSizePercent;
-    }
-
-    public float getValuePercent() {
-        return valuePercent;
-    }
-
-    public void setValuePercent(float valuePercent) {
-        this.valuePercent = valuePercent;
-    }
-
-    public int getFrontColor() {
-        return frontColor;
-    }
-
-    public void setFrontColor(int frontColor) {
-        this.frontColor = frontColor;
-    }
-
-    public int getBackColor() {
-        return backColor;
-    }
-
-    public void setBackColor(int backColor) {
-        this.backColor = backColor;
-    }
-
-    public int getIndeterminateColor() {
-        return indeterminateColor;
-    }
-
-    public void setIndeterminateColor(int indeterminateColor) {
-        this.indeterminateColor = indeterminateColor;
-    }
-
-    public PivProgressMode getMode() {
-        return mode;
-    }
-
-    public void setMode(PivProgressMode mode) {
-        this.mode = mode;
+    public float getBottom() {
+        return bottom;
     }
 }

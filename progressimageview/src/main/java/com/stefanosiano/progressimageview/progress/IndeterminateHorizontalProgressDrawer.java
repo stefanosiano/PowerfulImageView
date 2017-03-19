@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
 
@@ -41,7 +40,7 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         if(mProgressPaint == null) mProgressPaint = new Paint();
 
         mProgressPaint.setColor(progressOptions.indeterminateColor);
-        mProgressPaint.setStrokeWidth(progressOptions.circleBorderWidth);
+        mProgressPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
 

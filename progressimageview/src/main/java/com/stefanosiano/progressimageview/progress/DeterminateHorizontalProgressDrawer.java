@@ -63,11 +63,11 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
         mProgressFrontPaint.setColor(progressOptions.frontColor);
-        mProgressFrontPaint.setStrokeWidth(progressOptions.circleBorderWidth);
+        mProgressFrontPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressFrontPaint.setAntiAlias(true);
         mProgressFrontPaint.setStyle(Paint.Style.STROKE);
         mProgressBackPaint.setColor(progressOptions.backColor);
-        mProgressBackPaint.setStrokeWidth(progressOptions.circleBorderWidth);
+        mProgressBackPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 

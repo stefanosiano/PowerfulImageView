@@ -41,7 +41,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressPaint == null) mProgressPaint = new Paint();
 
         mProgressPaint.setColor(progressOptions.indeterminateColor);
-        mProgressPaint.setStrokeWidth(progressOptions.circleBorderWidth);
+        mProgressPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
 

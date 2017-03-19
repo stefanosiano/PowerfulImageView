@@ -2,13 +2,24 @@
 <resources>
     <declare-styleable name="ProgressImageView">
         <attr name="piv_use_determinate_progress_animation" format="boolean" />
-        <attr name="piv_progress_circle_border_width" format="dimension" />
-        <attr name="piv_progress_circle_size" format="dimension" />
-        <attr name="piv_progress_circle_size_percent" format="float" />
+        <attr name="piv_progress_width" format="dimension" />
+        <attr name="piv_progress_size" format="dimension" />
+        <attr name="piv_progress_size_percent" format="float" />
         <attr name="piv_progress_percent" format="float" />
         <attr name="piv_progress_front_color" format="color" />
         <attr name="piv_progress_back_color" format="color" />
-        <attr name="piv_indeterminate_progress_color" format="color" />
+        <attr name="piv_progress_indeterminate_color" format="color" />
+        <attr name="piv_progress_gravity" format="enum" >
+            <enum name="center" value="0"/>
+            <enum name="start" value="1"/>
+            <enum name="end" value="2"/>
+            <enum name="top" value="3"/>
+            <enum name="top_start" value="4"/>
+            <enum name="top_end" value="5"/>
+            <enum name="bottom" value="6"/>
+            <enum name="bottom_start" value="7"/>
+            <enum name="bottom_end" value="8"/>
+        </attr>
         <attr name="piv_progress_mode" format="enum" >
             <enum name="disabled" value="0"/>
             <enum name="indeterminate" value="1"/>

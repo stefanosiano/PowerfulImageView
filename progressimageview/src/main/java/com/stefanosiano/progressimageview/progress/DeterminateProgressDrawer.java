@@ -4,9 +4,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.Transformation;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
 
@@ -66,11 +64,11 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
         mProgressFrontPaint.setColor(progressOptions.frontColor);
-        mProgressFrontPaint.setStrokeWidth(progressOptions.circleBorderWidth);
+        mProgressFrontPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressFrontPaint.setAntiAlias(true);
         mProgressFrontPaint.setStyle(Paint.Style.STROKE);
         mProgressBackPaint.setColor(progressOptions.backColor);
-        mProgressBackPaint.setStrokeWidth(progressOptions.circleBorderWidth);
+        mProgressBackPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 
