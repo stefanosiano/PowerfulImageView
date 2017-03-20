@@ -3,14 +3,13 @@ Custom Android ImageView with a circle indicating a progress (e.g. download prog
   
 To do:  
 Add draw cone option  
-Add full screen support  
 Clean/refactor code before moving somewhere else  
 Add initialization class, to set default parameters (may be useful when using multiple themes)  
   
-Add shapes: Circle, oval, square, rounded rectangle, rectangle through ratio, default  
-  
 Write instructions and readme file  
   
+Add full screen on click support  
+Add shapes: Circle, oval, square, rounded rectangle, rectangle through ratio, default  
 Add zoom support  
 Implement custom listener/module for Glide?  
 Draw dark transparent frontground?  
