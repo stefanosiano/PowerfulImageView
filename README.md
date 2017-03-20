@@ -2,9 +2,8 @@
 Custom Android ImageView with a circle indicating a progress (e.g. download progress of the image)  
   
 To do:  
-Add boolean to support right to left layout  
-Add full screen support  
 Add draw cone option  
+Add full screen support  
 Clean/refactor code before moving somewhere else  
 Add initialization class, to set default parameters (may be useful when using multiple themes)  
   
