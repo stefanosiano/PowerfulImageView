@@ -36,14 +36,16 @@ public class ProgressOptions {
         this.isRtl = rtl;
         this.isRtlSupportDisabled = disableRtlSupport;
         this.drawWedge = drawWedge;
-
-        calculateBounds(0, 0, PivProgressMode.NONE);
     }
 
     public void calculateBounds(int w, int h, PivProgressMode mode){
+        int maxSize = w < h ? w : h;
+
         if(sizePercent >= 0){
-            size = (int) (w * (double) sizePercent / 100);
+            size = (int) (maxSize * (double) sizePercent / 100);
         }
+        if(size > maxSize)
+            size = maxSize;
         if(!isCircleBorderWidthFixed){
             borderWidth = Math.round(size /10);
         }
@@ -58,51 +60,51 @@ public class ProgressOptions {
                     case BOTTOM_START:
                     case TOP_START:
                         if(isRtl && !isRtlSupportDisabled){
-                            left = w - size - borderWidth;
-                            right = w - borderWidth;
+                            left = w - size + borderWidth/2;
+                            right = w - borderWidth/2;
                         }
                         else {
-                            left = borderWidth;
-                            right = size + borderWidth;
+                            left = borderWidth/2;
+                            right = size - borderWidth/2;
                         }
                         break;
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
                         if(isRtl && !isRtlSupportDisabled){
-                            left = borderWidth;
-                            right = size + borderWidth;
+                            left = borderWidth/2;
+                            right = size - borderWidth/2;
                         }
                         else {
-                            left = w - size - borderWidth;
-                            right = w - borderWidth;
+                            left = w - size + borderWidth/2;
+                            right = w - borderWidth/2;
                         }
                         break;
                     case TOP:
                     case BOTTOM:
                     case CENTER:
-                        left = (w - size)/2;
-                        right = (w + size)/2;
+                        left = (w - size + borderWidth) /2;
+                        right = (w + size - borderWidth) /2;
                         break;
                 }
                 switch (gravity){
                     case TOP_START:
                     case TOP_END:
                     case TOP:
-                        top = borderWidth;
-                        bottom = size + borderWidth;
+                        top = borderWidth/2;
+                        bottom = size - borderWidth/2;
                         break;
                     case BOTTOM:
                     case BOTTOM_START:
                     case BOTTOM_END:
-                        top = h - size - borderWidth;
-                        bottom = h - borderWidth;
+                        top = h - size + borderWidth/2;
+                        bottom = h - borderWidth/2;
                         break;
                     case END:
                     case START:
                     case CENTER:
-                        top = (h - size)/2;
-                        bottom = (h + size)/2;
+                        top = (h - size + borderWidth) /2;
+                        bottom = (h + size - borderWidth) /2;
                         break;
                 }
                 break;
