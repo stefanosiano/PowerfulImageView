@@ -20,7 +20,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     private Paint mProgressFrontPaint, mProgressBackPaint;
     private ValueAnimator mProgressAnimation;
     private int mProgressBackStartAngle, mProgressBackSweepAngle, mProgressFrontSweepAngle, mCurrentProgressFrontSweepAngle, mOldProgressFrontSweepAngle;
-    private boolean mUseProgressAnimation;
+    private boolean mUseProgressAnimation, drawWedge;
 
     public DeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
         this.piv = piv;
@@ -60,20 +60,22 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
     @Override
     public void setup(ProgressOptions progressOptions) {
 
+        mProgressFrontSweepAngle = 0;
+        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled;
+        drawWedge = progressOptions.drawWedge;
+
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
         mProgressFrontPaint.setColor(progressOptions.frontColor);
         mProgressFrontPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressFrontPaint.setAntiAlias(true);
-        mProgressFrontPaint.setStyle(Paint.Style.STROKE);
+        mProgressFrontPaint.setStyle(drawWedge ? Paint.Style.FILL_AND_STROKE : Paint.Style.STROKE);
         mProgressBackPaint.setColor(progressOptions.backColor);
         mProgressBackPaint.setStrokeWidth(progressOptions.borderWidth);
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 
-        mProgressFrontSweepAngle = 0;
-        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled;
         setProgressPercent(progressOptions.valuePercent);
     }
 
@@ -84,8 +86,8 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawArc(progressBounds, mProgressBackStartAngle, mProgressBackSweepAngle, false, mProgressBackPaint);
-        canvas.drawArc(progressBounds, -90, mCurrentProgressFrontSweepAngle, false, mProgressFrontPaint);
+        canvas.drawArc(progressBounds, mProgressBackStartAngle, mProgressBackSweepAngle, drawWedge, mProgressBackPaint);
+        canvas.drawArc(progressBounds, -90, mCurrentProgressFrontSweepAngle, drawWedge, mProgressFrontPaint);
     }
 
     @Override

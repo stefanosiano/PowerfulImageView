@@ -16,12 +16,13 @@ public class ProgressOptions {
     int indeterminateColor;
     PivProgressGravity gravity;
     boolean isRtlSupportDisabled;
+    boolean drawWedge;
 
     private float left, top, right, bottom;
     private final boolean isCircleBorderWidthFixed, isRtl;
 
     public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, int size, float sizePercent,
-                           float valuePercent, int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport) {
+                           float valuePercent, int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge) {
         this.isDeterminateAnimationEnabled = isDeterminateAnimationEnabled;
         this.borderWidth = borderWidth;
         this.isCircleBorderWidthFixed = borderWidth > 0;
@@ -34,6 +35,7 @@ public class ProgressOptions {
         this.gravity = PivProgressGravity.fromValue(gravity);
         this.isRtl = rtl;
         this.isRtlSupportDisabled = disableRtlSupport;
+        this.drawWedge = drawWedge;
 
         calculateBounds(0, 0, PivProgressMode.NONE);
     }
