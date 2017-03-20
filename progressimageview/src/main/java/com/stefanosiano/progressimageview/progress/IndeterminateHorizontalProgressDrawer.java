@@ -40,9 +40,7 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         if(mProgressPaint == null) mProgressPaint = new Paint();
 
         mProgressPaint.setColor(progressOptions.indeterminateColor);
-        mProgressPaint.setStrokeWidth(progressOptions.borderWidth);
-        mProgressPaint.setAntiAlias(true);
-        mProgressPaint.setStyle(Paint.Style.STROKE);
+        mProgressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         this.isShrinking = false;
         setProgressValues(30);
@@ -74,7 +72,7 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawLine(mStartX, progressBounds.bottom, mEndX, progressBounds.bottom, mProgressPaint);
+        canvas.drawRect(mStartX, progressBounds.top, mEndX, progressBounds.bottom, mProgressPaint);
     }
 
     @Override

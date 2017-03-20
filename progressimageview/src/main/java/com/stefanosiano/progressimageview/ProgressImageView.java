@@ -63,8 +63,9 @@ public class ProgressImageView extends AppCompatImageView {
                 a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color)),
                 a.getColor(R.styleable.ProgressImageView_piv_progress_back_color, ContextCompat.getColor(context, R.color.piv_default_progress_back_color)),
                 a.getColor(R.styleable.ProgressImageView_piv_progress_indeterminate_color, ContextCompat.getColor(context, R.color.piv_default_indeterminate_progress_color)),
-                a.getColor(R.styleable.ProgressImageView_piv_progress_gravity, PivProgressGravity.CENTER.getValue()),
-                ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL
+                a.getInteger(R.styleable.ProgressImageView_piv_progress_gravity, PivProgressGravity.CENTER.getValue()),
+                ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL,
+                a.getBoolean(R.styleable.ProgressImageView_piv_progress_disable_rtl_support, false)
         );
         PivProgressMode mode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, PivProgressMode.DETERMINATE.getValue()));
 

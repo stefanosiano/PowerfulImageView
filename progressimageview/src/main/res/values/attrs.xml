@@ -9,6 +9,7 @@
         <attr name="piv_progress_front_color" format="color" />
         <attr name="piv_progress_back_color" format="color" />
         <attr name="piv_progress_indeterminate_color" format="color" />
+        <attr name="piv_progress_disable_rtl_support" format="boolean" />
         <attr name="piv_progress_gravity" format="enum" >
             <enum name="center" value="0"/>
             <enum name="start" value="1"/>

@@ -63,13 +63,9 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
         mProgressFrontPaint.setColor(progressOptions.frontColor);
-        mProgressFrontPaint.setStrokeWidth(progressOptions.borderWidth);
-        mProgressFrontPaint.setAntiAlias(true);
-        mProgressFrontPaint.setStyle(Paint.Style.STROKE);
+        mProgressFrontPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mProgressBackPaint.setColor(progressOptions.backColor);
-        mProgressBackPaint.setStrokeWidth(progressOptions.borderWidth);
-        mProgressBackPaint.setAntiAlias(true);
-        mProgressBackPaint.setStyle(Paint.Style.STROKE);
+        mProgressBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled;
         setProgressPercent(progressOptions.valuePercent);
@@ -82,8 +78,8 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawLine(mCurrentFrontX, progressBounds.bottom, progressBounds.right, progressBounds.bottom, mProgressBackPaint);
-        canvas.drawLine(progressBounds.left, progressBounds.bottom, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint);
+        canvas.drawRect(mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressBackPaint);
+        canvas.drawRect(progressBounds.left, progressBounds.top, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint);
     }
 
     @Override
