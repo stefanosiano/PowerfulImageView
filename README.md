@@ -11,5 +11,7 @@ Write instructions and readme file
 Add full screen on click support  
 Add shapes: Circle, oval, square, rounded rectangle, rectangle through ratio, default  
 Add zoom support  
+Add support for ultra big images  
+Add support for panoramas?  
 Implement custom listener/module for Glide?  
 Draw dark transparent frontground?  
