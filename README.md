@@ -2,9 +2,10 @@
 Custom Android ImageView with a circle indicating a progress (e.g. download progress of the image)  
   
 To do:  
-Add option to follow image size instead of imageView size  
-Set parcelable things  
-Add initialization class, to set default parameters (may be useful when using multiple themes)  
+Add option to follow imageview padding (to calculate maximum size)  
+Add option to set "inner" padding  
+Set parcelable stuff  
+Add initialization class, to set default parameters (may be useful when using multiple themes), or find a better approach  
 Clean/refactor code before moving somewhere else  
   
 Write instructions and readme file  
