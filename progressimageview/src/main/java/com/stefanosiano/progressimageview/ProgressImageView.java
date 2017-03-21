@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 
 import com.stefanosiano.progressimageview.progress.PivProgressGravity;
 import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawer;
@@ -25,8 +26,8 @@ public class ProgressImageView extends AppCompatImageView {
     //initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
     private static final int DEFAULT_PROGRESS_WIDTH = -1;
-    private static final int DEFAULT_PROGRESS_SIZE = 16;
-    private static final int DEFAULT_PROGRESS_PADDING = 16;
+    private static final int DEFAULT_PROGRESS_SIZE = 24;
+    private static final int DEFAULT_PROGRESS_PADDING = 2;
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
     private static final int DEFAULT_PROGRESS_GRAVITY = PivProgressGravity.CENTER.getValue();
     private static final float DEFAULT_PROGRESS_SIZE_PERCENT = -1;
@@ -57,9 +58,9 @@ public class ProgressImageView extends AppCompatImageView {
 
         mProgressOptions = new ProgressOptions(
                 a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
-                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_width, DEFAULT_PROGRESS_WIDTH),
-                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_size, DEFAULT_PROGRESS_SIZE),
-                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_padding, DEFAULT_PROGRESS_PADDING),
+                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
+                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_size, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SIZE, getResources().getDisplayMetrics())),
+                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.ProgressImageView_piv_progress_size_percent, DEFAULT_PROGRESS_SIZE_PERCENT),
                 a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT),
                 a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color)),

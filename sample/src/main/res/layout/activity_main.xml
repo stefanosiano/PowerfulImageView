@@ -45,13 +45,9 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
-            app:piv_progress_padding="2dp"
-            app:piv_progress_gravity="end"
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_mode="indeterminate"
-            app:piv_progress_percent="18"
-            app:piv_progress_size_percent="80"
-            app:piv_progress_width="5dp"/>
+            app:piv_progress_percent="18"/>
 
     </TableRow>
 
