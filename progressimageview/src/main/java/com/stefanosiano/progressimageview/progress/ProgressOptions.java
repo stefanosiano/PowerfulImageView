@@ -1,10 +1,13 @@
 package com.stefanosiano.progressimageview.progress;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by stefano on 17/03/17.
  */
 
-public final class ProgressOptions {
+public final class ProgressOptions implements Parcelable {
 
     //options used by drawers
     private boolean isDeterminateAnimationEnabled;
@@ -236,5 +239,69 @@ public final class ProgressOptions {
 
     public final boolean isDrawWedge() {
         return drawWedge;
+    }
+
+
+
+
+
+
+
+    public static final Creator<ProgressOptions> CREATOR = new Creator<ProgressOptions>() {
+        @Override
+        public ProgressOptions createFromParcel(Parcel in) {
+            return new ProgressOptions(in);
+        }
+
+        @Override
+        public ProgressOptions[] newArray(int size) {
+            return new ProgressOptions[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    protected ProgressOptions(Parcel in) {
+        isDeterminateAnimationEnabled = in.readByte() != 0;
+        borderWidth = in.readInt();
+        valuePercent = in.readFloat();
+        frontColor = in.readInt();
+        backColor = in.readInt();
+        indeterminateColor = in.readInt();
+        drawWedge = in.readByte() != 0;
+        size = in.readInt();
+        padding = in.readInt();
+        sizePercent = in.readFloat();
+        isRtlSupportDisabled = in.readByte() != 0;
+        isCircleBorderWidthFixed = in.readByte() != 0;
+        isRtl = in.readByte() != 0;
+        left = in.readFloat();
+        top = in.readFloat();
+        right = in.readFloat();
+        bottom = in.readFloat();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (isDeterminateAnimationEnabled ? 1 : 0));
+        dest.writeInt(borderWidth);
+        dest.writeFloat(valuePercent);
+        dest.writeInt(frontColor);
+        dest.writeInt(backColor);
+        dest.writeInt(indeterminateColor);
+        dest.writeByte((byte) (drawWedge ? 1 : 0));
+        dest.writeInt(size);
+        dest.writeInt(padding);
+        dest.writeFloat(sizePercent);
+        dest.writeByte((byte) (isRtlSupportDisabled ? 1 : 0));
+        dest.writeByte((byte) (isCircleBorderWidthFixed ? 1 : 0));
+        dest.writeByte((byte) (isRtl ? 1 : 0));
+        dest.writeFloat(left);
+        dest.writeFloat(top);
+        dest.writeFloat(right);
+        dest.writeFloat(bottom);
     }
 }

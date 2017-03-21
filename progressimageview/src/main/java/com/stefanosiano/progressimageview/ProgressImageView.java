@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
@@ -35,7 +37,7 @@ public class ProgressImageView extends AppCompatImageView {
     //progress variables
     private final RectF mProgressBounds;
     private final ProgressDrawerHelper mProgressDrawerHelper;
-    private final ProgressOptions mProgressOptions;
+    private ProgressOptions mProgressOptions;
     private ProgressDrawer mProgressDrawer;
     private PivProgressMode mProgressMode = null;
 
@@ -116,6 +118,32 @@ public class ProgressImageView extends AppCompatImageView {
 
     public final void setProgressPercent(float progressPercent) {
         mProgressDrawer.setProgressPercent(progressPercent);
+    }
+
+
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("super_state", super.onSaveInstanceState());
+        bundle.putParcelable("progress_options", mProgressOptions);
+        bundle.putInt("", mProgressMode.getValue());
+
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle) {// implicit null check
+            Bundle bundle = (Bundle) state;
+            mProgressOptions = bundle.getParcelable("progress_options");
+
+            PivProgressMode progressMode = PivProgressMode.fromValue(bundle.getInt(""));
+            changeProgressMode(progressMode);
+
+            state = bundle.getParcelable("super_state");
+        }
+        super.onRestoreInstanceState(state);
     }
 }
 
