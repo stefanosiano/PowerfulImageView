@@ -31,11 +31,11 @@
             android:src="@android:drawable/ic_input_get"
             android:background="#eaeaea"
 
-            app:piv_progress_gravity="top_end"
+            app:piv_progress_padding="8dp"
             app:piv_progress_mode="determinate"
             app:piv_progress_percent="38"
             app:piv_progress_width="6dp"
-            app:piv_progress_size="100dp"/>
+            app:piv_progress_size="40dp"/>
 
 
         <com.stefanosiano.progressimageview.ProgressImageView
@@ -45,9 +45,10 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
+            app:piv_progress_padding="2dp"
             app:piv_progress_gravity="end"
             app:piv_progress_indeterminate_color="@color/colorAccent"
-            app:piv_progress_mode="horizontal_indeterminate"
+            app:piv_progress_mode="indeterminate"
             app:piv_progress_percent="18"
             app:piv_progress_size_percent="80"
             app:piv_progress_width="5dp"/>

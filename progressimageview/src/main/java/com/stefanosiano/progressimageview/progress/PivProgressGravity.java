@@ -18,7 +18,7 @@ public enum PivProgressGravity {
     private final int value;
     PivProgressGravity(int value){this.value = value;}
 
-    public int getValue() {
+    public final int getValue() {
         return value;
     }
     public static PivProgressGravity fromValue(int value){

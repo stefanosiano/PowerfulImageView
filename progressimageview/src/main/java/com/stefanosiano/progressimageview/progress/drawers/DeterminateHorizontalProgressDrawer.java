@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.progressimageview.progress.drawers;
 
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
@@ -7,30 +7,33 @@ import android.graphics.RectF;
 import android.view.animation.LinearInterpolator;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
+import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 /**
  * Created by stefano on 3/18/17.
  */
 
-public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
+final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
-    private final ProgressImageView piv;
+    private final ProgressImageView mPiv;
     private final RectF mProgressBounds;
+    private final long DEFAULT_ANIMATION_DURATION = 100;
 
     private Paint mProgressFrontPaint, mProgressBackPaint;
-    private ValueAnimator mProgressAnimation;
+    private ValueAnimator mProgressAnimator;
     private float mProgress, mCurrentProgress, mOldProgress, mCurrentFrontX;
     private boolean mUseProgressAnimation;
+    private long mProgressAnimationDuration = -1;
 
-    public DeterminateHorizontalProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.piv = piv;
+    DeterminateHorizontalProgressDrawer(ProgressImageView piv, RectF progressBounds) {
+        this.mPiv = piv;
         this.mProgressBounds = progressBounds;
     }
 
     private void setRealProgress(float progress) {
         this.mCurrentProgress = progress;
         this.mCurrentFrontX = mProgressBounds.left + ((mProgressBounds.right - mProgressBounds.left) * (progress/100));
-        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
 
@@ -45,15 +48,23 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
         if(this.mUseProgressAnimation){
             createAnimationIfNeeded();
-            mProgressAnimation.start();
+            mProgressAnimator.start();
         }
         else {
             setRealProgress(mProgress);
         }
     }
 
-    public void setUseAnimation(boolean useAnimation){
-        this.mUseProgressAnimation = useAnimation;
+    @Override
+    public void setAnimationEnabled(boolean enabled) {
+        this.mUseProgressAnimation = enabled;
+    }
+
+    @Override
+    public void setAnimationDuration(long millis) {
+        this.mProgressAnimationDuration = millis;
+        createAnimationIfNeeded();
+        mProgressAnimator.setDuration(millis);
     }
 
     @Override
@@ -62,13 +73,13 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
-        mProgressFrontPaint.setColor(progressOptions.frontColor);
+        mProgressFrontPaint.setColor(progressOptions.getFrontColor());
         mProgressFrontPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mProgressBackPaint.setColor(progressOptions.backColor);
+        mProgressBackPaint.setColor(progressOptions.getBackColor());
         mProgressBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled;
-        setProgressPercent(progressOptions.valuePercent);
+        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
+        setProgressPercent(progressOptions.getValuePercent());
     }
 
     @Override
@@ -84,9 +95,8 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
     @Override
     public void stopIndeterminateAnimation() {
-        piv.clearAnimation();
-        if(mProgressAnimation != null)
-            mProgressAnimation.cancel();
+        if(mProgressAnimator != null)
+            mProgressAnimator.cancel();
         mCurrentProgress = 0;
     }
 
@@ -100,13 +110,13 @@ public class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
     private void createAnimationIfNeeded(){
 
-        if(mProgressAnimation != null)
+        if(mProgressAnimator != null)
             return;
 
-        mProgressAnimation = ValueAnimator.ofFloat(0f, 1f);
-        mProgressAnimation.setInterpolator(new LinearInterpolator());
-        mProgressAnimation.setDuration(100);
-        mProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mProgressAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mProgressAnimator.setInterpolator(new LinearInterpolator());
+        mProgressAnimator.setDuration(mProgressAnimationDuration < 0 ? DEFAULT_ANIMATION_DURATION : mProgressAnimationDuration);
+        mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 setRealProgress(getOldProgress() + ((getProgress() - getOldProgress()) * animation.getAnimatedFraction()));

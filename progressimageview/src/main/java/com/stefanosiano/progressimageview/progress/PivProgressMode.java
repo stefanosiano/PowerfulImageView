@@ -14,7 +14,7 @@ public enum PivProgressMode {
     private final int value;
     PivProgressMode(int value){this.value = value;}
 
-    public int getValue() {
+    public final int getValue() {
         return value;
     }
     public static PivProgressMode fromValue(int value){

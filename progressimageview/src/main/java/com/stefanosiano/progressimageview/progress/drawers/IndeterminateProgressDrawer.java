@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.progressimageview.progress.drawers;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -9,24 +9,27 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
+import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 /**
  * Created by stefano on 3/12/17.
  */
 
-public class IndeterminateProgressDrawer implements ProgressDrawer {
+final class IndeterminateProgressDrawer implements ProgressDrawer {
 
-    private final ProgressImageView piv;
+    private final ProgressImageView mPiv;
     private final RectF mProgressBounds;
+    private final long DEFAULT_ANIMATION_DURATION = 1000;
 
     private ValueAnimator mOffsetAnimator, mProgressAnimator;
     private Paint mProgressPaint;
     private int mProgressStartAngle, mProgressSweepAngle;
     private int offset;
     private boolean isShrinking;
+    private long mProgressAnimationDuration = -1;
 
-    public IndeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.piv = piv;
+    IndeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
+        this.mPiv = piv;
         this.mProgressBounds = progressBounds;
         this.offset = 0;
         this.isShrinking = false;
@@ -40,8 +43,8 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
         createAnimationIfNeeded();
         if(mProgressPaint == null) mProgressPaint = new Paint();
 
-        mProgressPaint.setColor(progressOptions.indeterminateColor);
-        mProgressPaint.setStrokeWidth(progressOptions.borderWidth);
+        mProgressPaint.setColor(progressOptions.getIndeterminateColor());
+        mProgressPaint.setStrokeWidth(progressOptions.getBorderWidth());
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
 
@@ -74,15 +77,13 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
             this.mProgressStartAngle = -90 + offset;
             this.mProgressSweepAngle = sweepAngleOffset + 50;
         }
-        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
         canvas.drawArc(progressBounds, mProgressStartAngle, mProgressSweepAngle, false, mProgressPaint);
-        //canvas.drawLine((mProgressStartAngle + 90)*canvas.getWidth()/360, 1, (mProgressStartAngle + 90)*canvas.getWidth()/360 + (mProgressSweepAngle + 90)*canvas.getWidth()/360, 1, mProgressPaint);
-
     }
 
     @Override
@@ -95,6 +96,16 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
 
     @Override
     public void setProgressPercent(float progressPercent) {}
+
+    @Override
+    public void setAnimationEnabled(boolean enabled) {}
+
+    @Override
+    public void setAnimationDuration(long millis) {
+        this.mProgressAnimationDuration = millis;
+        createAnimationIfNeeded();
+        mProgressAnimator.setDuration(millis);
+    }
 
 
     private void createAnimationIfNeeded(){
@@ -113,7 +124,7 @@ public class IndeterminateProgressDrawer implements ProgressDrawer {
 
         if(mProgressAnimator == null) {
             mProgressAnimator = ValueAnimator.ofFloat(0f, 1f);
-            mProgressAnimator.setDuration(1000);
+            mProgressAnimator.setDuration(mProgressAnimationDuration < 0 ? DEFAULT_ANIMATION_DURATION : mProgressAnimationDuration);
             mProgressAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
             mProgressAnimator.setRepeatCount(ValueAnimator.INFINITE);
             mProgressAnimator.addListener(new Animator.AnimatorListener() {

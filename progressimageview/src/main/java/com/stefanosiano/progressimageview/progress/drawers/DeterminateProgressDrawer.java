@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.progressimageview.progress.drawers;
 
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
@@ -7,23 +7,26 @@ import android.graphics.RectF;
 import android.view.animation.LinearInterpolator;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
+import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 /**
  * Created by stefano on 3/12/17.
  */
 
-public class DeterminateProgressDrawer implements ProgressDrawer {
+final class DeterminateProgressDrawer implements ProgressDrawer {
 
-    private final ProgressImageView piv;
+    private final ProgressImageView mPiv;
     private final RectF mProgressBounds;
+    private final long DEFAULT_ANIMATION_DURATION = 100;
 
     private Paint mProgressFrontPaint, mProgressBackPaint;
-    private ValueAnimator mProgressAnimation;
+    private ValueAnimator mProgressAnimator;
     private int mProgressBackStartAngle, mProgressBackSweepAngle, mProgressFrontSweepAngle, mCurrentProgressFrontSweepAngle, mOldProgressFrontSweepAngle;
     private boolean mUseProgressAnimation, drawWedge;
+    private long mProgressAnimationDuration = -1;
 
-    public DeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.piv = piv;
+    DeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
+        this.mPiv = piv;
         this.mProgressBounds = progressBounds;
     }
 
@@ -32,7 +35,7 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
         this.mProgressBackStartAngle = progressAngle - 90;
         this.mProgressBackSweepAngle = 360 - progressAngle;
         this.mCurrentProgressFrontSweepAngle = progressAngle;
-        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
     @Override
@@ -46,37 +49,44 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
 
         if(this.mUseProgressAnimation){
             createAnimationIfNeeded();
-            mProgressAnimation.start();
+            mProgressAnimator.start();
         }
         else {
             setRealProgressAngle(mProgressAngle);
         }
     }
 
-    public void setUseAnimation(boolean useAnimation){
-        this.mUseProgressAnimation = useAnimation;
+    public void setAnimationEnabled(boolean enabled){
+        this.mUseProgressAnimation = enabled;
+    }
+
+    @Override
+    public void setAnimationDuration(long millis) {
+        this.mProgressAnimationDuration = millis;
+        createAnimationIfNeeded();
+        mProgressAnimator.setDuration(millis);
     }
 
     @Override
     public void setup(ProgressOptions progressOptions) {
 
         mProgressFrontSweepAngle = 0;
-        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled;
-        drawWedge = progressOptions.drawWedge;
+        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
+        drawWedge = progressOptions.isDrawWedge();
 
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
-        mProgressFrontPaint.setColor(progressOptions.frontColor);
-        mProgressFrontPaint.setStrokeWidth(progressOptions.borderWidth);
+        mProgressFrontPaint.setColor(progressOptions.getFrontColor());
+        mProgressFrontPaint.setStrokeWidth(progressOptions.getBorderWidth());
         mProgressFrontPaint.setAntiAlias(true);
         mProgressFrontPaint.setStyle(drawWedge ? Paint.Style.FILL_AND_STROKE : Paint.Style.STROKE);
-        mProgressBackPaint.setColor(progressOptions.backColor);
-        mProgressBackPaint.setStrokeWidth(progressOptions.borderWidth);
+        mProgressBackPaint.setColor(progressOptions.getBackColor());
+        mProgressBackPaint.setStrokeWidth(progressOptions.getBorderWidth());
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 
-        setProgressPercent(progressOptions.valuePercent);
+        setProgressPercent(progressOptions.getValuePercent());
     }
 
     @Override
@@ -92,8 +102,8 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
 
     @Override
     public void stopIndeterminateAnimation() {
-        if(mProgressAnimation != null)
-            mProgressAnimation.cancel();
+        if(mProgressAnimator != null)
+            mProgressAnimator.cancel();
         mCurrentProgressFrontSweepAngle = mProgressFrontSweepAngle;
     }
 
@@ -107,13 +117,13 @@ public class DeterminateProgressDrawer implements ProgressDrawer {
 
     private void createAnimationIfNeeded(){
 
-        if(mProgressAnimation != null)
+        if(mProgressAnimator != null)
             return;
 
-        mProgressAnimation = ValueAnimator.ofFloat(0f, 1f);
-        mProgressAnimation.setInterpolator(new LinearInterpolator());
-        mProgressAnimation.setDuration(100);
-        mProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mProgressAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mProgressAnimator.setInterpolator(new LinearInterpolator());
+        mProgressAnimator.setDuration(mProgressAnimationDuration < 0 ? DEFAULT_ANIMATION_DURATION : mProgressAnimationDuration);
+        mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 setRealProgressAngle((int) (getOldSweepAngle() + ((getSweepAngle() - getOldSweepAngle()) * animation.getAnimatedFraction())));

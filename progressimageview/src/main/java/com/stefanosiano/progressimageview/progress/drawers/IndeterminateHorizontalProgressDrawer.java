@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.progressimageview.progress.drawers;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -8,23 +8,26 @@ import android.graphics.RectF;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
+import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 /**
  * Created by stefano on 3/18/17.
  */
 
-public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
+final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
-    private final ProgressImageView piv;
+    private final ProgressImageView mPiv;
     private final RectF mProgressBounds;
+    private final long DEFAULT_ANIMATION_DURATION = 1000;
 
     private Paint mProgressPaint;
-    private ValueAnimator mProgressAnimation;
+    private ValueAnimator mProgressAnimator;
     private float mStartX, mEndX;
     private boolean isShrinking;
+    private long mProgressAnimationDuration = -1;
 
-    public IndeterminateHorizontalProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.piv = piv;
+    IndeterminateHorizontalProgressDrawer(ProgressImageView piv, RectF progressBounds) {
+        this.mPiv = piv;
         this.mProgressBounds = progressBounds;
         this.isShrinking = false;
     }
@@ -34,12 +37,15 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
     public void setProgressPercent(float progressPercent) {}
 
     @Override
+    public void setAnimationEnabled(boolean enabled) {}
+
+    @Override
     public void setup(ProgressOptions progressOptions) {
 
         createAnimationIfNeeded();
         if(mProgressPaint == null) mProgressPaint = new Paint();
 
-        mProgressPaint.setColor(progressOptions.indeterminateColor);
+        mProgressPaint.setColor(progressOptions.getIndeterminateColor());
         mProgressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         this.isShrinking = false;
@@ -56,18 +62,18 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
             this.mStartX = mProgressBounds.left;
             this.mEndX = currentX;
         }
-        this.piv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
     @Override
     public void startIndeterminateAnimation() {
-        if(mProgressAnimation != null)
-            this.mProgressAnimation.cancel();
+        if(mProgressAnimator != null)
+            this.mProgressAnimator.cancel();
 
         this.isShrinking = false;
         setProgressValues(30);
 
-        mProgressAnimation.start();
+        mProgressAnimator.start();
     }
 
     @Override
@@ -77,21 +83,27 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
     @Override
     public void stopIndeterminateAnimation() {
-        piv.clearAnimation();
-        if(mProgressAnimation != null)
-            mProgressAnimation.cancel();
+        if(mProgressAnimator != null)
+            mProgressAnimator.cancel();
+    }
+
+    @Override
+    public void setAnimationDuration(long millis) {
+        this.mProgressAnimationDuration = millis;
+        createAnimationIfNeeded();
+        mProgressAnimator.setDuration(millis);
     }
 
     private void createAnimationIfNeeded(){
 
-        if(mProgressAnimation != null)
+        if(mProgressAnimator != null)
             return;
 
-        mProgressAnimation = ValueAnimator.ofFloat(0f, 1f);
-        mProgressAnimation.setDuration(1000);
-        mProgressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        mProgressAnimation.setRepeatCount(ValueAnimator.INFINITE);
-        mProgressAnimation.addListener(new Animator.AnimatorListener() {
+        mProgressAnimator = ValueAnimator.ofFloat(0f, 1f);
+        mProgressAnimator.setDuration(mProgressAnimationDuration < 0 ? DEFAULT_ANIMATION_DURATION : mProgressAnimationDuration);
+        mProgressAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        mProgressAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mProgressAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
@@ -106,7 +118,7 @@ public class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
                 isShrinking = !isShrinking;
             }
         });
-        mProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 setProgressValues(
