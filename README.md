@@ -8,7 +8,7 @@ Write instructions and readme file
 
 Publish library!  
   
-Add shapes: Circle, oval, square, rounded rectangle, rectangle through ratio, default  
+Add shapes: Circle, fake circle, oval, fake oval, square, rounded rectangle, fake rounded rectangle, rectangle through ratio, default  
 Add zoom support  
 Add support for ultra big images/panoramas/360s?  
 Implement custom listener/module for Glide?  
