@@ -19,27 +19,41 @@ import com.stefanosiano.progressimageview.progress.ProgressOptions;
 import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawerHelper;
 
 /**
- * Created by stefano on 10/03/17.
+ * Powerful ImageView with several added features (highly customizable):
+ *     -Progress indicator: it can be determinate, indeterminate, circular or horizontal.
+ *
+ * It extends AppCompatImageView, allowing the use of VectorDrawables and all AppCompat stuff.
+ * The downside is that it needs the Android appcompat-v7 library.
  */
 public class ProgressImageView extends AppCompatImageView {
 
-    //initialization constants
+    //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
     private static final int DEFAULT_PROGRESS_WIDTH = -1;
     private static final int DEFAULT_PROGRESS_SIZE = 24;
+    private static final float DEFAULT_PROGRESS_SIZE_PERCENT = -1;
     private static final int DEFAULT_PROGRESS_PADDING = 2;
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
     private static final int DEFAULT_PROGRESS_GRAVITY = PivProgressGravity.CENTER.getValue();
-    private static final float DEFAULT_PROGRESS_SIZE_PERCENT = -1;
     private static final boolean DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT = false;
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
-    private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.DETERMINATE.getValue();
+    private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
 
-    //progress variables
+    //Progress variables
+    /** Bounds in which the progress indicator will be drawn */
     private final RectF mProgressBounds;
-    private final ProgressDrawerHelper mProgressDrawerHelper;
-    private ProgressOptions mProgressOptions;
+
+    /** Object that draws the progress indicator over the image. It's the core of the progress indicator.
+     * It has different behaviours, based on the progress mode selected. */
     private ProgressDrawer mProgressDrawer;
+
+    /** Helper class to get the instance of ProgressDrawer, and initialize only needed drawers */
+    private final ProgressDrawerHelper mProgressDrawerHelper;
+
+    /** Options used by progress drawers */
+    private ProgressOptions mProgressOptions;
+
+    /** Mode of the progress drawer */
     private PivProgressMode mProgressMode = null;
 
 
@@ -56,6 +70,7 @@ public class ProgressImageView extends AppCompatImageView {
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
 
+        //get all the options from xml or default constants and initialize ProgressOptions object
         mProgressOptions = new ProgressOptions(
                 a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
@@ -81,10 +96,22 @@ public class ProgressImageView extends AppCompatImageView {
         changeProgressMode(mode);
     }
 
+
+    /**
+     * It calculates the bounds of the progress indicator.
+     * This is called during layout when the size of this view has changed. If you were just added
+     * to the view hierarchy, you're called with the old values of 0.
+     *
+     * @param w Current width of this view.
+     * @param h Current height of this view.
+     * @param oldw Old width of this view.
+     * @param oldh Old height of this view.
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mProgressOptions.calculateBounds(w, h, mProgressMode);
+        //set calculated bounds to our progress bounds
         mProgressBounds.set(
                 mProgressOptions.getLeft(),
                 mProgressOptions.getTop(),
@@ -95,6 +122,9 @@ public class ProgressImageView extends AppCompatImageView {
     }
 
 
+    /**
+     * Draws the image and the progress indicator.
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -102,7 +132,12 @@ public class ProgressImageView extends AppCompatImageView {
     }
 
 
-
+    /**
+     * Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate).
+     * It also starts animation of indeterminate progress indicator.
+     *
+     * @param progressMode mode to change the progress indicator into
+     */
     public void changeProgressMode(PivProgressMode progressMode){
         if(mProgressMode != null && mProgressMode == progressMode)
             return;
@@ -117,29 +152,47 @@ public class ProgressImageView extends AppCompatImageView {
     }
 
 
+    /**
+     * Sets the current progress percent to progress indicator.
+     * It has no effect when it is in indeterminate mode.
+     *
+     * @param progressPercent Percentage of the progress.
+     */
     public final void setProgressPercent(float progressPercent) {
         mProgressDrawer.setProgressPercent(progressPercent);
     }
 
 
 
+
+
+
+
+
+
+
+
+
+
+    /** Boilerplate code to save the state of the view. */
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putParcelable("super_state", super.onSaveInstanceState());
         bundle.putParcelable("progress_options", mProgressOptions);
-        bundle.putInt("", mProgressMode.getValue());
+        bundle.putInt("progress_mode", mProgressMode.getValue());
 
         return bundle;
     }
 
+    /** Boilerplate code to restore the state of the view. */
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {// implicit null check
             Bundle bundle = (Bundle) state;
             mProgressOptions = bundle.getParcelable("progress_options");
 
-            PivProgressMode progressMode = PivProgressMode.fromValue(bundle.getInt(""));
+            PivProgressMode progressMode = PivProgressMode.fromValue(bundle.getInt("progress_mode"));
             changeProgressMode(progressMode);
 
             state = bundle.getParcelable("super_state");

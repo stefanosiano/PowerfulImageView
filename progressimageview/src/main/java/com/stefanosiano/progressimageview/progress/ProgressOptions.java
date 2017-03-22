@@ -2,201 +2,294 @@ package com.stefanosiano.progressimageview.progress;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.TypedValue;
 
 /**
- * Created by stefano on 17/03/17.
+ * Class that helps managing the options that will be used by the progress drawers.
  */
 
 public final class ProgressOptions implements Parcelable {
 
-    //options used by drawers
-    private boolean isDeterminateAnimationEnabled;
-    private int borderWidth;
-    private float valuePercent;
-    private int frontColor;
-    private int backColor;
-    private int indeterminateColor;
-    private boolean drawWedge;
+    //Options used directly by drawers
+    
+    /** If the determinate drawer should update its progress with an animation */
+    private boolean mIsDeterminateAnimationEnabled;
 
+    /** Width of the progress indicator */
+    private int mBorderWidth;
+
+    /** Percentage value of the progress indicator, used by determinate drawers */
+    private float mValuePercent;
+
+    /** Front color of the indicator, used by determinate drawers */
+    private int mFrontColor;
+
+    /** Back color of the indicator, used by determinate drawers */
+    private int mBackColor;
+
+    /** Color of the indicator, used by indeterminate drawers */
+    private int mIndeterminateColor;
+
+    /** If should show a wedge, used by circular determinate drawer */
+    private boolean mDrawWedge;
+
+    
     //variables used to calculate bounds
-    private int size;
-    private int padding;
-    private float sizePercent;
-    private PivProgressGravity gravity;
-    private final boolean isRtlSupportDisabled, isCircleBorderWidthFixed, isRtl;
-    //bounds of the progress indicator
-    private float left, top, right, bottom;
 
-    public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, int size, int padding, float sizePercent,
-                           float valuePercent, int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge) {
-        this.isDeterminateAnimationEnabled = isDeterminateAnimationEnabled;
-        this.borderWidth = borderWidth;
-        this.isCircleBorderWidthFixed = borderWidth > 0;
-        this.size = size;
-        this.padding = padding;
-        this.sizePercent = sizePercent;
-        this.valuePercent = valuePercent;
-        this.frontColor = frontColor;
-        this.backColor = backColor;
-        this.indeterminateColor = indeterminateColor;
-        this.gravity = PivProgressGravity.fromValue(gravity);
-        this.isRtl = rtl;
-        this.isRtlSupportDisabled = disableRtlSupport;
-        this.drawWedge = drawWedge;
+    /** Size of the indicator */
+    private int mSize;
+
+    /** Padding of the indicator */
+    private int mPadding;
+
+    /** Size of the indicator, as a percentage of the whole View */
+    private float mSizePercent;
+
+    /** Gravity of the indicator */
+    private PivProgressGravity mGravity;
+
+    /** Whether the border width has been defined. If it is false, it will be calculated based on the size */
+    private boolean mIsCircleBorderWidthFixed;
+
+    /** Whether the view should use right to left layout (used for gravity option) */
+    private boolean mIsRtl;
+    
+    //bounds of the progress indicator
+    private float mLeft, mTop, mRight, mBottom;
+
+
+    /**
+     * Creates the object that will be used by progress drawers:
+     *
+     * @param isDeterminateAnimationEnabled If the determinate drawer should update its progress with an animation
+     * @param borderWidth Width of the progress indicator. If it's 0 or negative, it will be automatically adjusted based on the size
+     * @param size Size of the progress indicator
+     * @param padding Padding of the progress indicator
+     * @param sizePercent Size of the progress indicator as a percentage of the whole View. If it's 0 or more, it applies and overrides "size" parameter
+     * @param valuePercent Percentage value of the progress indicator, used by determinate drawers
+     * @param frontColor Front color of the indicator, used by determinate drawers
+     * @param backColor Back color of the indicator, used by determinate drawers
+     * @param indeterminateColor Color of the indicator, used by indeterminate drawers
+     * @param gravity Gravity of the indicator
+     * @param rtl Whether the view should use right to left layout (used for gravity option)
+     * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)              
+     * @param drawWedge If should show a wedge, used by circular determinate drawer
+     */
+    public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, int size, int padding, float sizePercent, float valuePercent,
+                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge) {
+        this.mIsDeterminateAnimationEnabled = isDeterminateAnimationEnabled;
+        this.mBorderWidth = borderWidth;
+        this.mIsCircleBorderWidthFixed = borderWidth > 0;
+        this.mSize = size;
+        this.mPadding = padding;
+        this.mSizePercent = sizePercent;
+        this.mValuePercent = valuePercent;
+        this.mFrontColor = frontColor;
+        this.mBackColor = backColor;
+        this.mIndeterminateColor = indeterminateColor;
+        this.mGravity = PivProgressGravity.fromValue(gravity);
+        this.mIsRtl = rtl && !disableRtlSupport;
+        this.mDrawWedge = drawWedge;
     }
 
+    /**
+     * Calculates the bounds of the progress indicator, based on progress options and mode.
+     * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     * 
+     * @param w Width of the View
+     * @param h Height of the View
+     * @param mode Mode of the progress indicator
+     */
     public final void calculateBounds(int w, int h, PivProgressMode mode){
+        if(mode == PivProgressMode.NONE){
+            mLeft = 0;
+            mRight = 0;
+            mTop = 0;
+            mBottom = 0;
+            return;
+        }
+
+        //calculate the maximum possible size of the progress indicator
         int maxSize = w < h ? w : h;
-        maxSize = maxSize - padding - padding;
+        maxSize = maxSize - mPadding - mPadding;
 
-        if(sizePercent >= 0){
-            size = (int) (maxSize * (double) sizePercent / 100);
+        //if mSizePercent is 0 or more, it overrides mSize parameter
+        if(mSizePercent >= 0){
+            mSize = (int) (maxSize * (double) mSizePercent / 100);
         }
-        if(size > maxSize)
-            size = maxSize;
-        if(!isCircleBorderWidthFixed){
-            borderWidth = Math.round(size /10);
+        //the progress indicator cannot be bigger then the view (minus padding)
+        if(mSize > maxSize)
+            mSize = maxSize;
+        //if border width was not been defined, it gets calculated based on the size of the indicator
+        if(!mIsCircleBorderWidthFixed){
+            mBorderWidth = Math.round(mSize /10);
         }
-        if(borderWidth < 1)
-            borderWidth = 1;
+        //width of the border should be at least 1 px
+        if(mBorderWidth < 1)
+            mBorderWidth = 1;
 
+        //calculation of bounds
         switch(mode){
+
+            //calculation of circular bounds
             case DETERMINATE:
             case INDETERMINATE:
-                switch (gravity){
+                switch (mGravity){
                     case START:
                     case BOTTOM_START:
                     case TOP_START:
-                        if(isRtl && !isRtlSupportDisabled){
-                            left = w - size + borderWidth/2 - padding;
-                            right = w - borderWidth/2 - padding;
+                        if(mIsRtl){
+                            //it's at right
+                            mLeft = w - mSize + mBorderWidth/2 - mPadding;
+                            mRight = w - mBorderWidth/2 - mPadding;
                         }
                         else {
-                            left = borderWidth/2 + padding;
-                            right = size - borderWidth/2 + padding;
+                            //it's at left
+                            mLeft = mBorderWidth/2 + mPadding;
+                            mRight = mSize - mBorderWidth/2 + mPadding;
                         }
                         break;
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
-                        if(isRtl && !isRtlSupportDisabled){
-                            left = borderWidth/2 + padding;
-                            right = size - borderWidth/2 + padding;
+                        if(mIsRtl){
+                            //it's at left
+                            mLeft = mBorderWidth/2 + mPadding;
+                            mRight = mSize - mBorderWidth/2 + mPadding;
                         }
                         else {
-                            left = w - size + borderWidth/2 - padding;
-                            right = w - borderWidth/2 - padding;
+                            //it's at right
+                            mLeft = w - mSize + mBorderWidth/2 - mPadding;
+                            mRight = w - mBorderWidth/2 - mPadding;
                         }
                         break;
                     case TOP:
                     case BOTTOM:
                     case CENTER:
-                        left = (w - size + borderWidth) /2;
-                        right = (w + size - borderWidth) /2;
+                        //it's in center
+                        mLeft = (w - mSize + mBorderWidth) /2;
+                        mRight = (w + mSize - mBorderWidth) /2;
                         break;
                 }
-                switch (gravity){
+                switch (mGravity){
                     case TOP_START:
                     case TOP_END:
                     case TOP:
-                        top = borderWidth/2 + padding;
-                        bottom = size - borderWidth/2 + padding;
+                        //it's on top
+                        mTop = mBorderWidth/2 + mPadding;
+                        mBottom = mSize - mBorderWidth/2 + mPadding;
                         break;
                     case BOTTOM:
                     case BOTTOM_START:
                     case BOTTOM_END:
-                        top = h - size + borderWidth/2 - padding;
-                        bottom = h - borderWidth/2 - padding;
+                        //it's on bottom
+                        mTop = h - mSize + mBorderWidth/2 - mPadding;
+                        mBottom = h - mBorderWidth/2 - mPadding;
                         break;
                     case END:
                     case START:
                     case CENTER:
-                        top = (h - size + borderWidth) /2;
-                        bottom = (h + size - borderWidth) /2;
+                        //it's in center
+                        mTop = (h - mSize + mBorderWidth) /2;
+                        mBottom = (h + mSize - mBorderWidth) /2;
                         break;
                 }
                 break;
 
+            //calculation of horizontal bounds
             case HORIZONTAL_DETERMINATE:
             case HORIZONTAL_INDETERMINATE:
-                switch (gravity){
+                switch (mGravity){
                     case START:
                     case BOTTOM_START:
                     case TOP_START:
-                        if(isRtl && !isRtlSupportDisabled){
-                            left = w - size - padding;
-                            right = w - padding;
+                        if(mIsRtl){
+                            //it's at right
+                            mLeft = w - mSize - mPadding;
+                            mRight = w - mPadding;
                         }
                         else {
-                            left = padding;
-                            right = size + padding;
+                            //it's at left
+                            mLeft = mPadding;
+                            mRight = mSize + mPadding;
                         }
                         break;
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
-                        if(isRtl && !isRtlSupportDisabled){
-                            left = padding;
-                            right = size + padding;
+                        if(mIsRtl){
+                            //it's at left
+                            mLeft = mPadding;
+                            mRight = mSize + mPadding;
                         }
                         else {
-                            left = w - size - padding;
-                            right = w - padding;
+                            //it's at right
+                            mLeft = w - mSize - mPadding;
+                            mRight = w - mPadding;
                         }
                         break;
                     case TOP:
                     case BOTTOM:
                     case CENTER:
-                        left = (w - size)/2;
-                        right = (w + size)/2;
+                        //it's in center
+                        mLeft = (w - mSize)/2;
+                        mRight = (w + mSize)/2;
                         break;
                 }
-                switch (gravity){
+                switch (mGravity){
                     case TOP_START:
                     case TOP_END:
                     case TOP:
-                        top = padding;
-                        bottom = borderWidth + padding;
+                        //it's on top
+                        mTop = mPadding;
+                        mBottom = mBorderWidth + mPadding;
                         break;
                     case BOTTOM:
                     case BOTTOM_START:
                     case BOTTOM_END:
-                        top = h - borderWidth - padding;
-                        bottom = h - padding;
+                        //it's on bottom
+                        mTop = h - mBorderWidth - mPadding;
+                        mBottom = h - mPadding;
                         break;
                     case END:
                     case START:
                     case CENTER:
-                        top = (h - borderWidth)/2;
-                        bottom = (h + borderWidth)/2;
+                        //it's in center
+                        mTop = (h - mBorderWidth)/2;
+                        mBottom = (h + mBorderWidth)/2;
                         break;
                 }
                 break;
 
+            //if everything goes right, it should never come here. Just a precaution
             case NONE:
             default:
-                left = 0;
-                right = 0;
-                top = 0;
-                bottom = 0;
+                mLeft = 0;
+                mRight = 0;
+                mTop = 0;
+                mBottom = 0;
                 break;
         }
     }
 
+    /** Returns the left bound calculated. Be sure to call calculateBounds() before this! */
     public final float getLeft() {
-        return left;
+        return mLeft;
     }
 
+    /** Returns the top bound calculated. Be sure to call calculateBounds() before this! */
     public final float getTop() {
-        return top;
+        return mTop;
     }
 
+    /** Returns the right bound calculated. Be sure to call calculateBounds() before this! */
     public final float getRight() {
-        return right;
+        return mRight;
     }
 
+    /** Returns the bottom bound calculated. Be sure to call calculateBounds() before this! */
     public final float getBottom() {
-        return bottom;
+        return mBottom;
     }
 
 
@@ -212,33 +305,55 @@ public final class ProgressOptions implements Parcelable {
 
 
 
-
+    /**
+     * If the determinate drawer should update its progress with an animation
+     *
+     * @return true to use animation, false otherwise
+     */
     public final boolean isDeterminateAnimationEnabled() {
-        return isDeterminateAnimationEnabled;
+        return mIsDeterminateAnimationEnabled;
     }
 
+    /**
+     * @return Width of the progress indicator
+     */
     public final int getBorderWidth() {
-        return borderWidth;
+        return mBorderWidth;
     }
 
+    /**
+     * @return Percentage value of the progress indicator of determinate drawers
+     */
     public final float getValuePercent() {
-        return valuePercent;
+        return mValuePercent;
     }
 
+    /**
+     * @return Front color of the indicator of determinate drawers
+     */
     public final int getFrontColor() {
-        return frontColor;
+        return mFrontColor;
     }
 
+    /**
+     * @return  Back color of the indicator of determinate drawers
+     */
     public final int getBackColor() {
-        return backColor;
+        return mBackColor;
     }
 
+    /**
+     * @return Color of the indicator of indeterminate drawers
+     */
     public final int getIndeterminateColor() {
-        return indeterminateColor;
+        return mIndeterminateColor;
     }
 
+    /** If should show a wedge on the circular determinate drawer
+     * @return If true shows a wedge, otherwise shows a circle
+     */
     public final boolean isDrawWedge() {
-        return drawWedge;
+        return mDrawWedge;
     }
 
 
@@ -246,6 +361,8 @@ public final class ProgressOptions implements Parcelable {
 
 
 
+    
+    //Parcelable stuff
 
     public static final Creator<ProgressOptions> CREATOR = new Creator<ProgressOptions>() {
         @Override
@@ -265,43 +382,41 @@ public final class ProgressOptions implements Parcelable {
     }
 
     protected ProgressOptions(Parcel in) {
-        isDeterminateAnimationEnabled = in.readByte() != 0;
-        borderWidth = in.readInt();
-        valuePercent = in.readFloat();
-        frontColor = in.readInt();
-        backColor = in.readInt();
-        indeterminateColor = in.readInt();
-        drawWedge = in.readByte() != 0;
-        size = in.readInt();
-        padding = in.readInt();
-        sizePercent = in.readFloat();
-        isRtlSupportDisabled = in.readByte() != 0;
-        isCircleBorderWidthFixed = in.readByte() != 0;
-        isRtl = in.readByte() != 0;
-        left = in.readFloat();
-        top = in.readFloat();
-        right = in.readFloat();
-        bottom = in.readFloat();
+        mIsDeterminateAnimationEnabled = in.readByte() != 0;
+        mBorderWidth = in.readInt();
+        mValuePercent = in.readFloat();
+        mFrontColor = in.readInt();
+        mBackColor = in.readInt();
+        mIndeterminateColor = in.readInt();
+        mDrawWedge = in.readByte() != 0;
+        mSize = in.readInt();
+        mPadding = in.readInt();
+        mSizePercent = in.readFloat();
+        mIsCircleBorderWidthFixed = in.readByte() != 0;
+        mIsRtl = in.readByte() != 0;
+        mLeft = in.readFloat();
+        mTop = in.readFloat();
+        mRight = in.readFloat();
+        mBottom = in.readFloat();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte((byte) (isDeterminateAnimationEnabled ? 1 : 0));
-        dest.writeInt(borderWidth);
-        dest.writeFloat(valuePercent);
-        dest.writeInt(frontColor);
-        dest.writeInt(backColor);
-        dest.writeInt(indeterminateColor);
-        dest.writeByte((byte) (drawWedge ? 1 : 0));
-        dest.writeInt(size);
-        dest.writeInt(padding);
-        dest.writeFloat(sizePercent);
-        dest.writeByte((byte) (isRtlSupportDisabled ? 1 : 0));
-        dest.writeByte((byte) (isCircleBorderWidthFixed ? 1 : 0));
-        dest.writeByte((byte) (isRtl ? 1 : 0));
-        dest.writeFloat(left);
-        dest.writeFloat(top);
-        dest.writeFloat(right);
-        dest.writeFloat(bottom);
+        dest.writeByte((byte) (mIsDeterminateAnimationEnabled ? 1 : 0));
+        dest.writeInt(mBorderWidth);
+        dest.writeFloat(mValuePercent);
+        dest.writeInt(mFrontColor);
+        dest.writeInt(mBackColor);
+        dest.writeInt(mIndeterminateColor);
+        dest.writeByte((byte) (mDrawWedge ? 1 : 0));
+        dest.writeInt(mSize);
+        dest.writeInt(mPadding);
+        dest.writeFloat(mSizePercent);
+        dest.writeByte((byte) (mIsCircleBorderWidthFixed ? 1 : 0));
+        dest.writeByte((byte) (mIsRtl ? 1 : 0));
+        dest.writeFloat(mLeft);
+        dest.writeFloat(mTop);
+        dest.writeFloat(mRight);
+        dest.writeFloat(mBottom);
     }
 }

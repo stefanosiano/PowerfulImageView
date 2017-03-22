@@ -1,14 +1,21 @@
 package com.stefanosiano.progressimageview.progress;
 
-/**
- * Created by stefano on 14/03/17.
- */
-
+/** Mode of the progress indicator that will be drawn on the image */
 public enum PivProgressMode {
+
+    /** No progress indicator */
     NONE(0),
+
+    /** Circular indeterminate progress indicator */
     INDETERMINATE(1),
+
+    /** Circular determinate progress indicator */
     DETERMINATE(2),
+
+    /** Horizontal determinate progress indicator */
     HORIZONTAL_DETERMINATE(3),
+
+    /** Horizontal indeterminate progress indicator */
     HORIZONTAL_INDETERMINATE(4);
 
     private final int value;
@@ -17,6 +24,8 @@ public enum PivProgressMode {
     public final int getValue() {
         return value;
     }
+
+    /** Returns the mode associated to the passed value, or none if the value is invalid */
     public static PivProgressMode fromValue(int value){
         switch (value){
             case 1:
