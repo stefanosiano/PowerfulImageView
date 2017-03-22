@@ -6,11 +6,16 @@ import android.graphics.RectF;
 import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 /**
- * Created by stefano on 3/12/17.
+ * Dummy progress drawer that doesn't do anything.
+ * Used when progress is disabled, so functions can be called without checks with no problem.
  */
 
 final class DummyProgressDrawer implements ProgressDrawer {
 
+    /**
+     * Dummy progress drawer that doesn't do anything.
+     * Used when progress is disabled, so functions can be called without checks with no problem.
+     */
     DummyProgressDrawer() {}
 
     @Override

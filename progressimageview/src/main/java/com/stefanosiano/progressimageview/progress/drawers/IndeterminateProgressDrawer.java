@@ -144,6 +144,10 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
         this.mProgressAnimationDuration = millis;
         createAnimationIfNeeded();
         mProgressAnimator.setDuration(millis);
+        if(mProgressAnimator.isRunning()){
+            mProgressAnimator.cancel();
+            mProgressAnimator.start();
+        }
     }
 
 

@@ -9,32 +9,80 @@ import android.view.animation.LinearInterpolator;
 import com.stefanosiano.progressimageview.ProgressImageView;
 import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
+
 /**
- * Created by stefano on 3/12/17.
+ * ProgressDrawer that shows a determinate circle as progress indicator.
  */
 
 final class DeterminateProgressDrawer implements ProgressDrawer {
 
+
+    /** View used to draw the arcs onto */
     private final ProgressImageView mPiv;
+
+    /** Bounds used to draw the arcs into */
     private final RectF mProgressBounds;
+
+    /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 100;
 
-    private Paint mProgressFrontPaint, mProgressBackPaint;
+    /** Paint used to draw the front arc */
+    private Paint mProgressFrontPaint;
+
+    /** Paint used to draw the back arc */
+    private Paint mProgressBackPaint;
+
+    /** Animator that transforms the angles used to draw the progress */
     private ValueAnimator mProgressAnimator;
-    private int mProgressBackStartAngle, mProgressBackSweepAngle, mProgressFrontSweepAngle, mCurrentProgressFrontSweepAngle, mOldProgressFrontSweepAngle;
-    private boolean mUseProgressAnimation, drawWedge;
+
+    /** Custom animation duration. If it's less then 0, default duration is used */
     private long mProgressAnimationDuration = -1;
 
+
+
+    /** Start angle of the back arc */
+    private int mProgressBackStartAngle;
+
+    /** Sweep angle of the back arc */
+    private int mProgressBackSweepAngle;
+
+    /** Real sweep angle of the front arc */
+    private int mProgressFrontSweepAngle;
+
+    /** Shown sweep angle of the front arc */
+    private int mCurrentProgressFrontSweepAngle;
+
+    /** Old angle of the front arc used to start animation from */
+    private int mOldProgressFrontSweepAngle;
+
+    /** Whether to animate the progress change or not */
+    private boolean mUseProgressAnimation;
+
+    /** Whether to draw wedges or simple arcs */
+    private boolean drawWedge;
+
+    /**
+     * ProgressDrawer that shows a determinate circle as progress indicator.
+     *
+     * @param piv View
+     * @param progressBounds Bounds to show the progress indicator into
+     */
     DeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
         this.mPiv = piv;
         this.mProgressBounds = progressBounds;
     }
 
+    /**
+     * Sets the angle that will be used to draw the arcs
+     * @param progressAngle Angle used to calculate the front and back arcs
+     */
     private void setRealProgressAngle(int progressAngle) {
 
         this.mProgressBackStartAngle = progressAngle - 90;
         this.mProgressBackSweepAngle = 360 - progressAngle;
         this.mCurrentProgressFrontSweepAngle = progressAngle;
+        //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
+        //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
         this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
     }
 
@@ -44,18 +92,27 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressAngle > 360)
             mProgressAngle = mProgressAngle % 360;
 
+        //Saving last shown angle (will be used to animate, if needed)
         this.mOldProgressFrontSweepAngle = this.mCurrentProgressFrontSweepAngle;
+
+        //Sets the value of the progress angle (the value the animation will go to)
         this.mProgressFrontSweepAngle = mProgressAngle;
 
         if(this.mUseProgressAnimation){
+            //use the mProgressFrontSweepAngle to set the animation accordingly, after cancelling it.
+            //The animation will go from mOldProgressFrontSweepAngle to mProgressFrontSweepAngle
+            if(mProgressAnimator != null)
+                mProgressAnimator.cancel();
             createAnimationIfNeeded();
             mProgressAnimator.start();
         }
         else {
+            //sets the mProgressFrontSweepAngle as the real angle to show
             setRealProgressAngle(mProgressAngle);
         }
     }
 
+    @Override
     public void setAnimationEnabled(boolean enabled){
         this.mUseProgressAnimation = enabled;
     }
@@ -65,6 +122,10 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
         this.mProgressAnimationDuration = millis;
         createAnimationIfNeeded();
         mProgressAnimator.setDuration(millis);
+        if(mProgressAnimator.isRunning()){
+            mProgressAnimator.cancel();
+            mProgressAnimator.start();
+        }
     }
 
     @Override
@@ -90,9 +151,7 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void startIndeterminateAnimation() {
-
-    }
+    public void startIndeterminateAnimation() {}
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
@@ -101,20 +160,22 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void stopIndeterminateAnimation() {
-        if(mProgressAnimator != null)
-            mProgressAnimator.cancel();
-        mCurrentProgressFrontSweepAngle = mProgressFrontSweepAngle;
-    }
+    public void stopIndeterminateAnimation() {}
 
+    /** Returns the last angle shown (used as start in animation) */
     private int getOldSweepAngle(){
         return mOldProgressFrontSweepAngle;
     }
 
+    /** Returns the right angle to show (used as goal in animation) */
     private int getSweepAngle(){
         return mProgressFrontSweepAngle;
     }
 
+
+    /**
+     * Creates the animator objects if and only if it's null
+     */
     private void createAnimationIfNeeded(){
 
         if(mProgressAnimator != null)
@@ -126,6 +187,7 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
         mProgressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
                 setRealProgressAngle((int) (getOldSweepAngle() + ((getSweepAngle() - getOldSweepAngle()) * animation.getAnimatedFraction())));
             }
         });
