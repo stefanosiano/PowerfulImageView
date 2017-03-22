@@ -18,7 +18,9 @@ public interface ProgressDrawer {
     void setup(ProgressOptions progressOptions);
 
     /**
-     * Draws the progress indicator
+     * Draws the progress indicator.
+     * No operation should be performed here, except drawing, for efficiency.
+     * No object creation, no allocation, no calculation and no if/else. Just draw.
      *
      * @param canvas Canvas of the View
      * @param progressBounds Bounds of the progress indicator

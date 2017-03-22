@@ -6,24 +6,40 @@ import com.stefanosiano.progressimageview.ProgressImageView;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
 
 /**
- * Created by stefano on 21/03/17.
+ * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
  */
 
-public final class ProgressDrawerHelper {
+public final class ProgressDrawerManager {
+    //Variables used to initialize drawers
     private final ProgressImageView mPiv;
     private final RectF mProgressBounds;
 
+    //Drawers
     private DummyProgressDrawer mDummyProgressDrawer;
     private DeterminateProgressDrawer mDeterminateProgressDrawer;
     private DeterminateHorizontalProgressDrawer mDeterminateHorizontalProgressDrawer;
     private IndeterminateHorizontalProgressDrawer mIndeterminateHorizontalProgressDrawer;
     private IndeterminateProgressDrawer mIndeterminateProgressDrawer;
 
-    public ProgressDrawerHelper(ProgressImageView piv, RectF progressBounds){
+    /**
+     * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
+     *
+     * @param piv View to show progress indicator into
+     * @param progressBounds Bounds of the progress indicator
+     */
+    public ProgressDrawerManager(ProgressImageView piv, RectF progressBounds){
         this.mPiv = piv;
         this.mProgressBounds = progressBounds;
     }
 
+
+    /**
+     * Gets the instance of the progress drawer to use.
+     * If the drawer doesn't exist, it will be instantiated and returned.
+     *
+     * @param progressMode Mode of the progress, used to choose the right drawer.
+     * @return A ProgressDrawer chosen based on the mode. It will never return null.
+     */
     public ProgressDrawer getDrawer(PivProgressMode progressMode){
         switch (progressMode){
             case INDETERMINATE:

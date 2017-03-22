@@ -16,7 +16,7 @@ import com.stefanosiano.progressimageview.progress.PivProgressGravity;
 import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawer;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
 import com.stefanosiano.progressimageview.progress.ProgressOptions;
-import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawerHelper;
+import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawerManager;
 
 /**
  * Powerful ImageView with several added features (highly customizable):
@@ -48,7 +48,7 @@ public class ProgressImageView extends AppCompatImageView {
     private ProgressDrawer mProgressDrawer;
 
     /** Helper class to get the instance of ProgressDrawer, and initialize only needed drawers */
-    private final ProgressDrawerHelper mProgressDrawerHelper;
+    private final ProgressDrawerManager mProgressDrawerManager;
 
     /** Options used by progress drawers */
     private ProgressOptions mProgressOptions;
@@ -91,7 +91,7 @@ public class ProgressImageView extends AppCompatImageView {
         a.recycle();
 
         this.mProgressBounds = new RectF();
-        this.mProgressDrawerHelper = new ProgressDrawerHelper(this, this.mProgressBounds);
+        this.mProgressDrawerManager = new ProgressDrawerManager(this, this.mProgressBounds);
 
         changeProgressMode(mode);
     }
@@ -146,7 +146,7 @@ public class ProgressImageView extends AppCompatImageView {
             mProgressDrawer.stopIndeterminateAnimation();
 
         mProgressMode = progressMode;
-        mProgressDrawer = mProgressDrawerHelper.getDrawer(mProgressMode);
+        mProgressDrawer = mProgressDrawerManager.getDrawer(mProgressMode);
         mProgressDrawer.setup(mProgressOptions);
         mProgressDrawer.startIndeterminateAnimation();
     }
