@@ -2,7 +2,8 @@
 Custom Android ImageView with a circle indicating a progress (e.g. download progress of the image)  
   
 To do:  
-Write comments and JavaDoc  
+Check setup method of drawers to avoid useless operations  
+Create doe diagram?  
   
 Write instructions and readme file  
 
