@@ -3,9 +3,6 @@ package com.stefanosiano.progressimageview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.RectF;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
@@ -13,7 +10,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 
 import com.stefanosiano.progressimageview.progress.PivProgressGravity;
-import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawer;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
 import com.stefanosiano.progressimageview.progress.ProgressOptions;
 import com.stefanosiano.progressimageview.progress.drawers.ProgressDrawerManager;
@@ -59,20 +55,20 @@ public class ProgressImageView extends AppCompatImageView {
 
         //get all the options from xml or default constants and initialize ProgressOptions object
         ProgressOptions progressOptions = new ProgressOptions(
-                a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
-                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
-                a.getFloat(R.styleable.ProgressImageView_piv_progress_width_percent, DEFAULT_PROGRESS_WIDTH_PERCENT),
+                a.getBoolean(R.styleable.ProgressImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
+                a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
+                a.getFloat(R.styleable.ProgressImageView_piv_progress_border_width_percent, DEFAULT_PROGRESS_WIDTH_PERCENT),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_size, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SIZE, getResources().getDisplayMetrics())),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.ProgressImageView_piv_progress_size_percent, DEFAULT_PROGRESS_SIZE_PERCENT),
-                a.getFloat(R.styleable.ProgressImageView_piv_progress_percent, DEFAULT_PROGRESS_PERCENT),
+                a.getFloat(R.styleable.ProgressImageView_piv_progress_value_percent, DEFAULT_PROGRESS_PERCENT),
                 a.getColor(R.styleable.ProgressImageView_piv_progress_front_color, ContextCompat.getColor(context, R.color.piv_default_progress_front_color)),
                 a.getColor(R.styleable.ProgressImageView_piv_progress_back_color, ContextCompat.getColor(context, R.color.piv_default_progress_back_color)),
                 a.getColor(R.styleable.ProgressImageView_piv_progress_indeterminate_color, ContextCompat.getColor(context, R.color.piv_default_indeterminate_progress_color)),
                 a.getInteger(R.styleable.ProgressImageView_piv_progress_gravity, DEFAULT_PROGRESS_GRAVITY),
                 ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL,
-                a.getBoolean(R.styleable.ProgressImageView_piv_progress_disable_rtl_support, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
-                a.getBoolean(R.styleable.ProgressImageView_piv_progress_determinate_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE)
+                a.getBoolean(R.styleable.ProgressImageView_piv_progress_rtl_disabled, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
+                a.getBoolean(R.styleable.ProgressImageView_piv_progress_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE)
         );
         PivProgressMode mode = PivProgressMode.fromValue(a.getInteger(R.styleable.ProgressImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
 
@@ -119,12 +115,6 @@ public class ProgressImageView extends AppCompatImageView {
         return mProgressDrawerManager.getProgressOptions();
     }
 
-    /**
-     * Called when an option is updated. It propagates the update to the progress drawers.
-     */
-    public final void onOptionsUpdate(){
-        mProgressDrawerManager.onOptionsUpdate();
-    }
 
 
 
@@ -134,8 +124,7 @@ public class ProgressImageView extends AppCompatImageView {
 
 
 
-
-/*
+/* todo parcelable stuff!
 
     /** Boilerplate code to save the state of the view. *//*
     @Override
