@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
@@ -16,12 +17,6 @@ import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 final class DeterminateProgressDrawer implements ProgressDrawer {
 
-
-    /** View used to draw the arcs onto */
-    private final ProgressImageView mPiv;
-
-    /** Bounds used to draw the arcs into */
-    private final RectF mProgressBounds;
 
     /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 100;
@@ -61,15 +56,13 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     /** Whether to draw wedges or simple arcs */
     private boolean drawWedge;
 
+    /** Listener to handle things from the drawer */
+    private ProgressDrawerManager.ProgressDrawerListener listener;
+
     /**
      * ProgressDrawer that shows a determinate circle as progress indicator.
-     *
-     * @param piv View
-     * @param progressBounds Bounds to show the progress indicator into
      */
-    DeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.mPiv = piv;
-        this.mProgressBounds = progressBounds;
+    DeterminateProgressDrawer() {
     }
 
     /**
@@ -81,9 +74,8 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
         this.mProgressBackStartAngle = progressAngle - 90;
         this.mProgressBackSweepAngle = 360 - progressAngle;
         this.mCurrentProgressFrontSweepAngle = progressAngle;
-        //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
-        //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+
+        listener.onRequestInvalidate();
     }
 
     @Override
@@ -126,6 +118,11 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
             mProgressAnimator.cancel();
             mProgressAnimator.start();
         }
+    }
+
+    @Override
+    public void setListener(ProgressDrawerManager.ProgressDrawerListener listener) {
+        this.listener = listener;
     }
 
     @Override

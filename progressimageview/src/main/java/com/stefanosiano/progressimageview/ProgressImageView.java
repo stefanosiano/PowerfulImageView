@@ -84,7 +84,7 @@ public class ProgressImageView extends AppCompatImageView {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         //updates progress bounds
-        mProgressDrawerManager.onSizeChanged(w, h, oldw, oldh);
+        mProgressDrawerManager.onSizeChanged(w, h);
     }
 
 

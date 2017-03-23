@@ -52,4 +52,9 @@ final class DummyProgressDrawer implements ProgressDrawer {
     public void setAnimationDuration(long millis) {
 
     }
+
+    @Override
+    public void setListener(ProgressDrawerManager.ProgressDrawerListener listener) {
+
+    }
 }

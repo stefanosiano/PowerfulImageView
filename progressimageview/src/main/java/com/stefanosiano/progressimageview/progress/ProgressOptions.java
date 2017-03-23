@@ -399,6 +399,7 @@ public final class ProgressOptions implements Parcelable {
      * If the percentage is higher than 100, it is treated as (value % 100).
      * If the percentage is lower than 0, it is treated as 0.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
+     * Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0!
      * 
      * @param valuePercent Percentage of the progress indicator, as a float from 0 to 100
      */

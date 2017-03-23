@@ -2,6 +2,7 @@ package com.stefanosiano.progressimageviewsample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.stefanosiano.progressimageview.ProgressImageView;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
@@ -20,9 +21,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progress += 15;
+                Log.e("ASD", progress+"");
                 piw.getProgressOptions().setValuePercent(progress);
 
-                piw.postDelayed(this, 1000);
+                piw.postDelayed(this, 800);
             }
         };
         runnable.run();

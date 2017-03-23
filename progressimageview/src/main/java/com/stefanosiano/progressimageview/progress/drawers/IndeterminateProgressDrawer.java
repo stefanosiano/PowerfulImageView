@@ -18,12 +18,6 @@ import com.stefanosiano.progressimageview.progress.ProgressOptions;
 final class IndeterminateProgressDrawer implements ProgressDrawer {
 
 
-    /** View used to draw the arcs onto */
-    private final ProgressImageView mPiv;
-
-    /** Bounds used to draw the arcs into */
-    private final RectF mProgressBounds;
-
     /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 1000;
 
@@ -57,16 +51,13 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
     /** Last sweep angle offset. Used when calling setup(), so it doesn't change angle */
     private int mLastSweepAngleOffset;
 
+    /** Listener to handle things from the drawer */
+    private ProgressDrawerManager.ProgressDrawerListener listener;
 
     /**
      * ProgressDrawer that shows an indeterminate animated circle as progress indicator.
-     *
-     * @param piv View
-     * @param progressBounds Bounds to show the progress indicator into
      */
-    IndeterminateProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.mPiv = piv;
-        this.mProgressBounds = progressBounds;
+    IndeterminateProgressDrawer() {
         this.mOffset = 0;
         this.isShrinking = false;
         this.mProgressStartAngle = -90;
@@ -125,9 +116,8 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
             this.mProgressStartAngle = -90 + mOffset;
             this.mProgressSweepAngle = sweepAngleOffset + 50;//when sweepAngleOffset = 0 * 290 => 50.   when sweepAngleOffset = 1 * 290 => 340
         }
-        //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
-        //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+
+        listener.onRequestInvalidate();
     }
 
 
@@ -159,6 +149,11 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
             mProgressAnimator.cancel();
             mProgressAnimator.start();
         }
+    }
+
+    @Override
+    public void setListener(ProgressDrawerManager.ProgressDrawerListener listener) {
+        this.listener = listener;
     }
 
 

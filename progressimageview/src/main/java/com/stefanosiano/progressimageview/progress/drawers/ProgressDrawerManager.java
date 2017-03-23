@@ -7,13 +7,19 @@ import com.stefanosiano.progressimageview.ProgressImageView;
 import com.stefanosiano.progressimageview.progress.PivProgressMode;
 import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
  */
 
-public final class ProgressDrawerManager {
+public final class ProgressDrawerManager implements ProgressOptions.ProgressOptionsListener {
+
+
     //Variables used to initialize drawers
-    private final ProgressImageView mPiv;
+
+    //Using a weakRefence to be sure to not leak memory
+    private final WeakReference<ProgressImageView> mPiv;
 
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mProgressBounds;
@@ -34,6 +40,8 @@ public final class ProgressDrawerManager {
     /** Options used by progress drawers */
     private ProgressOptions mProgressOptions;
 
+    /** Listener to handle things from drawers */
+    private ProgressDrawerListener listener;
 
 
     /**
@@ -42,29 +50,21 @@ public final class ProgressDrawerManager {
      * @param piv View to show progress indicator into
      */
     public ProgressDrawerManager(ProgressImageView piv, final ProgressOptions progressOptions){
-        this.mPiv = piv;
+        this.mPiv = new WeakReference<>(piv);
         this.mProgressBounds = new RectF();
         this.mProgressOptions = progressOptions;
-        this.mProgressOptions.setListener(new ProgressOptions.ProgressOptionsListener() {
+        this.listener = new ProgressDrawerListener() {
             @Override
-            public void onOptionsUpdated(ProgressOptions options) {
-                mProgressDrawer.setup(options);
-                mProgressOptions = options;
-            }
+            public void onRequestInvalidate() {
 
-            @Override
-            public void onSizeUpdated(ProgressOptions options) {
-                mProgressOptions = options;
-                //set calculated bounds to our progress bounds
-                mProgressBounds.set(
-                        mProgressOptions.getLeft(),
-                        mProgressOptions.getTop(),
-                        mProgressOptions.getRight(),
-                        mProgressOptions.getBottom());
-
-                mProgressDrawer.setup(mProgressOptions);
+                if(mPiv.get() != null) {
+                    //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
+                    //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
+                    mPiv.get().postInvalidate((int) mProgressBounds.left - 1, (int) mProgressBounds.top - 1, (int) mProgressBounds.right + 1, (int) mProgressBounds.bottom + 1);
+                }
             }
-        });
+        };
+        this.mProgressOptions.setListener(this);
     }
 
 
@@ -77,28 +77,40 @@ public final class ProgressDrawerManager {
      */
     private ProgressDrawer getDrawer(PivProgressMode progressMode){
         switch (progressMode){
+
             case INDETERMINATE:
                 if(mIndeterminateProgressDrawer == null)
-                    this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer(mPiv, mProgressBounds);
-                return mIndeterminateProgressDrawer;
+                    this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer();
+                mProgressDrawer = mIndeterminateProgressDrawer;
+                break;
+
             case DETERMINATE:
                 if(mDeterminateProgressDrawer == null)
-                    this.mDeterminateProgressDrawer = new DeterminateProgressDrawer(mPiv, mProgressBounds);
-                return mDeterminateProgressDrawer;
+                    this.mDeterminateProgressDrawer = new DeterminateProgressDrawer();
+                mProgressDrawer = mDeterminateProgressDrawer;
+                break;
+
             case HORIZONTAL_DETERMINATE:
                 if(mDeterminateHorizontalProgressDrawer == null)
-                    this.mDeterminateHorizontalProgressDrawer = new DeterminateHorizontalProgressDrawer(mPiv, mProgressBounds);
-                return mDeterminateHorizontalProgressDrawer;
+                    this.mDeterminateHorizontalProgressDrawer = new DeterminateHorizontalProgressDrawer();
+                mProgressDrawer = mDeterminateHorizontalProgressDrawer;
+                break;
+
             case HORIZONTAL_INDETERMINATE:
                 if(mIndeterminateHorizontalProgressDrawer == null)
-                    this.mIndeterminateHorizontalProgressDrawer = new IndeterminateHorizontalProgressDrawer(mPiv, mProgressBounds);
-                return mIndeterminateHorizontalProgressDrawer;
+                    this.mIndeterminateHorizontalProgressDrawer = new IndeterminateHorizontalProgressDrawer();
+                mProgressDrawer = mIndeterminateHorizontalProgressDrawer;
+                break;
+
             default:
             case NONE:
                 if(mDummyProgressDrawer == null)
                     this.mDummyProgressDrawer = new DummyProgressDrawer();
-                return mDummyProgressDrawer;
+                mProgressDrawer = mDummyProgressDrawer;
+                break;
         }
+        mProgressDrawer.setListener(listener);
+        return mProgressDrawer;
     }
 
     /**
@@ -106,10 +118,8 @@ public final class ProgressDrawerManager {
      *
      * @param w Current width of this view.
      * @param h Current height of this view.
-     * @param oldw Old width of this view.
-     * @param oldh Old height of this view.
      */
-    public final void onSizeChanged(int w, int h, int oldw, int oldh) {
+    public final void onSizeChanged(int w, int h) {
         mProgressOptions.calculateBounds(w, h, mProgressMode);
         //set calculated bounds to our progress bounds
         mProgressBounds.set(
@@ -154,12 +164,36 @@ public final class ProgressDrawerManager {
         return mProgressOptions;
     }
 
-    /**
-     * Called when an option is updated. It propagates the update to the progress drawers.
-     */
-    public final void onOptionsUpdate(){
-        mProgressDrawer.setup(mProgressOptions);
+
+    interface ProgressDrawerListener{
+        /** Request to invalidate the progress indicator bounds */
+        void onRequestInvalidate();
     }
 
 
+    /**
+     * Called when an option is updated. It propagates the update to the progress drawers.
+     */
+    @Override
+    public void onOptionsUpdated(ProgressOptions options) {
+        mProgressDrawer.setup(options);
+        mProgressOptions = options;
+    }
+
+    /**
+     * Called when an option that changes the size of the progress indicator is updated.
+     * The bounds are calculated again, and it propagates the update to the progress drawers.
+     */
+    @Override
+    public void onSizeUpdated(ProgressOptions options) {
+        mProgressOptions = options;
+        //set calculated bounds to our progress bounds
+        mProgressBounds.set(
+                mProgressOptions.getLeft(),
+                mProgressOptions.getTop(),
+                mProgressOptions.getRight(),
+                mProgressOptions.getBottom());
+
+        mProgressDrawer.setup(mProgressOptions);
+    }
 }

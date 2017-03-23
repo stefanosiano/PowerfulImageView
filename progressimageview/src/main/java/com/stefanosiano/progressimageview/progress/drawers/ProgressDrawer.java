@@ -57,4 +57,10 @@ public interface ProgressDrawer {
      * @param millis Duration of the animation in milliseconds
      */
     void setAnimationDuration(long millis);
+
+    /**
+     * Set the listener to handle things coming from the drawer
+     * @param listener The listener
+     */
+    void setListener(ProgressDrawerManager.ProgressDrawerListener listener);
 }

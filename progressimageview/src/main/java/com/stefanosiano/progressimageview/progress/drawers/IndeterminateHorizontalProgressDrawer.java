@@ -14,17 +14,16 @@ import com.stefanosiano.progressimageview.progress.ProgressOptions;
  * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
  */
 final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
-
-
-
-    /** View used to draw the rectangle onto */
-    private final ProgressImageView mPiv;
-
-    /** Bounds used to draw the rectangle into */
-    private final RectF mProgressBounds;
-
+    
+    
     /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 1000;
+
+    /** Left bound used to draw the rectangle */
+    private float mLeft;
+
+    /** Right bound used to draw the rectangle */
+    private float mRight;
 
     /** Paint used to draw the rectangle */
     private Paint mProgressPaint;
@@ -44,16 +43,14 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
     /** Custom animation duration. If it's less then 0, default duration is used */
     private long mProgressAnimationDuration = -1;
 
+    /** Listener to handle things from the drawer */
+    private ProgressDrawerManager.ProgressDrawerListener listener;
+
 
     /**
      * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
-     *
-     * @param piv View
-     * @param progressBounds Bounds to show the progress indicator into
      */
-    IndeterminateHorizontalProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.mPiv = piv;
-        this.mProgressBounds = progressBounds;
+    IndeterminateHorizontalProgressDrawer() {
         this.isShrinking = false;
         this.mStartX = 0;
         this.mEndX = 0;
@@ -75,6 +72,8 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressPaint.setColor(progressOptions.getIndeterminateColor());
         mProgressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
+        mLeft = progressOptions.getLeft();
+        mRight = progressOptions.getRight();
         setProgressValues(isShrinking ? mStartX : mEndX);
     }
 
@@ -87,15 +86,14 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
         if(isShrinking) {
             this.mStartX = currentX;
-            this.mEndX = mProgressBounds.right;
+            this.mEndX = mRight;
         }
         else {
-            this.mStartX = mProgressBounds.left;
+            this.mStartX = mLeft;
             this.mEndX = currentX;
         }
-        //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
-        //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        
+        listener.onRequestInvalidate();
     }
 
     @Override
@@ -104,7 +102,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
             this.mProgressAnimator.cancel();
 
         this.isShrinking = false;
-        setProgressValues(mProgressBounds.left);
+        setProgressValues(mLeft);
 
         mProgressAnimator.start();
     }
@@ -129,6 +127,11 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
             mProgressAnimator.cancel();
             mProgressAnimator.start();
         }
+    }
+
+    @Override
+    public void setListener(ProgressDrawerManager.ProgressDrawerListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -162,7 +165,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
-                setProgressValues(mProgressBounds.left + ((mProgressBounds.right - mProgressBounds.left) * animation.getAnimatedFraction()));
+                setProgressValues(mLeft + ((mRight - mLeft) * animation.getAnimatedFraction()));
             }
         });
     }

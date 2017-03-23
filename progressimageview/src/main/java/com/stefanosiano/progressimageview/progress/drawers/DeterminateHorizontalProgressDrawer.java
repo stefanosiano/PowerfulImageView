@@ -16,19 +16,20 @@ import com.stefanosiano.progressimageview.progress.ProgressOptions;
 
 final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
 
-    /** View used to draw the arcs onto */
-    private final ProgressImageView mPiv;
-
-    /** Bounds used to draw the arcs into */
-    private final RectF mProgressBounds;
 
     /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 100;
 
-    /** Paint used to draw the front arc */
+    /** Left bound used to draw the rectangle */
+    private float mLeft;
+
+    /** Right bound used to draw the rectangle */
+    private float mRight;
+
+    /** Paint used to draw the front rectangle */
     private Paint mProgressFrontPaint;
 
-    /** Paint used to draw the back arc */
+    /** Paint used to draw the back rectangle */
     private Paint mProgressBackPaint;
 
     /** Animator that transforms the angles used to draw the progress */
@@ -52,16 +53,14 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
     /** Shown progress x coordinate of the front rectangle */
     private float mCurrentFrontX;
 
+    /** Listener to handle things from the drawer */
+    private ProgressDrawerManager.ProgressDrawerListener listener;
+
 
     /**
      * ProgressDrawer that shows a determinate bar as progress indicator.
-     *
-     * @param piv View
-     * @param progressBounds Bounds to show the progress indicator into
      */
-    DeterminateHorizontalProgressDrawer(ProgressImageView piv, RectF progressBounds) {
-        this.mPiv = piv;
-        this.mProgressBounds = progressBounds;
+    DeterminateHorizontalProgressDrawer() {
     }
 
     /**
@@ -70,10 +69,9 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
      */
     private void setRealProgress(float progress) {
         this.mCurrentProgress = progress;
-        this.mCurrentFrontX = mProgressBounds.left + ((mProgressBounds.right - mProgressBounds.left) * (progress/100));
-        //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
-        //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-        this.mPiv.postInvalidate((int)mProgressBounds.left-1, (int)mProgressBounds.top-1, (int)mProgressBounds.right+1, (int)mProgressBounds.bottom+1);
+        this.mCurrentFrontX = mLeft + ((mRight - mLeft) * (progress/100));
+
+        listener.onRequestInvalidate();
     }
 
 
@@ -120,6 +118,11 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
     }
 
     @Override
+    public void setListener(ProgressDrawerManager.ProgressDrawerListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
     public void setup(ProgressOptions progressOptions) {
 
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
@@ -130,6 +133,8 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressBackPaint.setColor(progressOptions.getBackColor());
         mProgressBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
+        mLeft = progressOptions.getLeft();
+        mRight = progressOptions.getRight();
         mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
         setProgressPercent(progressOptions.getValuePercent());
     }
