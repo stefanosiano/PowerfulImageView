@@ -12,7 +12,7 @@ public final class ProgressOptions implements Parcelable {
     //Options used directly by drawers
     
     /** If the determinate drawer should update its progress with an animation */
-    private boolean mIsDeterminateAnimationEnabled;
+    private boolean mDeterminateAnimationEnabled;
 
     /** Width of the progress indicator */
     private int mBorderWidth;
@@ -54,7 +54,7 @@ public final class ProgressOptions implements Parcelable {
     private boolean mIsRtl;
 
     /** Whether the view should use or ignore right to left layout (used for gravity option) */
-    private boolean mIsRtlDisabled;
+    private boolean mRtlDisabled;
 
 
 
@@ -95,7 +95,7 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Creates the object that will be used by progress drawers:
      *
-     * @param isDeterminateAnimationEnabled If the determinate drawer should update its progress with an animation
+     * @param determinateAnimationEnabled If the determinate drawer should update its progress with an animation
      * @param borderWidth Width of the progress indicator. If it's 0 or negative, it will be automatically adjusted based on the size
      * @param borderWidthPercent Width of the progress indicator as a percentage of the progress indicator size
      * @param size Size of the progress indicator
@@ -110,9 +110,9 @@ public final class ProgressOptions implements Parcelable {
      * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)              
      * @param drawWedge If should show a wedge, used by circular determinate drawer
      */
-    public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
+    public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge) {
-        this.mIsDeterminateAnimationEnabled = isDeterminateAnimationEnabled;
+        this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
         if(this.mBorderWidthPercent > 100)
@@ -126,7 +126,7 @@ public final class ProgressOptions implements Parcelable {
         this.mIndeterminateColor = indeterminateColor;
         this.mGravity = PivProgressGravity.fromValue(gravity);
         this.mIsRtl = rtl;
-        this.mIsRtlDisabled = disableRtlSupport;
+        this.mRtlDisabled = disableRtlSupport;
         this.mDrawWedge = drawWedge;
 
         //initialization of private fields used for calculations
@@ -195,7 +195,7 @@ public final class ProgressOptions implements Parcelable {
                     case START:
                     case BOTTOM_START:
                     case TOP_START:
-                        if(mIsRtl && !mIsRtlDisabled){
+                        if(mIsRtl && !mRtlDisabled){
                             //it's at right
                             mCalculatedLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
                             mCalculatedRight = w - mCalculatedBorderWidth/2 - mPadding;
@@ -209,7 +209,7 @@ public final class ProgressOptions implements Parcelable {
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
-                        if(mIsRtl && !mIsRtlDisabled){
+                        if(mIsRtl && !mRtlDisabled){
                             //it's at left
                             mCalculatedLeft = mCalculatedBorderWidth/2 + mPadding;
                             mCalculatedRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
@@ -260,7 +260,7 @@ public final class ProgressOptions implements Parcelable {
                     case START:
                     case BOTTOM_START:
                     case TOP_START:
-                        if(mIsRtl && !mIsRtlDisabled){
+                        if(mIsRtl && !mRtlDisabled){
                             //it's at right
                             mCalculatedLeft = w - mCalculatedSize - mPadding;
                             mCalculatedRight = w - mPadding;
@@ -274,7 +274,7 @@ public final class ProgressOptions implements Parcelable {
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
-                        if(mIsRtl && !mIsRtlDisabled){
+                        if(mIsRtl && !mRtlDisabled){
                             //it's at left
                             mCalculatedLeft = mPadding;
                             mCalculatedRight = mCalculatedSize + mPadding;
@@ -356,10 +356,10 @@ public final class ProgressOptions implements Parcelable {
      * If the determinate drawer should update its progress with an animation.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
      * 
-     * @param mIsDeterminateAnimationEnabled If true it updates its progress with an animation, otherwise it will update instantly
+     * @param determinateAnimationEnabled If true it updates its progress with an animation, otherwise it will update instantly
      */
-    public void setIsDeterminateAnimationEnabled(boolean mIsDeterminateAnimationEnabled) {
-        this.mIsDeterminateAnimationEnabled = mIsDeterminateAnimationEnabled;
+    public void setDeterminateAnimationEnabled(boolean determinateAnimationEnabled) {
+        this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
     }
 
     /**
@@ -517,59 +517,27 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Set whether the view should use right to left layout (used for gravity option)
      * 
-     * @param isRtlDisabled If true, start will always be treated as left and end as right.
+     * @param rtlDisabled If true, start will always be treated as left and end as right.
      *                      If false, on api 17+, gravity will be treated accordingly to rtl rules.
      */
-    public void setIsRtlDisabled(boolean isRtlDisabled) {
-        this.mIsRtlDisabled = isRtlDisabled;
+    public void setRtlDisabled(boolean rtlDisabled) {
+        this.mRtlDisabled = rtlDisabled;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
     }
 
-    public boolean ismIsDeterminateAnimationEnabled() {
-        return mIsDeterminateAnimationEnabled;
-    }
 
+    /**
+     * Returns the width percentage of the progress indicator size.
+     * If you want to get the real width used to show the progress, call getCalculatedBorderWidth().
+     * @return Border width percentage of the progress indicator size
+     */
     public float getBorderWidthPercent() {
         return mBorderWidthPercent;
     }
 
-    public boolean ismDrawWedge() {
-        return mDrawWedge;
-    }
-
-    public int getSize() {
-        return mSize;
-    }
-
-    public int getPadding() {
-        return mPadding;
-    }
-
-    public float getSizePercent() {
-        return mSizePercent;
-    }
-
-    public PivProgressGravity getGravity() {
-        return mGravity;
-    }
-
-    public boolean ismIsRtlDisabled() {
-        return mIsRtlDisabled;
-    }
-
-
-    // *************** Fields used by drawers ****************
-    
     /**
-     * If the determinate drawer should update its progress with an animation
-     *
-     * @return true to use animation, false otherwise
-     */
-    public final boolean isDeterminateAnimationEnabled() {
-        return mIsDeterminateAnimationEnabled;
-    }
-
-    /**
+     * Returns the width of the progress indicator
+     * If you want to get the real width used to show the progress, call getCalculatedBorderWidth().
      * @return Width of the progress indicator
      */
     public final int getBorderWidth() {
@@ -577,10 +545,83 @@ public final class ProgressOptions implements Parcelable {
     }
 
     /**
+     * Returns the size of the progress indicator.
+     * If you want to get the real size used to show the progress, call getCalculatedSize().
+     * @return Returns the size of the progress indicator
+     */
+    public int getSize() {
+        return mSize;
+    }
+
+    /**
+     * Returns the size percentage of the whole View size
+     * If you want to get the real size used to show the progress, call getCalculatedSize().
+     * @return Size percentage of the whole View size
+     */
+    public float getSizePercent() {
+        return mSizePercent;
+    }
+
+    /**
+     * @return Padding of the progress indicator
+     */
+    public int getPadding() {
+        return mPadding;
+    }
+
+    /**
+     * @return Gravity of the progress indicator size
+     */
+    public PivProgressGravity getGravity() {
+        return mGravity;
+    }
+
+    /**
+     * @return Wheter rtl support is disabled
+     */
+    public boolean isRtlDisabled() {
+        return mRtlDisabled;
+    }
+
+    /**
+     * The size of the progress indicator, after calculations.
+     * This will return the real value used by the progress indicator to show.
+     *
+     * @return The size of the progress indicator, after calculations
+     */
+    public int getCalculatedSize() {
+        return mCalculatedSize;
+    }
+
+
+
+
+// *************** Fields used by drawers ****************
+    
+    /**
+     * If the determinate drawer should update its progress with an animation
+     *
+     * @return true to use animation, false otherwise
+     */
+    public final boolean isDeterminateAnimationEnabled() {
+        return mDeterminateAnimationEnabled;
+    }
+
+    /**
      * @return Percentage value of the progress indicator of determinate drawers
      */
     public final float getValuePercent() {
         return mValuePercent;
+    }
+
+    /**
+     * The border width of the progress indicator, after calculations.
+     * This will return the real value used by the progress indicator to show.
+     *
+     * @return The border width of the progress indicator, after calculations.
+     */
+    public int getCalculatedBorderWidth() {
+        return mCalculatedBorderWidth;
     }
 
     /**
@@ -616,7 +657,8 @@ public final class ProgressOptions implements Parcelable {
 
 
 
-    //todo redo parcelable!
+
+
     //Parcelable stuff
 
     public static final Creator<ProgressOptions> CREATOR = new Creator<ProgressOptions>() {
@@ -631,14 +673,16 @@ public final class ProgressOptions implements Parcelable {
         }
     };
 
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     protected ProgressOptions(Parcel in) {
-        mIsDeterminateAnimationEnabled = in.readByte() != 0;
+        mDeterminateAnimationEnabled = in.readByte() != 0;
         mBorderWidth = in.readInt();
+        mBorderWidthPercent = in.readFloat();
         mValuePercent = in.readFloat();
         mFrontColor = in.readInt();
         mBackColor = in.readInt();
@@ -648,16 +692,23 @@ public final class ProgressOptions implements Parcelable {
         mPadding = in.readInt();
         mSizePercent = in.readFloat();
         mIsRtl = in.readByte() != 0;
+        mRtlDisabled = in.readByte() != 0;
+        mCalculatedSize = in.readInt();
+        mCalculatedBorderWidth = in.readInt();
         mCalculatedLeft = in.readFloat();
         mCalculatedTop = in.readFloat();
         mCalculatedRight = in.readFloat();
         mCalculatedBottom = in.readFloat();
+        mCalculatedLastW = in.readInt();
+        mCalculatedLastH = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte((byte) (mIsDeterminateAnimationEnabled ? 1 : 0));
+
+        dest.writeByte((byte) (mDeterminateAnimationEnabled ? 1 : 0));
         dest.writeInt(mBorderWidth);
+        dest.writeFloat(mBorderWidthPercent);
         dest.writeFloat(mValuePercent);
         dest.writeInt(mFrontColor);
         dest.writeInt(mBackColor);
@@ -667,9 +718,15 @@ public final class ProgressOptions implements Parcelable {
         dest.writeInt(mPadding);
         dest.writeFloat(mSizePercent);
         dest.writeByte((byte) (mIsRtl ? 1 : 0));
+        dest.writeByte((byte) (mRtlDisabled ? 1 : 0));
+        dest.writeInt(mCalculatedSize);
+        dest.writeInt(mCalculatedBorderWidth);
         dest.writeFloat(mCalculatedLeft);
         dest.writeFloat(mCalculatedTop);
         dest.writeFloat(mCalculatedRight);
         dest.writeFloat(mCalculatedBottom);
+        dest.writeInt(mCalculatedLastW);
+        dest.writeInt(mCalculatedLastH);
     }
+
 }

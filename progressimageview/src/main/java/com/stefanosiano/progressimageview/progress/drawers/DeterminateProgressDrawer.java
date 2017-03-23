@@ -139,11 +139,11 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
 
         mProgressFrontPaint.setColor(progressOptions.getFrontColor());
-        mProgressFrontPaint.setStrokeWidth(progressOptions.getBorderWidth());
+        mProgressFrontPaint.setStrokeWidth(progressOptions.getCalculatedBorderWidth());
         mProgressFrontPaint.setAntiAlias(true);
         mProgressFrontPaint.setStyle(drawWedge ? Paint.Style.FILL_AND_STROKE : Paint.Style.STROKE);
         mProgressBackPaint.setColor(progressOptions.getBackColor());
-        mProgressBackPaint.setStrokeWidth(progressOptions.getBorderWidth());
+        mProgressBackPaint.setStrokeWidth(progressOptions.getCalculatedBorderWidth());
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 
