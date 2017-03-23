@@ -27,7 +27,8 @@ public interface ProgressDrawer {
      */
     void draw(Canvas canvas, RectF progressBounds);
 
-    /** Starts the animations (valid for indeterminate drawers) */
+    /** Starts the animations (valid for indeterminate drawers)
+     * Calling it multiple times will cause the animation to restart! */
     void startIndeterminateAnimation();
 
     /** Stops the animations (valid for indeterminate drawers) */

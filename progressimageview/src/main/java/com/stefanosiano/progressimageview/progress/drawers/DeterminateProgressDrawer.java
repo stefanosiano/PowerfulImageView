@@ -131,7 +131,6 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     @Override
     public void setup(ProgressOptions progressOptions) {
 
-        mProgressFrontSweepAngle = 0;
         mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
         drawWedge = progressOptions.isDrawWedge();
 

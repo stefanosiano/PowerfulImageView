@@ -55,6 +55,8 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         this.mPiv = piv;
         this.mProgressBounds = progressBounds;
         this.isShrinking = false;
+        this.mStartX = 0;
+        this.mEndX = 0;
     }
 
 
@@ -73,8 +75,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressPaint.setColor(progressOptions.getIndeterminateColor());
         mProgressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        this.isShrinking = false;
-        setProgressValues(30);
+        setProgressValues(isShrinking ? mStartX : mEndX);
     }
 
 
@@ -103,7 +104,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
             this.mProgressAnimator.cancel();
 
         this.isShrinking = false;
-        setProgressValues(30);
+        setProgressValues(mProgressBounds.left);
 
         mProgressAnimator.start();
     }

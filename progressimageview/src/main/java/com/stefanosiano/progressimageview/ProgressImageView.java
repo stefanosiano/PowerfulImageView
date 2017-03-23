@@ -40,22 +40,8 @@ public class ProgressImageView extends AppCompatImageView {
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
 
-    //Progress variables
-    /** Bounds in which the progress indicator will be drawn */
-    private final RectF mProgressBounds;
-
-    /** Object that draws the progress indicator over the image. It's the core of the progress indicator.
-     * It has different behaviours, based on the progress mode selected. */
-    private ProgressDrawer mProgressDrawer;
-
-    /** Helper class to get the instance of ProgressDrawer, and initialize only needed drawers */
+    /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
-
-    /** Options used by progress drawers */
-    private ProgressOptions mProgressOptions;
-
-    /** Mode of the progress drawer */
-    private PivProgressMode mProgressMode = null;
 
 
     public ProgressImageView(Context context) {
@@ -72,7 +58,7 @@ public class ProgressImageView extends AppCompatImageView {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ProgressImageView, defStyleAttr, 0);
 
         //get all the options from xml or default constants and initialize ProgressOptions object
-        mProgressOptions = new ProgressOptions(
+        ProgressOptions progressOptions = new ProgressOptions(
                 a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.ProgressImageView_piv_progress_width_percent, DEFAULT_PROGRESS_WIDTH_PERCENT),
@@ -92,45 +78,25 @@ public class ProgressImageView extends AppCompatImageView {
 
         a.recycle();
 
-        this.mProgressBounds = new RectF();
-        this.mProgressDrawerManager = new ProgressDrawerManager(this, this.mProgressBounds);
+        this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
 
         changeProgressMode(mode);
     }
 
 
-    /**
-     * It calculates the bounds of the progress indicator.
-     * This is called during layout when the size of this view has changed. If you were just added
-     * to the view hierarchy, you're called with the old values of 0.
-     *
-     * @param w Current width of this view.
-     * @param h Current height of this view.
-     * @param oldw Old width of this view.
-     * @param oldh Old height of this view.
-     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mProgressOptions.calculateBounds(w, h, mProgressMode);
-        //set calculated bounds to our progress bounds
-        mProgressBounds.set(
-                mProgressOptions.getLeft(),
-                mProgressOptions.getTop(),
-                mProgressOptions.getRight(),
-                mProgressOptions.getBottom());
-
-        mProgressDrawer.setup(mProgressOptions);
+        //updates progress bounds
+        mProgressDrawerManager.onSizeChanged(w, h, oldw, oldh);
     }
 
 
-    /**
-     * Draws the image and the progress indicator.
-     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mProgressDrawer.draw(canvas, mProgressBounds);
+        //draw progress indicator
+        mProgressDrawerManager.onDraw(canvas);
     }
 
 
@@ -140,28 +106,24 @@ public class ProgressImageView extends AppCompatImageView {
      *
      * @param progressMode mode to change the progress indicator into
      */
-    public void changeProgressMode(PivProgressMode progressMode){
-        if(mProgressMode != null && mProgressMode == progressMode)
-            return;
-
-        if(mProgressDrawer != null)
-            mProgressDrawer.stopIndeterminateAnimation();
-
-        mProgressMode = progressMode;
-        mProgressDrawer = mProgressDrawerManager.getDrawer(mProgressMode);
-        mProgressDrawer.setup(mProgressOptions);
-        mProgressDrawer.startIndeterminateAnimation();
+    public final void changeProgressMode(PivProgressMode progressMode){
+        mProgressDrawerManager.changeProgressMode(progressMode);
     }
+
 
 
     /**
-     * Sets the current progress percent to progress indicator.
-     * It has no effect when it is in indeterminate mode.
-     *
-     * @param progressPercent Percentage of the progress.
+     * @return The options of the progress indicator
      */
-    public final void setProgressPercent(float progressPercent) {
-        mProgressDrawer.setProgressPercent(progressPercent);
+    public final ProgressOptions getProgressOptions() {
+        return mProgressDrawerManager.getProgressOptions();
+    }
+
+    /**
+     * Called when an option is updated. It propagates the update to the progress drawers.
+     */
+    public final void onOptionsUpdate(){
+        mProgressDrawerManager.onOptionsUpdate();
     }
 
 
@@ -173,10 +135,9 @@ public class ProgressImageView extends AppCompatImageView {
 
 
 
+/*
 
-
-
-    /** Boilerplate code to save the state of the view. */
+    /** Boilerplate code to save the state of the view. *//*
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
@@ -187,7 +148,7 @@ public class ProgressImageView extends AppCompatImageView {
         return bundle;
     }
 
-    /** Boilerplate code to restore the state of the view. */
+    /** Boilerplate code to restore the state of the view. *//*
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {// implicit null check
@@ -200,6 +161,6 @@ public class ProgressImageView extends AppCompatImageView {
             state = bundle.getParcelable("super_state");
         }
         super.onRestoreInstanceState(state);
-    }
+    }*/
 }
 

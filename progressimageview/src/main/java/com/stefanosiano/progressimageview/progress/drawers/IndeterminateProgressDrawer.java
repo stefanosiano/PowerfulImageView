@@ -51,6 +51,12 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
     /** offset of the start angle. It will change linearly continuously */
     private int mOffset;
 
+    /** Last start angle offset. Used when calling setup(), so it doesn't change angle */
+    private int mLastStartAngleOffset;
+
+    /** Last sweep angle offset. Used when calling setup(), so it doesn't change angle */
+    private int mLastSweepAngleOffset;
+
 
     /**
      * ProgressDrawer that shows an indeterminate animated circle as progress indicator.
@@ -65,6 +71,8 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
         this.isShrinking = false;
         this.mProgressStartAngle = -90;
         this.mProgressSweepAngle = 180;
+        this.mLastStartAngleOffset = 0;
+        this.mLastSweepAngleOffset = 0;
     }
 
     @Override
@@ -78,9 +86,7 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
 
-        this.mOffset = 0;
-        this.isShrinking = false;
-        setProgressAngle(0, 0);
+        setProgressAngle(mLastStartAngleOffset, mLastSweepAngleOffset);
     }
 
     @Override
@@ -92,7 +98,10 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
 
         this.mOffset = 0;
         this.isShrinking = false;
-        setProgressAngle(0, 0);
+
+        this.mLastStartAngleOffset = 0;
+        this.mLastSweepAngleOffset = 0;
+        setProgressAngle(mLastStartAngleOffset, mLastSweepAngleOffset);
 
         mProgressAnimator.start();
         mOffsetAnimator.start();
@@ -105,6 +114,8 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
      * @param sweepAngleOffset Used when progress is shrinking (subtracting) or expanding (summing)
      */
     private void setProgressAngle(int startAngleOffset, int sweepAngleOffset) {
+        mLastStartAngleOffset = startAngleOffset;
+        mLastSweepAngleOffset = sweepAngleOffset;
         //mProgressSweepAngle when isShrinking and at the end of animation must be equal to itself when !isShrinking and at the beginning of the animation
         if(isShrinking) {
             this.mProgressStartAngle = -90 + startAngleOffset + mOffset;
