@@ -2,8 +2,14 @@
 Custom Android ImageView with a circle indicating a progress (e.g. download progress of the image)  
   
 To do:  
+Add xml comments  
+Delegate all progress responsibility to ProgressManager  
+Add getOption() method to ProgressImageView  
+Add OnOptionsUpdated() method to ProgressImageView  
+Change name to PowerfulImageView  
+Create a PowerlessImageView without appcompat support?  
 Check setup method of drawers to avoid useless operations  
-Create doe diagram?  
+Create code diagram?  
   
 Write instructions and readme file  
 
