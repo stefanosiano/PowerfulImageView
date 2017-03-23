@@ -30,6 +30,7 @@ public class ProgressImageView extends AppCompatImageView {
     //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
     private static final int DEFAULT_PROGRESS_WIDTH = -1;
+    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = 12;
     private static final int DEFAULT_PROGRESS_SIZE = 24;
     private static final float DEFAULT_PROGRESS_SIZE_PERCENT = -1;
     private static final int DEFAULT_PROGRESS_PADDING = 2;
@@ -74,6 +75,7 @@ public class ProgressImageView extends AppCompatImageView {
         mProgressOptions = new ProgressOptions(
                 a.getBoolean(R.styleable.ProgressImageView_piv_use_determinate_progress_animation, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
+                a.getFloat(R.styleable.ProgressImageView_piv_progress_width_percent, DEFAULT_PROGRESS_WIDTH_PERCENT),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_size, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SIZE, getResources().getDisplayMetrics())),
                 a.getDimensionPixelSize(R.styleable.ProgressImageView_piv_progress_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.ProgressImageView_piv_progress_size_percent, DEFAULT_PROGRESS_SIZE_PERCENT),

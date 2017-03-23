@@ -2,7 +2,6 @@ package com.stefanosiano.progressimageview.progress;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.TypedValue;
 
 /**
  * Class that helps managing the options that will be used by the progress drawers.
@@ -17,6 +16,9 @@ public final class ProgressOptions implements Parcelable {
 
     /** Width of the progress indicator */
     private int mBorderWidth;
+
+    /** Width of the progress indicator as percentage of the progress indicator size */
+    private float mBorderWidthPercent;
 
     /** Percentage value of the progress indicator, used by determinate drawers */
     private float mValuePercent;
@@ -48,14 +50,46 @@ public final class ProgressOptions implements Parcelable {
     /** Gravity of the indicator */
     private PivProgressGravity mGravity;
 
-    /** Whether the border width has been defined. If it is false, it will be calculated based on the size */
-    private boolean mIsCircleBorderWidthFixed;
-
-    /** Whether the view should use right to left layout (used for gravity option) */
+    /** Whether the view is using right to left layout (used for gravity option) */
     private boolean mIsRtl;
-    
+
+    /** Whether the view should use or ignore right to left layout (used for gravity option) */
+    private boolean mIsRtlDisabled;
+
+
+
+
+    // ************** Calculated fields *****************
+
+    /** Calculated size of the indicator, base on mSize, mSizePercent and View size */
+    private int mCalculatedSize;
+
+    /** Calculated width of the progress indicator, base on mBorderWidth, mBorderWidthPercent and mSize */
+    private int mCalculatedBorderWidth;
+
     //bounds of the progress indicator
-    private float mLeft, mTop, mRight, mBottom;
+    /** Left bound calculated */
+    private float mCalculatedLeft;
+
+    /** Top bound calculated */
+    private float mCalculatedTop;
+
+    /** Right bound calculated */
+    private float mCalculatedRight;
+
+    /** Bottom bound calculated */
+    private float mCalculatedBottom;
+
+
+    //last calculated width and height
+    /** Last width calculated. Used when changing programmatically the options, so bounds can be calculated directly */
+    private int mCalculatedLastW;
+
+    /** Last height calculated. Used when changing programmatically the options, so bounds can be calculated directly */
+    private int mCalculatedLastH;
+
+    /** Last progress mode used. Used when changing programmatically the options, so bounds can be calculated directly */
+    private PivProgressMode mCalculatedLastMode;
 
 
     /**
@@ -63,6 +97,7 @@ public final class ProgressOptions implements Parcelable {
      *
      * @param isDeterminateAnimationEnabled If the determinate drawer should update its progress with an animation
      * @param borderWidth Width of the progress indicator. If it's 0 or negative, it will be automatically adjusted based on the size
+     * @param borderWidthPercent Width of the progress indicator as a percentage of the progress indicator size
      * @param size Size of the progress indicator
      * @param padding Padding of the progress indicator
      * @param sizePercent Size of the progress indicator as a percentage of the whole View. If it's 0 or more, it applies and overrides "size" parameter
@@ -75,11 +110,13 @@ public final class ProgressOptions implements Parcelable {
      * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)              
      * @param drawWedge If should show a wedge, used by circular determinate drawer
      */
-    public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, int size, int padding, float sizePercent, float valuePercent,
+    public ProgressOptions(boolean isDeterminateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge) {
         this.mIsDeterminateAnimationEnabled = isDeterminateAnimationEnabled;
         this.mBorderWidth = borderWidth;
-        this.mIsCircleBorderWidthFixed = borderWidth > 0;
+        this.mBorderWidthPercent = borderWidthPercent;
+        if(this.mBorderWidthPercent > 100)
+            this.mBorderWidthPercent = this.mBorderWidthPercent % 100;
         this.mSize = size;
         this.mPadding = padding;
         this.mSizePercent = sizePercent;
@@ -88,8 +125,20 @@ public final class ProgressOptions implements Parcelable {
         this.mBackColor = backColor;
         this.mIndeterminateColor = indeterminateColor;
         this.mGravity = PivProgressGravity.fromValue(gravity);
-        this.mIsRtl = rtl && !disableRtlSupport;
+        this.mIsRtl = rtl;
+        this.mIsRtlDisabled = disableRtlSupport;
         this.mDrawWedge = drawWedge;
+
+        //initialization of private fields used for calculations
+        this.mCalculatedSize = 0;
+        this.mCalculatedBorderWidth = 0;
+        this.mCalculatedLastW = 0;
+        this.mCalculatedLastH = 0;
+        this.mCalculatedLeft = 0;
+        this.mCalculatedTop = 0;
+        this.mCalculatedRight = 0;
+        this.mCalculatedBottom = 0;
+        this.mCalculatedLastMode = PivProgressMode.NONE;
     }
 
     /**
@@ -101,11 +150,19 @@ public final class ProgressOptions implements Parcelable {
      * @param mode Mode of the progress indicator
      */
     public final void calculateBounds(int w, int h, PivProgressMode mode){
+
+        //saving last width and height, so i can later call this function from this class
+        mCalculatedLastW = w;
+        mCalculatedLastH = h;
+        mCalculatedLastMode = mode;
+        mCalculatedSize = mSize;
+        mCalculatedBorderWidth = mBorderWidth;
+
         if(mode == PivProgressMode.NONE){
-            mLeft = 0;
-            mRight = 0;
-            mTop = 0;
-            mBottom = 0;
+            mCalculatedLeft = 0;
+            mCalculatedRight = 0;
+            mCalculatedTop = 0;
+            mCalculatedBottom = 0;
             return;
         }
 
@@ -115,18 +172,18 @@ public final class ProgressOptions implements Parcelable {
 
         //if mSizePercent is 0 or more, it overrides mSize parameter
         if(mSizePercent >= 0){
-            mSize = (int) (maxSize * (double) mSizePercent / 100);
+            mCalculatedSize = (int) (maxSize * (double) mSizePercent / 100);
         }
-        //the progress indicator cannot be bigger then the view (minus padding)
-        if(mSize > maxSize)
-            mSize = maxSize;
+        //the progress indicator cannot be bigger than the view (minus padding)
+        if(mCalculatedSize > maxSize)
+            mCalculatedSize = maxSize;
         //if border width was not been defined, it gets calculated based on the size of the indicator
-        if(!mIsCircleBorderWidthFixed){
-            mBorderWidth = Math.round(mSize /10);
+        if(mBorderWidthPercent >= 0){
+            mCalculatedBorderWidth = Math.round(mCalculatedSize * mBorderWidthPercent/100);
         }
         //width of the border should be at least 1 px
-        if(mBorderWidth < 1)
-            mBorderWidth = 1;
+        if(mCalculatedBorderWidth < 1)
+            mCalculatedBorderWidth = 1;
 
         //calculation of bounds
         switch(mode){
@@ -138,37 +195,37 @@ public final class ProgressOptions implements Parcelable {
                     case START:
                     case BOTTOM_START:
                     case TOP_START:
-                        if(mIsRtl){
+                        if(mIsRtl && !mIsRtlDisabled){
                             //it's at right
-                            mLeft = w - mSize + mBorderWidth/2 - mPadding;
-                            mRight = w - mBorderWidth/2 - mPadding;
+                            mCalculatedLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
+                            mCalculatedRight = w - mCalculatedBorderWidth/2 - mPadding;
                         }
                         else {
                             //it's at left
-                            mLeft = mBorderWidth/2 + mPadding;
-                            mRight = mSize - mBorderWidth/2 + mPadding;
+                            mCalculatedLeft = mCalculatedBorderWidth/2 + mPadding;
+                            mCalculatedRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
                         }
                         break;
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
-                        if(mIsRtl){
+                        if(mIsRtl && !mIsRtlDisabled){
                             //it's at left
-                            mLeft = mBorderWidth/2 + mPadding;
-                            mRight = mSize - mBorderWidth/2 + mPadding;
+                            mCalculatedLeft = mCalculatedBorderWidth/2 + mPadding;
+                            mCalculatedRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
                         }
                         else {
                             //it's at right
-                            mLeft = w - mSize + mBorderWidth/2 - mPadding;
-                            mRight = w - mBorderWidth/2 - mPadding;
+                            mCalculatedLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
+                            mCalculatedRight = w - mCalculatedBorderWidth/2 - mPadding;
                         }
                         break;
                     case TOP:
                     case BOTTOM:
                     case CENTER:
                         //it's in center
-                        mLeft = (w - mSize + mBorderWidth) /2;
-                        mRight = (w + mSize - mBorderWidth) /2;
+                        mCalculatedLeft = (w - mCalculatedSize + mCalculatedBorderWidth) /2;
+                        mCalculatedRight = (w + mCalculatedSize - mCalculatedBorderWidth) /2;
                         break;
                 }
                 switch (mGravity){
@@ -176,22 +233,22 @@ public final class ProgressOptions implements Parcelable {
                     case TOP_END:
                     case TOP:
                         //it's on top
-                        mTop = mBorderWidth/2 + mPadding;
-                        mBottom = mSize - mBorderWidth/2 + mPadding;
+                        mCalculatedTop = mCalculatedBorderWidth/2 + mPadding;
+                        mCalculatedBottom = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
                         break;
                     case BOTTOM:
                     case BOTTOM_START:
                     case BOTTOM_END:
                         //it's on bottom
-                        mTop = h - mSize + mBorderWidth/2 - mPadding;
-                        mBottom = h - mBorderWidth/2 - mPadding;
+                        mCalculatedTop = h - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
+                        mCalculatedBottom = h - mCalculatedBorderWidth/2 - mPadding;
                         break;
                     case END:
                     case START:
                     case CENTER:
                         //it's in center
-                        mTop = (h - mSize + mBorderWidth) /2;
-                        mBottom = (h + mSize - mBorderWidth) /2;
+                        mCalculatedTop = (h - mCalculatedSize + mCalculatedBorderWidth) /2;
+                        mCalculatedBottom = (h + mCalculatedSize - mCalculatedBorderWidth) /2;
                         break;
                 }
                 break;
@@ -203,37 +260,37 @@ public final class ProgressOptions implements Parcelable {
                     case START:
                     case BOTTOM_START:
                     case TOP_START:
-                        if(mIsRtl){
+                        if(mIsRtl && !mIsRtlDisabled){
                             //it's at right
-                            mLeft = w - mSize - mPadding;
-                            mRight = w - mPadding;
+                            mCalculatedLeft = w - mCalculatedSize - mPadding;
+                            mCalculatedRight = w - mPadding;
                         }
                         else {
                             //it's at left
-                            mLeft = mPadding;
-                            mRight = mSize + mPadding;
+                            mCalculatedLeft = mPadding;
+                            mCalculatedRight = mCalculatedSize + mPadding;
                         }
                         break;
                     case END:
                     case BOTTOM_END:
                     case TOP_END:
-                        if(mIsRtl){
+                        if(mIsRtl && !mIsRtlDisabled){
                             //it's at left
-                            mLeft = mPadding;
-                            mRight = mSize + mPadding;
+                            mCalculatedLeft = mPadding;
+                            mCalculatedRight = mCalculatedSize + mPadding;
                         }
                         else {
                             //it's at right
-                            mLeft = w - mSize - mPadding;
-                            mRight = w - mPadding;
+                            mCalculatedLeft = w - mCalculatedSize - mPadding;
+                            mCalculatedRight = w - mPadding;
                         }
                         break;
                     case TOP:
                     case BOTTOM:
                     case CENTER:
                         //it's in center
-                        mLeft = (w - mSize)/2;
-                        mRight = (w + mSize)/2;
+                        mCalculatedLeft = (w - mCalculatedSize)/2;
+                        mCalculatedRight = (w + mCalculatedSize)/2;
                         break;
                 }
                 switch (mGravity){
@@ -241,22 +298,22 @@ public final class ProgressOptions implements Parcelable {
                     case TOP_END:
                     case TOP:
                         //it's on top
-                        mTop = mPadding;
-                        mBottom = mBorderWidth + mPadding;
+                        mCalculatedTop = mPadding;
+                        mCalculatedBottom = mCalculatedBorderWidth + mPadding;
                         break;
                     case BOTTOM:
                     case BOTTOM_START:
                     case BOTTOM_END:
                         //it's on bottom
-                        mTop = h - mBorderWidth - mPadding;
-                        mBottom = h - mPadding;
+                        mCalculatedTop = h - mCalculatedBorderWidth - mPadding;
+                        mCalculatedBottom = h - mPadding;
                         break;
                     case END:
                     case START:
                     case CENTER:
                         //it's in center
-                        mTop = (h - mBorderWidth)/2;
-                        mBottom = (h + mBorderWidth)/2;
+                        mCalculatedTop = (h - mCalculatedBorderWidth)/2;
+                        mCalculatedBottom = (h + mCalculatedBorderWidth)/2;
                         break;
                 }
                 break;
@@ -264,47 +321,245 @@ public final class ProgressOptions implements Parcelable {
             //if everything goes right, it should never come here. Just a precaution
             case NONE:
             default:
-                mLeft = 0;
-                mRight = 0;
-                mTop = 0;
-                mBottom = 0;
+                mCalculatedLeft = 0;
+                mCalculatedRight = 0;
+                mCalculatedTop = 0;
+                mCalculatedBottom = 0;
                 break;
         }
     }
 
     /** Returns the left bound calculated. Be sure to call calculateBounds() before this! */
     public final float getLeft() {
-        return mLeft;
+        return mCalculatedLeft;
     }
 
     /** Returns the top bound calculated. Be sure to call calculateBounds() before this! */
     public final float getTop() {
-        return mTop;
+        return mCalculatedTop;
     }
 
     /** Returns the right bound calculated. Be sure to call calculateBounds() before this! */
     public final float getRight() {
-        return mRight;
+        return mCalculatedRight;
     }
 
     /** Returns the bottom bound calculated. Be sure to call calculateBounds() before this! */
     public final float getBottom() {
-        return mBottom;
+        return mCalculatedBottom;
     }
 
 
+    
+    
+    /**
+     * If the determinate drawer should update its progress with an animation.
+     * If the drawer is not determinate or horizontal_determinate it's ignored.
+     * 
+     * @param mIsDeterminateAnimationEnabled If true it updates its progress with an animation, otherwise it will update instantly
+     */
+    public void setIsDeterminateAnimationEnabled(boolean mIsDeterminateAnimationEnabled) {
+        this.mIsDeterminateAnimationEnabled = mIsDeterminateAnimationEnabled;
+    }
+
+    /**
+     * Width of the progress indicator.
+     * It's used only if it's higher than 0 and borderWidthPercent is less than 0.
+     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
+     * 
+     * @param borderWidth Width of the progress indicator
+     */
+    public void setBorderWidth(int borderWidth) {
+        this.mBorderWidth = borderWidth;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
+
+    /**
+     * Width of the progress indicator as percentage of the progress indicator size.
+     * Overrides border width set through setBorderWidth().
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     * If the percentage is lower than 0, it is ignored.
+     * 
+     * @param borderWidthPercent Percentage of the progress indicator size, as a float from 0 to 100
+     */
+    public void setBorderWidthPercent(float borderWidthPercent) {
+        if(borderWidthPercent > 100)
+            borderWidthPercent = borderWidthPercent % 100;
+        this.mBorderWidthPercent = borderWidthPercent;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
+
+    /**
+     * Percentage value of the progress indicator, used by determinate drawers.
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     * If the percentage is lower than 0, it is treated as 0.
+     * If the drawer is not determinate or horizontal_determinate it's ignored.
+     * 
+     * @param valuePercent Percentage of the progress indicator, as a float from 0 to 100
+     */
+    public void setValuePercent(float valuePercent) {
+        if(valuePercent > 100)
+            valuePercent = valuePercent % 100;
+        if(valuePercent < 0)
+            valuePercent = 0;
+        this.mValuePercent = valuePercent;
+    }
+
+    /**
+     * Set the front color of the indicator, used by determinate drawers.
+     * If the drawer is not determinate or horizontal_determinate it's ignored.
+     *
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     * 
+     * @param frontColor Color to use.
+     */
+    public void setFrontColor(int frontColor) {
+        this.mFrontColor = frontColor;
+    }
 
 
+    /**
+     * Set the back color of the indicator, used by determinate drawers.
+     * If the drawer is not determinate or horizontal_determinate it's ignored.
+     *
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     *
+     * @param backColor Color to use.
+     */
+    public void setBackColor(int backColor) {
+        this.mBackColor = backColor;
+    }
 
 
+    /**
+     * Set the front color of the indicator, used by indeterminate drawers.
+     * If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
+     *
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     *
+     * @param indeterminateColor Color to use.
+     */
+    public void setIndeterminateColor(int indeterminateColor) {
+        this.mIndeterminateColor = indeterminateColor;
+    }
+
+    /**
+     * Set whether to show a wedge or a circle, used by circular determinate drawer
+     * If the drawer is not determinate it's ignored.
+     * 
+     * @param mDrawWedge If true, a wedge is drawn, otherwise a circle will be drawn
+     */
+    public void setDrawWedge(boolean mDrawWedge) {
+        this.mDrawWedge = mDrawWedge;
+    }
+
+    /**
+     * Size of the progress indicator.
+     *
+     * It's used only if progressSizePercent is less than 0.
+     * Note that it may be different from the actual size used to draw the progress, since it is
+     *      calculated based on the View size, on the sizePercent option and on the padding option.
+     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
+     *
+     * @param size Size of the progress indicator
+     */
+    public void setSize(int size) {
+        this.mSize = size;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
 
 
+    /**
+     * Set the padding of the progress indicator.
+     *
+     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
+     *
+     * @param padding Padding of the progress indicator
+     */
+    public void setPadding(int padding) {
+        this.mPadding = padding;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
+
+    /**
+     * Set the size of the progress indicator.
+     *
+     * Overrides size set through setSize().
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     * If the percentage is lower than 0, it is ignored.
+     *
+     * @param sizePercent Progress indicator size as a percentage of the whole View, as a float from 0 to 100
+     */
+    public void setSizePercent(float sizePercent) {
+        if(sizePercent > 100)
+            sizePercent = sizePercent % 100;
+        this.mSizePercent = sizePercent;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
+
+    /**
+     * Set the gravity of the indicator.
+     * It will follow the right to left layout (on api 17+), if not disabled.
+     * 
+     * @param mGravity Gravity of the indicator
+     */
+    public void setGravity(PivProgressGravity mGravity) {
+        this.mGravity = mGravity;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
+
+    /**
+     * Set whether the view should use right to left layout (used for gravity option)
+     * 
+     * @param isRtlDisabled If true, start will always be treated as left and end as right.
+     *                      If false, on api 17+, gravity will be treated accordingly to rtl rules.
+     */
+    public void setIsRtlDisabled(boolean isRtlDisabled) {
+        this.mIsRtlDisabled = isRtlDisabled;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+    }
+
+    public boolean ismIsDeterminateAnimationEnabled() {
+        return mIsDeterminateAnimationEnabled;
+    }
+
+    public float getBorderWidthPercent() {
+        return mBorderWidthPercent;
+    }
+
+    public boolean ismDrawWedge() {
+        return mDrawWedge;
+    }
+
+    public int getSize() {
+        return mSize;
+    }
+
+    public int getPadding() {
+        return mPadding;
+    }
+
+    public float getSizePercent() {
+        return mSizePercent;
+    }
+
+    public PivProgressGravity getGravity() {
+        return mGravity;
+    }
+
+    public boolean ismIsRtlDisabled() {
+        return mIsRtlDisabled;
+    }
 
 
-
-
-
-
+    // *************** Fields used by drawers ****************
+    
     /**
      * If the determinate drawer should update its progress with an animation
      *
@@ -361,7 +616,7 @@ public final class ProgressOptions implements Parcelable {
 
 
 
-    
+    //todo redo parcelable!
     //Parcelable stuff
 
     public static final Creator<ProgressOptions> CREATOR = new Creator<ProgressOptions>() {
@@ -392,12 +647,11 @@ public final class ProgressOptions implements Parcelable {
         mSize = in.readInt();
         mPadding = in.readInt();
         mSizePercent = in.readFloat();
-        mIsCircleBorderWidthFixed = in.readByte() != 0;
         mIsRtl = in.readByte() != 0;
-        mLeft = in.readFloat();
-        mTop = in.readFloat();
-        mRight = in.readFloat();
-        mBottom = in.readFloat();
+        mCalculatedLeft = in.readFloat();
+        mCalculatedTop = in.readFloat();
+        mCalculatedRight = in.readFloat();
+        mCalculatedBottom = in.readFloat();
     }
 
     @Override
@@ -412,11 +666,10 @@ public final class ProgressOptions implements Parcelable {
         dest.writeInt(mSize);
         dest.writeInt(mPadding);
         dest.writeFloat(mSizePercent);
-        dest.writeByte((byte) (mIsCircleBorderWidthFixed ? 1 : 0));
         dest.writeByte((byte) (mIsRtl ? 1 : 0));
-        dest.writeFloat(mLeft);
-        dest.writeFloat(mTop);
-        dest.writeFloat(mRight);
-        dest.writeFloat(mBottom);
+        dest.writeFloat(mCalculatedLeft);
+        dest.writeFloat(mCalculatedTop);
+        dest.writeFloat(mCalculatedRight);
+        dest.writeFloat(mCalculatedBottom);
     }
 }
