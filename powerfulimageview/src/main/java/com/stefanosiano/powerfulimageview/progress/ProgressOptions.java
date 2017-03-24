@@ -384,7 +384,7 @@ public final class ProgressOptions implements Parcelable {
     
     
     /**
-     * If the determinate drawer should update its progress with an animation.
+     * Set whether the determinate drawer should update its progress with an animation.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
      * 
      * @param determinateAnimationEnabled If true it updates its progress with an animation, otherwise it will update instantly
@@ -496,7 +496,7 @@ public final class ProgressOptions implements Parcelable {
     }
 
     /**
-     * Set whether to show a wedge or a circle, used by circular determinate drawer
+     * Set whether to show a wedge or a circle, used by circular determinate drawer.
      * If the drawer is not determinate it's ignored.
      * 
      * @param mDrawWedge If true, a wedge is drawn, otherwise a circle will be drawn
