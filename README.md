@@ -1,5 +1,8 @@
-# PowerfulImageView  
-Custom Android ImageView with a circle indicating a progress (e.g. download progress of the image)  
+PowerfulImageView
+=================
+
+Custom Android ImageView with several added features.  
+Right now it provides a progress indicator.  
   
 To do:  
   
