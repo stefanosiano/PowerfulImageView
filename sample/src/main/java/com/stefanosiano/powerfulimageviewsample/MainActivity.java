@@ -1,11 +1,11 @@
-package com.stefanosiano.progressimageviewsample;
+package com.stefanosiano.powerfulimageviewsample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.stefanosiano.progressimageview.ProgressImageView;
-import com.stefanosiano.progressimageview.progress.PivProgressMode;
+import com.stefanosiano.powerfulimageview.PowerfulImageView;
+import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 
 public class MainActivity extends AppCompatActivity {
     int progress = 10;
@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final ProgressImageView piw = (ProgressImageView) findViewById(R.id.piv);
+        final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
         piw.changeProgressMode(PivProgressMode.DETERMINATE);
 
         final Runnable runnable = new Runnable() {

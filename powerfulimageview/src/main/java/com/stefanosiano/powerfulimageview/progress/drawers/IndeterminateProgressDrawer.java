@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress.drawers;
+package com.stefanosiano.powerfulimageview.progress.drawers;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -8,8 +8,7 @@ import android.graphics.RectF;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.stefanosiano.progressimageview.ProgressImageView;
-import com.stefanosiano.progressimageview.progress.ProgressOptions;
+import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 
 /**
  * ProgressDrawer that shows an indeterminate animated circle as progress indicator.

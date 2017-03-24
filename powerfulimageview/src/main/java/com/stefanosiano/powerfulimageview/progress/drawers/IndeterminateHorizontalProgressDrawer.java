@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress.drawers;
+package com.stefanosiano.powerfulimageview.progress.drawers;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -7,8 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.stefanosiano.progressimageview.ProgressImageView;
-import com.stefanosiano.progressimageview.progress.ProgressOptions;
+import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 
 /**
  * ProgressDrawer that shows an indeterminate animated bar as progress indicator.

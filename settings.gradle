@@ -1,1 +1,1 @@
-include ':sample', ':progressimageview'
+include ':sample', ':powerfulimageview'

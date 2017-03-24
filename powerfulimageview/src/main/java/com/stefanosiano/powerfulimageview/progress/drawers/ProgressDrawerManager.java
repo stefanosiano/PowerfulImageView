@@ -1,11 +1,12 @@
-package com.stefanosiano.progressimageview.progress.drawers;
+package com.stefanosiano.powerfulimageview.progress.drawers;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.os.Bundle;
 
-import com.stefanosiano.progressimageview.ProgressImageView;
-import com.stefanosiano.progressimageview.progress.PivProgressMode;
-import com.stefanosiano.progressimageview.progress.ProgressOptions;
+import com.stefanosiano.powerfulimageview.PowerfulImageView;
+import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
+import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 
 import java.lang.ref.WeakReference;
 
@@ -19,7 +20,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     //Variables used to initialize drawers
 
     //Using a weakRefence to be sure to not leak memory
-    private final WeakReference<ProgressImageView> mPiv;
+    private final WeakReference<PowerfulImageView> mPiv;
 
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mProgressBounds;
@@ -49,7 +50,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      *
      * @param piv View to show progress indicator into
      */
-    public ProgressDrawerManager(ProgressImageView piv, final ProgressOptions progressOptions){
+    public ProgressDrawerManager(PowerfulImageView piv, final ProgressOptions progressOptions){
         this.mPiv = new WeakReference<>(piv);
         this.mProgressBounds = new RectF();
         this.mProgressOptions = progressOptions;
@@ -195,5 +196,29 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
                 mProgressOptions.getBottom());
 
         mProgressDrawer.setup(mProgressOptions);
+    }
+
+
+
+
+
+    /** Saves state into a bundle. */
+    public Bundle saveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("progress_options", mProgressOptions);
+        bundle.putInt("progress_mode", mProgressMode.getValue());
+
+        return bundle;
+    }
+
+    /** Restores state from a bundle. */
+    public void restoreInstanceState(Bundle state) {
+        if (state == null)
+            return;
+
+        mProgressOptions.setOptions((ProgressOptions) state.getParcelable("progress_options"));
+        PivProgressMode progressMode = PivProgressMode.fromValue(state.getInt("progress_mode"));
+        onSizeUpdated(mProgressOptions);
+        changeProgressMode(progressMode);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ProgressImageView">
-
+    <!-- Attributes of the -->
+    <declare-styleable name="PowerfulImageView">
         <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
         <attr name="piv_progress_border_width" format="dimension" />
         <attr name="piv_progress_border_width_percent" format="float" />

@@ -1,7 +1,9 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.powerfulimageview.progress;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Class that helps managing the options that will be used by the progress drawers.
@@ -91,8 +93,8 @@ public final class ProgressOptions implements Parcelable {
     /** Last progress mode used. Used when changing programmatically the options, so bounds can be calculated directly */
     private PivProgressMode mCalculatedLastMode;
 
-    /** Listener that will update the progress drawers on changes */
-    private ProgressOptionsListener listener;
+    /** Listener that will update the progress drawers on changes, with a weak reference to be sure to not leak memory */
+    private WeakReference<ProgressOptionsListener> listener;
 
     /**
      * Creates the object that will be used by progress drawers:
@@ -141,6 +143,33 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedRight = 0;
         this.mCalculatedBottom = 0;
         this.mCalculatedLastMode = PivProgressMode.NONE;
+    }
+
+    public void setOptions(ProgressOptions other) {
+        this.mDeterminateAnimationEnabled = other.mDeterminateAnimationEnabled;
+        this.mBorderWidth = other.mBorderWidth;
+        this.mBorderWidthPercent = other.mBorderWidthPercent;
+        this.mValuePercent = other.mValuePercent;
+        this.mFrontColor = other.mFrontColor;
+        this.mBackColor = other.mBackColor;
+        this.mIndeterminateColor = other.mIndeterminateColor;
+        this.mDrawWedge = other.mDrawWedge;
+        this.mSize = other.mSize;
+        this.mPadding = other.mPadding;
+        this.mSizePercent = other.mSizePercent;
+        this.mGravity = other.mGravity;
+        this.mIsRtl = other.mIsRtl;
+        this.mRtlDisabled = other.mRtlDisabled;
+        this.mCalculatedSize = other.mCalculatedSize;
+        this.mCalculatedBorderWidth = other.mCalculatedBorderWidth;
+        this.mCalculatedLeft = other.mCalculatedLeft;
+        this.mCalculatedTop = other.mCalculatedTop;
+        this.mCalculatedRight = other.mCalculatedRight;
+        this.mCalculatedBottom = other.mCalculatedBottom;
+        this.mCalculatedLastW = other.mCalculatedLastW;
+        this.mCalculatedLastH = other.mCalculatedLastH;
+        this.mCalculatedLastMode = other.mCalculatedLastMode;
+        this.listener = other.listener;
     }
 
     /**
@@ -362,7 +391,8 @@ public final class ProgressOptions implements Parcelable {
      */
     public void setDeterminateAnimationEnabled(boolean determinateAnimationEnabled) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
-        listener.onOptionsUpdated(this);
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
     /**
@@ -375,7 +405,8 @@ public final class ProgressOptions implements Parcelable {
     public void setBorderWidth(int borderWidth) {
         this.mBorderWidth = borderWidth;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
     /**
@@ -391,7 +422,8 @@ public final class ProgressOptions implements Parcelable {
             borderWidthPercent = borderWidthPercent % 100;
         this.mBorderWidthPercent = borderWidthPercent;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
     /**
@@ -409,7 +441,8 @@ public final class ProgressOptions implements Parcelable {
         if(valuePercent < 0)
             valuePercent = 0;
         this.mValuePercent = valuePercent;
-        listener.onOptionsUpdated(this);
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
     /**
@@ -424,7 +457,8 @@ public final class ProgressOptions implements Parcelable {
      */
     public void setFrontColor(int frontColor) {
         this.mFrontColor = frontColor;
-        listener.onOptionsUpdated(this);
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
 
@@ -440,7 +474,8 @@ public final class ProgressOptions implements Parcelable {
      */
     public void setBackColor(int backColor) {
         this.mBackColor = backColor;
-        listener.onOptionsUpdated(this);
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
 
@@ -456,7 +491,8 @@ public final class ProgressOptions implements Parcelable {
      */
     public void setIndeterminateColor(int indeterminateColor) {
         this.mIndeterminateColor = indeterminateColor;
-        listener.onOptionsUpdated(this);
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
     /**
@@ -467,7 +503,8 @@ public final class ProgressOptions implements Parcelable {
      */
     public void setDrawWedge(boolean mDrawWedge) {
         this.mDrawWedge = mDrawWedge;
-        listener.onOptionsUpdated(this);
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
     /**
@@ -483,7 +520,8 @@ public final class ProgressOptions implements Parcelable {
     public void setSize(int size) {
         this.mSize = size;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
 
@@ -497,7 +535,8 @@ public final class ProgressOptions implements Parcelable {
     public void setPadding(int padding) {
         this.mPadding = padding;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
     /**
@@ -514,7 +553,8 @@ public final class ProgressOptions implements Parcelable {
             sizePercent = sizePercent % 100;
         this.mSizePercent = sizePercent;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
     /**
@@ -526,7 +566,8 @@ public final class ProgressOptions implements Parcelable {
     public void setGravity(PivProgressGravity mGravity) {
         this.mGravity = mGravity;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
     /**
@@ -538,7 +579,8 @@ public final class ProgressOptions implements Parcelable {
     public void setRtlDisabled(boolean rtlDisabled) {
         this.mRtlDisabled = rtlDisabled;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        listener.onSizeUpdated(this);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
     }
 
 
@@ -674,7 +716,7 @@ public final class ProgressOptions implements Parcelable {
      * @param listener Listener that will update the progress drawers on changes
      */
     public void setListener(ProgressOptionsListener listener) {
-        this.listener = listener;
+        this.listener = new WeakReference<>(listener);
     }
 
 

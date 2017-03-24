@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.powerfulimageview.progress;
 
 /** Gravity of the progress indicator. */
 public enum PivProgressGravity {

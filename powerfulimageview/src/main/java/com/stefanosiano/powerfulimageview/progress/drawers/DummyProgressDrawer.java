@@ -1,9 +1,9 @@
-package com.stefanosiano.progressimageview.progress.drawers;
+package com.stefanosiano.powerfulimageview.progress.drawers;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;
 
-import com.stefanosiano.progressimageview.progress.ProgressOptions;
+import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 
 /**
  * Dummy progress drawer that doesn't do anything.

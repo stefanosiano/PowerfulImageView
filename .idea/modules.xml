@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ProgressImageView.iml" filepath="$PROJECT_DIR$/ProgressImageView.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProgressImageViewSample.iml" filepath="$PROJECT_DIR$/ProgressImageViewSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/progressimageview/progressimageview.iml" filepath="$PROJECT_DIR$/progressimageview/progressimageview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/powerfulimageview/powerfulimageview.iml" filepath="$PROJECT_DIR$/powerfulimageview/powerfulimageview.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>

@@ -1,4 +1,4 @@
-package com.stefanosiano.progressimageview.progress;
+package com.stefanosiano.powerfulimageview.progress;
 
 /** Mode of the progress indicator that will be drawn on the image */
 public enum PivProgressMode {
