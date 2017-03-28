@@ -107,7 +107,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF progressBounds) {
+    public void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds) {
         canvas.drawRect(mStartX, progressBounds.top, mEndX, progressBounds.bottom, mProgressPaint);
     }
 

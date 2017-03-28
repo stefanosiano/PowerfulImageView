@@ -144,7 +144,7 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF progressBounds) {
+    public void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds) {
         canvas.drawRect(mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressBackPaint);
         canvas.drawRect(progressBounds.left, progressBounds.top, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint);
     }

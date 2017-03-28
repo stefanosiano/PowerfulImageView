@@ -27,6 +27,7 @@ android {
         versionCode 1
         versionName libVersion
         consumerProguardFiles 'piv-proguard-rules.txt'
+        vectorDrawables.useSupportLibrary = true
 
     }
 }

@@ -1,10 +1,20 @@
 package com.stefanosiano.powerfulimageview.progress.drawers;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.stefanosiano.powerfulimageview.PowerfulImageView;
+import com.stefanosiano.powerfulimageview.R;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 
@@ -24,6 +34,9 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mProgressBounds;
+
+    /** Bounds in which the progress indicator will be drawn */
+    private final RectF mProgressCancelBounds;
 
     //Drawers
     private DummyProgressDrawer mDummyProgressDrawer;
@@ -53,6 +66,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     public ProgressDrawerManager(PowerfulImageView piv, final ProgressOptions progressOptions){
         this.mPiv = new WeakReference<>(piv);
         this.mProgressBounds = new RectF();
+        this.mProgressCancelBounds = new RectF();
         this.mProgressOptions = progressOptions;
         this.listener = new ProgressDrawerListener() {
             @Override
@@ -86,8 +100,23 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
                 break;
 
             case DETERMINATE:
+                Bitmap bitmap;
+                try {
+                    bitmap = getBitmapFromDrawable(mPiv.get().getContext(), R.drawable.ic_clear_white);
+                    /*
+                    Drawable vectorDrawable = ContextCompat.getDrawable(mPiv.get().getContext().getApplicationContext(), R.drawable.ic_clear_white);
+                    bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                            vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    vectorDrawable.draw(canvas);
+*/
+                } catch (OutOfMemoryError e) {
+                    // Handle the error
+                    bitmap = null;
+                }
                 if(mDeterminateProgressDrawer == null)
-                    this.mDeterminateProgressDrawer = new DeterminateProgressDrawer();
+                    this.mDeterminateProgressDrawer = new DeterminateProgressDrawer(bitmap);
                 mProgressDrawer = mDeterminateProgressDrawer;
                 break;
 
@@ -114,6 +143,23 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         return mProgressDrawer;
     }
 
+    public Bitmap getBitmapFromDrawable(Context context, @DrawableRes int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        } else if (drawable instanceof VectorDrawable || drawable instanceof VectorDrawableCompat) {
+            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+
+            return bitmap;
+        } else {
+            throw new IllegalArgumentException("unsupported drawable type");
+        }
+    }
+
     /**
      * It calculates the bounds of the progress indicator.
      *
@@ -129,6 +175,11 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
                 mProgressOptions.getRight(),
                 mProgressOptions.getBottom());
 
+        mProgressCancelBounds.set(
+                mProgressOptions.getLeft() - 20,
+                mProgressOptions.getTop() - 20,
+                mProgressOptions.getRight() + 20,
+                mProgressOptions.getBottom() + 20);
         mProgressDrawer.setup(mProgressOptions);
     }
 
@@ -155,7 +206,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
     /** Draws the progress indicator */
     public final void onDraw(Canvas canvas) {
-        mProgressDrawer.draw(canvas, mProgressBounds);
+        mProgressDrawer.draw(canvas, mProgressBounds, mProgressCancelBounds);
     }
 
     /**

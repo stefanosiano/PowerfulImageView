@@ -25,7 +25,7 @@ public interface ProgressDrawer {
      * @param canvas Canvas of the View
      * @param progressBounds Bounds of the progress indicator
      */
-    void draw(Canvas canvas, RectF progressBounds);
+    void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds);
 
     /** Starts the animations (valid for indeterminate drawers)
      * Calling it multiple times will cause the animation to restart! */

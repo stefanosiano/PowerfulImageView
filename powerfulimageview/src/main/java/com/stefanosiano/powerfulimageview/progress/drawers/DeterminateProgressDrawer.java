@@ -1,7 +1,10 @@
 package com.stefanosiano.powerfulimageview.progress.drawers;
 
 import android.animation.ValueAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.animation.LinearInterpolator;
@@ -24,6 +27,9 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
 
     /** Paint used to draw the back arc */
     private Paint mProgressBackPaint;
+
+    /** Paint used to draw the back arc */
+    private Paint mProgressCancelPaint;
 
     /** Animator that transforms the angles used to draw the progress */
     private ValueAnimator mProgressAnimator;
@@ -57,10 +63,13 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     /** Listener to handle things from the drawer */
     private ProgressDrawerManager.ProgressDrawerListener listener;
 
+    private Bitmap bitmap;
+
     /**
      * ProgressDrawer that shows a determinate circle as progress indicator.
      */
-    DeterminateProgressDrawer() {
+    DeterminateProgressDrawer(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     /**
@@ -131,6 +140,7 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
 
         if(mProgressFrontPaint == null) mProgressFrontPaint = new Paint();
         if(mProgressBackPaint == null) mProgressBackPaint = new Paint();
+        if(mProgressCancelPaint == null) mProgressCancelPaint = new Paint();
 
         mProgressFrontPaint.setColor(progressOptions.getFrontColor());
         mProgressFrontPaint.setStrokeWidth(progressOptions.getCalculatedBorderWidth());
@@ -141,6 +151,11 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 
+        mProgressCancelPaint.setColor(Color.parseColor("#a0000000"));
+        mProgressCancelPaint.setStrokeWidth(0);
+        mProgressCancelPaint.setAntiAlias(true);
+        mProgressCancelPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
         setProgressPercent(progressOptions.getValuePercent());
     }
 
@@ -148,7 +163,9 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     public void startIndeterminateAnimation() {}
 
     @Override
-    public void draw(Canvas canvas, RectF progressBounds) {
+    public void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds) {
+        canvas.drawArc(progressCancelBounds, 0, 360, true, mProgressCancelPaint);
+        canvas.drawBitmap(bitmap, null, progressBounds, null);
         canvas.drawArc(progressBounds, mProgressBackStartAngle, mProgressBackSweepAngle, drawWedge, mProgressBackPaint);
         canvas.drawArc(progressBounds, -90, mCurrentProgressFrontSweepAngle, drawWedge, mProgressFrontPaint);
     }

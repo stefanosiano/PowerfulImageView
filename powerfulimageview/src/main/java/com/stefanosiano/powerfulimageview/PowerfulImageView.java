@@ -27,8 +27,8 @@ public class PowerfulImageView extends AppCompatImageView {
 
     //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
-    private static final int DEFAULT_PROGRESS_WIDTH = -1;
-    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = 12;
+    private static final int DEFAULT_PROGRESS_WIDTH = 3;
+    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = -1;
     private static final int DEFAULT_PROGRESS_SIZE = 24;
     private static final float DEFAULT_PROGRESS_SIZE_PERCENT = -1;
     private static final int DEFAULT_PROGRESS_PADDING = 2;
