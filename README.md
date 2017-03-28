@@ -6,6 +6,8 @@ Right now it provides a progress indicator.
   
 To do:  
   
+Cancel icon/background under the progress indicator  
+  
 Publish library!  
   
 Write instructions and readme file  
