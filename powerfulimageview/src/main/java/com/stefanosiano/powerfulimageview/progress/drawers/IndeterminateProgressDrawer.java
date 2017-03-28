@@ -121,7 +121,7 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
 
 
     @Override
-    public void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds) {
+    public void draw(Canvas canvas, RectF progressBounds) {
         canvas.drawArc(progressBounds, mProgressStartAngle, mProgressSweepAngle, false, mProgressPaint);
     }
 

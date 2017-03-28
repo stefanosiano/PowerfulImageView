@@ -8,7 +8,7 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 /**
  * Interface that handles options, drawing and updating of the progress indicators on the View.
  */
-public interface ProgressDrawer {
+interface ProgressDrawer {
 
     /**
      * Initialize or updates all the variables needed to work.
@@ -25,7 +25,7 @@ public interface ProgressDrawer {
      * @param canvas Canvas of the View
      * @param progressBounds Bounds of the progress indicator
      */
-    void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds);
+    void draw(Canvas canvas, RectF progressBounds);
 
     /** Starts the animations (valid for indeterminate drawers)
      * Calling it multiple times will cause the animation to restart! */

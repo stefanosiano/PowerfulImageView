@@ -24,7 +24,7 @@ final class DummyProgressDrawer implements ProgressDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF progressBounds, RectF progressCancelBounds) {
+    public void draw(Canvas canvas, RectF progressBounds) {
 
     }
 

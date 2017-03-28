@@ -78,8 +78,8 @@
 
             app:piv_progress_mode="determinate"
             app:piv_progress_value_percent="10"
-            app:piv_progress_border_width="5dp"
-            app:piv_progress_size="64dp" />
+            app:piv_progress_border_width="1dp"
+            app:piv_progress_size="8dp" />
 
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
