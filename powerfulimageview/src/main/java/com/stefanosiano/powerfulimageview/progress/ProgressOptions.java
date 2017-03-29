@@ -37,6 +37,20 @@ public final class ProgressOptions implements Parcelable {
     /** If should show a wedge, used by circular determinate drawer */
     private boolean mDrawWedge;
 
+    /** If should show a cancel icon, used by circular determinate drawer */
+    private boolean mCancelIconEnabled;
+
+    /** If should show a background */
+    private boolean mBackgroundEnabled;
+
+    /** Background color of the indicator */
+    private int mBackgroundColor;
+
+    /** Padding of the indicator relative to its background */
+    private int mBackgroundPadding;
+
+    /** Padding of the indicator relative to its background, as a percentage of the whole background */
+    private float mBackgroundPaddingPercent;
     
     //variables used to calculate bounds
 
@@ -82,6 +96,19 @@ public final class ProgressOptions implements Parcelable {
     /** Bottom bound calculated */
     private float mCalculatedBottom;
 
+    //bounds of the progress indicator background
+    /** Left background bound calculated */
+    private float mCalculatedBackgroundLeft;
+
+    /** Top background bound calculated */
+    private float mCalculatedBackgroundTop;
+
+    /** Right background bound calculated */
+    private float mCalculatedBackgroundRight;
+
+    /** Bottom background bound calculated */
+    private float mCalculatedBackgroundBottom;
+
 
     //last calculated width and height
     /** Last width calculated. Used when changing programmatically the options, so bounds can be calculated directly */
@@ -115,7 +142,8 @@ public final class ProgressOptions implements Parcelable {
      * @param drawWedge If should show a wedge, used by circular determinate drawer
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
-                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge) {
+                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge, boolean cancelIconEnabled, 
+                           boolean backgroundEnabled, int backgroundColor, int backgroundPadding, float backgroundPaddingPercent) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -132,6 +160,11 @@ public final class ProgressOptions implements Parcelable {
         this.mIsRtl = rtl;
         this.mRtlDisabled = disableRtlSupport;
         this.mDrawWedge = drawWedge;
+        this.mCancelIconEnabled = cancelIconEnabled;
+        this.mBackgroundEnabled = backgroundEnabled;
+        this.mBackgroundColor = backgroundColor;
+        this.mBackgroundPadding = backgroundPadding;
+        this.mBackgroundPaddingPercent = backgroundPaddingPercent;
 
         //initialization of private fields used for calculations
         this.mCalculatedSize = 0;
@@ -145,7 +178,7 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedLastMode = PivProgressMode.NONE;
     }
 
-    public void setOptions(ProgressOptions other) {
+    public ProgressOptions(ProgressOptions other) {
         this.mDeterminateAnimationEnabled = other.mDeterminateAnimationEnabled;
         this.mBorderWidth = other.mBorderWidth;
         this.mBorderWidthPercent = other.mBorderWidthPercent;
@@ -154,6 +187,11 @@ public final class ProgressOptions implements Parcelable {
         this.mBackColor = other.mBackColor;
         this.mIndeterminateColor = other.mIndeterminateColor;
         this.mDrawWedge = other.mDrawWedge;
+        this.mCancelIconEnabled = other.mCancelIconEnabled;
+        this.mBackgroundEnabled = other.mBackgroundEnabled;
+        this.mBackgroundColor = other.mBackgroundColor;
+        this.mBackgroundPadding = other.mBackgroundPadding;
+        this.mBackgroundPaddingPercent = other.mBackgroundPaddingPercent;
         this.mSize = other.mSize;
         this.mPadding = other.mPadding;
         this.mSizePercent = other.mSizePercent;
@@ -194,6 +232,10 @@ public final class ProgressOptions implements Parcelable {
             mCalculatedRight = 0;
             mCalculatedTop = 0;
             mCalculatedBottom = 0;
+            mCalculatedBackgroundLeft = 0;
+            mCalculatedBackgroundRight = 0;
+            mCalculatedBackgroundTop = 0;
+            mCalculatedBackgroundBottom = 0;
             return;
         }
 
@@ -222,141 +264,74 @@ public final class ProgressOptions implements Parcelable {
             //calculation of circular bounds
             case DETERMINATE:
             case INDETERMINATE:
-                switch (mGravity){
-                    case START:
-                    case BOTTOM_START:
-                    case TOP_START:
-                        if(mIsRtl && !mRtlDisabled){
-                            //it's at right
-                            mCalculatedLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
-                            mCalculatedRight = w - mCalculatedBorderWidth/2 - mPadding;
-                        }
-                        else {
-                            //it's at left
-                            mCalculatedLeft = mCalculatedBorderWidth/2 + mPadding;
-                            mCalculatedRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
-                        }
-                        break;
-                    case END:
-                    case BOTTOM_END:
-                    case TOP_END:
-                        if(mIsRtl && !mRtlDisabled){
-                            //it's at left
-                            mCalculatedLeft = mCalculatedBorderWidth/2 + mPadding;
-                            mCalculatedRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
-                        }
-                        else {
-                            //it's at right
-                            mCalculatedLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
-                            mCalculatedRight = w - mCalculatedBorderWidth/2 - mPadding;
-                        }
-                        break;
-                    case TOP:
-                    case BOTTOM:
-                    case CENTER:
-                        //it's in center
-                        mCalculatedLeft = (w - mCalculatedSize + mCalculatedBorderWidth) /2;
-                        mCalculatedRight = (w + mCalculatedSize - mCalculatedBorderWidth) /2;
-                        break;
+
+                //horizontal gravity
+                if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
+                    mCalculatedBackgroundLeft = mCalculatedBorderWidth/2 + mPadding;
+                    mCalculatedBackgroundRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
+                } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
+                    mCalculatedBackgroundLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
+                    mCalculatedBackgroundRight = w - mCalculatedBorderWidth/2 - mPadding;
+                } else {
+                    mCalculatedBackgroundLeft = (w - mCalculatedSize + mCalculatedBorderWidth) /2;
+                    mCalculatedBackgroundRight = (w + mCalculatedSize - mCalculatedBorderWidth) /2;
                 }
-                switch (mGravity){
-                    case TOP_START:
-                    case TOP_END:
-                    case TOP:
-                        //it's on top
-                        mCalculatedTop = mCalculatedBorderWidth/2 + mPadding;
-                        mCalculatedBottom = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
-                        break;
-                    case BOTTOM:
-                    case BOTTOM_START:
-                    case BOTTOM_END:
-                        //it's on bottom
-                        mCalculatedTop = h - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
-                        mCalculatedBottom = h - mCalculatedBorderWidth/2 - mPadding;
-                        break;
-                    case END:
-                    case START:
-                    case CENTER:
-                        //it's in center
-                        mCalculatedTop = (h - mCalculatedSize + mCalculatedBorderWidth) /2;
-                        mCalculatedBottom = (h + mCalculatedSize - mCalculatedBorderWidth) /2;
-                        break;
+
+                //vertical gravity
+                if(mGravity.isGravityTop()) {
+                    mCalculatedBackgroundTop = mCalculatedBorderWidth / 2 + mPadding;
+                    mCalculatedBackgroundBottom = mCalculatedSize - mCalculatedBorderWidth / 2 + mPadding;
+                } else if (mGravity.isGravityBottom()) {
+                    mCalculatedBackgroundTop = h - mCalculatedSize + mCalculatedBorderWidth / 2 - mPadding;
+                    mCalculatedBackgroundBottom = h - mCalculatedBorderWidth / 2 - mPadding;
+                } else {
+                    mCalculatedBackgroundTop = (h - mCalculatedSize + mCalculatedBorderWidth) / 2;
+                    mCalculatedBackgroundBottom = (h + mCalculatedSize - mCalculatedBorderWidth) / 2;
                 }
                 break;
 
             //calculation of horizontal bounds
             case HORIZONTAL_DETERMINATE:
             case HORIZONTAL_INDETERMINATE:
-                switch (mGravity){
-                    case START:
-                    case BOTTOM_START:
-                    case TOP_START:
-                        if(mIsRtl && !mRtlDisabled){
-                            //it's at right
-                            mCalculatedLeft = w - mCalculatedSize - mPadding;
-                            mCalculatedRight = w - mPadding;
-                        }
-                        else {
-                            //it's at left
-                            mCalculatedLeft = mPadding;
-                            mCalculatedRight = mCalculatedSize + mPadding;
-                        }
-                        break;
-                    case END:
-                    case BOTTOM_END:
-                    case TOP_END:
-                        if(mIsRtl && !mRtlDisabled){
-                            //it's at left
-                            mCalculatedLeft = mPadding;
-                            mCalculatedRight = mCalculatedSize + mPadding;
-                        }
-                        else {
-                            //it's at right
-                            mCalculatedLeft = w - mCalculatedSize - mPadding;
-                            mCalculatedRight = w - mPadding;
-                        }
-                        break;
-                    case TOP:
-                    case BOTTOM:
-                    case CENTER:
-                        //it's in center
-                        mCalculatedLeft = (w - mCalculatedSize)/2;
-                        mCalculatedRight = (w + mCalculatedSize)/2;
-                        break;
+
+                //horizontal gravity
+                if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
+                    mCalculatedBackgroundLeft = mPadding;
+                    mCalculatedBackgroundRight = mCalculatedSize + mPadding;
+                } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
+                    mCalculatedBackgroundLeft = w - mCalculatedSize - mPadding;
+                    mCalculatedBackgroundRight = w - mPadding;
+                } else {
+                    mCalculatedBackgroundLeft = (w - mCalculatedSize)/2;
+                    mCalculatedBackgroundRight = (w + mCalculatedSize)/2;
                 }
-                switch (mGravity){
-                    case TOP_START:
-                    case TOP_END:
-                    case TOP:
-                        //it's on top
-                        mCalculatedTop = mPadding;
-                        mCalculatedBottom = mCalculatedBorderWidth + mPadding;
-                        break;
-                    case BOTTOM:
-                    case BOTTOM_START:
-                    case BOTTOM_END:
-                        //it's on bottom
-                        mCalculatedTop = h - mCalculatedBorderWidth - mPadding;
-                        mCalculatedBottom = h - mPadding;
-                        break;
-                    case END:
-                    case START:
-                    case CENTER:
-                        //it's in center
-                        mCalculatedTop = (h - mCalculatedBorderWidth)/2;
-                        mCalculatedBottom = (h + mCalculatedBorderWidth)/2;
-                        break;
+
+                //vertical gravity
+                if(mGravity.isGravityTop()) {
+                    mCalculatedBackgroundTop = mPadding;
+                    mCalculatedBackgroundBottom = mCalculatedBorderWidth + mPadding;
+                } else if (mGravity.isGravityBottom()) {
+                    mCalculatedBackgroundTop = h - mCalculatedBorderWidth - mPadding;
+                    mCalculatedBackgroundBottom = h - mPadding;
+                } else {
+                    mCalculatedBackgroundTop = (h - mCalculatedBorderWidth)/2;
+                    mCalculatedBackgroundBottom = (h + mCalculatedBorderWidth)/2;
                 }
                 break;
 
             //if everything goes right, it should never come here. Just a precaution
             case NONE:
             default:
-                mCalculatedLeft = 0;
-                mCalculatedRight = 0;
-                mCalculatedTop = 0;
-                mCalculatedBottom = 0;
+                mCalculatedBackgroundLeft = 0;
+                mCalculatedBackgroundRight = 0;
+                mCalculatedBackgroundTop = 0;
+                mCalculatedBackgroundBottom = 0;
                 break;
+        }
+
+        //todo calculate for each gravity!
+        if(mBackgroundEnabled) {
+            mCalculatedLeft = mCalculatedBackgroundLeft + mBackgroundPadding;
         }
     }
 
@@ -582,6 +557,75 @@ public final class ProgressOptions implements Parcelable {
         if(listener.get() != null)
             listener.get().onSizeUpdated(this);
     }
+
+    /**
+     * Set whether to show a cancel progress indicator, used by circular drawers.
+     If the drawer is not determinate or indeterminate it's ignored.
+     *
+     * @param cancelIconEnabled If true, a cross icon is drawn
+     */
+    public void setCancelIconEnabled(boolean cancelIconEnabled) {
+        this.mCancelIconEnabled = cancelIconEnabled;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
+    }
+
+    /**
+     * Set the background color of the indicator, used by drawers.
+     *
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     *
+     * @param backgroundColor Color to use.
+     */
+    public void setBackgroundColor(int backgroundColor) {
+        this.mBackgroundColor = backgroundColor;
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
+    }
+
+    /**
+     * Set whether to show a progress background.
+     *
+     * @param backgroundEnabled If true, the background is drawn
+     */
+    public void setBackgroundEnabled(boolean backgroundEnabled) {
+        this.mBackgroundEnabled = backgroundEnabled;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
+    }
+
+    /**
+     * Set the padding of the progress indicator relative to its background.
+     *
+     * @param padding Padding of the progress indicator background
+     */
+    public void setBackgroundPadding(int padding) {
+        this.mBackgroundPadding = padding;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
+    }
+
+    /**
+     * Set the padding of the progress indicator relative to its background.
+     * Overrides padding set through setBackgroundPadding().
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     * If the percentage is lower than 0, it is ignored. -->
+     *
+     * @param paddingPercent Progress indicator background padding as a percentage of the whole background, as a float from 0 to 100
+     */
+    public void setBackgroundPaddingPercent(float paddingPercent) {
+        if(paddingPercent > 100)
+            mBackgroundPaddingPercent = paddingPercent % 100;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
+    }
+
 
 
     /**

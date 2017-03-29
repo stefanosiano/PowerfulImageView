@@ -60,4 +60,56 @@ public enum PivProgressGravity {
                 return CENTER;
         }
     }
+
+    public final boolean isGravityLeft(boolean isRtl){
+        switch (this){
+            case START:
+            case BOTTOM_START:
+            case TOP_START:
+                return (!isRtl);
+            case END:
+            case BOTTOM_END:
+            case TOP_END:
+                return (isRtl);
+            default:
+                return false;
+        }
+    }
+
+    public final boolean isGravityRight(boolean isRtl){
+        switch (this){
+            case START:
+            case BOTTOM_START:
+            case TOP_START:
+                return (isRtl);
+            case END:
+            case BOTTOM_END:
+            case TOP_END:
+                return (!isRtl);
+            default:
+                return false;
+        }
+    }
+
+    public final boolean isGravityTop(){
+        switch (this){
+            case TOP:
+            case TOP_START:
+            case TOP_END:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public final boolean isGravityBottom(){
+        switch (this){
+            case BOTTOM:
+            case BOTTOM_START:
+            case BOTTOM_END:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
