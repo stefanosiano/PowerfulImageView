@@ -37,21 +37,18 @@ public final class ProgressOptions implements Parcelable {
     /** If should show a wedge, used by circular determinate drawer */
     private boolean mDrawWedge;
 
-    /** If should show a cancel icon, used by circular determinate drawer */
-    private boolean mCancelIconEnabled;
+    /** If should show a shadow */
+    private boolean mShadowEnabled;
 
-    /** If should show a background */
-    private boolean mBackgroundEnabled;
+    /** Shadow color of the indicator */
+    private int mShadowColor;
 
-    /** Background color of the indicator */
-    private int mBackgroundColor;
+    /** Padding of the indicator relative to its shadow */
+    private int mShadowPadding;
 
-    /** Padding of the indicator relative to its background */
-    private int mBackgroundPadding;
+    /** Padding of the indicator relative to its shadow, as a percentage of the whole shadow */
+    private float mShadowPaddingPercent;
 
-    /** Padding of the indicator relative to its background, as a percentage of the whole background */
-    private float mBackgroundPaddingPercent;
-    
     //variables used to calculate bounds
 
     /** Size of the indicator */
@@ -80,6 +77,9 @@ public final class ProgressOptions implements Parcelable {
     /** Calculated size of the indicator, base on mSize, mSizePercent and View size */
     private int mCalculatedSize;
 
+    /** Calculated padding of the indicator shadow */
+    private int mCalculatedShadowPadding;
+
     /** Calculated width of the progress indicator, base on mBorderWidth, mBorderWidthPercent and mSize */
     private int mCalculatedBorderWidth;
 
@@ -96,18 +96,18 @@ public final class ProgressOptions implements Parcelable {
     /** Bottom bound calculated */
     private float mCalculatedBottom;
 
-    //bounds of the progress indicator background
-    /** Left background bound calculated */
-    private float mCalculatedBackgroundLeft;
+    //bounds of the progress indicator shadow
+    /** Left shadow bound calculated */
+    private float mCalculatedShadowLeft;
 
-    /** Top background bound calculated */
-    private float mCalculatedBackgroundTop;
+    /** Top shadow bound calculated */
+    private float mCalculatedShadowTop;
 
-    /** Right background bound calculated */
-    private float mCalculatedBackgroundRight;
+    /** Right shadow bound calculated */
+    private float mCalculatedShadowRight;
 
-    /** Bottom background bound calculated */
-    private float mCalculatedBackgroundBottom;
+    /** Bottom shadow bound calculated */
+    private float mCalculatedShadowBottom;
 
 
     //last calculated width and height
@@ -138,12 +138,16 @@ public final class ProgressOptions implements Parcelable {
      * @param indeterminateColor Color of the indicator, used by indeterminate drawers
      * @param gravity Gravity of the indicator
      * @param rtl Whether the view should use right to left layout (used for gravity option)
-     * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)              
+     * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)
      * @param drawWedge If should show a wedge, used by circular determinate drawer
+     * @param shadowEnabled If should show a shadow under progress indicator
+     * @param shadowColor Color of the shadow
+     * @param shadowPadding Padding of the progress indicator, relative to its shadow
+     * @param shadowPaddingPercent Padding of the progress indicator, relative to its shadow, as a percentage of the shadow
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
-                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge, boolean cancelIconEnabled, 
-                           boolean backgroundEnabled, int backgroundColor, int backgroundPadding, float backgroundPaddingPercent) {
+                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge,
+                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -160,14 +164,14 @@ public final class ProgressOptions implements Parcelable {
         this.mIsRtl = rtl;
         this.mRtlDisabled = disableRtlSupport;
         this.mDrawWedge = drawWedge;
-        this.mCancelIconEnabled = cancelIconEnabled;
-        this.mBackgroundEnabled = backgroundEnabled;
-        this.mBackgroundColor = backgroundColor;
-        this.mBackgroundPadding = backgroundPadding;
-        this.mBackgroundPaddingPercent = backgroundPaddingPercent;
+        this.mShadowEnabled = shadowEnabled;
+        this.mShadowColor = shadowColor;
+        this.mShadowPadding = shadowPadding;
+        this.mShadowPaddingPercent = shadowPaddingPercent;
 
         //initialization of private fields used for calculations
         this.mCalculatedSize = 0;
+        this.mCalculatedShadowPadding = 0;
         this.mCalculatedBorderWidth = 0;
         this.mCalculatedLastW = 0;
         this.mCalculatedLastH = 0;
@@ -178,7 +182,7 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedLastMode = PivProgressMode.NONE;
     }
 
-    public ProgressOptions(ProgressOptions other) {
+    public void setOptions (ProgressOptions other) {
         this.mDeterminateAnimationEnabled = other.mDeterminateAnimationEnabled;
         this.mBorderWidth = other.mBorderWidth;
         this.mBorderWidthPercent = other.mBorderWidthPercent;
@@ -187,11 +191,10 @@ public final class ProgressOptions implements Parcelable {
         this.mBackColor = other.mBackColor;
         this.mIndeterminateColor = other.mIndeterminateColor;
         this.mDrawWedge = other.mDrawWedge;
-        this.mCancelIconEnabled = other.mCancelIconEnabled;
-        this.mBackgroundEnabled = other.mBackgroundEnabled;
-        this.mBackgroundColor = other.mBackgroundColor;
-        this.mBackgroundPadding = other.mBackgroundPadding;
-        this.mBackgroundPaddingPercent = other.mBackgroundPaddingPercent;
+        this.mShadowEnabled = other.mShadowEnabled;
+        this.mShadowColor = other.mShadowColor;
+        this.mShadowPadding = other.mShadowPadding;
+        this.mShadowPaddingPercent = other.mShadowPaddingPercent;
         this.mSize = other.mSize;
         this.mPadding = other.mPadding;
         this.mSizePercent = other.mSizePercent;
@@ -199,11 +202,16 @@ public final class ProgressOptions implements Parcelable {
         this.mIsRtl = other.mIsRtl;
         this.mRtlDisabled = other.mRtlDisabled;
         this.mCalculatedSize = other.mCalculatedSize;
+        this.mCalculatedShadowPadding = other.mCalculatedShadowPadding;
         this.mCalculatedBorderWidth = other.mCalculatedBorderWidth;
         this.mCalculatedLeft = other.mCalculatedLeft;
         this.mCalculatedTop = other.mCalculatedTop;
         this.mCalculatedRight = other.mCalculatedRight;
         this.mCalculatedBottom = other.mCalculatedBottom;
+        this.mCalculatedShadowLeft = other.mCalculatedShadowLeft;
+        this.mCalculatedShadowTop = other.mCalculatedShadowTop;
+        this.mCalculatedShadowRight = other.mCalculatedShadowRight;
+        this.mCalculatedShadowBottom = other.mCalculatedShadowBottom;
         this.mCalculatedLastW = other.mCalculatedLastW;
         this.mCalculatedLastH = other.mCalculatedLastH;
         this.mCalculatedLastMode = other.mCalculatedLastMode;
@@ -213,18 +221,20 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Calculates the bounds of the progress indicator, based on progress options and mode.
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
-     * 
+     *
      * @param w Width of the View
      * @param h Height of the View
      * @param mode Mode of the progress indicator
      */
     public final void calculateBounds(int w, int h, PivProgressMode mode){
+        //todo switch dimension/dimensionPercent priority! - if dimension is defined it's used, otherwise percent value is used
 
         //saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w;
         mCalculatedLastH = h;
         mCalculatedLastMode = mode;
         mCalculatedSize = mSize;
+        mCalculatedShadowPadding = mShadowPadding;
         mCalculatedBorderWidth = mBorderWidth;
 
         if(mode == PivProgressMode.NONE){
@@ -232,10 +242,10 @@ public final class ProgressOptions implements Parcelable {
             mCalculatedRight = 0;
             mCalculatedTop = 0;
             mCalculatedBottom = 0;
-            mCalculatedBackgroundLeft = 0;
-            mCalculatedBackgroundRight = 0;
-            mCalculatedBackgroundTop = 0;
-            mCalculatedBackgroundBottom = 0;
+            mCalculatedShadowLeft = 0;
+            mCalculatedShadowRight = 0;
+            mCalculatedShadowTop = 0;
+            mCalculatedShadowBottom = 0;
             return;
         }
 
@@ -245,11 +255,20 @@ public final class ProgressOptions implements Parcelable {
 
         //if mSizePercent is 0 or more, it overrides mSize parameter
         if(mSizePercent >= 0){
-            mCalculatedSize = (int) (maxSize * (double) mSizePercent / 100);
+            mCalculatedSize = (int) (maxSize * mSizePercent / 100);
         }
         //the progress indicator cannot be bigger than the view (minus padding)
         if(mCalculatedSize > maxSize)
             mCalculatedSize = maxSize;
+
+        //if mShadowPaddingPercent is 0 or more, it overrides mShadowPadding parameter
+        if(mShadowPaddingPercent >= 0){
+            mCalculatedShadowPadding = (int) (mCalculatedSize * mShadowPaddingPercent / 100);
+        }
+        //if shadow is not enabled, shadow padding is set to 0
+        if(!mShadowEnabled)
+            mCalculatedShadowPadding = 0;
+
         //if border width was not been defined, it gets calculated based on the size of the indicator
         if(mBorderWidthPercent >= 0){
             mCalculatedBorderWidth = Math.round(mCalculatedSize * mBorderWidthPercent/100);
@@ -267,27 +286,31 @@ public final class ProgressOptions implements Parcelable {
 
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
-                    mCalculatedBackgroundLeft = mCalculatedBorderWidth/2 + mPadding;
-                    mCalculatedBackgroundRight = mCalculatedSize - mCalculatedBorderWidth/2 + mPadding;
+                    mCalculatedShadowLeft = mPadding;
+                    mCalculatedShadowRight = mCalculatedSize + mPadding;
                 } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
-                    mCalculatedBackgroundLeft = w - mCalculatedSize + mCalculatedBorderWidth/2 - mPadding;
-                    mCalculatedBackgroundRight = w - mCalculatedBorderWidth/2 - mPadding;
+                    mCalculatedShadowLeft = w - mCalculatedSize - mPadding;
+                    mCalculatedShadowRight = w - mPadding;
                 } else {
-                    mCalculatedBackgroundLeft = (w - mCalculatedSize + mCalculatedBorderWidth) /2;
-                    mCalculatedBackgroundRight = (w + mCalculatedSize - mCalculatedBorderWidth) /2;
+                    mCalculatedShadowLeft = (w - mCalculatedSize) /2;
+                    mCalculatedShadowRight = (w + mCalculatedSize) /2;
                 }
 
                 //vertical gravity
                 if(mGravity.isGravityTop()) {
-                    mCalculatedBackgroundTop = mCalculatedBorderWidth / 2 + mPadding;
-                    mCalculatedBackgroundBottom = mCalculatedSize - mCalculatedBorderWidth / 2 + mPadding;
+                    mCalculatedShadowTop = mPadding;
+                    mCalculatedShadowBottom = mCalculatedSize + mPadding;
                 } else if (mGravity.isGravityBottom()) {
-                    mCalculatedBackgroundTop = h - mCalculatedSize + mCalculatedBorderWidth / 2 - mPadding;
-                    mCalculatedBackgroundBottom = h - mCalculatedBorderWidth / 2 - mPadding;
+                    mCalculatedShadowTop = h - mCalculatedSize - mPadding;
+                    mCalculatedShadowBottom = h - mPadding;
                 } else {
-                    mCalculatedBackgroundTop = (h - mCalculatedSize + mCalculatedBorderWidth) / 2;
-                    mCalculatedBackgroundBottom = (h + mCalculatedSize - mCalculatedBorderWidth) / 2;
+                    mCalculatedShadowTop = (h - mCalculatedSize) / 2;
+                    mCalculatedShadowBottom = (h + mCalculatedSize) / 2;
                 }
+                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
+                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
+                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
+                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
                 break;
 
             //calculation of horizontal bounds
@@ -296,42 +319,45 @@ public final class ProgressOptions implements Parcelable {
 
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
-                    mCalculatedBackgroundLeft = mPadding;
-                    mCalculatedBackgroundRight = mCalculatedSize + mPadding;
+                    mCalculatedShadowLeft = mPadding;
+                    mCalculatedShadowRight = mCalculatedSize + mPadding;
                 } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
-                    mCalculatedBackgroundLeft = w - mCalculatedSize - mPadding;
-                    mCalculatedBackgroundRight = w - mPadding;
+                    mCalculatedShadowLeft = w - mCalculatedSize - mPadding;
+                    mCalculatedShadowRight = w - mPadding;
                 } else {
-                    mCalculatedBackgroundLeft = (w - mCalculatedSize)/2;
-                    mCalculatedBackgroundRight = (w + mCalculatedSize)/2;
+                    mCalculatedShadowLeft = (w - mCalculatedSize)/2;
+                    mCalculatedShadowRight = (w + mCalculatedSize)/2;
                 }
 
                 //vertical gravity
                 if(mGravity.isGravityTop()) {
-                    mCalculatedBackgroundTop = mPadding;
-                    mCalculatedBackgroundBottom = mCalculatedBorderWidth + mPadding;
+                    mCalculatedShadowTop = mPadding;
+                    mCalculatedShadowBottom = mCalculatedBorderWidth + mPadding;
                 } else if (mGravity.isGravityBottom()) {
-                    mCalculatedBackgroundTop = h - mCalculatedBorderWidth - mPadding;
-                    mCalculatedBackgroundBottom = h - mPadding;
+                    mCalculatedShadowTop = h - mCalculatedBorderWidth -  mPadding;
+                    mCalculatedShadowBottom = h - mPadding;
                 } else {
-                    mCalculatedBackgroundTop = (h - mCalculatedBorderWidth)/2;
-                    mCalculatedBackgroundBottom = (h + mCalculatedBorderWidth)/2;
+                    mCalculatedShadowTop = (h - mCalculatedBorderWidth)/2;
+                    mCalculatedShadowBottom = (h + mCalculatedBorderWidth)/2;
                 }
+                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding;
+                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding;
+                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding;
+                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding;
                 break;
 
             //if everything goes right, it should never come here. Just a precaution
             case NONE:
             default:
-                mCalculatedBackgroundLeft = 0;
-                mCalculatedBackgroundRight = 0;
-                mCalculatedBackgroundTop = 0;
-                mCalculatedBackgroundBottom = 0;
+                mCalculatedShadowLeft = 0;
+                mCalculatedShadowRight = 0;
+                mCalculatedShadowTop = 0;
+                mCalculatedShadowBottom = 0;
+                mCalculatedLeft = 0;
+                mCalculatedRight = 0;
+                mCalculatedTop = 0;
+                mCalculatedBottom = 0;
                 break;
-        }
-
-        //todo calculate for each gravity!
-        if(mBackgroundEnabled) {
-            mCalculatedLeft = mCalculatedBackgroundLeft + mBackgroundPadding;
         }
     }
 
@@ -355,13 +381,33 @@ public final class ProgressOptions implements Parcelable {
         return mCalculatedBottom;
     }
 
+    /** Returns the shadow left bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowLeft() {
+        return mCalculatedShadowLeft;
+    }
 
-    
-    
+    /** Returns the shadow top bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowTop() {
+        return mCalculatedShadowTop;
+    }
+
+    /** Returns the shadow right bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowRight() {
+        return mCalculatedShadowRight;
+    }
+
+    /** Returns the shadow bottom bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowBottom() {
+        return mCalculatedShadowBottom;
+    }
+
+
+
+
     /**
      * Set whether the determinate drawer should update its progress with an animation.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
-     * 
+     *
      * @param determinateAnimationEnabled If true it updates its progress with an animation, otherwise it will update instantly
      */
     public void setDeterminateAnimationEnabled(boolean determinateAnimationEnabled) {
@@ -374,7 +420,7 @@ public final class ProgressOptions implements Parcelable {
      * Width of the progress indicator.
      * It's used only if it's higher than 0 and borderWidthPercent is less than 0.
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
-     * 
+     *
      * @param borderWidth Width of the progress indicator
      */
     public void setBorderWidth(int borderWidth) {
@@ -389,7 +435,7 @@ public final class ProgressOptions implements Parcelable {
      * Overrides border width set through setBorderWidth().
      * If the percentage is higher than 100, it is treated as (value % 100).
      * If the percentage is lower than 0, it is ignored.
-     * 
+     *
      * @param borderWidthPercent Percentage of the progress indicator size, as a float from 0 to 100
      */
     public void setBorderWidthPercent(float borderWidthPercent) {
@@ -407,7 +453,7 @@ public final class ProgressOptions implements Parcelable {
      * If the percentage is lower than 0, it is treated as 0.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
      * Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0!
-     * 
+     *
      * @param valuePercent Percentage of the progress indicator, as a float from 0 to 100
      */
     public void setValuePercent(float valuePercent) {
@@ -427,7 +473,7 @@ public final class ProgressOptions implements Parcelable {
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details.
-     * 
+     *
      * @param frontColor Color to use.
      */
     public void setFrontColor(int frontColor) {
@@ -473,7 +519,7 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Set whether to show a wedge or a circle, used by circular determinate drawer.
      * If the drawer is not determinate it's ignored.
-     * 
+     *
      * @param mDrawWedge If true, a wedge is drawn, otherwise a circle will be drawn
      */
     public void setDrawWedge(boolean mDrawWedge) {
@@ -535,7 +581,7 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Set the gravity of the indicator.
      * It will follow the right to left layout (on api 17+), if not disabled.
-     * 
+     *
      * @param mGravity Gravity of the indicator
      */
     public void setGravity(PivProgressGravity mGravity) {
@@ -547,7 +593,7 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Set whether the view should use right to left layout (used for gravity option)
-     * 
+     *
      * @param rtlDisabled If true, start will always be treated as left and end as right.
      *                      If false, on api 17+, gravity will be treated accordingly to rtl rules.
      */
@@ -559,68 +605,55 @@ public final class ProgressOptions implements Parcelable {
     }
 
     /**
-     * Set whether to show a cancel progress indicator, used by circular drawers.
-     If the drawer is not determinate or indeterminate it's ignored.
-     *
-     * @param cancelIconEnabled If true, a cross icon is drawn
-     */
-    public void setCancelIconEnabled(boolean cancelIconEnabled) {
-        this.mCancelIconEnabled = cancelIconEnabled;
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        if(listener.get() != null)
-            listener.get().onSizeUpdated(this);
-    }
-
-    /**
-     * Set the background color of the indicator, used by drawers.
+     * Set the shadow color of the indicator, used by drawers.
      *
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details.
      *
-     * @param backgroundColor Color to use.
+     * @param shadowColor Color to use.
      */
-    public void setBackgroundColor(int backgroundColor) {
-        this.mBackgroundColor = backgroundColor;
+    public void setShadowColor(int shadowColor) {
+        this.mShadowColor = shadowColor;
         if(listener.get() != null)
             listener.get().onOptionsUpdated(this);
     }
 
     /**
-     * Set whether to show a progress background.
+     * Set whether to show a progress shadow.
      *
-     * @param backgroundEnabled If true, the background is drawn
+     * @param shadowEnabled If true, the shadow is drawn
      */
-    public void setBackgroundEnabled(boolean backgroundEnabled) {
-        this.mBackgroundEnabled = backgroundEnabled;
+    public void setShadowEnabled(boolean shadowEnabled) {
+        this.mShadowEnabled = shadowEnabled;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
             listener.get().onSizeUpdated(this);
     }
 
     /**
-     * Set the padding of the progress indicator relative to its background.
+     * Set the padding of the progress indicator relative to its shadow.
      *
-     * @param padding Padding of the progress indicator background
+     * @param padding Padding of the progress indicator shadow
      */
-    public void setBackgroundPadding(int padding) {
-        this.mBackgroundPadding = padding;
+    public void setShadowPadding(int padding) {
+        this.mShadowPadding = padding;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
             listener.get().onSizeUpdated(this);
     }
 
     /**
-     * Set the padding of the progress indicator relative to its background.
-     * Overrides padding set through setBackgroundPadding().
+     * Set the padding of the progress indicator relative to its shadow.
+     * Overrides padding set through setShadowPadding().
      * If the percentage is higher than 100, it is treated as (value % 100).
      * If the percentage is lower than 0, it is ignored. -->
      *
-     * @param paddingPercent Progress indicator background padding as a percentage of the whole background, as a float from 0 to 100
+     * @param paddingPercent Progress indicator shadow padding as a percentage of the whole shadow, as a float from 0 to 100
      */
-    public void setBackgroundPaddingPercent(float paddingPercent) {
+    public void setShadowPaddingPercent(float paddingPercent) {
         if(paddingPercent > 100)
-            mBackgroundPaddingPercent = paddingPercent % 100;
+            mShadowPaddingPercent = paddingPercent % 100;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
             listener.get().onSizeUpdated(this);
@@ -686,6 +719,26 @@ public final class ProgressOptions implements Parcelable {
     }
 
     /**
+     * Padding of the progress indicator shadow.
+     * If you want to get the real padding used to show the shadow, call getCalculatedShadowPadding().
+     *
+     * @return Padding of the progress indicator shadow
+     */
+    public int getShadowPadding() {
+        return this.mShadowPadding;
+    }
+
+    /**
+     * Padding of the progress indicator shadow, as a percentage of the whole shadow.
+     * If you want to get the real padding used to show the shadow, call getCalculatedShadowPadding().
+     *
+     * @return Padding of the progress indicator shadow, as a percentage of the whole shadow
+     */
+    public float getShadowPaddingPercent() {
+        return this.mShadowPaddingPercent;
+    }
+
+    /**
      * The size of the progress indicator, after calculations.
      * This will return the real value used by the progress indicator to show.
      *
@@ -695,11 +748,22 @@ public final class ProgressOptions implements Parcelable {
         return mCalculatedSize;
     }
 
+    /**
+     * Padding of the progress indicator shadow, after calculations.
+     * This will return the real value used by the progress shadow to show.
+     *
+     * @return Padding of the progress indicator shadow, after calculations
+     */
+    public float getCalculatedShadowPadding() {
+        return this.mCalculatedShadowPadding;
+    }
+
+
 
 
 
 // *************** Fields used by drawers ****************
-    
+
     /**
      * If the determinate drawer should update its progress with an animation
      *
@@ -763,7 +827,19 @@ public final class ProgressOptions implements Parcelable {
         this.listener = new WeakReference<>(listener);
     }
 
+    /**
+     * @return Color of the indicator shadow
+     */
+    public int getShadowColor() {
+        return this.mShadowColor;
+    }
 
+    /**
+     * @return whether to show a progress shadow
+     */
+    public boolean isShadowEnabled() {
+        return this.mShadowEnabled;
+    }
 
 
 

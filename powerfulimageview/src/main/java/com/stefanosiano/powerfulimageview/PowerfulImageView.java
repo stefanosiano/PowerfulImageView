@@ -36,11 +36,10 @@ public class PowerfulImageView extends AppCompatImageView {
     private static final int DEFAULT_PROGRESS_GRAVITY = PivProgressGravity.CENTER.getValue();
     private static final boolean DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT = false;
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
-    private static final boolean DEFAULT_PROGRESS_CANCEL_ENABLED = true;
-    private static final boolean DEFAULT_PROGRESS_BACKGROUND_ENABLED = true;
+    private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
-    private static final int DEFAULT_PROGRESS_BACKGROUND_PADDING = 4;
-    private static final float DEFAULT_PROGRESS_BACKGROUND_PADDING_PERCENT = -1;
+    private static final int DEFAULT_PROGRESS_SHADOW_PADDING = 4;
+    private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = -1;
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -75,11 +74,10 @@ public class PowerfulImageView extends AppCompatImageView {
                 ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL,
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_rtl_disabled, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_cancel_enabled, DEFAULT_PROGRESS_CANCEL_ENABLED),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_background_enabled, DEFAULT_PROGRESS_BACKGROUND_ENABLED),
-                a.getColor(R.styleable.PowerfulImageView_piv_progress_background_color, ContextCompat.getColor(context, R.color.piv_default_progress_background_color)),
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_background_padding, DEFAULT_PROGRESS_BACKGROUND_PADDING),
-                a.getFloat(R.styleable.PowerfulImageView_piv_progress_background_padding_percent, DEFAULT_PROGRESS_BACKGROUND_PADDING_PERCENT)
+                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_shadow_enabled, DEFAULT_PROGRESS_SHADOW_ENABLED),
+                a.getColor(R.styleable.PowerfulImageView_piv_progress_shadow_color, ContextCompat.getColor(context, R.color.piv_default_progress_shadow_color)),
+                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_PADDING, getResources().getDisplayMetrics())),
+                a.getFloat(R.styleable.PowerfulImageView_piv_progress_shadow_padding_percent, DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT)
         );
         PivProgressMode mode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
 

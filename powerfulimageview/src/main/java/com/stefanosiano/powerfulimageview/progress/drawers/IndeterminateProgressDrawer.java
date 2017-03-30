@@ -18,7 +18,7 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
 
 
     /** Default animation duration */
-    private final long DEFAULT_ANIMATION_DURATION = 1000;
+    private final long DEFAULT_ANIMATION_DURATION = 800;
 
     /** Paint used to draw the arcs */
     private Paint mProgressPaint;

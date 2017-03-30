@@ -10,13 +10,13 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
  * Used when cancel progress is disabled, so functions can be called without checks with no problem.
  */
 
-final class DummyCancelDrawer implements CancelDrawer {
+final class DummyShadowDrawer implements ShadowDrawer {
 
     /**
      * Dummy progress drawer that doesn't do anything.
      * Used when cancel progress is disabled, so functions can be called without checks with no problem.
      */
-    DummyCancelDrawer() {
+    DummyShadowDrawer() {
     }
 
     @Override
@@ -25,7 +25,7 @@ final class DummyCancelDrawer implements CancelDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF cancelBounds, RectF cancelIconBounds) {
+    public void draw(Canvas canvas, RectF cancelBounds) {
 
     }
 }

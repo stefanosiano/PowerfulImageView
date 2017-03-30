@@ -17,7 +17,8 @@
             android:src="@android:drawable/ic_input_get"
 
             app:piv_progress_gravity="bottom"
-            app:piv_progress_border_width="5dp"
+            app:piv_progress_border_width="6dp"
+            app:piv_progress_shadow_padding="2dp"
             app:piv_progress_mode="horizontal_determinate"
             app:piv_progress_front_color="#00A000"
             app:piv_progress_value_percent="20"
@@ -31,10 +32,11 @@
             android:src="@android:drawable/ic_input_get"
             android:background="#eaeaea"
 
+            app:piv_progress_shadow_enabled="false"
             app:piv_progress_padding="8dp"
+            app:piv_progress_border_width="5dp"
             app:piv_progress_mode="horizontal_determinate"
             app:piv_progress_value_percent="38"
-            app:piv_progress_border_width_percent="5"
             app:piv_progress_size="50dp"
             app:piv_progress_size_percent="50"/>
 
@@ -46,6 +48,9 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
+            app:piv_progress_shadow_enabled="true"
+            app:piv_progress_shadow_padding="8dp"
+            app:piv_progress_shadow_padding_percent="10"
             app:piv_progress_border_width="5dp"
             app:piv_progress_size="50dp"
             app:piv_progress_front_color="@color/colorAccent"
@@ -62,11 +67,11 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
+            app:piv_progress_padding="8dp"
+            app:piv_progress_shadow_padding="4dp"
             app:piv_progress_gravity="top_end"
-            app:piv_progress_back_color="@color/colorPrimary"
-            app:piv_progress_front_color="@color/colorAccent"
             app:piv_progress_mode="indeterminate"
-            app:piv_progress_border_width="5dp"
+            app:piv_progress_border_width="3dp"
             app:piv_progress_size="44dp" />
 
 
@@ -79,7 +84,7 @@
             app:piv_progress_mode="determinate"
             app:piv_progress_value_percent="10"
             app:piv_progress_border_width="1dp"
-            app:piv_progress_size="8dp" />
+            app:piv_progress_size="28dp" />
 
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
@@ -102,10 +107,7 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
-            app:piv_progress_mode="indeterminate"
-            app:piv_progress_value_percent="10"
-            app:piv_progress_border_width="5dp"
-            app:piv_progress_size="64dp" />
+            app:piv_progress_mode="indeterminate" />
 
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView

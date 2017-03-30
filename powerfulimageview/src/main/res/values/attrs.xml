@@ -72,29 +72,24 @@
              If true, a wedge is drawn, otherwise a circle will be drawn -->
         <attr name="piv_progress_draw_wedge" format="boolean" />
 
-        <!-- Set whether to show a cancel progress indicator, used by circular drawers.
-             If the drawer is not determinate or indeterminate it's ignored.
-             If true, a cross icon is drawn -->
-        <attr name="piv_progress_cancel_enabled" format="boolean" />
+        <!-- Set whether to show a progress shadow, used by drawers.
+             If true, the shadow is drawn -->
+        <attr name="piv_progress_shadow_enabled" format="boolean" />
 
-        <!-- Set whether to show a progress background, used by drawers.
-             If true, the background is drawn -->
-        <attr name="piv_progress_background_enabled" format="boolean" />
-
-        <!-- Set the background color of the indicator, used by drawers.
+        <!-- Set the shadow color of the indicator, used by drawers.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
              See the Color class for more details. -->
-        <attr name="piv_progress_background_color" format="color" />
+        <attr name="piv_progress_shadow_color" format="color" />
 
-        <!-- Set the padding of the progress indicator relative to its background.
-             Overrides padding set through setBackgroundPadding().
+        <!-- Set the padding of the progress indicator relative to its shadow.
+             Overrides padding set through setShadowPadding().
              If the percentage is higher than 100, it is treated as (value % 100).
              If the percentage is lower than 0, it is ignored. -->
-        <attr name="piv_progress_background_padding_percent" format="float" />
+        <attr name="piv_progress_shadow_padding_percent" format="float" />
 
-        <!-- Set the padding of the progress indicator relative to its background. -->
-        <attr name="piv_progress_background_padding" format="dimension" />
+        <!-- Set the padding of the progress indicator relative to its shadow. -->
+        <attr name="piv_progress_shadow_padding" format="dimension" />
 
         <!-- Set the gravity of the indicator.
              It will follow the right to left layout (on api 17+), if not disabled. -->

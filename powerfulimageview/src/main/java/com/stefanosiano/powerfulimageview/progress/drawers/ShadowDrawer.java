@@ -6,10 +6,10 @@ import android.graphics.RectF;
 import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 
 /**
- * Interface that handles options, drawing and updating of the cancel progress indicators on the View.
+ * Interface that handles options, drawing and updating of the progress indicators shadow on the View.
  */
 
-interface CancelDrawer {
+interface ShadowDrawer {
 
     /**
      * Initialize or updates all the variables needed to work.
@@ -25,8 +25,7 @@ interface CancelDrawer {
      * No object creation, no allocation, no calculation and no if/else. Just draw.
      *
      * @param canvas Canvas of the View
-     * @param cancelBounds Bounds of the cancel progress background indicator
-     * @param cancelIconBounds Bounds of the cancel progress icon indicator
+     * @param shadowBounds Bounds of the progress indicator shadow
      */
-    void draw(Canvas canvas, RectF cancelBounds, RectF cancelIconBounds);
+    void draw(Canvas canvas, RectF shadowBounds);
 }
