@@ -564,7 +564,6 @@ public final class ProgressOptions implements Parcelable {
      * Set the size of the progress indicator.
      *
      * It's used only if progressSize is less than 0.
-     * Overrides size set through setSize().
      * If the percentage is higher than 100, it is treated as (value % 100).
      *
      * @param sizePercent Progress indicator size as a percentage of the whole View, as a float from 0 to 100
