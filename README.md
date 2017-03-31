@@ -5,10 +5,10 @@ Custom Android ImageView with several added features.
 Right now it provides a progress indicator.  
   
 To do:  
-  
-Cancel icon/background under the progress indicator  
-  
+    
 Publish library!  
+  
+Switch dimension/dimensionPercent priority?  
   
 Write instructions and readme file  
   
