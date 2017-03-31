@@ -27,10 +27,10 @@ public class PowerfulImageView extends AppCompatImageView {
 
     //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
-    private static final int DEFAULT_PROGRESS_WIDTH = 3;
-    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = -1;
-    private static final int DEFAULT_PROGRESS_SIZE = 24;
-    private static final float DEFAULT_PROGRESS_SIZE_PERCENT = -1;
+    private static final int DEFAULT_PROGRESS_WIDTH = -1;
+    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = 8;
+    private static final int DEFAULT_PROGRESS_SIZE = -1;
+    private static final float DEFAULT_PROGRESS_SIZE_PERCENT = 40;
     private static final int DEFAULT_PROGRESS_PADDING = 2;
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
     private static final int DEFAULT_PROGRESS_GRAVITY = PivProgressGravity.CENTER.getValue();
@@ -38,8 +38,8 @@ public class PowerfulImageView extends AppCompatImageView {
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
-    private static final int DEFAULT_PROGRESS_SHADOW_PADDING = 4;
-    private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = -1;
+    private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
+    private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 8;
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;

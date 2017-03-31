@@ -22,6 +22,7 @@
             app:piv_progress_mode="horizontal_determinate"
             app:piv_progress_front_color="#00A000"
             app:piv_progress_value_percent="20"
+            app:piv_progress_size="-1dp"
             app:piv_progress_size_percent="100"/>
 
 
@@ -48,15 +49,18 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_input_get"
 
+            app:piv_progress_gravity="top"
             app:piv_progress_shadow_enabled="true"
             app:piv_progress_shadow_padding="8dp"
-            app:piv_progress_shadow_padding_percent="10"
             app:piv_progress_border_width="5dp"
-            app:piv_progress_size="50dp"
             app:piv_progress_front_color="@color/colorAccent"
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_mode="determinate"
-            app:piv_progress_value_percent="18"/>
+            app:piv_progress_value_percent="18"
+            app:piv_progress_shadow_padding_percent="8"
+            app:piv_progress_border_width_percent="8"
+            app:piv_progress_size="-1dp"
+            app:piv_progress_size_percent="100"/>
 
     </TableRow>
 
@@ -83,8 +87,7 @@
 
             app:piv_progress_mode="determinate"
             app:piv_progress_value_percent="10"
-            app:piv_progress_border_width="1dp"
-            app:piv_progress_size="28dp" />
+            app:piv_progress_size_percent="40" />
 
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView

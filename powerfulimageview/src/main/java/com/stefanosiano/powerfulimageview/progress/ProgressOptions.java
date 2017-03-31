@@ -127,11 +127,11 @@ public final class ProgressOptions implements Parcelable {
      * Creates the object that will be used by progress drawers:
      *
      * @param determinateAnimationEnabled If the determinate drawer should update its progress with an animation
-     * @param borderWidth Width of the progress indicator. If it's 0 or negative, it will be automatically adjusted based on the size
+     * @param borderWidth Width of the progress indicator. If it's 0 or more, it applies and overrides "borderWidthPercent" parameter
      * @param borderWidthPercent Width of the progress indicator as a percentage of the progress indicator size
-     * @param size Size of the progress indicator
+     * @param size Size of the progress indicator. If it's 0 or more, it applies and overrides "sizePercent" parameter
      * @param padding Padding of the progress indicator
-     * @param sizePercent Size of the progress indicator as a percentage of the whole View. If it's 0 or more, it applies and overrides "size" parameter
+     * @param sizePercent Size of the progress indicator as a percentage of the whole View
      * @param valuePercent Percentage value of the progress indicator, used by determinate drawers
      * @param frontColor Front color of the indicator, used by determinate drawers
      * @param backColor Back color of the indicator, used by determinate drawers
@@ -142,7 +142,7 @@ public final class ProgressOptions implements Parcelable {
      * @param drawWedge If should show a wedge, used by circular determinate drawer
      * @param shadowEnabled If should show a shadow under progress indicator
      * @param shadowColor Color of the shadow
-     * @param shadowPadding Padding of the progress indicator, relative to its shadow
+     * @param shadowPadding Padding of the progress indicator, relative to its shadow. If it's 0 or more, it applies and overrides "shadowPaddingPercent" parameter
      * @param shadowPaddingPercent Padding of the progress indicator, relative to its shadow, as a percentage of the shadow
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
@@ -227,15 +227,11 @@ public final class ProgressOptions implements Parcelable {
      * @param mode Mode of the progress indicator
      */
     public final void calculateBounds(int w, int h, PivProgressMode mode){
-        //todo switch dimension/dimensionPercent priority! - if dimension is defined it's used, otherwise percent value is used
 
         //saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w;
         mCalculatedLastH = h;
         mCalculatedLastMode = mode;
-        mCalculatedSize = mSize;
-        mCalculatedShadowPadding = mShadowPadding;
-        mCalculatedBorderWidth = mBorderWidth;
 
         if(mode == PivProgressMode.NONE){
             mCalculatedLeft = 0;
@@ -253,31 +249,38 @@ public final class ProgressOptions implements Parcelable {
         int maxSize = w < h ? w : h;
         maxSize = maxSize - mPadding - mPadding;
 
-        //if mSizePercent is 0 or more, it overrides mSize parameter
-        if(mSizePercent >= 0){
-            mCalculatedSize = (int) (maxSize * mSizePercent / 100);
-        }
+
+        //********** SIZE ***********
+        mCalculatedSize = (int) (maxSize * mSizePercent / 100);
+        //if mSize is 0 or more, it overrides mSizePercent parameter
+        if(mSize >= 0) mCalculatedSize = mSize;
+
         //the progress indicator cannot be bigger than the view (minus padding)
-        if(mCalculatedSize > maxSize)
-            mCalculatedSize = maxSize;
+        if(mCalculatedSize > maxSize) mCalculatedSize = maxSize;
 
-        //if mShadowPaddingPercent is 0 or more, it overrides mShadowPadding parameter
-        if(mShadowPaddingPercent >= 0){
-            mCalculatedShadowPadding = (int) (mCalculatedSize * mShadowPaddingPercent / 100);
-        }
+
+
+        //********** SHADOW PADDING ***********
+        mCalculatedShadowPadding = (int) (mCalculatedSize * mShadowPaddingPercent / 100);
+        //if mShadowPadding is 0 or more, it overrides mShadowPaddingPercent parameter
+        if(mShadowPadding >= 0) mCalculatedShadowPadding = mShadowPadding;
+
         //if shadow is not enabled, shadow padding is set to 0
-        if(!mShadowEnabled)
-            mCalculatedShadowPadding = 0;
+        if(!mShadowEnabled) mCalculatedShadowPadding = 0;
 
-        //if border width was not been defined, it gets calculated based on the size of the indicator
-        if(mBorderWidthPercent >= 0){
-            mCalculatedBorderWidth = Math.round(mCalculatedSize * mBorderWidthPercent/100);
-        }
+
+
+        //********** BORDER WIDTH ***********
+        mCalculatedBorderWidth = Math.round(mCalculatedSize * mBorderWidthPercent/100);
+        //if mBorderWidth is 0 or more, it overrides mBorderWidthPercent paramenter
+        if(mBorderWidth >= 0) mCalculatedBorderWidth = mBorderWidth;
+
         //width of the border should be at least 1 px
-        if(mCalculatedBorderWidth < 1)
-            mCalculatedBorderWidth = 1;
+        if(mCalculatedBorderWidth < 1) mCalculatedBorderWidth = 1;
 
-        //calculation of bounds
+
+
+        //********** BOUNDS ***********
         switch(mode){
 
             //calculation of circular bounds
@@ -287,26 +290,24 @@ public final class ProgressOptions implements Parcelable {
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
                     mCalculatedShadowLeft = mPadding;
-                    mCalculatedShadowRight = mCalculatedSize + mPadding;
                 } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
                     mCalculatedShadowLeft = w - mCalculatedSize - mPadding;
-                    mCalculatedShadowRight = w - mPadding;
                 } else {
                     mCalculatedShadowLeft = (w - mCalculatedSize) /2;
-                    mCalculatedShadowRight = (w + mCalculatedSize) /2;
                 }
 
                 //vertical gravity
                 if(mGravity.isGravityTop()) {
                     mCalculatedShadowTop = mPadding;
-                    mCalculatedShadowBottom = mCalculatedSize + mPadding;
                 } else if (mGravity.isGravityBottom()) {
                     mCalculatedShadowTop = h - mCalculatedSize - mPadding;
-                    mCalculatedShadowBottom = h - mPadding;
                 } else {
                     mCalculatedShadowTop = (h - mCalculatedSize) / 2;
-                    mCalculatedShadowBottom = (h + mCalculatedSize) / 2;
                 }
+
+                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize;
+                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedSize;
+
                 mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
                 mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
                 mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
@@ -320,26 +321,24 @@ public final class ProgressOptions implements Parcelable {
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
                     mCalculatedShadowLeft = mPadding;
-                    mCalculatedShadowRight = mCalculatedSize + mPadding;
                 } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
                     mCalculatedShadowLeft = w - mCalculatedSize - mPadding;
-                    mCalculatedShadowRight = w - mPadding;
                 } else {
                     mCalculatedShadowLeft = (w - mCalculatedSize)/2;
-                    mCalculatedShadowRight = (w + mCalculatedSize)/2;
                 }
 
                 //vertical gravity
                 if(mGravity.isGravityTop()) {
                     mCalculatedShadowTop = mPadding;
-                    mCalculatedShadowBottom = mCalculatedBorderWidth + mPadding;
                 } else if (mGravity.isGravityBottom()) {
                     mCalculatedShadowTop = h - mCalculatedBorderWidth -  mPadding;
-                    mCalculatedShadowBottom = h - mPadding;
                 } else {
                     mCalculatedShadowTop = (h - mCalculatedBorderWidth)/2;
-                    mCalculatedShadowBottom = (h + mCalculatedBorderWidth)/2;
                 }
+
+                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize;
+                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedBorderWidth;
+
                 mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding;
                 mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding;
                 mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding;
@@ -418,7 +417,8 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Width of the progress indicator.
-     * It's used only if it's higher than 0 and borderWidthPercent is less than 0.
+     * Overrides border width set through setBorderWidthPercent().
+     * If it's lower than 0, it is ignored.
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
      *
      * @param borderWidth Width of the progress indicator
@@ -432,9 +432,8 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Width of the progress indicator as percentage of the progress indicator size.
-     * Overrides border width set through setBorderWidth().
+     * It's used only if borderWidth is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
-     * If the percentage is lower than 0, it is ignored.
      *
      * @param borderWidthPercent Percentage of the progress indicator size, as a float from 0 to 100
      */
@@ -531,7 +530,8 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Size of the progress indicator.
      *
-     * It's used only if progressSizePercent is less than 0.
+     * Overrides size set through setSizePercent().
+     * It's less than 0, it is ignored.
      * Note that it may be different from the actual size used to draw the progress, since it is
      *      calculated based on the View size, on the sizePercent option and on the padding option.
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
@@ -563,9 +563,9 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Set the size of the progress indicator.
      *
+     * It's used only if progressSize is less than 0.
      * Overrides size set through setSize().
      * If the percentage is higher than 100, it is treated as (value % 100).
-     * If the percentage is lower than 0, it is ignored.
      *
      * @param sizePercent Progress indicator size as a percentage of the whole View, as a float from 0 to 100
      */
@@ -633,6 +633,8 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Set the padding of the progress indicator relative to its shadow.
+     * If it's lower than 0, it is ignored.
+     * Overrides shadow padding set through setShadowPaddingPercent().
      *
      * @param padding Padding of the progress indicator shadow
      */
@@ -645,9 +647,8 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Set the padding of the progress indicator relative to its shadow.
-     * Overrides padding set through setShadowPadding().
+     * It's used only if shadowPadding is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
-     * If the percentage is lower than 0, it is ignored. -->
      *
      * @param paddingPercent Progress indicator shadow padding as a percentage of the whole shadow, as a float from 0 to 100
      */
