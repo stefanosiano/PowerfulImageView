@@ -208,6 +208,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         mProgressMode = progressMode;
         updateDrawers(mProgressMode);
         mProgressDrawer.setup(mProgressOptions);
+        mShadowDrawer.setup(mProgressOptions);
         mProgressDrawer.startIndeterminateAnimation();
     }
 

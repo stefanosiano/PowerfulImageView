@@ -8,11 +8,11 @@ def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'      // Homepa
 def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'   // Git repository URL
 def libDescription = 'Custom Android ImageView with several added features.'
 def gitTag = '0.1.1'
-def pkgName = 'powerful-image-view'
+def pkgName = 'powerfulimageview'
 def libGroupId = "com.stefanosiano"                                          // Maven Group ID for the artifact
-def libArtifactId = "powerful-image-view"                                          // Maven Group ID for the artifact
-def libName = "Powerful Image View"                                          // Maven Group ID for the artifact
-def libVersion = "0.1.1"// This is the library version used when deploying the artifact
+def libArtifactId = "powerfulimageview"                                      // Maven Artifact ID for the artifact
+def libName = "Powerful Image View"                                          // Library name
+def libVersion = "0.1.2"// This is the library version used when deploying the artifact
 
 group = libGroupId //bintray org/group name
 version = libVersion //version
@@ -32,7 +32,7 @@ android {
     }
 }
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.0'
+    provided 'com.android.support:appcompat-v7:+'
 }
 
 
@@ -80,34 +80,26 @@ install {
 }
 
 
-
-version = libVersion
-
-if (project.hasProperty("android")) { // Android libraries
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-} else { // Java libraries
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+task generateJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
+
+task generateJavaDocsJar(type: Jar) {
+    from generateJavadocs.destinationDir
+    classifier 'javadoc'
+}
+
+generateJavaDocsJar.dependsOn generateJavadocs
 
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+    archives generateJavaDocsJar
+    archives generateSourcesJar
 }
 
 
