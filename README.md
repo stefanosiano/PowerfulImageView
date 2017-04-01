@@ -6,9 +6,7 @@ Right now it provides a progress indicator.
   
 To do:  
     
-Publish library!  
-  
-Switch dimension/dimensionPercent priority?  
+Understand best way to handle appCompat dependency  
   
 Write instructions and readme file  
   
