@@ -11,8 +11,10 @@ Planned features (for now):
 * Panoramas
 * Custom target for Picasso/Glide
 
+Determinate circular and horizontal progress with shadow and different gravity:  
 
-![](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20gravity.png)
+![Determinate progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20gravity.png) 
+![Determinate horizontal progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20horizontal%20gravity.png)
 
 
 Motivations
