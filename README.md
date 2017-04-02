@@ -12,6 +12,9 @@ Planned features (for now):
 * Custom target for Picasso/Glide
 
 
+![](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20gravity.png)
+
+
 Motivations
 -----------
 
