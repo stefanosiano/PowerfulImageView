@@ -22,6 +22,7 @@ This is flexible enough to let you use the progress in other ways, like time pas
 
 
 
+
 Gradle
 ------
 ```
@@ -30,6 +31,7 @@ dependencies {
 }
 ```
   
+  
 To do:  
     
 Understand best way to handle appCompat dependency  
@@ -37,4 +39,4 @@ Understand best way to handle appCompat dependency
 Create a PowerlessImageView without appcompat support?  
 Create code diagram?  
   
-Draw dark transparent frontground?  
+Draw dark transparent frontground?
