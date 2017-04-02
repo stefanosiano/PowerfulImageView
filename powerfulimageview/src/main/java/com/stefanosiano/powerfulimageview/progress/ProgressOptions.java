@@ -247,8 +247,25 @@ public final class ProgressOptions implements Parcelable {
 
         //calculate the maximum possible size of the progress indicator
         int maxSize = w < h ? w : h;
-        maxSize = maxSize - mPadding - mPadding;
 
+        switch(mode) {
+
+            //calculation of circular bounds
+            case DETERMINATE:
+            case INDETERMINATE:
+                maxSize = w < h ? w : h;
+                break;
+            case HORIZONTAL_DETERMINATE:
+            case HORIZONTAL_INDETERMINATE:
+                maxSize = w;
+                break;
+            case NONE:
+            default:
+                mSize = 0;
+                break;
+        }
+
+        maxSize = maxSize - mPadding - mPadding;
 
         //********** SIZE ***********
         mCalculatedSize = (int) (maxSize * mSizePercent / 100);
