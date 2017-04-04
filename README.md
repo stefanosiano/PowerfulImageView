@@ -10,11 +10,24 @@ Planned features (for now):
 * Pinch in/out to zoom
 * Panoramas
 * Custom target for Picasso/Glide
+  
+  
+Full load effect:  
 
+![Load progress with shadow](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/load%20circular.gif) 
+![Load horizontal progress with shadow](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/load%20horizontal.gif)
+
+  
 Determinate circular and horizontal progress with shadow and different gravity:  
 
 ![Determinate progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20gravity.png) 
 ![Determinate horizontal progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20horizontal%20gravity.png)
+  
+  
+Indeterminate circular and horizontal progress with shadow and different gravity:  
+
+![Indeterminate progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/indeterminate.gif) 
+![Indeterminate horizontal progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/horizontal%20indeterminate.gif)
 
 
 Motivations
