@@ -3,10 +3,10 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 //fixed data
-def pkgName = 'powerfulimageview'
+def pkgName = 'powerlessimageview'
 def libGroupId = "com.stefanosiano"                                          // Maven Group ID for the artifact
-def libArtifactId = "powerfulimageview"                                      // Maven Artifact ID for the artifact
-def libName = "Powerful Image View"                                          // Library name
+def libArtifactId = "powerlessimageview"                                     // Maven Artifact ID for the artifact
+def libName = "Powerless Image View"                                         // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
 def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // Git repository URL
 def libDescription = 'Custom Android ImageView with several added features.' // Library description
@@ -29,13 +29,9 @@ android {
         versionCode 1
         versionName libVersion
         consumerProguardFiles 'piv-proguard-rules.txt'
-        vectorDrawables.useSupportLibrary = true
-
     }
 }
-dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
-}
+dependencies {}
 
 
 

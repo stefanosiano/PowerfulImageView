@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Attributes of the PowerfulImageView.
+        For more informations visit https://github.com/stefanosiano/PowerfulImageView -->
+    <declare-styleable name="PowerlessImageView">
+
+        <!-- Set whether the determinate drawer should update its progress with an animation.
+             If the drawer is not determinate or horizontal_determinate it's ignored.
+             If true it updates its progress with an animation, otherwise it will update instantly -->
+        <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
+
+        <!-- Width of the progress indicator.
+             Overrides piv_progress_border_width_percent. -->
+        <attr name="piv_progress_border_width" format="dimension" />
+
+        <!-- Width of the progress indicator as percentage of the progress indicator size.
+             It's used only if piv_progress_border_width is less than 0
+             If the percentage is higher than 100, it is treated as (value % 100).
+             If the percentage is lower than 0, it is ignored -->
+        <attr name="piv_progress_border_width_percent" format="float" />
+
+        <!-- Size of the progress indicator.
+             Overrides piv_progress_size_percent.
+             It's less than 0, it is ignored.
+             Note that it may be different from the actual size used to draw the progress, since it is
+             calculated based on the View size, on the sizePercent option and on the padding option. -->
+        <attr name="piv_progress_size" format="dimension" />
+
+        <!-- Set the size of the progress indicator.
+             It's used only if piv_progress_size is less than 0.
+             If the percentage is higher than 100, it is treated as (value % 100). -->
+        <attr name="piv_progress_size_percent" format="float" />
+
+        <!-- Set the padding of the progress indicator. -->
+        <attr name="piv_progress_padding" format="dimension" />
+
+        <!-- Percentage value of the progress indicator, used by determinate drawers.
+             If the percentage is higher than 100, it is treated as (value % 100).
+             If the percentage is lower than 0, it is treated as 0.
+             If the drawer is not determinate or horizontal_determinate it's ignored.
+             Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0! -->
+        <attr name="piv_progress_value_percent" format="float" />
+
+        <!-- Set the front color of the indicator, used by determinate drawers.
+             If the drawer is not determinate or horizontal_determinate it's ignored.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_front_color" format="color" />
+
+        <!-- Set the back color of the indicator, used by determinate drawers.
+             If the drawer is not determinate or horizontal_determinate it's ignored.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_back_color" format="color" />
+
+        <!-- Set the indeterminate color of the indicator, used by indeterminate drawers.
+             If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_indeterminate_color" format="color" />
+
+        <!-- Set whether the view should use right to left layout (used for gravity option)
+             If true, start will always be treated as left and end as right.
+             If false, on api 17+, gravity will be treated accordingly to rtl rules. -->
+        <attr name="piv_progress_rtl_disabled" format="boolean" />
+
+        <!-- Set whether to show a wedge or a circle, used by circular determinate drawer.
+             If the drawer is not determinate it's ignored.
+             If true, a wedge is drawn, otherwise a circle will be drawn -->
+        <attr name="piv_progress_draw_wedge" format="boolean" />
+
+        <!-- Set whether to show a progress shadow, used by drawers.
+             If true, the shadow is drawn -->
+        <attr name="piv_progress_shadow_enabled" format="boolean" />
+
+        <!-- Set the shadow color of the indicator, used by drawers.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_shadow_color" format="color" />
+
+        <!-- Set the padding of the progress indicator relative to its shadow.
+             It's used only if piv_progress_shadow_padding is less than 0.
+             If the percentage is higher than 100, it is treated as (value % 100).
+             If the percentage is lower than 0, it is ignored. -->
+        <attr name="piv_progress_shadow_padding_percent" format="float" />
+
+        <!-- Set the padding of the progress indicator relative to its shadow.
+             Overrides piv_progress_shadow_padding_percent. -->
+        <attr name="piv_progress_shadow_padding" format="dimension" />
+
+        <!-- Set the gravity of the indicator.
+             It will follow the right to left layout (on api 17+), if not disabled. -->
+        <attr name="piv_progress_gravity" format="enum" >
+            <enum name="center" value="0"/>
+            <enum name="start" value="1"/>
+            <enum name="end" value="2"/>
+            <enum name="top" value="3"/>
+            <enum name="top_start" value="4"/>
+            <enum name="top_end" value="5"/>
+            <enum name="bottom" value="6"/>
+            <enum name="bottom_start" value="7"/>
+            <enum name="bottom_end" value="8"/>
+        </attr>
+
+        <!-- Progress mode of the indicator. -->
+        <attr name="piv_progress_mode" format="enum" >
+            <enum name="disabled" value="0"/>
+            <enum name="indeterminate" value="1"/>
+            <enum name="determinate" value="2"/>
+            <enum name="horizontal_determinate" value="3"/>
+            <enum name="horizontal_indeterminate" value="4"/>
+        </attr>
+    </declare-styleable>
+</resources>

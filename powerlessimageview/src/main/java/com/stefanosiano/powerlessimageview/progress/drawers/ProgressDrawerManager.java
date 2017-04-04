@@ -1,12 +1,12 @@
-package com.stefanosiano.powerfulimageview.progress.drawers;
+package com.stefanosiano.powerlessimageview.progress.drawers;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
-import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
+import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
+import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 
 import java.lang.ref.WeakReference;
 
