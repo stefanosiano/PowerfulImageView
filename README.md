@@ -34,17 +34,17 @@ Gradle
   
 ```
 repositories {
-  jcenter() // jcenter() is used as default in Android Studio. This line should go into project's build.gradle file.
+  jcenter() // used as default in Android Studio. Put this line into project's build.gradle file, if not already present.
 }
 ```
 
-To use **PowerfulImageView**:  
+To use **Powerful**ImageView:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerfulimageview:0.1.2'
 }
 ```
-If you want to use **PowerlessImageView**, instead:  
+To use **Powerless**ImageView:  
 ```
 dependencies {
     coming
@@ -58,7 +58,7 @@ It supports vector drawables and tinting on older apis, but brings in the whole 
 If you already use AppCompat library, or you want to use vector drawables, go with it.  
   
 **PowerlessImageView**  
-Slick version without AppCompat features, like vector drawables support or tinting on older apis.  
+Slick variant without AppCompat features, like vector drawables support or tinting on older apis.  
 If you don't want to use AppCompat library, and are fine without vector drawables, go with it.  
   
   
@@ -68,6 +68,8 @@ No steps are required, since configuration is already included.
   
   
 To do:  
+  
+Publish powerless variant  
   
 Create code diagram?  
   
