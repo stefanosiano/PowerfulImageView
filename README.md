@@ -27,19 +27,50 @@ This is flexible enough to let you use the progress in other ways, like tracking
 
 
 
+**PowerfulImageView requires a minimum API level of 12.**  
 
 Gradle
 ------
+  
+```
+repositories {
+  jcenter() // used as default in Android Studio. Put this line into project's build.gradle file, if not already present.
+}
+```
+
+To use **Powerful**ImageView:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerfulimageview:0.1.2'
 }
 ```
+To use **Powerless**ImageView:  
+```
+dependencies {
+    coming
+}
+```
+  
+PowerfulImageView vs PowerlessImageView
+---------------------------------------
+**PowerfulImageView**  
+It supports vector drawables and tinting on older apis, but brings in the whole AppCompat library.  
+If you already use AppCompat library, or you want to use vector drawables, go with it.  
+  
+**PowerlessImageView**  
+Slick variant without AppCompat features, like vector drawables support or tinting on older apis.  
+If you don't want to use AppCompat library, and are fine without vector drawables, go with it.  
+  
+  
+Proguard
+--------
+No steps are required, since configuration is already included.  
   
   
 To do:  
   
-Create a PowerlessImageView without appcompat support?  
+Publish powerless variant  
+  
 Create code diagram?  
   
-Draw dark transparent frontground?  
+Draw dark transparent frontground on the whole view?  
