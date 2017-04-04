@@ -54,13 +54,13 @@ repositories {
 To use **Powerful**ImageView:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.1.2'
+    compile 'com.stefanosiano:powerfulimageview:0.1.3'
 }
 ```
 To use **Powerless**ImageView:  
 ```
 dependencies {
-    coming
+    compile 'com.stefanosiano:powerlessimageview:0.1.3'
 }
 ```
   
@@ -81,8 +81,6 @@ No steps are required, since configuration is already included.
   
   
 To do:  
-  
-Publish powerless variant  
   
 Create code diagram?  
   
