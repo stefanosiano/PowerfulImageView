@@ -3,21 +3,4 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <array name="indeterminate_progress_colors">
-        <item>@color/colorAccent</item>
-        <item>#808080</item>
-    </array>
-
-    <array name="indeterminate_progress_colors1">
-        <item>@color/colorPrimary</item>
-        <item>@color/colorAccent</item>
-    </array>
-    <array name="indeterminate_progress_colors3">
-        <item>#a0a020</item>
-        <item>#ff0000</item>
-    </array>
-    <array name="indeterminate_progress_colors2">
-        <item>#a0a020</item>
-    </array>
 </resources>
