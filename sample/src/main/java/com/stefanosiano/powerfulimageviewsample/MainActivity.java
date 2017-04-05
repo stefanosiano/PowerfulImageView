@@ -4,8 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.stefanosiano.powerfulimageview.PowerfulImageView;
-import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 
 public class MainActivity extends AppCompatActivity {
     int progress = 0;
@@ -13,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_3);/*
+        setContentView(R.layout.activity_main);/*
         final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
         piw.changeProgressMode(PivProgressMode.HORIZONTAL_DETERMINATE);
 

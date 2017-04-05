@@ -11,7 +11,7 @@
 
     <TableRow>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -22,7 +22,7 @@
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="indeterminate"/>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -33,7 +33,7 @@
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="indeterminate"/>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -48,7 +48,7 @@
 
     <TableRow>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -59,7 +59,7 @@
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="indeterminate"/>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -70,7 +70,7 @@
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="indeterminate"/>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -85,7 +85,7 @@
 
     <TableRow>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -96,7 +96,7 @@
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="indeterminate"/>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
@@ -107,7 +107,7 @@
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="indeterminate"/>
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"

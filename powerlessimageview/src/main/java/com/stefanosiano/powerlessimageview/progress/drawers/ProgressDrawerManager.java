@@ -3,7 +3,7 @@ package com.stefanosiano.powerlessimageview.progress.drawers;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.view.View;
 
 import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
 import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
@@ -20,7 +20,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     //Variables used to initialize drawers
 
     //Using a weakRefence to be sure to not leak memory
-    private final WeakReference<ImageView> mPiv;
+    private final WeakReference<View> mPiv;
 
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mProgressBounds;
@@ -60,7 +60,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      *
      * @param piv View to show progress indicator into
      */
-    public ProgressDrawerManager(ImageView piv, final ProgressOptions progressOptions){
+    public ProgressDrawerManager(View piv, final ProgressOptions progressOptions){
         this.mPiv = new WeakReference<>(piv);
         this.mProgressBounds = new RectF();
         this.mProgressShadowBounds = new RectF();
