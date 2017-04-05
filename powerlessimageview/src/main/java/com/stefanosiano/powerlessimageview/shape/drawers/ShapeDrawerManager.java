@@ -22,7 +22,7 @@ public class ShapeDrawerManager {
 
     /** Draws the image through the progress indicator */
     public final void onDraw(Canvas canvas) {
-        canvas.drawCircle(10, 10, 10, paint);
+        canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, canvas.getWidth()/2, paint);
         //mShadowDrawer.draw(canvas, mProgressShadowBounds);
     }
 }

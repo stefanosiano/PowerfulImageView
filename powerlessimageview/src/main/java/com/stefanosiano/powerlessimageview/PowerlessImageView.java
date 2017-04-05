@@ -14,6 +14,7 @@ import com.stefanosiano.powerlessimageview.progress.PivProgressGravity;
 import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
 import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 import com.stefanosiano.powerlessimageview.progress.drawers.ProgressDrawerManager;
+import com.stefanosiano.powerlessimageview.shape.drawers.ShapeDrawerManager;
 
 /**
  * Powerful ImageView with several added features (highly customizable):
@@ -42,6 +43,8 @@ public class PowerlessImageView extends ImageView {
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
+
+    private final ShapeDrawerManager mShapeDrawerManager;
 
 
     public PowerlessImageView(Context context) {
@@ -87,6 +90,7 @@ public class PowerlessImageView extends ImageView {
         a.recycle();
 
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
+        this.mShapeDrawerManager = new ShapeDrawerManager();
 
         changeProgressMode(mode);
     }
@@ -102,7 +106,8 @@ public class PowerlessImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        //super.onDraw(canvas);
+        mShapeDrawerManager.onDraw(canvas);
         //draw progress indicator
         mProgressDrawerManager.onDraw(canvas);
     }
