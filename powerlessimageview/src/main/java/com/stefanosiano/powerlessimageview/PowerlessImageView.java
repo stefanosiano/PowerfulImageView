@@ -23,7 +23,7 @@ import com.stefanosiano.powerlessimageview.shape.drawers.ShapeDrawerManager;
  * It extends AppCompatImageView, allowing the use of VectorDrawables and all AppCompat stuff.
  * The downside is that it needs the Android appcompat-v7 library.
  */
-public class PowerlessImageView extends ImageView {
+public class PowerlessImageView extends ImageViewWrapper {
 
     //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;

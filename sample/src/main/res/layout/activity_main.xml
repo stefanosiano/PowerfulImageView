@@ -15,9 +15,11 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
-            android:background="#eaeaea"
+            android:background="#60ea0aea"
+            android:forceHasOverlappingRendering="true"
             android:layout_margin="8dp"
 
+            app:piv_progress_shadow_color="#600000a0"
             app:piv_progress_gravity="top_start"
             app:piv_progress_value_percent="30"
             app:piv_progress_mode="circular"
@@ -37,12 +39,14 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
-            android:background="#eaeaea"
+            android:background="#60ea0aea"
             android:layout_margin="8dp"
 
-            app:piv_progress_gravity="top_end"
+            app:piv_progress_shadow_color="#600000a0"
+            app:piv_progress_gravity="top_start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="circular"/>
+            app:piv_progress_mode="circular"
+            app:piv_progress_indeterminate="false"/>
 
     </TableRow>
 
