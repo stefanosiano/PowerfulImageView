@@ -1,12 +1,11 @@
 package com.stefanosiano.powerlessimageview;
 
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -31,16 +30,12 @@ abstract class ImageViewWrapper extends ImageView {
         super(context, attrs, defStyleAttr);
     }
 
+    @TargetApi(21)
     public ImageViewWrapper(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
 
-
-    @Override
-    protected boolean verifyDrawable(Drawable dr) {
-        return super.verifyDrawable(dr);
-    }
 
     @Override
     public void jumpDrawablesToCurrentState() {
@@ -76,11 +71,6 @@ abstract class ImageViewWrapper extends ImageView {
     }
 
     @Override
-    public Drawable getDrawable() {
-        return super.getDrawable();
-    }
-
-    @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
     }
@@ -98,16 +88,6 @@ abstract class ImageViewWrapper extends ImageView {
     @Override
     public void setImageIcon(Icon icon) {
         super.setImageIcon(icon);
-    }
-
-    @Override
-    public void setImageTintList(ColorStateList tint) {
-        super.setImageTintList(tint);
-    }
-
-    @Override
-    public void setImageTintMode(PorterDuff.Mode tintMode) {
-        super.setImageTintMode(tintMode);
     }
 
     @Override
@@ -142,7 +122,7 @@ abstract class ImageViewWrapper extends ImageView {
 
     @Override
     public boolean getCropToPadding() {
-        return true;
+        return super.getCropToPadding();
     }
 
     @Override
@@ -202,17 +182,7 @@ abstract class ImageViewWrapper extends ImageView {
 
     @Override
     public void setAlpha(int alpha) {
-        super.setAlpha(alpha);
-    }
-
-    @Override
-    public boolean isOpaque() {
-        return super.isOpaque();
-    }
-
-    @Override
-    public void onVisibilityAggregated(boolean isVisible) {
-        super.onVisibilityAggregated(isVisible);
+        setImageAlpha(alpha);
     }
 
     @Override
@@ -228,10 +198,5 @@ abstract class ImageViewWrapper extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-    }
-
-    @Override
-    public CharSequence getAccessibilityClassName() {
-        return super.getAccessibilityClassName();
     }
 }
