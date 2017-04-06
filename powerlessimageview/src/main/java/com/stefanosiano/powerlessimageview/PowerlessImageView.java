@@ -35,6 +35,7 @@ public class PowerlessImageView extends ImageView {
     private static final int DEFAULT_PROGRESS_PERCENT = 0;
     private static final int DEFAULT_PROGRESS_GRAVITY = PivProgressGravity.CENTER.getValue();
     private static final boolean DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT = false;
+    private static final boolean DEFAULT_PROGRESS_INDETERMINATE = true;
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
@@ -78,6 +79,7 @@ public class PowerlessImageView extends ImageView {
                 a.getInteger(R.styleable.PowerlessImageView_piv_progress_gravity, DEFAULT_PROGRESS_GRAVITY),
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getLayoutDirection() == LAYOUT_DIRECTION_RTL,
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_rtl_disabled, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
+                a.getBoolean(R.styleable.PowerlessImageView_piv_progress_indeterminate, DEFAULT_PROGRESS_INDETERMINATE),
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE),
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_shadow_enabled, DEFAULT_PROGRESS_SHADOW_ENABLED),
                 a.getColor(R.styleable.PowerlessImageView_piv_progress_shadow_color,
@@ -124,6 +126,14 @@ public class PowerlessImageView extends ImageView {
     }
 
 
+    /**
+     * @param isIndeterminate whether the progress indicator is indeterminate or not
+     */
+    public final void setProgressIndeterminate(boolean isIndeterminate){
+        mProgressDrawerManager.getProgressOptions().setIndeterminate(isIndeterminate);
+    }
+
+
 
     /**
      * @return The options of the progress indicator
@@ -132,6 +142,16 @@ public class PowerlessImageView extends ImageView {
         return mProgressDrawerManager.getProgressOptions();
     }
 
+    /**
+     * Sets the progress of the current indicator.
+     * If the drawer is indeterminate, it will change its state and make it determinate.
+     *
+     * @param progress Percentage value of the progress
+     */
+    public void setProgress(float progress){
+        getProgressOptions().setIndeterminate(false);
+        getProgressOptions().setValuePercent(progress);
+    }
 
 
 

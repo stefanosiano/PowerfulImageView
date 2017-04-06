@@ -20,7 +20,8 @@
 
             app:piv_progress_gravity="top_start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"
+            app:piv_progress_indeterminate="false"/>
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
@@ -28,7 +29,7 @@
             android:scaleType="center"
             android:background="#eaeaea"
             android:layout_margin="8dp"
-            android:src="@android:color/black"
+            android:src="@android:color/background_light"
 
             />
 
@@ -41,7 +42,7 @@
 
             app:piv_progress_gravity="top_end"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
     </TableRow>
 
@@ -56,7 +57,7 @@
 
             app:piv_progress_gravity="start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
@@ -67,7 +68,7 @@
 
             app:piv_progress_gravity="center"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
@@ -78,7 +79,7 @@
 
             app:piv_progress_gravity="end"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
     </TableRow>
 
@@ -93,7 +94,7 @@
 
             app:piv_progress_gravity="bottom_start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
@@ -104,7 +105,7 @@
 
             app:piv_progress_gravity="bottom"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
@@ -115,7 +116,7 @@
 
             app:piv_progress_gravity="bottom_end"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="indeterminate"/>
+            app:piv_progress_mode="circular"/>
 
     </TableRow>
 </TableLayout>

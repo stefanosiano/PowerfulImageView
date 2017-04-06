@@ -24,7 +24,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="top_start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="96dp"
@@ -39,7 +39,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="top"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="96dp"
@@ -54,7 +54,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="top_end"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
     </TableRow>
 
@@ -73,7 +73,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="96dp"
@@ -88,7 +88,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="center"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="96dp"
@@ -103,7 +103,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="end"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
     </TableRow>
 
@@ -122,7 +122,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="bottom_start"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="96dp"
@@ -137,7 +137,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="bottom"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="96dp"
@@ -152,7 +152,7 @@
             app:piv_progress_indeterminate_color="@color/colorAccent"
             app:piv_progress_gravity="bottom_end"
             app:piv_progress_value_percent="30"
-            app:piv_progress_mode="horizontal_determinate"/>
+            app:piv_progress_mode="horizontal"/>
 
     </TableRow>
 </TableLayout>

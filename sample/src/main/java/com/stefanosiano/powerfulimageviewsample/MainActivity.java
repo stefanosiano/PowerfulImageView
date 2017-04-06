@@ -12,7 +12,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);/*
         final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
-        piw.changeProgressMode(PivProgressMode.HORIZONTAL_DETERMINATE);
+        piw.changeProgressMode(PivProgressMode.HORIZONTAL);
 
 
         final Runnable runnable2 = new Runnable() {

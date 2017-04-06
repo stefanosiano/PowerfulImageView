@@ -91,11 +91,21 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
         switch (progressMode){
 
-            case INDETERMINATE:
-                if(mIndeterminateProgressDrawer == null)
-                    this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer();
-                mProgressDrawer = mIndeterminateProgressDrawer;
+            case CIRCULAR:
 
+                //progress drawer
+                if(mProgressOptions.isIndeterminate()){
+                    if(mIndeterminateProgressDrawer == null)
+                        this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer();
+                    mProgressDrawer = mIndeterminateProgressDrawer;
+                }
+                else {
+                    if(mDeterminateProgressDrawer == null)
+                        this.mDeterminateProgressDrawer = new DeterminateProgressDrawer();
+                    mProgressDrawer = mDeterminateProgressDrawer;
+                }
+
+                //shadow drawer
                 if(mProgressOptions.isShadowEnabled()) {
                     if (mCircularShadowDrawer == null)
                         mCircularShadowDrawer = new CircularShadowDrawer();
@@ -109,47 +119,21 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
                 break;
 
-            case DETERMINATE:
-                if(mDeterminateProgressDrawer == null)
-                    this.mDeterminateProgressDrawer = new DeterminateProgressDrawer();
-                mProgressDrawer = mDeterminateProgressDrawer;
+            case HORIZONTAL:
 
-                if(mProgressOptions.isShadowEnabled()) {
-                    if (mCircularShadowDrawer == null)
-                        mCircularShadowDrawer = new CircularShadowDrawer();
-                    mShadowDrawer = mCircularShadowDrawer;
+                //progress drawer
+                if(mProgressOptions.isIndeterminate()){
+                    if(mIndeterminateHorizontalProgressDrawer == null)
+                        this.mIndeterminateHorizontalProgressDrawer = new IndeterminateHorizontalProgressDrawer();
+                    mProgressDrawer = mIndeterminateHorizontalProgressDrawer;
                 }
                 else {
-                    if(mDummyCancelDrawer == null)
-                        mDummyCancelDrawer = new DummyShadowDrawer();
-                    mShadowDrawer = mDummyCancelDrawer;
+                    if(mDeterminateHorizontalProgressDrawer == null)
+                        this.mDeterminateHorizontalProgressDrawer = new DeterminateHorizontalProgressDrawer();
+                    mProgressDrawer = mDeterminateHorizontalProgressDrawer;
                 }
 
-                break;
-
-            case HORIZONTAL_DETERMINATE:
-                if(mDeterminateHorizontalProgressDrawer == null)
-                    this.mDeterminateHorizontalProgressDrawer = new DeterminateHorizontalProgressDrawer();
-                mProgressDrawer = mDeterminateHorizontalProgressDrawer;
-
-                if(mProgressOptions.isShadowEnabled()) {
-                    if(mRectangularShadowDrawer == null)
-                        mRectangularShadowDrawer = new RectangularShadowDrawer();
-                    mShadowDrawer = mRectangularShadowDrawer;
-                }
-                else {
-                    if(mDummyCancelDrawer == null)
-                        mDummyCancelDrawer = new DummyShadowDrawer();
-                    mShadowDrawer = mDummyCancelDrawer;
-                }
-
-                break;
-
-            case HORIZONTAL_INDETERMINATE:
-                if(mIndeterminateHorizontalProgressDrawer == null)
-                    this.mIndeterminateHorizontalProgressDrawer = new IndeterminateHorizontalProgressDrawer();
-                mProgressDrawer = mIndeterminateHorizontalProgressDrawer;
-
+                //shadow drawer
                 if(mProgressOptions.isShadowEnabled()) {
                     if(mRectangularShadowDrawer == null)
                         mRectangularShadowDrawer = new RectangularShadowDrawer();
@@ -266,6 +250,17 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
         mProgressDrawer.setup(mProgressOptions);
         mShadowDrawer.setup(mProgressOptions);
+    }
+
+    /**
+     * Called when an option that changes the size of the progress indicator is updated.
+     * The bounds are calculated again, and it propagates the update to the progress drawers.
+     */
+    @Override
+    public void onModeUpdated(ProgressOptions options) {
+
+        mProgressOptions = options;
+        changeProgressMode(mProgressMode);
     }
 
 

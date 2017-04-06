@@ -67,6 +67,9 @@
              If false, on api 17+, gravity will be treated accordingly to rtl rules. -->
         <attr name="piv_progress_rtl_disabled" format="boolean" />
 
+        <!-- Set whether the view should show an indeterminate progress indicator. -->
+        <attr name="piv_progress_indeterminate" format="boolean" />
+
         <!-- Set whether to show a wedge or a circle, used by circular determinate drawer.
              If the drawer is not determinate it's ignored.
              If true, a wedge is drawn, otherwise a circle will be drawn -->
@@ -109,10 +112,8 @@
         <!-- Progress mode of the indicator. -->
         <attr name="piv_progress_mode" format="enum" >
             <enum name="disabled" value="0"/>
-            <enum name="indeterminate" value="1"/>
-            <enum name="determinate" value="2"/>
-            <enum name="horizontal_determinate" value="3"/>
-            <enum name="horizontal_indeterminate" value="4"/>
+            <enum name="circular" value="1"/>
+            <enum name="horizontal" value="2"/>
         </attr>
     </declare-styleable>
 </resources>

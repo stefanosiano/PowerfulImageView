@@ -69,6 +69,9 @@ public final class ProgressOptions implements Parcelable {
     /** Whether the view should use or ignore right to left layout (used for gravity option) */
     private boolean mRtlDisabled;
 
+    /** Whether the progress indicator is indeterminate or not */
+    private boolean mIsIndeterminate;
+
 
 
 
@@ -139,6 +142,7 @@ public final class ProgressOptions implements Parcelable {
      * @param gravity Gravity of the indicator
      * @param rtl Whether the view should use right to left layout (used for gravity option)
      * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)
+     * @param isIndeterminate If true, indeterminate progress is drawn
      * @param drawWedge If should show a wedge, used by circular determinate drawer
      * @param shadowEnabled If should show a shadow under progress indicator
      * @param shadowColor Color of the shadow
@@ -146,7 +150,7 @@ public final class ProgressOptions implements Parcelable {
      * @param shadowPaddingPercent Padding of the progress indicator, relative to its shadow, as a percentage of the shadow
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
-                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean drawWedge,
+                           int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
                            boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
@@ -163,6 +167,7 @@ public final class ProgressOptions implements Parcelable {
         this.mGravity = PivProgressGravity.fromValue(gravity);
         this.mIsRtl = rtl;
         this.mRtlDisabled = disableRtlSupport;
+        this.mIsIndeterminate = isIndeterminate;
         this.mDrawWedge = drawWedge;
         this.mShadowEnabled = shadowEnabled;
         this.mShadowColor = shadowColor;
@@ -201,6 +206,7 @@ public final class ProgressOptions implements Parcelable {
         this.mGravity = other.mGravity;
         this.mIsRtl = other.mIsRtl;
         this.mRtlDisabled = other.mRtlDisabled;
+        this.mIsIndeterminate = other.mIsIndeterminate;
         this.mCalculatedSize = other.mCalculatedSize;
         this.mCalculatedShadowPadding = other.mCalculatedShadowPadding;
         this.mCalculatedBorderWidth = other.mCalculatedBorderWidth;
@@ -251,12 +257,10 @@ public final class ProgressOptions implements Parcelable {
         switch(mode) {
 
             //calculation of circular bounds
-            case DETERMINATE:
-            case INDETERMINATE:
+            case CIRCULAR:
                 maxSize = w < h ? w : h;
                 break;
-            case HORIZONTAL_DETERMINATE:
-            case HORIZONTAL_INDETERMINATE:
+            case HORIZONTAL:
                 maxSize = w;
                 break;
             case NONE:
@@ -301,8 +305,7 @@ public final class ProgressOptions implements Parcelable {
         switch(mode){
 
             //calculation of circular bounds
-            case DETERMINATE:
-            case INDETERMINATE:
+            case CIRCULAR:
 
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
@@ -332,8 +335,7 @@ public final class ProgressOptions implements Parcelable {
                 break;
 
             //calculation of horizontal bounds
-            case HORIZONTAL_DETERMINATE:
-            case HORIZONTAL_INDETERMINATE:
+            case HORIZONTAL:
 
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
@@ -617,7 +619,19 @@ public final class ProgressOptions implements Parcelable {
         this.mRtlDisabled = rtlDisabled;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
-            listener.get().onSizeUpdated(this);
+            listener.get().onModeUpdated(this);
+    }
+
+    /**
+     * Set whether the view should use right to left layout (used for gravity option)
+     *
+     * @param isIndeterminate If true, indeterminate progress is drawn.
+     *                      If false, determinate is drawn.
+     */
+    public void setIndeterminate(boolean isIndeterminate) {
+        this.mIsIndeterminate = isIndeterminate;
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
     /**
@@ -733,6 +747,13 @@ public final class ProgressOptions implements Parcelable {
      */
     public boolean isRtlDisabled() {
         return mRtlDisabled;
+    }
+
+    /**
+     * @return Wheter the progress is indeterminate
+     */
+    public boolean isIndeterminate() {
+        return mIsIndeterminate;
     }
 
     /**
@@ -900,6 +921,7 @@ public final class ProgressOptions implements Parcelable {
         mSizePercent = in.readFloat();
         mIsRtl = in.readByte() != 0;
         mRtlDisabled = in.readByte() != 0;
+        mIsIndeterminate = in.readByte() != 0;
         mCalculatedSize = in.readInt();
         mCalculatedBorderWidth = in.readInt();
         mCalculatedLeft = in.readFloat();
@@ -926,6 +948,7 @@ public final class ProgressOptions implements Parcelable {
         dest.writeFloat(mSizePercent);
         dest.writeByte((byte) (mIsRtl ? 1 : 0));
         dest.writeByte((byte) (mRtlDisabled ? 1 : 0));
+        dest.writeByte((byte) (mIsIndeterminate ? 1 : 0));
         dest.writeInt(mCalculatedSize);
         dest.writeInt(mCalculatedBorderWidth);
         dest.writeFloat(mCalculatedLeft);
@@ -941,6 +964,7 @@ public final class ProgressOptions implements Parcelable {
     public interface ProgressOptionsListener{
         void onOptionsUpdated(ProgressOptions options);
         void onSizeUpdated(ProgressOptions options);
+        void onModeUpdated(ProgressOptions options);
     }
 
 }
