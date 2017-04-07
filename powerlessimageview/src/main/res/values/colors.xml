@@ -2,6 +2,7 @@
 <resources>
     <color name="piv_default_progress_front_color">#00A000</color>
     <color name="piv_default_progress_back_color">#CCCCCC</color>
+    <color name="piv_default_progress_shadow_border_color">#000000</color>
     <color name="piv_default_progress_indeterminate_color">#CCCCCC</color>
-    <color name="piv_default_progress_shadow_color">#A0000000</color>
+    <color name="piv_default_progress_shadow_color">#FFFFFF</color>
 </resources>

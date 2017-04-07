@@ -49,6 +49,12 @@ public final class ProgressOptions implements Parcelable {
     /** Padding of the indicator relative to its shadow, as a percentage of the whole shadow */
     private float mShadowPaddingPercent;
 
+    /** Width of the progress indicator shadow border */
+    private int mShadowBorderWidth;
+
+    /** Color of the progress indicator shadow border */
+    private int mShadowBorderColor;
+
     //variables used to calculate bounds
 
     /** Size of the indicator */
@@ -148,10 +154,12 @@ public final class ProgressOptions implements Parcelable {
      * @param shadowColor Color of the shadow
      * @param shadowPadding Padding of the progress indicator, relative to its shadow. If it's 0 or more, it applies and overrides "shadowPaddingPercent" parameter
      * @param shadowPaddingPercent Padding of the progress indicator, relative to its shadow, as a percentage of the shadow
+     * @param shadowBorderWidth Width of the progress indicator shadow border
+     * @param shadowBorderColor Color of the progress indicator shadow border
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
-                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent) {
+                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, int shadowBorderWidth, int shadowBorderColor) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -173,6 +181,8 @@ public final class ProgressOptions implements Parcelable {
         this.mShadowColor = shadowColor;
         this.mShadowPadding = shadowPadding;
         this.mShadowPaddingPercent = shadowPaddingPercent;
+        this.mShadowBorderWidth = shadowBorderWidth;
+        this.mShadowBorderColor = shadowBorderColor;
 
         //initialization of private fields used for calculations
         this.mCalculatedSize = 0;
@@ -269,6 +279,10 @@ public final class ProgressOptions implements Parcelable {
                 break;
         }
 
+        //if there's no shadow, no border of the shadow should be considered
+        int calculatedShadowBorderWidth = mShadowEnabled ? mShadowBorderWidth : 0;
+
+
         maxSize = maxSize - mPadding - mPadding;
 
         //********** SIZE ***********
@@ -325,13 +339,15 @@ public final class ProgressOptions implements Parcelable {
                     mCalculatedShadowTop = (h - mCalculatedSize) / 2;
                 }
 
-                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize;
-                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedSize;
+                mCalculatedShadowLeft = mCalculatedShadowLeft + calculatedShadowBorderWidth / 2;
+                mCalculatedShadowTop = mCalculatedShadowTop + calculatedShadowBorderWidth / 2;
+                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize - calculatedShadowBorderWidth;
+                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedSize - calculatedShadowBorderWidth;
 
-                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
-                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
-                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
-                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
+                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + calculatedShadowBorderWidth + mCalculatedBorderWidth / 2;
+                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding - calculatedShadowBorderWidth - mCalculatedBorderWidth / 2;
+                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + calculatedShadowBorderWidth + mCalculatedBorderWidth / 2;
+                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding - calculatedShadowBorderWidth - mCalculatedBorderWidth / 2;
                 break;
 
             //calculation of horizontal bounds
@@ -355,13 +371,15 @@ public final class ProgressOptions implements Parcelable {
                     mCalculatedShadowTop = (h - mCalculatedBorderWidth)/2;
                 }
 
-                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize;
-                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedBorderWidth;
+                mCalculatedShadowLeft = mCalculatedShadowLeft + calculatedShadowBorderWidth / 2;
+                mCalculatedShadowTop = mCalculatedShadowTop + calculatedShadowBorderWidth / 2;
+                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize - calculatedShadowBorderWidth;
+                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedBorderWidth - calculatedShadowBorderWidth;
 
-                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding;
-                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding;
-                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding;
-                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding;
+                mCalculatedLeft = mCalculatedShadowLeft + calculatedShadowBorderWidth + mCalculatedShadowPadding + calculatedShadowBorderWidth / 2;
+                mCalculatedRight = mCalculatedShadowRight - calculatedShadowBorderWidth - mCalculatedShadowPadding - calculatedShadowBorderWidth / 2;
+                mCalculatedTop = mCalculatedShadowTop + calculatedShadowBorderWidth + mCalculatedShadowPadding + calculatedShadowBorderWidth / 2;
+                mCalculatedBottom = mCalculatedShadowBottom - calculatedShadowBorderWidth - mCalculatedShadowPadding - calculatedShadowBorderWidth / 2;
                 break;
 
             //if everything goes right, it should never come here. Just a precaution
@@ -691,6 +709,33 @@ public final class ProgressOptions implements Parcelable {
     }
 
 
+    /**
+     * Set the color of the progress indicator shadow border.
+     *
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     *
+     * @param shadowBorderColor Color of the progress indicator shadow border
+     */
+    public void setShadowBorderColor(int shadowBorderColor) {
+        this.mShadowBorderColor = shadowBorderColor;
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
+    }
+
+
+    /**
+     * Set the width of the progress indicator shadow border.
+     *
+     * @param shadowBorderWidth Width of the progress indicator shadow border
+     */
+    public void setShadowBorderWidth(int shadowBorderWidth) {
+        this.mShadowBorderWidth = shadowBorderWidth;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
+    }
 
     /**
      * Returns the width percentage of the progress indicator size.
@@ -870,6 +915,20 @@ public final class ProgressOptions implements Parcelable {
      */
     public int getShadowColor() {
         return this.mShadowColor;
+    }
+
+    /**
+     * @return Color of the indicator shadow border
+     */
+    public int getShadowBorderColor() {
+        return mShadowBorderColor;
+    }
+
+    /**
+     * @return Indicator shadow border width
+     */
+    public int getShadowBorderWidth() {
+        return mShadowBorderWidth;
     }
 
     /**

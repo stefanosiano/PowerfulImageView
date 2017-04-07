@@ -34,6 +34,9 @@
         <!-- Set the padding of the progress indicator. -->
         <attr name="piv_progress_padding" format="dimension" />
 
+        <!-- Set the width of the shadow border. -->
+        <attr name="piv_progress_shadow_border_width" format="dimension" />
+
         <!-- Percentage value of the progress indicator, used by determinate drawers.
              If the percentage is higher than 100, it is treated as (value % 100).
              If the percentage is lower than 0, it is treated as 0.
@@ -54,6 +57,12 @@
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
              See the Color class for more details. -->
         <attr name="piv_progress_back_color" format="color" />
+
+        <!-- Set the color of the progress indicator shadow border.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_shadow_border_color" format="color" />
 
         <!-- Set the indeterminate color of the indicator, used by indeterminate drawers.
              If the drawer is not indeterminate or horizontal_indeterminate it's ignored.

@@ -41,6 +41,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
     private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 8;
+    private static final int DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 2;
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -85,8 +86,12 @@ public class PowerlessImageView extends ImageViewWrapper {
                 a.getColor(R.styleable.PowerlessImageView_piv_progress_shadow_color,
                         Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_shadow_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_shadow_color)),
                 a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_progress_shadow_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_PADDING, getResources().getDisplayMetrics())),
-                a.getFloat(R.styleable.PowerlessImageView_piv_progress_shadow_padding_percent, DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT)
+                a.getFloat(R.styleable.PowerlessImageView_piv_progress_shadow_padding_percent, DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT),
+                a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_progress_shadow_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH, getResources().getDisplayMetrics())),
+                a.getColor(R.styleable.PowerlessImageView_piv_progress_shadow_border_color,
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_shadow_border_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_shadow_border_color))
         );
+
         PivProgressMode mode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
 
         a.recycle();
