@@ -9,6 +9,7 @@ Planned features (for now):
 * Shapes (Circle, fake circle, oval, fake oval, square, rounded rectangle, fake rounded rectangle, rectangle through ratio, default)
 * Pinch in/out to zoom
 * Panoramas
+* Blur support
 * Custom target for Picasso/Glide
   
   
