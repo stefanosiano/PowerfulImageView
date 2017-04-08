@@ -39,10 +39,13 @@ While this helps a lot, the placeholder doesn't provide any feedback or informat
 This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.
 
 
-
-
-**PowerfulImageView requires a minimum API level of 12.**  
-
+**Notes**  
+  
+PowerfulImageView requires a minimum API level of 12.  
+Indeterminate animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library.
+  
+  
+  
 Gradle
 ------
   
