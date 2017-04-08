@@ -1,7 +1,9 @@
 package com.stefanosiano.powerlessimageview;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -9,11 +11,12 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * Created by stefano on 06/04/17.
+ * ImageView Wrapper that enables to catch all the methods where the image or a size changes and react accordingly.
  */
 
 abstract class ImageViewWrapper extends ImageView {
@@ -180,6 +183,8 @@ abstract class ImageViewWrapper extends ImageView {
         super.setImageAlpha(alpha);
     }
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setAlpha(int alpha) {
         setImageAlpha(alpha);
@@ -198,5 +203,18 @@ abstract class ImageViewWrapper extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+    }
+
+
+    /**
+     * returns selected color (default color if selected color is not available) for any api level
+     */
+    @SuppressWarnings("deprecation")
+    protected int getColor(TypedArray a, int colorId, int defaultColorId){
+        return a.getColor(colorId,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ?
+                        getResources().getColor(defaultColorId, getContext().getTheme()) :
+                        getResources().getColor(defaultColorId));
+
     }
 }

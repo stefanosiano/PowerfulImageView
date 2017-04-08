@@ -50,7 +50,10 @@ public final class ProgressOptions implements Parcelable {
     private float mShadowPaddingPercent;
 
     /** Width of the progress indicator shadow border */
-    private int mShadowBorderWidth;
+    private float mShadowBorderWidth;
+
+    /** Width of the progress indicator shadow border after calculations */
+    private float mCalculatedShadowBorderWidth;
 
     /** Color of the progress indicator shadow border */
     private int mShadowBorderColor;
@@ -84,7 +87,7 @@ public final class ProgressOptions implements Parcelable {
     // ************** Calculated fields *****************
 
     /** Calculated size of the indicator, base on mSize, mSizePercent and View size */
-    private int mCalculatedSize;
+    private float mCalculatedSize;
 
     /** Calculated padding of the indicator shadow */
     private int mCalculatedShadowPadding;
@@ -117,6 +120,19 @@ public final class ProgressOptions implements Parcelable {
 
     /** Bottom shadow bound calculated */
     private float mCalculatedShadowBottom;
+
+    //bounds of the progress indicator shadow border
+    /** Left shadow bound calculated */
+    private float mCalculatedShadowBorderLeft;
+
+    /** Top shadow bound calculated */
+    private float mCalculatedShadowBorderTop;
+
+    /** Right shadow bound calculated */
+    private float mCalculatedShadowBorderRight;
+
+    /** Bottom shadow bound calculated */
+    private float mCalculatedShadowBorderBottom;
 
 
     //last calculated width and height
@@ -159,7 +175,7 @@ public final class ProgressOptions implements Parcelable {
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
-                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, int shadowBorderWidth, int shadowBorderColor) {
+                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -194,8 +210,17 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedTop = 0;
         this.mCalculatedRight = 0;
         this.mCalculatedBottom = 0;
+        this.mCalculatedShadowLeft = 0;
+        this.mCalculatedShadowTop = 0;
+        this.mCalculatedShadowRight = 0;
+        this.mCalculatedShadowBottom = 0;
+        this.mCalculatedShadowBorderLeft = 0;
+        this.mCalculatedShadowBorderTop = 0;
+        this.mCalculatedShadowBorderRight = 0;
+        this.mCalculatedShadowBorderBottom = 0;
         this.mCalculatedLastMode = PivProgressMode.NONE;
     }
+
 
     public void setOptions (ProgressOptions other) {
         this.mDeterminateAnimationEnabled = other.mDeterminateAnimationEnabled;
@@ -210,6 +235,9 @@ public final class ProgressOptions implements Parcelable {
         this.mShadowColor = other.mShadowColor;
         this.mShadowPadding = other.mShadowPadding;
         this.mShadowPaddingPercent = other.mShadowPaddingPercent;
+        this.mShadowBorderWidth = other.mShadowBorderWidth;
+        this.mCalculatedShadowBorderWidth = other.mCalculatedShadowBorderWidth;
+        this.mShadowBorderColor = other.mShadowBorderColor;
         this.mSize = other.mSize;
         this.mPadding = other.mPadding;
         this.mSizePercent = other.mSizePercent;
@@ -228,11 +256,16 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedShadowTop = other.mCalculatedShadowTop;
         this.mCalculatedShadowRight = other.mCalculatedShadowRight;
         this.mCalculatedShadowBottom = other.mCalculatedShadowBottom;
+        this.mCalculatedShadowBorderLeft = other.mCalculatedShadowBorderLeft;
+        this.mCalculatedShadowBorderTop = other.mCalculatedShadowBorderTop;
+        this.mCalculatedShadowBorderRight = other.mCalculatedShadowBorderRight;
+        this.mCalculatedShadowBorderBottom = other.mCalculatedShadowBorderBottom;
         this.mCalculatedLastW = other.mCalculatedLastW;
         this.mCalculatedLastH = other.mCalculatedLastH;
         this.mCalculatedLastMode = other.mCalculatedLastMode;
         this.listener = other.listener;
     }
+
 
     /**
      * Calculates the bounds of the progress indicator, based on progress options and mode.
@@ -249,6 +282,9 @@ public final class ProgressOptions implements Parcelable {
         mCalculatedLastH = h;
         mCalculatedLastMode = mode;
 
+        //if there's no shadow, no border of the shadow should be considered
+        mCalculatedShadowBorderWidth = mShadowEnabled ? mShadowBorderWidth : 0;
+
         if(mode == PivProgressMode.NONE){
             mCalculatedLeft = 0;
             mCalculatedRight = 0;
@@ -258,6 +294,10 @@ public final class ProgressOptions implements Parcelable {
             mCalculatedShadowRight = 0;
             mCalculatedShadowTop = 0;
             mCalculatedShadowBottom = 0;
+            mCalculatedShadowBorderLeft = 0;
+            mCalculatedShadowBorderRight = 0;
+            mCalculatedShadowBorderTop = 0;
+            mCalculatedShadowBorderBottom = 0;
             return;
         }
 
@@ -279,24 +319,21 @@ public final class ProgressOptions implements Parcelable {
                 break;
         }
 
-        //if there's no shadow, no border of the shadow should be considered
-        int calculatedShadowBorderWidth = mShadowEnabled ? mShadowBorderWidth : 0;
+        float calculatedShadowBorderWidthHalf = mCalculatedShadowBorderWidth == 0 ? 0 : mCalculatedShadowBorderWidth / 2;
 
-
-        maxSize = maxSize - mPadding - mPadding;
 
         //********** SIZE ***********
-        mCalculatedSize = (int) (maxSize * mSizePercent / 100);
+        mCalculatedSize = maxSize * mSizePercent / 100;
         //if mSize is 0 or more, it overrides mSizePercent parameter
         if(mSize >= 0) mCalculatedSize = mSize;
 
         //the progress indicator cannot be bigger than the view (minus padding)
-        if(mCalculatedSize > maxSize) mCalculatedSize = maxSize;
+        if(mCalculatedSize > maxSize - mPadding - mPadding) mCalculatedSize = maxSize - mPadding - mPadding;
 
 
 
         //********** SHADOW PADDING ***********
-        mCalculatedShadowPadding = (int) (mCalculatedSize * mShadowPaddingPercent / 100);
+        mCalculatedShadowPadding = (int) ((mCalculatedSize - mCalculatedShadowBorderWidth*2) * mShadowPaddingPercent / 100);
         //if mShadowPadding is 0 or more, it overrides mShadowPaddingPercent parameter
         if(mShadowPadding >= 0) mCalculatedShadowPadding = mShadowPadding;
 
@@ -306,7 +343,7 @@ public final class ProgressOptions implements Parcelable {
 
 
         //********** BORDER WIDTH ***********
-        mCalculatedBorderWidth = Math.round(mCalculatedSize * mBorderWidthPercent/100);
+        mCalculatedBorderWidth = Math.round((mCalculatedSize - mCalculatedShadowBorderWidth*2) * mBorderWidthPercent/100);
         //if mBorderWidth is 0 or more, it overrides mBorderWidthPercent paramenter
         if(mBorderWidth >= 0) mCalculatedBorderWidth = mBorderWidth;
 
@@ -323,31 +360,36 @@ public final class ProgressOptions implements Parcelable {
 
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
-                    mCalculatedShadowLeft = mPadding;
+                    mCalculatedShadowBorderLeft = mPadding;
                 } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
-                    mCalculatedShadowLeft = w - mCalculatedSize - mPadding;
+                    mCalculatedShadowBorderLeft = w - mCalculatedSize - mPadding;
                 } else {
-                    mCalculatedShadowLeft = (w - mCalculatedSize) /2;
+                    mCalculatedShadowBorderLeft = (w - mCalculatedSize) /2;
                 }
 
                 //vertical gravity
                 if(mGravity.isGravityTop()) {
-                    mCalculatedShadowTop = mPadding;
+                    mCalculatedShadowBorderTop = mPadding;
                 } else if (mGravity.isGravityBottom()) {
-                    mCalculatedShadowTop = h - mCalculatedSize - mPadding;
+                    mCalculatedShadowBorderTop = h - mCalculatedSize - mPadding;
                 } else {
-                    mCalculatedShadowTop = (h - mCalculatedSize) / 2;
+                    mCalculatedShadowBorderTop = (h - mCalculatedSize) / 2;
                 }
 
-                mCalculatedShadowLeft = mCalculatedShadowLeft + calculatedShadowBorderWidth / 2;
-                mCalculatedShadowTop = mCalculatedShadowTop + calculatedShadowBorderWidth / 2;
-                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize - calculatedShadowBorderWidth;
-                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedSize - calculatedShadowBorderWidth;
+                mCalculatedShadowBorderLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowBorderTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowBorderRight = mCalculatedShadowBorderLeft + mCalculatedSize - mCalculatedShadowBorderWidth - 1;
+                mCalculatedShadowBorderBottom = mCalculatedShadowBorderTop + mCalculatedSize - mCalculatedShadowBorderWidth - 1;
 
-                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + calculatedShadowBorderWidth + mCalculatedBorderWidth / 2;
-                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding - calculatedShadowBorderWidth - mCalculatedBorderWidth / 2;
-                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + calculatedShadowBorderWidth + mCalculatedBorderWidth / 2;
-                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding - calculatedShadowBorderWidth - mCalculatedBorderWidth / 2;
+                mCalculatedShadowLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowRight = mCalculatedShadowBorderRight - calculatedShadowBorderWidthHalf + 1;
+                mCalculatedShadowBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf + 1;
+
+                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
+                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
+                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
+                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding - mCalculatedBorderWidth / 2;
                 break;
 
             //calculation of horizontal bounds
@@ -355,36 +397,48 @@ public final class ProgressOptions implements Parcelable {
 
                 //horizontal gravity
                 if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
-                    mCalculatedShadowLeft = mPadding;
+                    mCalculatedShadowBorderLeft = mPadding;
                 } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
-                    mCalculatedShadowLeft = w - mCalculatedSize - mPadding;
+                    mCalculatedShadowBorderLeft = w - mCalculatedSize - mPadding;
                 } else {
-                    mCalculatedShadowLeft = (w - mCalculatedSize)/2;
+                    mCalculatedShadowBorderLeft = (w - mCalculatedSize)/2;
                 }
 
                 //vertical gravity
                 if(mGravity.isGravityTop()) {
-                    mCalculatedShadowTop = mPadding;
+                    mCalculatedShadowBorderTop = mPadding;
                 } else if (mGravity.isGravityBottom()) {
-                    mCalculatedShadowTop = h - mCalculatedBorderWidth -  mPadding;
+                    mCalculatedShadowBorderTop = h - mCalculatedBorderWidth -  mPadding;
+                    mCalculatedShadowBorderBottom = h - mPadding;
                 } else {
-                    mCalculatedShadowTop = (h - mCalculatedBorderWidth)/2;
+                    mCalculatedShadowBorderTop = (h - mCalculatedBorderWidth -  mPadding)/2;
+                    mCalculatedShadowBorderBottom = (h + mCalculatedBorderWidth -  mPadding)/2;
                 }
 
-                mCalculatedShadowLeft = mCalculatedShadowLeft + calculatedShadowBorderWidth / 2;
-                mCalculatedShadowTop = mCalculatedShadowTop + calculatedShadowBorderWidth / 2;
-                mCalculatedShadowRight = mCalculatedShadowLeft + mCalculatedSize - calculatedShadowBorderWidth;
-                mCalculatedShadowBottom = mCalculatedShadowTop + mCalculatedBorderWidth - calculatedShadowBorderWidth;
+                mCalculatedShadowBorderLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowBorderTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowBorderRight = mCalculatedShadowBorderLeft + mCalculatedSize - mCalculatedShadowBorderWidth;
+                mCalculatedShadowBorderBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf;
 
-                mCalculatedLeft = mCalculatedShadowLeft + calculatedShadowBorderWidth + mCalculatedShadowPadding + calculatedShadowBorderWidth / 2;
-                mCalculatedRight = mCalculatedShadowRight - calculatedShadowBorderWidth - mCalculatedShadowPadding - calculatedShadowBorderWidth / 2;
-                mCalculatedTop = mCalculatedShadowTop + calculatedShadowBorderWidth + mCalculatedShadowPadding + calculatedShadowBorderWidth / 2;
-                mCalculatedBottom = mCalculatedShadowBottom - calculatedShadowBorderWidth - mCalculatedShadowPadding - calculatedShadowBorderWidth / 2;
+                mCalculatedShadowLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
+                mCalculatedShadowRight = mCalculatedShadowBorderRight - calculatedShadowBorderWidthHalf + 1;
+                mCalculatedShadowBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf + 1;
+
+                mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding;
+                mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding;
+                mCalculatedRight = mCalculatedShadowRight - mCalculatedShadowPadding;
+                mCalculatedBottom = mCalculatedShadowBottom - mCalculatedShadowPadding;
                 break;
 
             //if everything goes right, it should never come here. Just a precaution
             case NONE:
             default:
+
+                mCalculatedShadowBorderLeft = 0;
+                mCalculatedShadowBorderTop = 0;
+                mCalculatedShadowBorderRight = 0;
+                mCalculatedShadowBorderBottom = 0;
                 mCalculatedShadowLeft = 0;
                 mCalculatedShadowRight = 0;
                 mCalculatedShadowTop = 0;
@@ -435,6 +489,26 @@ public final class ProgressOptions implements Parcelable {
     /** Returns the shadow bottom bound calculated. Be sure to call calculateBounds() before this! */
     public final float getShadowBottom() {
         return mCalculatedShadowBottom;
+    }
+
+    /** Returns the shadow border left bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowBorderLeft() {
+        return mCalculatedShadowBorderLeft;
+    }
+
+    /** Returns the shadow border top bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowBorderTop() {
+        return mCalculatedShadowBorderTop;
+    }
+
+    /** Returns the shadow border right bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowBorderRight() {
+        return mCalculatedShadowBorderRight;
+    }
+
+    /** Returns the shadow border bottom bound calculated. Be sure to call calculateBounds() before this! */
+    public final float getShadowBorderBottom() {
+        return mCalculatedShadowBorderBottom;
     }
 
 
@@ -730,7 +804,7 @@ public final class ProgressOptions implements Parcelable {
      *
      * @param shadowBorderWidth Width of the progress indicator shadow border
      */
-    public void setShadowBorderWidth(int shadowBorderWidth) {
+    public void setShadowBorderWidth(float shadowBorderWidth) {
         this.mShadowBorderWidth = shadowBorderWidth;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
@@ -827,7 +901,7 @@ public final class ProgressOptions implements Parcelable {
      *
      * @return The size of the progress indicator, after calculations
      */
-    public int getCalculatedSize() {
+    public float getCalculatedSize() {
         return mCalculatedSize;
     }
 
@@ -927,8 +1001,8 @@ public final class ProgressOptions implements Parcelable {
     /**
      * @return Indicator shadow border width
      */
-    public int getShadowBorderWidth() {
-        return mShadowBorderWidth;
+    public float getShadowBorderWidth() {
+        return mCalculatedShadowBorderWidth;
     }
 
     /**
@@ -981,7 +1055,7 @@ public final class ProgressOptions implements Parcelable {
         mIsRtl = in.readByte() != 0;
         mRtlDisabled = in.readByte() != 0;
         mIsIndeterminate = in.readByte() != 0;
-        mCalculatedSize = in.readInt();
+        mCalculatedSize = in.readFloat();
         mCalculatedBorderWidth = in.readInt();
         mCalculatedLeft = in.readFloat();
         mCalculatedTop = in.readFloat();
@@ -1008,7 +1082,7 @@ public final class ProgressOptions implements Parcelable {
         dest.writeByte((byte) (mIsRtl ? 1 : 0));
         dest.writeByte((byte) (mRtlDisabled ? 1 : 0));
         dest.writeByte((byte) (mIsIndeterminate ? 1 : 0));
-        dest.writeInt(mCalculatedSize);
+        dest.writeFloat(mCalculatedSize);
         dest.writeInt(mCalculatedBorderWidth);
         dest.writeFloat(mCalculatedLeft);
         dest.writeFloat(mCalculatedTop);

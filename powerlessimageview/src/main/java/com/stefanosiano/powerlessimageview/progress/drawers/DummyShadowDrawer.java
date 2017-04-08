@@ -25,7 +25,7 @@ final class DummyShadowDrawer implements ShadowDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF cancelBounds) {
+    public void draw(Canvas canvas, RectF shadowBorderBounds, RectF cancelBounds) {
 
     }
 }

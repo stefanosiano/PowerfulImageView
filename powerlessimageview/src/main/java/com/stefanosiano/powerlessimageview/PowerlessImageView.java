@@ -41,7 +41,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
     private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 8;
-    private static final int DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 2;
+    private static final int DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 1;
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -71,25 +71,20 @@ public class PowerlessImageView extends ImageViewWrapper {
                 a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_progress_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.PowerlessImageView_piv_progress_size_percent, DEFAULT_PROGRESS_SIZE_PERCENT),
                 a.getFloat(R.styleable.PowerlessImageView_piv_progress_value_percent, DEFAULT_PROGRESS_PERCENT),
-                a.getColor(R.styleable.PowerlessImageView_piv_progress_front_color,
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_front_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_front_color)),
-                a.getColor(R.styleable.PowerlessImageView_piv_progress_back_color,
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_back_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_back_color)),
-                a.getColor(R.styleable.PowerlessImageView_piv_progress_indeterminate_color,
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_indeterminate_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_indeterminate_color)),
+                getColor(a, R.styleable.PowerlessImageView_piv_progress_front_color, R.color.piv_default_progress_front_color),
+                getColor(a, R.styleable.PowerlessImageView_piv_progress_back_color, R.color.piv_default_progress_back_color),
+                getColor(a, R.styleable.PowerlessImageView_piv_progress_indeterminate_color, R.color.piv_default_progress_indeterminate_color),
                 a.getInteger(R.styleable.PowerlessImageView_piv_progress_gravity, DEFAULT_PROGRESS_GRAVITY),
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getLayoutDirection() == LAYOUT_DIRECTION_RTL,
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_rtl_disabled, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_indeterminate, DEFAULT_PROGRESS_INDETERMINATE),
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE),
                 a.getBoolean(R.styleable.PowerlessImageView_piv_progress_shadow_enabled, DEFAULT_PROGRESS_SHADOW_ENABLED),
-                a.getColor(R.styleable.PowerlessImageView_piv_progress_shadow_color,
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_shadow_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_shadow_color)),
+                getColor(a, R.styleable.PowerlessImageView_piv_progress_shadow_color, R.color.piv_default_progress_shadow_color),
                 a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_progress_shadow_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_PADDING, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.PowerlessImageView_piv_progress_shadow_padding_percent, DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT),
                 a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_progress_shadow_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH, getResources().getDisplayMetrics())),
-                a.getColor(R.styleable.PowerlessImageView_piv_progress_shadow_border_color,
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? getResources().getColor(R.color.piv_default_progress_shadow_border_color, getContext().getTheme()) : getResources().getColor(R.color.piv_default_progress_shadow_border_color))
+                getColor(a, R.styleable.PowerlessImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color)
         );
 
         PivProgressMode mode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));

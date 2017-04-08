@@ -26,6 +26,9 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     private final RectF mProgressBounds;
 
     /** Bounds in which the progress indicator shadow will be drawn */
+    private final RectF mProgressShadowBorderBounds;
+
+    /** Bounds in which the progress indicator shadow will be drawn */
     private final RectF mProgressShadowBounds;
 
     //Drawers
@@ -63,6 +66,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     public ProgressDrawerManager(View piv, final ProgressOptions progressOptions){
         this.mPiv = new WeakReference<>(piv);
         this.mProgressBounds = new RectF();
+        this.mProgressShadowBorderBounds = new RectF();
         this.mProgressShadowBounds = new RectF();
         this.mProgressOptions = progressOptions;
         this.listener = new ProgressDrawerListener() {
@@ -199,7 +203,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
     /** Draws the progress indicator */
     public final void onDraw(Canvas canvas) {
-        mShadowDrawer.draw(canvas, mProgressShadowBounds);
+        mShadowDrawer.draw(canvas, mProgressShadowBorderBounds, mProgressShadowBounds);
         mProgressDrawer.draw(canvas, mProgressBounds);
     }
 
@@ -241,6 +245,12 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
                 mProgressOptions.getTop(),
                 mProgressOptions.getRight(),
                 mProgressOptions.getBottom());
+
+        mProgressShadowBorderBounds.set(
+                mProgressOptions.getShadowBorderLeft(),
+                mProgressOptions.getShadowBorderTop(),
+                mProgressOptions.getShadowBorderRight(),
+                mProgressOptions.getShadowBorderBottom());
 
         mProgressShadowBounds.set(
                 mProgressOptions.getShadowLeft(),

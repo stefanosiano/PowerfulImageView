@@ -35,8 +35,8 @@ final class CircularShadowDrawer implements ShadowDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF shadowBounds) {
+    public void draw(Canvas canvas, RectF shadowBorderBounds, RectF shadowBounds) {
         canvas.drawArc(shadowBounds, 0, 360, true, mShadowPaint);
-        canvas.drawArc(shadowBounds, 0, 360, false, mShadowBorderPaint);
+        canvas.drawArc(shadowBorderBounds, 0, 360, false, mShadowBorderPaint);
     }
 }

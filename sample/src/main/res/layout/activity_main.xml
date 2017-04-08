@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:columnCount="3"
     tools:context="com.stefanosiano.powerfulimageviewsample.MainActivity">
 
     <TableRow>
@@ -15,21 +14,11 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:scaleType="center"
-            android:background="#60ea0aea"
+            android:background="#707070"
             android:layout_margin="8dp"
 
-            app:piv_progress_size="60dp"
-            app:piv_progress_shadow_enabled="true"
-            app:piv_progress_shadow_border_width="12dp"
-            app:piv_progress_shadow_border_color="#6fffa000"
-            app:piv_progress_shadow_color="#ffffff"
-            app:piv_progress_front_color="@color/colorAccent"
-            app:piv_progress_back_color="@android:color/black"
             app:piv_progress_indeterminate_color="#2040f0"
-            app:piv_progress_gravity="top_start"
-            app:piv_progress_value_percent="30"
-            app:piv_progress_mode="circular"
-            app:piv_progress_indeterminate="true"/>
+            app:piv_progress_mode="circular"/>
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
             android:layout_width="96dp"
@@ -39,6 +28,9 @@
             android:layout_margin="8dp"
             android:src="@android:color/background_light"
 
+            app:piv_progress_shadow_border_width="1dp"
+            app:piv_progress_shadow_border_color="@color/colorAccent"
+            app:piv_progress_mode="circular"
             />
 
         <com.stefanosiano.powerlessimageview.PowerlessImageView
