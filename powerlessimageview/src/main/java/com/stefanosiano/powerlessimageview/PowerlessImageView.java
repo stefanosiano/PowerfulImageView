@@ -46,6 +46,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
 
+    /** Helper class to manage the shape of the image and its options */
     private final ShapeDrawerManager mShapeDrawerManager;
 
 
@@ -94,15 +95,24 @@ public class PowerlessImageView extends ImageViewWrapper {
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager();
 
+        //the first time it was called, mShapeDrawerManager is null, so it's skipped.
+        //So i call it here, after everything else is instantiated.
+        mShapeDrawerManager.changeBitmap(getDrawable());
         changeProgressMode(mode);
     }
 
+    @Override
+    void onSizeChanged() {
+        //updates progress bounds
+        mProgressDrawerManager.onSizeChanged(getWidth(), getHeight());
+        mShapeDrawerManager.onSizeChanged(getWidth(), getHeight());
+    }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        //updates progress bounds
-        mProgressDrawerManager.onSizeChanged(w, h);
+    void onBitmapChanged() {
+        //when initializing (in constructor) it gets called, but it is still null
+        if(mShapeDrawerManager != null)
+            mShapeDrawerManager.changeBitmap(getDrawable());
     }
 
 

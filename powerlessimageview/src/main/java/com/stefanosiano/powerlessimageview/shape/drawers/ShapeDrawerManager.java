@@ -13,18 +13,40 @@ import android.os.Build;
 import android.util.Log;
 
 /**
- * Created by stefano on 05/04/17.
+ * Manager class for shape drawers. Used to initialize use the needed drawers.
  */
 
 public class ShapeDrawerManager {
-    BitmapShader shader;
-    Paint paint;
+    private final Paint paint;
+    private BitmapShader shader;
+
+    private float width, height;
 
     public ShapeDrawerManager() {
-        shader = new BitmapShader(getBitmapFromDrawable(null), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         paint = new Paint();
-        paint.setShader(shader);
     }
+
+
+    public void changeBitmap(Drawable drawable){
+        shader = new BitmapShader(getBitmapFromDrawable(drawable), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+        paint.setAntiAlias(true);
+    }
+
+
+    public void onSizeChanged(int width, int height){
+        this.width = width;
+        this.height = height;
+    }
+
+
+    /** Draws the image through the progress indicator */
+    public final void onDraw(Canvas canvas) {
+        canvas.drawCircle(width / 2, height / 2, width / 2, paint);
+    }
+
+
+
 
 
     private Bitmap getBitmapFromDrawable(Drawable drawable) {
@@ -58,13 +80,4 @@ public class ShapeDrawerManager {
     }
 
 
-
-    /** Draws the image through the progress indicator */
-    public final void onDraw(Canvas canvas) {
-        canvas.drawLine(1, 1, 400, 400, paint);
-        canvas.drawCircle(canvas.getWidth()/2, canvas.getHeight()/2, canvas.getWidth()/2, paint);
-        canvas.drawCircle(2, 100, 100, paint);
-        Log.e("ASD", canvas.getWidth() +"asd");
-        //mShadowDrawer.draw(canvas, mProgressShadowBounds);
-    }
 }

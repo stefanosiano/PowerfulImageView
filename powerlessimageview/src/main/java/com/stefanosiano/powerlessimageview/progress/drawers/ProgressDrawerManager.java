@@ -11,7 +11,7 @@ import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 import java.lang.ref.WeakReference;
 
 /**
- * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
+ * Manager class for progress drawers. Used to initialize use the needed drawers.
  */
 
 public final class ProgressDrawerManager implements ProgressOptions.ProgressOptionsListener {

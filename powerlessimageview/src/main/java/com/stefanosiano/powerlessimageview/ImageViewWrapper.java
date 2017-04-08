@@ -1,11 +1,9 @@
 package com.stefanosiano.powerlessimageview;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
@@ -40,84 +38,12 @@ abstract class ImageViewWrapper extends ImageView {
 
 
 
-    @Override
-    public void jumpDrawablesToCurrentState() {
-        super.jumpDrawablesToCurrentState();
-    }
-
-    @Override
-    public void invalidateDrawable(Drawable dr) {
-        super.invalidateDrawable(dr);
-    }
-
-    @Override
-    public boolean hasOverlappingRendering() {
-        //todo check this!
-        return false;
-    }
-
-    @Override
-    public void setAdjustViewBounds(boolean adjustViewBounds) {
-        super.setAdjustViewBounds(adjustViewBounds);
-    }
 
 
-    @Override
-    public void setMaxWidth(int maxWidth) {
-        super.setMaxWidth(maxWidth);
-    }
+    abstract void onSizeChanged();
+    abstract void onBitmapChanged();
 
-
-    @Override
-    public void setMaxHeight(int maxHeight) {
-        super.setMaxHeight(maxHeight);
-    }
-
-    @Override
-    public void setImageResource(int resId) {
-        super.setImageResource(resId);
-    }
-
-    @Override
-    public void setImageURI(Uri uri) {
-        super.setImageURI(uri);
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-    }
-
-    @Override
-    public void setImageIcon(Icon icon) {
-        super.setImageIcon(icon);
-    }
-
-    @Override
-    public void setImageBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-    }
-
-    @Override
-    public void setImageState(int[] state, boolean merge) {
-        super.setImageState(state, merge);
-    }
-
-    @Override
-    public void setSelected(boolean selected) {
-        super.setSelected(selected);
-    }
-
-    @Override
-    public void setImageLevel(int level) {
-        super.setImageLevel(level);
-    }
-
-    @Override
-    public void setScaleType(ScaleType scaleType) {
-        super.setScaleType(scaleType);
-    }
-
+    /* Methods to check! Should they be handled by ShapeDrawerManager? */
     @Override
     public void setImageMatrix(Matrix matrix) {
         super.setImageMatrix(matrix);
@@ -128,49 +54,10 @@ abstract class ImageViewWrapper extends ImageView {
         return super.getCropToPadding();
     }
 
-    @Override
-    public int[] onCreateDrawableState(int extraSpace) {
-        return super.onCreateDrawableState(extraSpace);
-    }
-
-    @Override
-    public void onRtlPropertiesChanged(int layoutDirection) {
-        super.onRtlPropertiesChanged(layoutDirection);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected boolean setFrame(int l, int t, int r, int b) {
-        return super.setFrame(l, t, r, b);
-    }
 
     @Override
     protected void drawableStateChanged() {
         super.drawableStateChanged();
-    }
-
-    @Override
-    public void drawableHotspotChanged(float x, float y) {
-        super.drawableHotspotChanged(x, y);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-    }
-
-    @Override
-    public void setBaseline(int baseline) {
-        super.setBaseline(baseline);
-    }
-
-    @Override
-    public void setBaselineAlignBottom(boolean aligned) {
-        super.setBaselineAlignBottom(aligned);
     }
 
     @Override
@@ -191,11 +78,6 @@ abstract class ImageViewWrapper extends ImageView {
     }
 
     @Override
-    public void setVisibility(int visibility) {
-        super.setVisibility(visibility);
-    }
-
-    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
     }
@@ -203,6 +85,90 @@ abstract class ImageViewWrapper extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void jumpDrawablesToCurrentState() {
+        super.jumpDrawablesToCurrentState();
+    }
+
+    @Override
+    public void invalidateDrawable(Drawable dr) {
+        super.invalidateDrawable(dr);
+    }
+
+    @Override
+    public boolean hasOverlappingRendering() {
+        return false;
+    }
+
+    @Override
+    public void setAdjustViewBounds(boolean adjustViewBounds) {
+        super.setAdjustViewBounds(adjustViewBounds);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //these methods propagate their effects to the methods of the PIV
+
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        onSizeChanged();
+    }
+
+    @Override
+    public void setMaxWidth(int maxWidth) {
+        super.setMaxWidth(maxWidth);
+        if(getWidth() > maxWidth)
+            onSizeChanged();
+    }
+
+
+    @Override
+    public void setMaxHeight(int maxHeight) {
+        super.setMaxHeight(maxHeight);
+        if(getHeight() > maxHeight)
+            onSizeChanged();
+    }
+
+    @Override
+    public void setImageResource(int resId) {
+        super.setImageResource(resId);
+        onBitmapChanged();
+    }
+
+    @Override
+    public void setImageURI(Uri uri) {
+        super.setImageURI(uri);
+        onBitmapChanged();
+    }
+
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        super.setImageDrawable(drawable);
+        onBitmapChanged();
+    }
+
+    @Override
+    public void setImageIcon(Icon icon) {
+        super.setImageIcon(icon);
+        onBitmapChanged();
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        super.setImageBitmap(bm);
+        onBitmapChanged();
     }
 
 
