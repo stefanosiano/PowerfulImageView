@@ -221,7 +221,6 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedLastMode = PivProgressMode.NONE;
     }
 
-
     public void setOptions (ProgressOptions other) {
         this.mDeterminateAnimationEnabled = other.mDeterminateAnimationEnabled;
         this.mBorderWidth = other.mBorderWidth;
@@ -1019,8 +1018,96 @@ public final class ProgressOptions implements Parcelable {
 
 
 
-
     //Parcelable stuff
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (mDeterminateAnimationEnabled ? 1 : 0));
+        dest.writeInt(mBorderWidth);
+        dest.writeFloat(mBorderWidthPercent);
+        dest.writeFloat(mValuePercent);
+        dest.writeInt(mFrontColor);
+        dest.writeInt(mBackColor);
+        dest.writeInt(mIndeterminateColor);
+        dest.writeByte((byte) (mDrawWedge ? 1 : 0));
+        dest.writeByte((byte) (mShadowEnabled ? 1 : 0));
+        dest.writeInt(mShadowColor);
+        dest.writeInt(mShadowPadding);
+        dest.writeFloat(mShadowPaddingPercent);
+        dest.writeFloat(mShadowBorderWidth);
+        dest.writeFloat(mCalculatedShadowBorderWidth);
+        dest.writeInt(mShadowBorderColor);
+        dest.writeInt(mSize);
+        dest.writeInt(mPadding);
+        dest.writeFloat(mSizePercent);
+        dest.writeByte((byte) (mIsRtl ? 1 : 0));
+        dest.writeByte((byte) (mRtlDisabled ? 1 : 0));
+        dest.writeByte((byte) (mIsIndeterminate ? 1 : 0));
+        dest.writeFloat(mCalculatedSize);
+        dest.writeInt(mCalculatedShadowPadding);
+        dest.writeInt(mCalculatedBorderWidth);
+        dest.writeFloat(mCalculatedLeft);
+        dest.writeFloat(mCalculatedTop);
+        dest.writeFloat(mCalculatedRight);
+        dest.writeFloat(mCalculatedBottom);
+        dest.writeFloat(mCalculatedShadowLeft);
+        dest.writeFloat(mCalculatedShadowTop);
+        dest.writeFloat(mCalculatedShadowRight);
+        dest.writeFloat(mCalculatedShadowBottom);
+        dest.writeFloat(mCalculatedShadowBorderLeft);
+        dest.writeFloat(mCalculatedShadowBorderTop);
+        dest.writeFloat(mCalculatedShadowBorderRight);
+        dest.writeFloat(mCalculatedShadowBorderBottom);
+        dest.writeInt(mCalculatedLastW);
+        dest.writeInt(mCalculatedLastH);
+    }
+
+
+    protected ProgressOptions(Parcel in) {
+        mDeterminateAnimationEnabled = in.readByte() != 0;
+        mBorderWidth = in.readInt();
+        mBorderWidthPercent = in.readFloat();
+        mValuePercent = in.readFloat();
+        mFrontColor = in.readInt();
+        mBackColor = in.readInt();
+        mIndeterminateColor = in.readInt();
+        mDrawWedge = in.readByte() != 0;
+        mShadowEnabled = in.readByte() != 0;
+        mShadowColor = in.readInt();
+        mShadowPadding = in.readInt();
+        mShadowPaddingPercent = in.readFloat();
+        mShadowBorderWidth = in.readFloat();
+        mCalculatedShadowBorderWidth = in.readFloat();
+        mShadowBorderColor = in.readInt();
+        mSize = in.readInt();
+        mPadding = in.readInt();
+        mSizePercent = in.readFloat();
+        mIsRtl = in.readByte() != 0;
+        mRtlDisabled = in.readByte() != 0;
+        mIsIndeterminate = in.readByte() != 0;
+        mCalculatedSize = in.readFloat();
+        mCalculatedShadowPadding = in.readInt();
+        mCalculatedBorderWidth = in.readInt();
+        mCalculatedLeft = in.readFloat();
+        mCalculatedTop = in.readFloat();
+        mCalculatedRight = in.readFloat();
+        mCalculatedBottom = in.readFloat();
+        mCalculatedShadowLeft = in.readFloat();
+        mCalculatedShadowTop = in.readFloat();
+        mCalculatedShadowRight = in.readFloat();
+        mCalculatedShadowBottom = in.readFloat();
+        mCalculatedShadowBorderLeft = in.readFloat();
+        mCalculatedShadowBorderTop = in.readFloat();
+        mCalculatedShadowBorderRight = in.readFloat();
+        mCalculatedShadowBorderBottom = in.readFloat();
+        mCalculatedLastW = in.readInt();
+        mCalculatedLastH = in.readInt();
+    }
 
     public static final Creator<ProgressOptions> CREATOR = new Creator<ProgressOptions>() {
         @Override
@@ -1035,62 +1122,8 @@ public final class ProgressOptions implements Parcelable {
     };
 
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    protected ProgressOptions(Parcel in) {
-        mDeterminateAnimationEnabled = in.readByte() != 0;
-        mBorderWidth = in.readInt();
-        mBorderWidthPercent = in.readFloat();
-        mValuePercent = in.readFloat();
-        mFrontColor = in.readInt();
-        mBackColor = in.readInt();
-        mIndeterminateColor = in.readInt();
-        mDrawWedge = in.readByte() != 0;
-        mSize = in.readInt();
-        mPadding = in.readInt();
-        mSizePercent = in.readFloat();
-        mIsRtl = in.readByte() != 0;
-        mRtlDisabled = in.readByte() != 0;
-        mIsIndeterminate = in.readByte() != 0;
-        mCalculatedSize = in.readFloat();
-        mCalculatedBorderWidth = in.readInt();
-        mCalculatedLeft = in.readFloat();
-        mCalculatedTop = in.readFloat();
-        mCalculatedRight = in.readFloat();
-        mCalculatedBottom = in.readFloat();
-        mCalculatedLastW = in.readInt();
-        mCalculatedLastH = in.readInt();
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-        dest.writeByte((byte) (mDeterminateAnimationEnabled ? 1 : 0));
-        dest.writeInt(mBorderWidth);
-        dest.writeFloat(mBorderWidthPercent);
-        dest.writeFloat(mValuePercent);
-        dest.writeInt(mFrontColor);
-        dest.writeInt(mBackColor);
-        dest.writeInt(mIndeterminateColor);
-        dest.writeByte((byte) (mDrawWedge ? 1 : 0));
-        dest.writeInt(mSize);
-        dest.writeInt(mPadding);
-        dest.writeFloat(mSizePercent);
-        dest.writeByte((byte) (mIsRtl ? 1 : 0));
-        dest.writeByte((byte) (mRtlDisabled ? 1 : 0));
-        dest.writeByte((byte) (mIsIndeterminate ? 1 : 0));
-        dest.writeFloat(mCalculatedSize);
-        dest.writeInt(mCalculatedBorderWidth);
-        dest.writeFloat(mCalculatedLeft);
-        dest.writeFloat(mCalculatedTop);
-        dest.writeFloat(mCalculatedRight);
-        dest.writeFloat(mCalculatedBottom);
-        dest.writeInt(mCalculatedLastW);
-        dest.writeInt(mCalculatedLastH);
-    }
 
 
 

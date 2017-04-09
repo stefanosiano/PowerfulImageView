@@ -40,7 +40,6 @@ abstract class ImageViewWrapper extends ImageView {
 
 
 
-    abstract void onSizeChanged();
     abstract void onBitmapChanged();
 
     /* Methods to check! Should they be handled by ShapeDrawerManager? */
@@ -118,28 +117,6 @@ abstract class ImageViewWrapper extends ImageView {
 
 
     //these methods propagate their effects to the methods of the PIV
-
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        onSizeChanged();
-    }
-
-    @Override
-    public void setMaxWidth(int maxWidth) {
-        super.setMaxWidth(maxWidth);
-        if(getWidth() > maxWidth)
-            onSizeChanged();
-    }
-
-
-    @Override
-    public void setMaxHeight(int maxHeight) {
-        super.setMaxHeight(maxHeight);
-        if(getHeight() > maxHeight)
-            onSizeChanged();
-    }
 
     @Override
     public void setImageResource(int resId) {

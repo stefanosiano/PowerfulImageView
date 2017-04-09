@@ -85,7 +85,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
 
     /**
-     * Gets the instance of the progress drawer to use.
+     * Updates the progress drawers to use and chooses the right one to use based on the mode.
      * If the drawer doesn't exist, it will be instantiated.
      * If the shadow drawer doesn't exist, it will be instantiated.
      *
@@ -263,8 +263,8 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     }
 
     /**
-     * Called when an option that changes the size of the progress indicator is updated.
-     * The bounds are calculated again, and it propagates the update to the progress drawers.
+     * Called when the progress mode changes.
+     * The drawer is updated and the right one is used.
      */
     @Override
     public void onModeUpdated(ProgressOptions options) {

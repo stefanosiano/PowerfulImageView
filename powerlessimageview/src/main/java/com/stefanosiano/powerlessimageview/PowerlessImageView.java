@@ -14,6 +14,7 @@ import com.stefanosiano.powerlessimageview.progress.PivProgressGravity;
 import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
 import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 import com.stefanosiano.powerlessimageview.progress.drawers.ProgressDrawerManager;
+import com.stefanosiano.powerlessimageview.shape.PivShapeMode;
 import com.stefanosiano.powerlessimageview.shape.drawers.ShapeDrawerManager;
 
 /**
@@ -39,6 +40,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
+    private static final int DEFAULT_SHAPE_MODE = PivShapeMode.DEFAULT.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
     private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 8;
     private static final int DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 1;
@@ -88,24 +90,28 @@ public class PowerlessImageView extends ImageViewWrapper {
                 getColor(a, R.styleable.PowerlessImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color)
         );
 
-        PivProgressMode mode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
+        PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
+        PivShapeMode shapeMode = PivShapeMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_shape_mode, DEFAULT_SHAPE_MODE));
 
         a.recycle();
 
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager();
 
+        changeProgressMode(progressMode);
+        changeShapeMode(shapeMode);
+
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
         mShapeDrawerManager.changeBitmap(getDrawable());
-        changeProgressMode(mode);
     }
 
     @Override
-    void onSizeChanged() {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
         //updates progress bounds
-        mProgressDrawerManager.onSizeChanged(getWidth(), getHeight());
-        mShapeDrawerManager.onSizeChanged(getWidth(), getHeight());
+        mProgressDrawerManager.onSizeChanged(w, h);
+        mShapeDrawerManager.onSizeChanged(w, h);
     }
 
     @Override
@@ -133,6 +139,16 @@ public class PowerlessImageView extends ImageViewWrapper {
      */
     public final void changeProgressMode(PivProgressMode progressMode){
         mProgressDrawerManager.changeProgressMode(progressMode);
+    }
+
+
+    /**
+     * Changes the shape of the image.
+     *
+     * @param shapeMode shape to change the image into
+     */
+    public final void changeShapeMode(PivShapeMode shapeMode){
+        mShapeDrawerManager.changeShapeMode(shapeMode);
     }
 
 
