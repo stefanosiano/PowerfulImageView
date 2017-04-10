@@ -268,7 +268,6 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      */
     @Override
     public void onModeUpdated(ProgressOptions options) {
-
         mProgressOptions = options;
         changeProgressMode(mProgressMode);
     }

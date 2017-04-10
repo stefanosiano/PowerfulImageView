@@ -15,6 +15,7 @@ import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
 import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 import com.stefanosiano.powerlessimageview.progress.drawers.ProgressDrawerManager;
 import com.stefanosiano.powerlessimageview.shape.PivShapeMode;
+import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 import com.stefanosiano.powerlessimageview.shape.drawers.ShapeDrawerManager;
 
 /**
@@ -29,7 +30,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
     private static final int DEFAULT_PROGRESS_WIDTH = -1;
-    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = 8;
+    private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = 10;
     private static final int DEFAULT_PROGRESS_SIZE = -1;
     private static final float DEFAULT_PROGRESS_SIZE_PERCENT = 40;
     private static final int DEFAULT_PROGRESS_PADDING = 2;
@@ -40,9 +41,9 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
-    private static final int DEFAULT_SHAPE_MODE = PivShapeMode.DEFAULT.getValue();
+    private static final int DEFAULT_SHAPE_MODE = PivShapeMode.NORMAL.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
-    private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 8;
+    private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 10;
     private static final int DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 1;
 
     /** Helper class to manage the progress indicator and its options */
@@ -91,12 +92,17 @@ public class PowerlessImageView extends ImageViewWrapper {
         );
 
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
+
+
+        ShapeOptions shapeOptions = new ShapeOptions();
+
+
         PivShapeMode shapeMode = PivShapeMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_shape_mode, DEFAULT_SHAPE_MODE));
 
         a.recycle();
 
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
-        this.mShapeDrawerManager = new ShapeDrawerManager();
+        this.mShapeDrawerManager = new ShapeDrawerManager(shapeOptions);
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);

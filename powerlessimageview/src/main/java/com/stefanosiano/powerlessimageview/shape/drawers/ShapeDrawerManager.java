@@ -21,7 +21,7 @@ import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
  * Manager class for shape drawers. Used to initialize use the needed drawers.
  */
 
-public class ShapeDrawerManager {
+public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     private final Paint paint = new Paint();
 
@@ -93,7 +93,7 @@ public class ShapeDrawerManager {
     public ShapeDrawerManager(final ShapeOptions shapeOptions){
         this.mShapeBounds = new RectF();
         this.mShapeOptions = shapeOptions;
-        //this.mShapeOptions.setListener(this);
+        this.mShapeOptions.setListener(this);
     }
 
 
@@ -133,7 +133,7 @@ public class ShapeDrawerManager {
      * @param h Current height of this view.
      */
     public final void onSizeChanged(int w, int h) {
-        //mShapeOptions.calculateBounds(w, h, mProgressMode);
+        mShapeOptions.calculateBounds(w, h, mShapeMode);
 
         onSizeUpdated(mShapeOptions);
     }
@@ -175,7 +175,7 @@ public class ShapeDrawerManager {
     @Override
     public void onOptionsUpdated(ShapeOptions options) {
         mShapeOptions = options;
-        mShapeDrawer.setup(options);
+        //mShapeDrawer.setup(options);
     }
 
     /**
@@ -202,13 +202,20 @@ public class ShapeDrawerManager {
     }
 
 
-
-
+    /**
+     * Called when the shape mode changes.
+     * The drawer is updated and the right one is used.
+     */
+    @Override
+    public void onModeUpdated(ShapeOptions options) {
+        mShapeOptions = options;
+        changeShapeMode(mShapeMode);
+    }
 
     /** Saves state into a bundle. */
     public Bundle saveInstanceState() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("shape_options", mShapeOptions);
+        //bundle.putParcelable("shape_options", mShapeOptions);
         bundle.putInt("shape_mode", mShapeMode.getValue());
 
         return bundle;
@@ -219,7 +226,7 @@ public class ShapeDrawerManager {
         if (state == null)
             return;
 
-        mShapeOptions.setOptions((ShapeOptions) state.getParcelable("shape_options"));
+        //mShapeOptions.setOptions((ShapeOptions) state.getParcelable("shape_options"));
         PivShapeMode shapeMode = PivShapeMode.fromValue(state.getInt("shape_mode"));
         onSizeUpdated(mShapeOptions);
         changeShapeMode(shapeMode);
