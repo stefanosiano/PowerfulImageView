@@ -26,12 +26,12 @@ public class MainActivity extends Activity {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                progress += 5;
+                progress += 15;
                 Log.e("ASD", progress+"");
                 piw.getProgressOptions().setValuePercent(progress);
 
                 if(progress < 100)
-                    piw.postDelayed(this, 300);
+                    piw.postDelayed(this, 400);
                 else {
                     piw.postDelayed(runnable2, 1000);
                     piw.changeProgressMode(PivProgressMode.HORIZONTAL_INDETERMINATE);
@@ -40,6 +40,6 @@ public class MainActivity extends Activity {
             }
         };
 
-        piw.postDelayed(runnable, 1500);*/
+        piw.postDelayed(runnable, 2500);*/
     }
 }

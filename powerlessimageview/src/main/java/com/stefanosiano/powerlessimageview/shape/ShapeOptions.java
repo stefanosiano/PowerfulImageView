@@ -12,7 +12,16 @@ public class ShapeOptions {
     private WeakReference<ShapeOptionsListener> listener;
 
 
-    public void calculateBounds(int width, int height, PivShapeMode shapeMode){
+
+    /**
+     * Calculates the bounds of the image, based on shape options and mode.
+     * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     *
+     * @param w Width of the View
+     * @param h Height of the View
+     * @param mode Mode of the shape
+     */
+    public void calculateBounds(int w, int h, PivShapeMode mode){
 
     }
 

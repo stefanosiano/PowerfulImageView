@@ -117,7 +117,24 @@ public class PowerlessImageView extends ImageViewWrapper {
         super.onSizeChanged(w, h, oldw, oldh);
         //updates progress bounds
         mProgressDrawerManager.onSizeChanged(w, h);
-        mShapeDrawerManager.onSizeChanged(w, h);
+
+        //mShapeDrawerManager.onSizeChanged(w, h);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        mShapeDrawerManager.onMeasure(widthSize, heightSize, widthMode, heightMode, this);
+
+        //MUST CALL THIS
+        setMeasuredDimension(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight());
     }
 
     @Override

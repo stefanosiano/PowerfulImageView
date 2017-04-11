@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.stefanosiano.powerlessimageview.shape.PivShapeMode;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
@@ -28,9 +29,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mShapeBounds;
 
+    private Drawable drawable;
+
+    private float mMeasuredWidth;
+    private float mMeasuredHeight;
 
 
     public void changeBitmap(Drawable drawable){
+        this.drawable = drawable;
         BitmapShader shader = new BitmapShader(getBitmapFromDrawable(drawable), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         paint.setShader(shader);
         paint.setAntiAlias(true);
@@ -139,6 +145,114 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
+    public void onMeasure(float w, float h, int wMode, int hMode, View view){
+
+        //EXACTLY means the layout_width or layout_height value was set to a specific value.
+        // You should probably make your view this size.
+        // This can also get triggered when match_parent is used, to set the size exactly to the parent view (this is layout dependent in the framework).
+
+        //AT_MOST typically means the layout_width or layout_height value was set to match_parent or wrap_content
+        // where a maximum size is needed (this is layout dependent in the framework), and the size
+        // of the parent dimension is the value. You should not be any larger than this size.
+
+        //UNSPECIFIED typically means the layout_width or layout_height value was set to wrap_content with no restrictions.
+        // You can be whatever size you would like. Some layouts also use this callback to figure out your
+        // desired size before determine what specs to actually pass you again in a second measure request.
+
+        float drawableWidth = drawable == null ? 0 : drawable.getIntrinsicWidth() + view.getPaddingLeft() + view.getPaddingRight();
+        float drawableHeight = drawable == null ? 0 : drawable.getIntrinsicHeight() + view.getPaddingTop() + view.getPaddingBottom();
+
+        //todo change it based on shape mode!
+        float usedRatio = 1f;
+
+
+
+        switch (wMode){
+
+            //Must be this size
+            case View.MeasureSpec.EXACTLY:
+                mMeasuredWidth = w;
+                mMeasuredHeight = w / usedRatio;
+
+                if (hMode == View.MeasureSpec.EXACTLY) {
+                    mMeasuredHeight = h;
+                }
+
+                if (hMode == View.MeasureSpec.AT_MOST){
+
+                    if (h < drawableHeight) {
+                        h = h;
+                    } else {
+                        h = drawableHeight;
+                    }
+                    //h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
+                    mMeasuredHeight = Math.min(w / usedRatio, h);
+                }
+
+                if(hMode == View.MeasureSpec.UNSPECIFIED){
+                    h = drawableHeight > 0 ? drawableHeight : h;
+                    mMeasuredHeight = w / usedRatio;
+                }
+
+                break;
+
+            //Can't be bigger than...
+            case View.MeasureSpec.AT_MOST:
+
+                mMeasuredWidth = w;
+                mMeasuredHeight = w / usedRatio;
+
+                if (hMode == View.MeasureSpec.EXACTLY) {
+                    mMeasuredWidth = Math.min(h * usedRatio, w);
+                    mMeasuredHeight = h;
+                }
+
+                if (hMode == View.MeasureSpec.AT_MOST) {
+                    w = drawableWidth > 0 ? Math.min(drawableWidth, w) : w;
+                    h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
+                    mMeasuredWidth = Math.min(h * usedRatio, w);
+                    mMeasuredHeight = Math.min(h, w / usedRatio);
+                }
+
+                if(hMode == View.MeasureSpec.UNSPECIFIED) {
+                    w = drawableWidth > 0 ? Math.min(drawableWidth, w) : w;
+                    h = drawableHeight > 0 ? drawableHeight : h;
+                    mMeasuredWidth = w;
+                    mMeasuredHeight = w / usedRatio;
+                }
+
+                break;
+
+            //Be whatever you want
+            default:
+            case View.MeasureSpec.UNSPECIFIED:
+                w = drawableWidth > 0 ? drawableWidth : w;
+                mMeasuredWidth = w;
+                mMeasuredHeight = w / usedRatio;
+
+                if (hMode == View.MeasureSpec.EXACTLY) {
+                    mMeasuredWidth = h * usedRatio;
+                    mMeasuredHeight = h;
+                }
+
+                if (hMode == View.MeasureSpec.AT_MOST) {
+                    h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
+                    mMeasuredHeight = h;
+                    mMeasuredWidth = h * usedRatio;
+                }
+
+                if(hMode == View.MeasureSpec.UNSPECIFIED) {
+                    h = drawableHeight > 0 ? drawableHeight : h;
+                    mMeasuredWidth = w;
+                    mMeasuredHeight = w / usedRatio;
+                }
+
+                break;
+        }
+
+    }
+
+
     /**
      * Changes the shape mode of the image.
      *
@@ -211,6 +325,21 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         mShapeOptions = options;
         changeShapeMode(mShapeMode);
     }
+
+
+    public int getMeasuredHeight() {
+        return (int) mMeasuredHeight;
+    }
+
+    public int getMeasuredWidth() {
+        return (int) mMeasuredWidth;
+    }
+
+
+
+
+
+
 
     /** Saves state into a bundle. */
     public Bundle saveInstanceState() {
