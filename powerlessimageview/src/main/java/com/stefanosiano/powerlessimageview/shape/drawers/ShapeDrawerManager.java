@@ -147,24 +147,21 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     public void onMeasure(float w, float h, int wMode, int hMode, View view){
 
-        //EXACTLY means the layout_width or layout_height value was set to a specific value.
-        // You should probably make your view this size.
-        // This can also get triggered when match_parent is used, to set the size exactly to the parent view (this is layout dependent in the framework).
+        // EXACTLY: size value was set to a specific value. This can also get triggered when match_parent
+        // is used, to set the size exactly to the parent view (this is layout dependent).
 
-        //AT_MOST typically means the layout_width or layout_height value was set to match_parent or wrap_content
-        // where a maximum size is needed (this is layout dependent in the framework), and the size
-        // of the parent dimension is the value. You should not be any larger than this size.
+        // AT_MOST: size value was set to match_parent or wrap_content where a maximum size is needed
+        // (this is layout dependent). You should not be any larger than this size.
 
-        //UNSPECIFIED typically means the layout_width or layout_height value was set to wrap_content with no restrictions.
-        // You can be whatever size you would like. Some layouts also use this callback to figure out your
-        // desired size before determine what specs to actually pass you again in a second measure request.
+        // UNSPECIFIED: size value was set to wrap_content with no restrictions. You can be whatever
+        // size you would like. Some layouts also use this callback to figure out your desired size
+        // before determine what specs to actually pass you again in a second measure request.
 
+        //Drawable width and height calculated if a drawable has been set. Used in calculations
         float drawableWidth = drawable == null ? 0 : drawable.getIntrinsicWidth() + view.getPaddingLeft() + view.getPaddingRight();
         float drawableHeight = drawable == null ? 0 : drawable.getIntrinsicHeight() + view.getPaddingTop() + view.getPaddingBottom();
 
-        //todo change it based on shape mode!
         float usedRatio = 1f;
-
 
 
         switch (wMode){
@@ -179,18 +176,10 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 }
 
                 if (hMode == View.MeasureSpec.AT_MOST){
-
-                    if (h < drawableHeight) {
-                        h = h;
-                    } else {
-                        h = drawableHeight;
-                    }
-                    //h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
                     mMeasuredHeight = Math.min(w / usedRatio, h);
                 }
 
                 if(hMode == View.MeasureSpec.UNSPECIFIED){
-                    h = drawableHeight > 0 ? drawableHeight : h;
                     mMeasuredHeight = w / usedRatio;
                 }
 
@@ -208,6 +197,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 }
 
                 if (hMode == View.MeasureSpec.AT_MOST) {
+                    //if both are wrap_content, size should be drawable size
                     w = drawableWidth > 0 ? Math.min(drawableWidth, w) : w;
                     h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
                     mMeasuredWidth = Math.min(h * usedRatio, w);
@@ -216,7 +206,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
                 if(hMode == View.MeasureSpec.UNSPECIFIED) {
                     w = drawableWidth > 0 ? Math.min(drawableWidth, w) : w;
-                    h = drawableHeight > 0 ? drawableHeight : h;
                     mMeasuredWidth = w;
                     mMeasuredHeight = w / usedRatio;
                 }
@@ -237,12 +226,12 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
                 if (hMode == View.MeasureSpec.AT_MOST) {
                     h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
-                    mMeasuredHeight = h;
                     mMeasuredWidth = h * usedRatio;
+                    mMeasuredHeight = h;
                 }
 
                 if(hMode == View.MeasureSpec.UNSPECIFIED) {
-                    h = drawableHeight > 0 ? drawableHeight : h;
+                    w = drawableWidth > 0 ? drawableWidth : w;
                     mMeasuredWidth = w;
                     mMeasuredHeight = w / usedRatio;
                 }
