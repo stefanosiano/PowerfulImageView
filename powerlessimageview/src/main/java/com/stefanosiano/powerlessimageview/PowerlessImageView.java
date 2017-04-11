@@ -118,12 +118,11 @@ public class PowerlessImageView extends ImageViewWrapper {
         //updates progress bounds
         mProgressDrawerManager.onSizeChanged(w, h);
 
-        //mShapeDrawerManager.onSizeChanged(w, h);
+        mShapeDrawerManager.onSizeChanged(w, h);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
