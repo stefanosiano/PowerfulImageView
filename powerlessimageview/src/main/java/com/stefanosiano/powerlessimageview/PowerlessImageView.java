@@ -109,7 +109,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
-        mShapeDrawerManager.changeBitmap(getDrawable());
+        mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
     }
 
     @Override
@@ -124,6 +124,11 @@ public class PowerlessImageView extends ImageViewWrapper {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
+        //I go further only if there is a custom shape selected
+        if(mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL){
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -140,7 +145,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     void onBitmapChanged() {
         //when initializing (in constructor) it gets called, but it is still null
         if(mShapeDrawerManager != null)
-            mShapeDrawerManager.changeBitmap(getDrawable());
+            mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
     }
 
 

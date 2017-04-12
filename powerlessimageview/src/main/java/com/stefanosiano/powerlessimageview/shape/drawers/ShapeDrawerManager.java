@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.stefanosiano.powerlessimageview.shape.PivShapeMode;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
@@ -29,52 +31,11 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mShapeBounds;
 
+    private BitmapShader shader;
     private Drawable drawable;
 
     private float mMeasuredWidth;
     private float mMeasuredHeight;
-
-
-    public void changeBitmap(Drawable drawable){
-        this.drawable = drawable;
-        BitmapShader shader = new BitmapShader(getBitmapFromDrawable(drawable), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        paint.setShader(shader);
-        paint.setAntiAlias(true);
-    }
-
-
-
-    private Bitmap getBitmapFromDrawable(Drawable drawable) {
-        if (drawable == null) {
-            return null;
-        }
-
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        try {
-            Bitmap bitmap;
-
-            if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-            } else if (drawable instanceof ColorDrawable) {
-                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-            } else {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
 
 
     //Variables used to initialize drawers
@@ -91,6 +52,18 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /** Options used by shape drawers */
     private ShapeOptions mShapeOptions;
+
+
+
+
+
+    public void changeBitmap(Drawable drawable, Bitmap bitmap){
+        this.drawable = drawable;
+        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+    }
 
 
     /**
@@ -242,6 +215,107 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
+
+
+    //todo update matrix for scale type!!!
+    private void updateShaderMatrix(ImageView.ScaleType mScaleType) {
+        float scale;
+        float dx;
+        float dy;
+
+        switch (mScaleType) {
+            case CENTER:
+                mBorderRect.set(mBounds);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+
+                mShaderMatrix.reset();
+                mShaderMatrix.setTranslate((int) ((mBorderRect.width() - mBitmapWidth) * 0.5f + 0.5f),
+                        (int) ((mBorderRect.height() - mBitmapHeight) * 0.5f + 0.5f));
+                break;
+
+            case CENTER_CROP:
+                mBorderRect.set(mBounds);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+
+                mShaderMatrix.reset();
+
+                dx = 0;
+                dy = 0;
+
+                if (mBitmapWidth * mBorderRect.height() > mBorderRect.width() * mBitmapHeight) {
+                    scale = mBorderRect.height() / (float) mBitmapHeight;
+                    dx = (mBorderRect.width() - mBitmapWidth * scale) * 0.5f;
+                } else {
+                    scale = mBorderRect.width() / (float) mBitmapWidth;
+                    dy = (mBorderRect.height() - mBitmapHeight * scale) * 0.5f;
+                }
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth / 2,
+                        (int) (dy + 0.5f) + mBorderWidth / 2);
+                break;
+
+            case CENTER_INSIDE:
+                mShaderMatrix.reset();
+
+                if (mBitmapWidth <= mBounds.width() && mBitmapHeight <= mBounds.height()) {
+                    scale = 1.0f;
+                } else {
+                    scale = Math.min(mBounds.width() / (float) mBitmapWidth,
+                            mBounds.height() / (float) mBitmapHeight);
+                }
+
+                dx = (int) ((mBounds.width() - mBitmapWidth * scale) * 0.5f + 0.5f);
+                dy = (int) ((mBounds.height() - mBitmapHeight * scale) * 0.5f + 0.5f);
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate(dx, dy);
+
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            default:
+            case FIT_CENTER:
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.CENTER);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            case FIT_END:
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.END);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            case FIT_START:
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.START);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            case FIT_XY:
+                mBorderRect.set(mBounds);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.reset();
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+        }
+
+        mDrawableRect.set(mBorderRect);
+    }
+
+
+
+
     /**
      * Changes the shape mode of the image.
      *
@@ -255,7 +329,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         updateDrawers(mShapeMode);
         //mShapeDrawer.setup(mProgressOptions);
     }
-
 
     /** Draws the image */
     public final void onDraw(Canvas canvas) {
@@ -290,17 +363,12 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         mShapeOptions = options;
         //set calculated bounds to our progress bounds
-        mShapeBounds.set(0f,
-                0f,
-                100,
-                100);
-        /*
-        mProgressBounds.set(
-                mProgressOptions.getLeft(),
-                mProgressOptions.getTop(),
-                mProgressOptions.getRight(),
-                mProgressOptions.getBottom());
-*/
+        mShapeBounds.set(
+                mShapeOptions.getLeft(),
+                mShapeOptions.getTop(),
+                mShapeOptions.getRight(),
+                mShapeOptions.getBottom());
+
         //mShapeDrawer.setup(mProgressOptions);
     }
 
@@ -324,11 +392,12 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         return (int) mMeasuredWidth;
     }
 
-
-
-
-
-
+    /**
+     * @return The shape selected mode
+     */
+    public PivShapeMode getShapeMode() {
+        return mShapeMode;
+    }
 
     /** Saves state into a bundle. */
     public Bundle saveInstanceState() {

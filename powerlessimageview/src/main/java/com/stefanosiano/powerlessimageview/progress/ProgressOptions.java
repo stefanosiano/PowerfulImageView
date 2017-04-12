@@ -379,6 +379,7 @@ public final class ProgressOptions implements Parcelable {
                 mCalculatedShadowBorderTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
                 mCalculatedShadowBorderRight = mCalculatedShadowBorderLeft + mCalculatedSize - mCalculatedShadowBorderWidth - 1;
                 mCalculatedShadowBorderBottom = mCalculatedShadowBorderTop + mCalculatedSize - mCalculatedShadowBorderWidth - 1;
+                //todo is this -1 and +1 just a layout editor problem???
 
                 mCalculatedShadowLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
                 mCalculatedShadowTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;

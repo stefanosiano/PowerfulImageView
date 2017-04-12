@@ -10,15 +10,16 @@
 
 
     <com.stefanosiano.powerlessimageview.PowerlessImageView
-        android:layout_width="86dp"
-        android:layout_height="wrap_content"
-        android:scaleType="centerInside"
+        android:layout_width="85dp"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
         android:background="#707070"
         android:layout_margin="8dp"
         android:src="@android:drawable/alert_dark_frame"
 
         app:piv_progress_indeterminate_color="#2040f0"
-        app:piv_progress_mode="circular"/>
+        app:piv_progress_mode="circular"
+        app:piv_shape_mode="circle"/>
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
