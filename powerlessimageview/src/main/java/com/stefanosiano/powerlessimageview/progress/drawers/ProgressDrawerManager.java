@@ -20,7 +20,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     //Variables used to initialize drawers
 
     //Using a weakRefence to be sure to not leak memory
-    private final WeakReference<View> mPiv;
+    private final WeakReference<View> mView;
 
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mProgressBounds;
@@ -61,10 +61,10 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     /**
      * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
      *
-     * @param piv View to show progress indicator into
+     * @param view View to show progress indicator into
      */
-    public ProgressDrawerManager(View piv, final ProgressOptions progressOptions){
-        this.mPiv = new WeakReference<>(piv);
+    public ProgressDrawerManager(View view, final ProgressOptions progressOptions){
+        this.mView = new WeakReference<>(view);
         this.mProgressBounds = new RectF();
         this.mProgressShadowBorderBounds = new RectF();
         this.mProgressShadowBounds = new RectF();
@@ -73,10 +73,10 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
             @Override
             public void onRequestInvalidate() {
 
-                if(mPiv.get() != null) {
+                if(mView.get() != null) {
                     //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
                     //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-                    mPiv.get().postInvalidate((int) mProgressBounds.left - 1, (int) mProgressBounds.top - 1, (int) mProgressBounds.right + 1, (int) mProgressBounds.bottom + 1);
+                    mView.get().postInvalidate((int) mProgressBounds.left - 1, (int) mProgressBounds.top - 1, (int) mProgressBounds.right + 1, (int) mProgressBounds.bottom + 1);
                 }
             }
         };

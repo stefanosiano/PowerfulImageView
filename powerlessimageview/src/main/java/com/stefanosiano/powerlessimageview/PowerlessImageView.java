@@ -102,8 +102,9 @@ public class PowerlessImageView extends ImageViewWrapper {
         a.recycle();
 
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
-        this.mShapeDrawerManager = new ShapeDrawerManager(shapeOptions);
+        this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
 
+        mShapeDrawerManager.setScaleType(getScaleType());
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
 
@@ -148,6 +149,12 @@ public class PowerlessImageView extends ImageViewWrapper {
             mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
     }
 
+    @Override
+    public void setScaleType(ScaleType scaleType) {
+        super.setScaleType(scaleType);
+        if(mShapeDrawerManager != null)
+            mShapeDrawerManager.setScaleType(scaleType);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {

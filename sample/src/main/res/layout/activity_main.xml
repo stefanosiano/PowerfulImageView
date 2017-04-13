@@ -12,7 +12,7 @@
     <com.stefanosiano.powerlessimageview.PowerlessImageView
         android:layout_width="85dp"
         android:layout_height="150dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:background="#707070"
         android:layout_margin="8dp"
         android:src="@android:drawable/alert_dark_frame"
