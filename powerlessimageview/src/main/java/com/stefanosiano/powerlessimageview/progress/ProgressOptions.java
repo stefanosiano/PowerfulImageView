@@ -377,14 +377,13 @@ public final class ProgressOptions implements Parcelable {
 
                 mCalculatedShadowBorderLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
                 mCalculatedShadowBorderTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
-                mCalculatedShadowBorderRight = mCalculatedShadowBorderLeft + mCalculatedSize - mCalculatedShadowBorderWidth - 1;
-                mCalculatedShadowBorderBottom = mCalculatedShadowBorderTop + mCalculatedSize - mCalculatedShadowBorderWidth - 1;
-                //todo is this -1 and +1 just a layout editor problem???
+                mCalculatedShadowBorderRight = mCalculatedShadowBorderLeft + mCalculatedSize - mCalculatedShadowBorderWidth;
+                mCalculatedShadowBorderBottom = mCalculatedShadowBorderTop + mCalculatedSize - mCalculatedShadowBorderWidth;
 
                 mCalculatedShadowLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
                 mCalculatedShadowTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
-                mCalculatedShadowRight = mCalculatedShadowBorderRight - calculatedShadowBorderWidthHalf + 1;
-                mCalculatedShadowBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf + 1;
+                mCalculatedShadowRight = mCalculatedShadowBorderRight - calculatedShadowBorderWidthHalf;
+                mCalculatedShadowBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf;
 
                 mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
                 mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding + mCalculatedBorderWidth / 2;
@@ -422,8 +421,8 @@ public final class ProgressOptions implements Parcelable {
 
                 mCalculatedShadowLeft = mCalculatedShadowBorderLeft + calculatedShadowBorderWidthHalf;
                 mCalculatedShadowTop = mCalculatedShadowBorderTop + calculatedShadowBorderWidthHalf;
-                mCalculatedShadowRight = mCalculatedShadowBorderRight - calculatedShadowBorderWidthHalf + 1;
-                mCalculatedShadowBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf + 1;
+                mCalculatedShadowRight = mCalculatedShadowBorderRight - calculatedShadowBorderWidthHalf;
+                mCalculatedShadowBottom = mCalculatedShadowBorderBottom - calculatedShadowBorderWidthHalf;
 
                 mCalculatedLeft = mCalculatedShadowLeft + mCalculatedShadowPadding;
                 mCalculatedTop = mCalculatedShadowTop + mCalculatedShadowPadding;
