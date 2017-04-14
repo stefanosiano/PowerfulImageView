@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
@@ -30,7 +31,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void changeBitmap(Bitmap bitmap) {
+    public void changeBitmap(Drawable drawable, Bitmap bitmap) {
 
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 

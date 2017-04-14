@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
@@ -18,15 +19,18 @@ public class NormalShapeDrawer implements ShapeDrawer {
 
     private BitmapShader mBitmapShader;
     private Matrix mMatrix;
+    private Drawable mDrawable;
     private Bitmap mBitmap;
 
-    NormalShapeDrawer(Bitmap bitmap) {
+    NormalShapeDrawer(Drawable drawable, Bitmap bitmap) {
+        this.mDrawable = drawable;
         this.mBitmap = bitmap;
         this.mMatrix = new Matrix();
     }
 
     @Override
-    public void changeBitmap(Bitmap bitmap) {
+    public void changeBitmap(Drawable drawable, Bitmap bitmap) {
+        this.mDrawable = drawable;
         this.mBitmap = bitmap;
 /*
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
@@ -48,6 +52,8 @@ public class NormalShapeDrawer implements ShapeDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF shapeBounds) {
-        canvas.drawBitmap(mBitmap, mMatrix, null);
+        if(mBitmap != null && mDrawable != null)
+        canvas.drawBitmap(mBitmap, mDrawable.getBounds(), shapeBounds, null);
+        //mDrawable.draw(canvas);
     }
 }

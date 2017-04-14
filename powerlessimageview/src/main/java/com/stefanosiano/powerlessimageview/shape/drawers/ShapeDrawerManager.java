@@ -82,14 +82,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 }
             }
         };
-        this.mShapeDrawer = new NormalShapeDrawer(null);
+        this.mShapeDrawer = new NormalShapeDrawer(null, null);
     }
 
 
     public void changeBitmap(Drawable drawable, Bitmap bitmap){
         this.mDrawable = drawable;
         this.mBitmap = bitmap;
-        mShapeDrawer.changeBitmap(bitmap);
+        mShapeDrawer.changeBitmap(drawable, bitmap);
     }
 
 
@@ -123,7 +123,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
                 //shape drawer
                 if(mNormalShapeDrawer == null){
-                    mNormalShapeDrawer = new NormalShapeDrawer(mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
                     mShapeDrawer = mNormalShapeDrawer;
                 }
 

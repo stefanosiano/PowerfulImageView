@@ -54,9 +54,6 @@ public class ShapeOptions {
         mCalculatedLastH = h;
         mCalculatedLastMode = mode;
 
-        w = w - paddingLeft - paddingRight;
-        h = h - paddingTop - paddingBottom;
-
         int smallSize = w < h ? w : h;
 
         switch(mode){
@@ -76,11 +73,10 @@ public class ShapeOptions {
                 break;
         }
 
-        //todo understand padding!
         mCalculatedLeft += paddingLeft;
         mCalculatedTop += paddingTop;
-        mCalculatedRight += paddingLeft;
-        mCalculatedBottom += paddingTop;
+        mCalculatedRight -= paddingRight;
+        mCalculatedBottom -= paddingBottom;
 
     }
 
