@@ -1,12 +1,9 @@
 package com.stefanosiano.powerlessimageview.shape.drawers;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -26,16 +23,15 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     //Using a weakRefence to be sure to not leak memory
     private final WeakReference<View> mView;
 
-    private final Paint paint = new Paint();
-
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mShapeBounds;
 
-    private BitmapShader shader;
     private final Matrix mShaderMatrix;
+    private Matrix mImageMatrix;
     private ImageView.ScaleType mScaleType;
 
-    private Drawable drawable;
+    private Bitmap mBitmap;
+    private Drawable mDrawable;
 
     private float mMeasuredWidth;
     private float mMeasuredHeight;
@@ -45,7 +41,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     private ShapeDrawerListener listener;
 
     //Drawers
-    private CircularShapeDrawer mCircularShadowDrawer;
+    private CircleShapeDrawer mCircleShapeDrawer;
+    private NormalShapeDrawer mNormalShapeDrawer;
 
 
     /** Interface used to switch between its implementations, based on the shape and options selected. */
@@ -73,6 +70,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         this.mShapeOptions.setListener(this);
         this.mShaderMatrix = new Matrix();
         this.mShaderMatrix.reset();
+        this.mBitmap = null;
         this.listener = new ShapeDrawerListener() {
             @Override
             public void onRequestInvalidate() {
@@ -84,15 +82,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 }
             }
         };
+        this.mShapeDrawer = new NormalShapeDrawer(null);
     }
 
 
     public void changeBitmap(Drawable drawable, Bitmap bitmap){
-        this.drawable = drawable;
-        shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        paint.setShader(shader);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
+        this.mDrawable = drawable;
+        this.mBitmap = bitmap;
+        mShapeDrawer.changeBitmap(bitmap);
     }
 
 
@@ -104,14 +101,18 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
      */
     private void updateDrawers(PivShapeMode shapeMode){
 
+        //If there's no mode, i set it as normal
+        if(shapeMode == null)
+            shapeMode = PivShapeMode.NORMAL;
+
         switch (shapeMode){
 
             case CIRCLE:
 
                 //shape drawer
-                if(mCircularShadowDrawer == null){
-                    mCircularShadowDrawer = new CircularShapeDrawer();
-                    mShapeDrawer = mCircularShadowDrawer;
+                if(mCircleShapeDrawer == null){
+                    mCircleShapeDrawer = new CircleShapeDrawer(mBitmap);
+                    mShapeDrawer = mCircleShapeDrawer;
                 }
 
                 //front/back drawer
@@ -119,6 +120,13 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
             default:
             case NORMAL:
+
+                //shape drawer
+                if(mNormalShapeDrawer == null){
+                    mNormalShapeDrawer = new NormalShapeDrawer(mBitmap);
+                    mShapeDrawer = mNormalShapeDrawer;
+                }
+
                 break;
         }
         //mShapeDrawer.setListener(listener);
@@ -131,8 +139,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
      * @param w Current width of this view.
      * @param h Current height of this view.
      */
-    public final void onSizeChanged(int w, int h) {
-        mShapeOptions.calculateBounds(w, h, mShapeMode);
+    public final void onSizeChanged(int w, int h, int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
+        mShapeOptions.calculateBounds(w, h, paddingLeft, paddingTop, paddingRight, paddingBottom, mShapeMode);
 
         onSizeUpdated(mShapeOptions);
     }
@@ -150,9 +158,9 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         // size you would like. Some layouts also use this callback to figure out your desired size
         // before determine what specs to actually pass you again in a second measure request.
 
-        //Drawable width and height calculated if a drawable has been set. Used in calculations
-        float drawableWidth = drawable == null ? 0 : drawable.getIntrinsicWidth() + view.getPaddingLeft() + view.getPaddingRight();
-        float drawableHeight = drawable == null ? 0 : drawable.getIntrinsicHeight() + view.getPaddingTop() + view.getPaddingBottom();
+        //Drawable width and height calculated if a mDrawable has been set. Used in calculations
+        float drawableWidth = mDrawable == null ? 0 : mDrawable.getIntrinsicWidth() + view.getPaddingLeft() + view.getPaddingRight();
+        float drawableHeight = mDrawable == null ? 0 : mDrawable.getIntrinsicHeight() + view.getPaddingTop() + view.getPaddingBottom();
 
         float usedRatio = 1f;
 
@@ -190,7 +198,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 }
 
                 if (hMode == View.MeasureSpec.AT_MOST) {
-                    //if both are wrap_content, size should be drawable size
+                    //if both are wrap_content, size should be mDrawable size
                     w = drawableWidth > 0 ? Math.min(drawableWidth, w) : w;
                     h = drawableHeight > 0 ? Math.min(drawableHeight, h) : h;
                     mMeasuredWidth = Math.min(h * usedRatio, w);
@@ -235,17 +243,23 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
+
+    public void setImageMatrix(Matrix matrix){
+        this.mImageMatrix = matrix;
+        setScaleType(mScaleType);
+    }
+
     public void setScaleType(ImageView.ScaleType scaleType){
 
         mScaleType = scaleType;
 
-        if(mShapeBounds == null || drawable == null || scaleType == null)
+        if(mShapeBounds == null || mDrawable == null || scaleType == null)
             return;
 
         mShaderMatrix.reset();
 
-        int dWidth = drawable.getIntrinsicWidth();
-        int dHeight = drawable.getIntrinsicHeight();
+        int dWidth = mDrawable.getIntrinsicWidth();
+        int dHeight = mDrawable.getIntrinsicHeight();
 
         float scale = 0;
         float dx = 0;
@@ -287,32 +301,148 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 break;
 
             case FIT_CENTER:
-                mShaderMatrix.setRectToRect(new RectF(drawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.CENTER);
+                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.CENTER);
                 break;
 
             case FIT_END:
-                mShaderMatrix.setRectToRect(new RectF(drawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.END);
+                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.END);
                 break;
 
             case FIT_START:
-                mShaderMatrix.setRectToRect(new RectF(drawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.START);
+                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.START);
                 break;
 
             case FIT_XY:
-                mShaderMatrix.setRectToRect(new RectF(drawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.FILL);
+                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.FILL);
+                break;
+
+            case MATRIX:
+                if(mImageMatrix != null)
+                    mShaderMatrix.set(mImageMatrix);
                 break;
 
             default:
             case CENTER:
+/*
+                scale = Math.max((dWidth + mView.get().getPaddingLeft() + mView.get().getPaddingLeft()) / mShapeBounds.width(),
+                        (dHeight + mView.get().getPaddingBottom() + mView.get().getPaddingTop()) / mShapeBounds.height());
+                scale = 1;
+
+                dx = (mShapeBounds.width() - dWidth * scale) * 0.5f;
+                dy = (mShapeBounds.height() - dHeight * scale) * 0.5f;
+
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate(
+                        (dx + mShapeBounds.left),
+                        (dy + mShapeBounds.top));*/
+                //todo fixed this. now should fix others!
                 mShaderMatrix.setTranslate(
                         ((mShapeBounds.width() - dWidth) * 0.5f + mShapeBounds.left),
                         ((mShapeBounds.height() - dHeight) * 0.5f + mShapeBounds.top));
                 break;
         }
 
-        shader.setLocalMatrix(mShaderMatrix);
+        mShapeDrawer.setMatrix(mShaderMatrix);
     }
 
+/*
+    //todo update matrix for scale type!!!
+    private void updateShaderMatrix(ImageView.ScaleType mScaleType) {
+        float scale;
+        float dx;
+        float dy;
+
+        switch (mScaleType) {
+            case CENTER:
+                mBorderRect.set(mBounds);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+
+                mShaderMatrix.reset();
+                mShaderMatrix.setTranslate((int) ((mBorderRect.width() - mBitmapWidth) * 0.5f + 0.5f),
+                        (int) ((mBorderRect.height() - mBitmapHeight) * 0.5f + 0.5f));
+                break;
+
+            case CENTER_CROP:
+                mBorderRect.set(mBounds);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+
+                mShaderMatrix.reset();
+
+                dx = 0;
+                dy = 0;
+
+                if (mBitmapWidth * mBorderRect.height() > mBorderRect.width() * mBitmapHeight) {
+                    scale = mBorderRect.height() / (float) mBitmapHeight;
+                    dx = (mBorderRect.width() - mBitmapWidth * scale) * 0.5f;
+                } else {
+                    scale = mBorderRect.width() / (float) mBitmapWidth;
+                    dy = (mBorderRect.height() - mBitmapHeight * scale) * 0.5f;
+                }
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth / 2,
+                        (int) (dy + 0.5f) + mBorderWidth / 2);
+                break;
+
+            case CENTER_INSIDE:
+                mShaderMatrix.reset();
+
+                if (mBitmapWidth <= mBounds.width() && mBitmapHeight <= mBounds.height()) {
+                    scale = 1.0f;
+                } else {
+                    scale = Math.min(mBounds.width() / (float) mBitmapWidth,
+                            mBounds.height() / (float) mBitmapHeight);
+                }
+
+                dx = (int) ((mBounds.width() - mBitmapWidth * scale) * 0.5f + 0.5f);
+                dy = (int) ((mBounds.height() - mBitmapHeight * scale) * 0.5f + 0.5f);
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate(dx, dy);
+
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            default:
+            case FIT_CENTER:
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.CENTER);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            case FIT_END:
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.END);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            case FIT_START:
+                mBorderRect.set(mBitmapRect);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.START);
+                mShaderMatrix.mapRect(mBorderRect);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+
+            case FIT_XY:
+                mBorderRect.set(mBounds);
+                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
+                mShaderMatrix.reset();
+                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
+                break;
+        }
+
+        mDrawableRect.set(mBorderRect);
+    }
+*/
 
     /**
      * Changes the shape mode of the image.
@@ -325,13 +455,12 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         mShapeMode = shapeMode;
         updateDrawers(mShapeMode);
-        //mShapeDrawer.setup(mProgressOptions);
+        mShapeDrawer.setup(mShapeOptions);
     }
 
     /** Draws the image */
     public final void onDraw(Canvas canvas) {
-        canvas.drawOval(mShapeBounds, paint);
-        //mShapeDrawer.draw(canvas, mProgressShadowBorderBounds, mProgressShadowBounds);
+        mShapeDrawer.draw(canvas, mShapeBounds);
     }
 
     /**
@@ -354,7 +483,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     @Override
     public void onOptionsUpdated(ShapeOptions options) {
         mShapeOptions = options;
-        //mShapeDrawer.setup(options);
+        mShapeDrawer.setup(options);
     }
 
     /**
@@ -374,7 +503,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         setScaleType(mScaleType);
 
-        //mShapeDrawer.setup(mProgressOptions);
+        mShapeDrawer.setup(mShapeOptions);
     }
 
 

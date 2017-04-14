@@ -3,6 +3,7 @@ package com.stefanosiano.powerlessimageview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -111,6 +112,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
         mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
+        mShapeDrawerManager.setImageMatrix(getImageMatrix());
     }
 
     @Override
@@ -119,7 +121,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         //updates progress bounds
         mProgressDrawerManager.onSizeChanged(w, h);
 
-        mShapeDrawerManager.onSizeChanged(w, h);
+        mShapeDrawerManager.onSizeChanged(getMeasuredWidth(), getMeasuredHeight(), getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
     }
 
     @Override
@@ -157,8 +159,17 @@ public class PowerlessImageView extends ImageViewWrapper {
     }
 
     @Override
+    public void setImageMatrix(Matrix matrix) {
+        super.setImageMatrix(matrix);
+        if(mShapeDrawerManager != null)
+            mShapeDrawerManager.setImageMatrix(matrix);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
-        //super.onDraw(canvas);
+        /*if(mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
+            super.onDraw(canvas);
+        else*/
         mShapeDrawerManager.onDraw(canvas);
         //draw progress indicator
         mProgressDrawerManager.onDraw(canvas);

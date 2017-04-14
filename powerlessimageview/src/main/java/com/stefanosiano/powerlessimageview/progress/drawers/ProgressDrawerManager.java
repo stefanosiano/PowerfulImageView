@@ -81,6 +81,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
             }
         };
         this.mProgressOptions.setListener(this);
+        this.mProgressDrawer = new DummyProgressDrawer();
     }
 
 
@@ -92,6 +93,10 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      * @param progressMode Mode of the progress, used to choose the right drawers.
      */
     private void updateDrawers(PivProgressMode progressMode){
+
+        //If there's no mode, i set it as none
+        if(progressMode == null)
+            progressMode = PivProgressMode.NONE;
 
         switch (progressMode){
 

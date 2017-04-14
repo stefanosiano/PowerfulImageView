@@ -12,14 +12,21 @@
     <com.stefanosiano.powerlessimageview.PowerlessImageView
         android:layout_width="85dp"
         android:layout_height="150dp"
-        android:scaleType="fitStart"
         android:background="#707070"
         android:layout_margin="8dp"
-        android:src="@android:drawable/alert_dark_frame"
+        android:scaleType="center"
+        android:padding="15dp"
+        app:piv_shape_mode="circle"
+        android:src="@android:drawable/alert_dark_frame" />
 
-        app:piv_progress_indeterminate_color="#2040f0"
-        app:piv_progress_mode="circular"
-        app:piv_shape_mode="circle"/>
+    <ImageView
+        android:layout_width="85dp"
+        android:layout_height="150dp"
+        android:background="#707070"
+        android:layout_margin="8dp"
+        android:scaleType="center"
+        android:padding="1114dp"
+        android:src="@android:drawable/alert_dark_frame" />
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

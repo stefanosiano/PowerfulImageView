@@ -47,12 +47,15 @@ public class ShapeOptions {
      * @param h Height of the View
      * @param mode Mode of the shape
      */
-    public void calculateBounds(int w, int h, PivShapeMode mode){
+    public void calculateBounds(int w, int h, int paddingLeft, int paddingTop, int paddingRight, int paddingBottom, PivShapeMode mode){
 
         //saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w;
         mCalculatedLastH = h;
         mCalculatedLastMode = mode;
+
+        w = w - paddingLeft - paddingRight;
+        h = h - paddingTop - paddingBottom;
 
         int smallSize = w < h ? w : h;
 
@@ -72,6 +75,12 @@ public class ShapeOptions {
                 mCalculatedBottom = h;
                 break;
         }
+
+        //todo understand padding!
+        mCalculatedLeft += paddingLeft;
+        mCalculatedTop += paddingTop;
+        mCalculatedRight += paddingLeft;
+        mCalculatedBottom += paddingTop;
 
     }
 
