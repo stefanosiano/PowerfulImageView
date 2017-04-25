@@ -86,6 +86,9 @@ No steps are required, since configuration is already included.
   
 To do:  
   
+Add options to shapes: background, border  
+Add comments and javadoc to Circle and Normal Drawer  
+Add all other shapes  
 Create code diagram?  
   
 Draw dark transparent frontground on the whole view?  
