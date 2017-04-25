@@ -2,14 +2,15 @@ package com.stefanosiano.powerlessimageview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.ImageView;
 
 import com.stefanosiano.powerlessimageview.progress.PivProgressGravity;
 import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
@@ -105,7 +106,6 @@ public class PowerlessImageView extends ImageViewWrapper {
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
 
-        mShapeDrawerManager.setScaleType(getScaleType());
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
 
@@ -113,6 +113,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         //So i call it here, after everything else is instantiated.
         mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
         mShapeDrawerManager.setImageMatrix(getImageMatrix());
+        mShapeDrawerManager.setScaleType(getScaleType());
     }
 
     @Override
@@ -121,7 +122,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         //updates progress bounds
         mProgressDrawerManager.onSizeChanged(w, h);
 
-        mShapeDrawerManager.onSizeChanged(getMeasuredWidth(), getMeasuredHeight(), getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
+        mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
     }
 
     @Override
@@ -145,10 +146,10 @@ public class PowerlessImageView extends ImageViewWrapper {
     }
 
     @Override
-    void onBitmapChanged() {
+    void onBitmapChanged(Drawable d, Bitmap b) {
         //when initializing (in constructor) it gets called, but it is still null
         if(mShapeDrawerManager != null)
-            mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
+            mShapeDrawerManager.changeBitmap(d, b);
     }
 
     @Override
@@ -167,9 +168,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        /*if(mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
-            super.onDraw(canvas);
-        else*/
+        //draw image shape
         mShapeDrawerManager.onDraw(canvas);
         //draw progress indicator
         mProgressDrawerManager.onDraw(canvas);

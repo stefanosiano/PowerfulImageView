@@ -15,7 +15,7 @@ import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
  * Created by stefano on 14/04/17.
  */
 
-public class NormalShapeDrawer implements ShapeDrawer {
+final class NormalShapeDrawer implements ShapeDrawer {
 
     private BitmapShader mBitmapShader;
     private Matrix mMatrix;
@@ -43,6 +43,7 @@ public class NormalShapeDrawer implements ShapeDrawer {
     @Override
     public void setMatrix(Matrix matrix) {
         this.mMatrix = matrix;
+
     }
 
     @Override
@@ -52,8 +53,7 @@ public class NormalShapeDrawer implements ShapeDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF shapeBounds) {
-        if(mBitmap != null && mDrawable != null)
-        canvas.drawBitmap(mBitmap, mDrawable.getBounds(), shapeBounds, null);
-        //mDrawable.draw(canvas);
+        if(mBitmap != null && mMatrix != null)
+            canvas.drawBitmap(mBitmap, mMatrix, null);
     }
 }

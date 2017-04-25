@@ -3,6 +3,7 @@ package com.stefanosiano.powerlessimageview.shape.drawers;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -246,7 +247,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     public void setImageMatrix(Matrix matrix){
         this.mImageMatrix = matrix;
-        setScaleType(mScaleType);
+        setScaleType(ImageView.ScaleType.MATRIX);
     }
 
     public void setScaleType(ImageView.ScaleType scaleType){
@@ -260,6 +261,17 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         int dWidth = mDrawable.getIntrinsicWidth();
         int dHeight = mDrawable.getIntrinsicHeight();
+        float vWidth = mShapeBounds.width();
+        float vHeight = mShapeBounds.height();
+        Rect padding = new Rect(0, 0, 0, 0);
+
+        if(mView.get() != null){
+            padding.set(
+                    mView.get().getPaddingLeft(),
+                    mView.get().getPaddingBottom(),
+                    mView.get().getPaddingRight(),
+                    mView.get().getPaddingTop());
+        }
 
         float scale = 0;
         float dx = 0;
@@ -268,14 +280,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         switch (scaleType) {
 
             case CENTER_CROP:
-                if (dWidth * mShapeBounds.height() > mShapeBounds.width() * dHeight) {
-                    scale = mShapeBounds.height() / (float) dHeight;
-                    dx = (mShapeBounds.width() - dWidth * scale) * 0.5f;
+                if (dWidth * vHeight > vWidth * dHeight) {
+                    scale = vHeight / (float) dHeight;
+                    dx = (vWidth - dWidth * scale) * 0.5f;
                     dy = 0;
 
                 } else {
-                    scale = mShapeBounds.width() / (float) dWidth;
-                    dy = (mShapeBounds.height() - dHeight * scale) * 0.5f;
+                    scale = vWidth / (float) dWidth;
+                    dy = (vHeight - dHeight * scale) * 0.5f;
                     dx = 0;
                 }
 
@@ -285,15 +297,15 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 break;
 
             case CENTER_INSIDE:
-                if (dWidth <= mShapeBounds.width() && dHeight <= mShapeBounds.height()) {
+                if (dWidth <= vWidth && dHeight <= vHeight) {
                     scale = 1.0f;
                 } else {
-                    scale = Math.min(mShapeBounds.width() / (float) dWidth,
-                            mShapeBounds.height() / (float) dHeight);
+                    scale = Math.min(vWidth / (float) dWidth,
+                            vHeight / (float) dHeight);
                 }
 
-                dx = (mShapeBounds.width() - dWidth * scale) * 0.5f;
-                dy = (mShapeBounds.height() - dHeight * scale) * 0.5f;
+                dx = (vWidth - dWidth * scale) * 0.5f;
+                dy = (vHeight - dHeight * scale) * 0.5f;
 
                 mShaderMatrix.setScale(scale, scale);
                 mShaderMatrix.postTranslate(dx + mShapeBounds.left,
@@ -301,19 +313,19 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 break;
 
             case FIT_CENTER:
-                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.CENTER);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.CENTER);
                 break;
 
             case FIT_END:
-                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.END);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.END);
                 break;
 
             case FIT_START:
-                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.START);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.START);
                 break;
 
             case FIT_XY:
-                mShaderMatrix.setRectToRect(new RectF(mDrawable.getBounds()), mShapeBounds, Matrix.ScaleToFit.FILL);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.FILL);
                 break;
 
             case MATRIX:
@@ -323,126 +335,16 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
             default:
             case CENTER:
-/*
-                scale = Math.max((dWidth + mView.get().getPaddingLeft() + mView.get().getPaddingLeft()) / mShapeBounds.width(),
-                        (dHeight + mView.get().getPaddingBottom() + mView.get().getPaddingTop()) / mShapeBounds.height());
-                scale = 1;
 
-                dx = (mShapeBounds.width() - dWidth * scale) * 0.5f;
-                dy = (mShapeBounds.height() - dHeight * scale) * 0.5f;
-
-
-                mShaderMatrix.setScale(scale, scale);
-                mShaderMatrix.postTranslate(
-                        (dx + mShapeBounds.left),
-                        (dy + mShapeBounds.top));*/
-                //todo fixed this. now should fix others!
                 mShaderMatrix.setTranslate(
-                        ((mShapeBounds.width() - dWidth) * 0.5f + mShapeBounds.left),
-                        ((mShapeBounds.height() - dHeight) * 0.5f + mShapeBounds.top));
+                        ((vWidth - dWidth) * 0.5f + mShapeBounds.left),
+                        ((vHeight - dHeight) * 0.5f + mShapeBounds.top));
                 break;
         }
 
         mShapeDrawer.setMatrix(mShaderMatrix);
     }
 
-/*
-    //todo update matrix for scale type!!!
-    private void updateShaderMatrix(ImageView.ScaleType mScaleType) {
-        float scale;
-        float dx;
-        float dy;
-
-        switch (mScaleType) {
-            case CENTER:
-                mBorderRect.set(mBounds);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-
-                mShaderMatrix.reset();
-                mShaderMatrix.setTranslate((int) ((mBorderRect.width() - mBitmapWidth) * 0.5f + 0.5f),
-                        (int) ((mBorderRect.height() - mBitmapHeight) * 0.5f + 0.5f));
-                break;
-
-            case CENTER_CROP:
-                mBorderRect.set(mBounds);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-
-                mShaderMatrix.reset();
-
-                dx = 0;
-                dy = 0;
-
-                if (mBitmapWidth * mBorderRect.height() > mBorderRect.width() * mBitmapHeight) {
-                    scale = mBorderRect.height() / (float) mBitmapHeight;
-                    dx = (mBorderRect.width() - mBitmapWidth * scale) * 0.5f;
-                } else {
-                    scale = mBorderRect.width() / (float) mBitmapWidth;
-                    dy = (mBorderRect.height() - mBitmapHeight * scale) * 0.5f;
-                }
-
-                mShaderMatrix.setScale(scale, scale);
-                mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth / 2,
-                        (int) (dy + 0.5f) + mBorderWidth / 2);
-                break;
-
-            case CENTER_INSIDE:
-                mShaderMatrix.reset();
-
-                if (mBitmapWidth <= mBounds.width() && mBitmapHeight <= mBounds.height()) {
-                    scale = 1.0f;
-                } else {
-                    scale = Math.min(mBounds.width() / (float) mBitmapWidth,
-                            mBounds.height() / (float) mBitmapHeight);
-                }
-
-                dx = (int) ((mBounds.width() - mBitmapWidth * scale) * 0.5f + 0.5f);
-                dy = (int) ((mBounds.height() - mBitmapHeight * scale) * 0.5f + 0.5f);
-
-                mShaderMatrix.setScale(scale, scale);
-                mShaderMatrix.postTranslate(dx, dy);
-
-                mBorderRect.set(mBitmapRect);
-                mShaderMatrix.mapRect(mBorderRect);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
-                break;
-
-            default:
-            case FIT_CENTER:
-                mBorderRect.set(mBitmapRect);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.CENTER);
-                mShaderMatrix.mapRect(mBorderRect);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
-                break;
-
-            case FIT_END:
-                mBorderRect.set(mBitmapRect);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.END);
-                mShaderMatrix.mapRect(mBorderRect);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
-                break;
-
-            case FIT_START:
-                mBorderRect.set(mBitmapRect);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBounds, Matrix.ScaleToFit.START);
-                mShaderMatrix.mapRect(mBorderRect);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
-                break;
-
-            case FIT_XY:
-                mBorderRect.set(mBounds);
-                mBorderRect.inset(mBorderWidth / 2, mBorderWidth / 2);
-                mShaderMatrix.reset();
-                mShaderMatrix.setRectToRect(mBitmapRect, mBorderRect, Matrix.ScaleToFit.FILL);
-                break;
-        }
-
-        mDrawableRect.set(mBorderRect);
-    }
-*/
 
     /**
      * Changes the shape mode of the image.

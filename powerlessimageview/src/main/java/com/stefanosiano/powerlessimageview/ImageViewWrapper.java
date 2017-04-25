@@ -4,9 +4,13 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -43,7 +47,7 @@ abstract class ImageViewWrapper extends ImageView {
 
 
 
-    abstract void onBitmapChanged();
+    abstract void onBitmapChanged(Drawable d, Bitmap b);
 
     /* Methods to check! Should they be handled by ShapeDrawerManager? */
     @Override
@@ -124,31 +128,31 @@ abstract class ImageViewWrapper extends ImageView {
     @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
-        onBitmapChanged();
+        onBitmapChanged(getDrawable(), getBitmapFromDrawable(getDrawable()));
     }
 
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        onBitmapChanged();
+        onBitmapChanged(getDrawable(), getBitmapFromDrawable(getDrawable()));
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
-        onBitmapChanged();
+        onBitmapChanged(drawable, getBitmapFromDrawable(drawable));
     }
 
     @Override
     public void setImageIcon(Icon icon) {
         super.setImageIcon(icon);
-        onBitmapChanged();
+        onBitmapChanged(getDrawable(), getBitmapFromDrawable(getDrawable()));
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        onBitmapChanged();
+        onBitmapChanged(getDrawable(), bm);
     }
 
     @Override

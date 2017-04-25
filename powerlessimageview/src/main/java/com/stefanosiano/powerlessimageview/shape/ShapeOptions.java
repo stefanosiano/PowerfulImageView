@@ -59,16 +59,16 @@ public class ShapeOptions {
         switch(mode){
             case CIRCLE:
                 mCalculatedLeft = (w - smallSize) /2;
-                mCalculatedRight = (w + smallSize) /2;
                 mCalculatedTop = (h - smallSize) /2;
+                mCalculatedRight = (w + smallSize) /2;
                 mCalculatedBottom = (h + smallSize) /2;
                 break;
 
             default:
             case NORMAL:
                 mCalculatedLeft = 0;
-                mCalculatedRight = w;
                 mCalculatedTop = 0;
+                mCalculatedRight = w;
                 mCalculatedBottom = h;
                 break;
         }
@@ -77,7 +77,6 @@ public class ShapeOptions {
         mCalculatedTop += paddingTop;
         mCalculatedRight -= paddingRight;
         mCalculatedBottom -= paddingBottom;
-
     }
 
     public void setListener(ShapeOptionsListener listener) {

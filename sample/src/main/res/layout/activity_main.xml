@@ -14,19 +14,19 @@
         android:layout_height="150dp"
         android:background="#707070"
         android:layout_margin="8dp"
-        android:scaleType="center"
-        android:padding="15dp"
+        android:scaleType="fitXY"
+        android:padding="30dp"
         app:piv_shape_mode="circle"
-        android:src="@android:drawable/alert_dark_frame" />
+        android:src="@android:drawable/btn_dialog" />
 
     <ImageView
         android:layout_width="85dp"
         android:layout_height="150dp"
         android:background="#707070"
         android:layout_margin="8dp"
-        android:scaleType="center"
-        android:padding="1114dp"
-        android:src="@android:drawable/alert_dark_frame" />
+        android:scaleType="fitXY"
+        android:padding="40dp"
+        android:src="@android:drawable/btn_dialog" />
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
