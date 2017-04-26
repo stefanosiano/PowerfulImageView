@@ -89,6 +89,7 @@ To do:
 Add options to shapes: background, border  
 Add comments and javadoc to Circle and Normal Drawer  
 Add all other shapes  
+Add additional scale types  
 Create code diagram?  
   
 Draw dark transparent frontground on the whole view?  
