@@ -398,11 +398,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         mShapeOptions = options;
         //set calculated bounds to our progress bounds
-        mShapeBounds.set(
-                mShapeOptions.getLeft(),
-                mShapeOptions.getTop(),
-                mShapeOptions.getRight(),
-                mShapeOptions.getBottom());
+        mShapeBounds.set(mShapeOptions.getRect());
 
         setScaleType(mScaleType);
 

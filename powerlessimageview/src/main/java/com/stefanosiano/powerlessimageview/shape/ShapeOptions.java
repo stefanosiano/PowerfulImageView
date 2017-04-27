@@ -1,5 +1,7 @@
 package com.stefanosiano.powerlessimageview.shape;
 
+import android.graphics.RectF;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -12,17 +14,8 @@ public class ShapeOptions {
     // ************** Calculated fields *****************
 
     //bounds of the shape
-    /** Left bound calculated */
-    private float mCalculatedLeft;
-
-    /** Top bound calculated */
-    private float mCalculatedTop;
-
-    /** Right bound calculated */
-    private float mCalculatedRight;
-
-    /** Bottom bound calculated */
-    private float mCalculatedBottom;
+    /** Calculated shape bounds calculated */
+    private final RectF mRect;
 
     //last calculated width and height
     /** Last width calculated. Used when changing programmatically the options, so bounds can be calculated directly */
@@ -38,6 +31,9 @@ public class ShapeOptions {
     private WeakReference<ShapeOptionsListener> listener;
 
 
+    public ShapeOptions() {
+        this.mRect = new RectF(0, 0, 0, 0);
+    }
 
     /**
      * Calculates the bounds of the image, based on shape options and mode.
@@ -58,50 +54,32 @@ public class ShapeOptions {
 
         switch(mode){
             case CIRCLE:
-                mCalculatedLeft = (w - smallSize) /2;
-                mCalculatedTop = (h - smallSize) /2;
-                mCalculatedRight = (w + smallSize) /2;
-                mCalculatedBottom = (h + smallSize) /2;
+                mRect.set((w - smallSize) /2,
+                        (h - smallSize) /2,
+                        (w + smallSize) /2,
+                        (h + smallSize) /2);
                 break;
 
             default:
             case NORMAL:
-                mCalculatedLeft = 0;
-                mCalculatedTop = 0;
-                mCalculatedRight = w;
-                mCalculatedBottom = h;
+                mRect.set(0, 0, w, h);
                 break;
         }
 
-        mCalculatedLeft += paddingLeft;
-        mCalculatedTop += paddingTop;
-        mCalculatedRight -= paddingRight;
-        mCalculatedBottom -= paddingBottom;
+        mRect.set(mRect.left + paddingLeft,
+                mRect.top + paddingTop,
+                mRect.right + paddingRight,
+                mRect.bottom + paddingBottom);
     }
 
     public void setListener(ShapeOptionsListener listener) {
         this.listener = new WeakReference<>(listener);
     }
 
-
-    /** Returns the left bound calculated. Be sure to call calculateBounds() before this! */
-    public final float getLeft() {
-        return mCalculatedLeft;
-    }
-
-    /** Returns the top bound calculated. Be sure to call calculateBounds() before this! */
-    public final float getTop() {
-        return mCalculatedTop;
-    }
-
-    /** Returns the right bound calculated. Be sure to call calculateBounds() before this! */
-    public final float getRight() {
-        return mCalculatedRight;
-    }
-
-    /** Returns the bottom bound calculated. Be sure to call calculateBounds() before this! */
-    public final float getBottom() {
-        return mCalculatedBottom;
+    /** Returns the shape calculated bounds. Be sure to call calculateBounds() before this!
+     * Don't change directly its values! If you want to change them, create a copy! */
+    public RectF getRect() {
+        return mRect;
     }
 
 

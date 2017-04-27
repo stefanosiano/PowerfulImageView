@@ -15,7 +15,7 @@
         android:background="#707070"
         android:layout_margin="8dp"
         android:scaleType="fitXY"
-        android:padding="30dp"
+        android:padding="0dp"
         app:piv_shape_mode="circle"
         android:src="@android:drawable/btn_dialog" />
 

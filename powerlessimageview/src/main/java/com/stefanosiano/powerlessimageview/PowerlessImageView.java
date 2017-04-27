@@ -168,8 +168,15 @@ public class PowerlessImageView extends ImageViewWrapper {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
         //draw image shape
+
+        /* Let's see if i need this or not (especially for ripple drawables)
+        if(mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
+            super.onDraw(canvas);
+        else*/
         mShapeDrawerManager.onDraw(canvas);
+
         //draw progress indicator
         mProgressDrawerManager.onDraw(canvas);
     }

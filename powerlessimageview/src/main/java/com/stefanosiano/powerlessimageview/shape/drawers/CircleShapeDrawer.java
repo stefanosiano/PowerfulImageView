@@ -48,8 +48,8 @@ final class CircleShapeDrawer implements ShapeDrawer {
     @Override
     public void setup(ShapeOptions shapeOptions) {
 
-        cx = shapeOptions.getLeft() + (shapeOptions.getRight() - shapeOptions.getLeft()) / 2;
-        cy = shapeOptions.getTop() + (shapeOptions.getBottom() - shapeOptions.getTop()) / 2;
+        cx = shapeOptions.getRect().left + shapeOptions.getRect().width() / 2;
+        cy = shapeOptions.getRect().top + shapeOptions.getRect().height() / 2;
         radius = cx < cy ? cx : cy;
     }
 

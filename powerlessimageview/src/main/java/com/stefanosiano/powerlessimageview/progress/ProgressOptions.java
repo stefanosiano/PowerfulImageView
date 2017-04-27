@@ -98,7 +98,7 @@ public final class ProgressOptions implements Parcelable {
 
 
     //bounds of the progress and shadow indicator
-    /** Progress bounds calculated */
+    /** Calculated progress bounds calculated */
     private final RectF mRect;
 
     /** Shadow bounds calculated */
