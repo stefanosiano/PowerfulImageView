@@ -132,8 +132,8 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressBackPaint.setColor(progressOptions.getBackColor());
         mProgressBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        mLeft = progressOptions.getLeft();
-        mRight = progressOptions.getRight();
+        mLeft = progressOptions.getRect().left;
+        mRight = progressOptions.getRect().right;
         mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
         setProgressPercent(progressOptions.getValuePercent());
     }

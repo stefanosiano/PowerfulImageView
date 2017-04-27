@@ -245,11 +245,13 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
         mProgressOptions = options;
         //set calculated bounds to our progress bounds
+        /*
         mProgressBounds.set(
-                mProgressOptions.getLeft(),
+                mProgressOptions.getRect().left,
                 mProgressOptions.getTop(),
                 mProgressOptions.getRight(),
-                mProgressOptions.getBottom());
+                mProgressOptions.getBottom());*/
+        mProgressBounds.set(mProgressOptions.getRect());
 
         mProgressShadowBorderBounds.set(
                 mProgressOptions.getShadowBorderLeft(),

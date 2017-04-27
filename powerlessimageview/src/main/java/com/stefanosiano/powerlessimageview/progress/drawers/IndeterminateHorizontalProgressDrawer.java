@@ -71,8 +71,8 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressPaint.setColor(progressOptions.getIndeterminateColor());
         mProgressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        mLeft = progressOptions.getLeft();
-        mRight = progressOptions.getRight();
+        mLeft = progressOptions.getRect().left;
+        mRight = progressOptions.getRect().right;
         setProgressValues(isShrinking ? mStartX : mEndX);
     }
 
