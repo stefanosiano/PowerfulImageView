@@ -13,7 +13,7 @@ import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
  * ProgressDrawer that shows a determinate bar as progress indicator.
  */
 
-final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
+final class HorizontalProgressDrawer implements ProgressDrawer {
 
 
     /** Default animation duration */
@@ -59,7 +59,7 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
     /**
      * ProgressDrawer that shows a determinate bar as progress indicator.
      */
-    DeterminateHorizontalProgressDrawer() {
+    HorizontalProgressDrawer() {
     }
 
     /**

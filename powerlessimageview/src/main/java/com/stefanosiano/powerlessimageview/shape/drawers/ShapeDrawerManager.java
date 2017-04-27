@@ -273,9 +273,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                     mView.get().getPaddingTop());
         }
 
-        float scale = 0;
-        float dx = 0;
-        float dy = 0;
+        float scale, dx, dy;
 
         switch (scaleType) {
 
@@ -331,6 +329,9 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case MATRIX:
                 if(mImageMatrix != null)
                     mShaderMatrix.set(mImageMatrix);
+
+                mShaderMatrix.postTranslate(mShapeBounds.left,
+                        mShapeBounds.top);
                 break;
 
             default:

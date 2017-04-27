@@ -33,10 +33,10 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
     //Drawers
     private DummyProgressDrawer mDummyProgressDrawer;
-    private DeterminateProgressDrawer mDeterminateProgressDrawer;
-    private DeterminateHorizontalProgressDrawer mDeterminateHorizontalProgressDrawer;
-    private IndeterminateHorizontalProgressDrawer mIndeterminateHorizontalProgressDrawer;
-    private IndeterminateProgressDrawer mIndeterminateProgressDrawer;
+    private CircularProgressDrawer mCircularProgressDrawer;
+    private HorizontalProgressDrawer mHorizontalProgressDrawer;
+    private HorizontalIndeterminateProgressDrawer mHorizontalIndeterminateProgressDrawer;
+    private CircularIndeterminateProgressDrawer mCircularIndeterminateProgressDrawer;
 
     //Shadow Drawers
     private DummyShadowDrawer mDummyCancelDrawer;
@@ -104,14 +104,14 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
                 //progress drawer
                 if(mProgressOptions.isIndeterminate()){
-                    if(mIndeterminateProgressDrawer == null)
-                        this.mIndeterminateProgressDrawer = new IndeterminateProgressDrawer();
-                    mProgressDrawer = mIndeterminateProgressDrawer;
+                    if(mCircularIndeterminateProgressDrawer == null)
+                        this.mCircularIndeterminateProgressDrawer = new CircularIndeterminateProgressDrawer();
+                    mProgressDrawer = mCircularIndeterminateProgressDrawer;
                 }
                 else {
-                    if(mDeterminateProgressDrawer == null)
-                        this.mDeterminateProgressDrawer = new DeterminateProgressDrawer();
-                    mProgressDrawer = mDeterminateProgressDrawer;
+                    if(mCircularProgressDrawer == null)
+                        this.mCircularProgressDrawer = new CircularProgressDrawer();
+                    mProgressDrawer = mCircularProgressDrawer;
                 }
 
                 //shadow drawer
@@ -132,14 +132,14 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
 
                 //progress drawer
                 if(mProgressOptions.isIndeterminate()){
-                    if(mIndeterminateHorizontalProgressDrawer == null)
-                        this.mIndeterminateHorizontalProgressDrawer = new IndeterminateHorizontalProgressDrawer();
-                    mProgressDrawer = mIndeterminateHorizontalProgressDrawer;
+                    if(mHorizontalIndeterminateProgressDrawer == null)
+                        this.mHorizontalIndeterminateProgressDrawer = new HorizontalIndeterminateProgressDrawer();
+                    mProgressDrawer = mHorizontalIndeterminateProgressDrawer;
                 }
                 else {
-                    if(mDeterminateHorizontalProgressDrawer == null)
-                        this.mDeterminateHorizontalProgressDrawer = new DeterminateHorizontalProgressDrawer();
-                    mProgressDrawer = mDeterminateHorizontalProgressDrawer;
+                    if(mHorizontalProgressDrawer == null)
+                        this.mHorizontalProgressDrawer = new HorizontalProgressDrawer();
+                    mProgressDrawer = mHorizontalProgressDrawer;
                 }
 
                 //shadow drawer
@@ -244,26 +244,11 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     public void onSizeUpdated(ProgressOptions options) {
 
         mProgressOptions = options;
+
         //set calculated bounds to our progress bounds
-        /*
-        mProgressBounds.set(
-                mProgressOptions.getRect().left,
-                mProgressOptions.getTop(),
-                mProgressOptions.getRight(),
-                mProgressOptions.getBottom());*/
         mProgressBounds.set(mProgressOptions.getRect());
-
-        mProgressShadowBorderBounds.set(
-                mProgressOptions.getShadowBorderLeft(),
-                mProgressOptions.getShadowBorderTop(),
-                mProgressOptions.getShadowBorderRight(),
-                mProgressOptions.getShadowBorderBottom());
-
-        mProgressShadowBounds.set(
-                mProgressOptions.getShadowLeft(),
-                mProgressOptions.getShadowTop(),
-                mProgressOptions.getShadowRight(),
-                mProgressOptions.getShadowBottom());
+        mProgressShadowBorderBounds.set(mProgressOptions.getShadowBorderRect());
+        mProgressShadowBounds.set(mProgressOptions.getShadowRect());
 
         mProgressDrawer.setup(mProgressOptions);
         mShadowDrawer.setup(mProgressOptions);

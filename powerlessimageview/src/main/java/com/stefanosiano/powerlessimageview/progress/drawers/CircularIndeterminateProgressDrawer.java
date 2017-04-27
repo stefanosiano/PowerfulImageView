@@ -14,7 +14,7 @@ import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
  * ProgressDrawer that shows an indeterminate animated circle as progress indicator.
  */
 
-final class IndeterminateProgressDrawer implements ProgressDrawer {
+final class CircularIndeterminateProgressDrawer implements ProgressDrawer {
 
 
     /** Default animation duration */
@@ -56,7 +56,7 @@ final class IndeterminateProgressDrawer implements ProgressDrawer {
     /**
      * ProgressDrawer that shows an indeterminate animated circle as progress indicator.
      */
-    IndeterminateProgressDrawer() {
+    CircularIndeterminateProgressDrawer() {
         this.mOffset = 0;
         this.isShrinking = false;
         this.mProgressStartAngle = -90;

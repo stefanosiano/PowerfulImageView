@@ -12,7 +12,7 @@ import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 /**
  * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
  */
-final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
+final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
     
     
     /** Default animation duration */
@@ -49,7 +49,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
     /**
      * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
      */
-    IndeterminateHorizontalProgressDrawer() {
+    HorizontalIndeterminateProgressDrawer() {
         this.isShrinking = false;
         this.mStartX = 0;
         this.mEndX = 0;
