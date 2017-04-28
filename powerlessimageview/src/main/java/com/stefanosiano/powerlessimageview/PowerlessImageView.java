@@ -96,7 +96,9 @@ public class PowerlessImageView extends ImageViewWrapper {
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
 
 
-        ShapeOptions shapeOptions = new ShapeOptions();
+        ShapeOptions shapeOptions = new ShapeOptions(
+                getColor(a, R.styleable.PowerlessImageView_piv_shape_background_color, android.R.color.transparent)
+        );
 
 
         PivShapeMode shapeMode = PivShapeMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_shape_mode, DEFAULT_SHAPE_MODE));
@@ -171,11 +173,11 @@ public class PowerlessImageView extends ImageViewWrapper {
 
         //draw image shape
 
-        /* Let's see if i need this or not (especially for ripple drawables)
+        // It looks like i need this...
         if(mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
             super.onDraw(canvas);
-        else*/
-        mShapeDrawerManager.onDraw(canvas);
+        else
+            mShapeDrawerManager.onDraw(canvas);
 
         //draw progress indicator
         mProgressDrawerManager.onDraw(canvas);

@@ -4,6 +4,9 @@
         For more informations visit https://github.com/stefanosiano/PowerfulImageView -->
     <declare-styleable name="PowerlessImageView">
 
+
+        <!-- PROGRESS OPTIONS -->
+
         <!-- Set whether the determinate drawer should update its progress with an animation.
              If the drawer is not determinate or horizontal_determinate it's ignored.
              If true it updates its progress with an animation, otherwise it will update instantly -->
@@ -125,7 +128,11 @@
             <enum name="horizontal" value="2"/>
         </attr>
 
-        <!-- Progress mode of the indicator. -->
+
+
+        <!-- SHAPE OPTIONS -->
+
+        <!-- Progress mode of the indicator. Normal mode will ignore any option! -->
         <attr name="piv_shape_mode" format="enum" >
             <enum name="normal" value="0"/>
             <enum name="circle" value="1"/>
@@ -133,5 +140,13 @@
             <enum name="rectangle" value="3"/>
             <enum name="oval" value="4"/>
         </attr>
+
+        <!-- Set the background color of the image, using the shape.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_background_color" format="color" />
+
+
     </declare-styleable>
 </resources>

@@ -1,12 +1,9 @@
 package com.stefanosiano.powerlessimageview.shape.drawers;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
@@ -17,10 +14,10 @@ import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 final class NormalShapeDrawer implements ShapeDrawer {
 
-    private BitmapShader mBitmapShader;
     private Matrix mMatrix;
     private Drawable mDrawable;
     private Bitmap mBitmap;
+    private int mBackground;
 
     NormalShapeDrawer(Drawable drawable, Bitmap bitmap) {
         this.mDrawable = drawable;
@@ -32,12 +29,6 @@ final class NormalShapeDrawer implements ShapeDrawer {
     public void changeBitmap(Drawable drawable, Bitmap bitmap) {
         this.mDrawable = drawable;
         this.mBitmap = bitmap;
-/*
-        this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-
-        mBitmapPaint.setShader(mBitmapShader);
-        mBitmapPaint.setAntiAlias(true);
-        mBitmapPaint.setStyle(Paint.Style.FILL);*/
     }
 
     @Override
@@ -48,11 +39,21 @@ final class NormalShapeDrawer implements ShapeDrawer {
 
     @Override
     public void setup(ShapeOptions shapeOptions) {
-
+        mBackground = shapeOptions.getBackgroundColor();
     }
 
     @Override
     public void draw(Canvas canvas, RectF shapeBounds) {
+        if(mBackground != android.R.color.transparent)
+            canvas.drawColor(mBackground);
+/*
+        if(mDrawable != null && mMatrix != null){
+            int state = canvas.save();
+            canvas.concat(mMatrix);
+            mDrawable.draw(canvas);
+            canvas.restoreToCount(state);
+        }*/
+
         if(mBitmap != null && mMatrix != null)
             canvas.drawBitmap(mBitmap, mMatrix, null);
     }

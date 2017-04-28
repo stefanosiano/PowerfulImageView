@@ -349,6 +349,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /**
      * Changes the shape mode of the image.
+     * Warning: Normal mode will ignore any option!
      *
      * @param shapeMode mode to change the image into
      */

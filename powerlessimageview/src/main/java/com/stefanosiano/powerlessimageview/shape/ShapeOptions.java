@@ -30,8 +30,10 @@ public class ShapeOptions {
     /** Listener that will update the shape drawers on changes, with a weak reference to be sure to not leak memory */
     private WeakReference<ShapeOptionsListener> listener;
 
+    private int mBackgroundColor;
 
-    public ShapeOptions() {
+    public ShapeOptions(int backgroundColor) {
+        this.mBackgroundColor = backgroundColor;
         this.mRect = new RectF(0, 0, 0, 0);
     }
 
@@ -68,8 +70,8 @@ public class ShapeOptions {
 
         mRect.set(mRect.left + paddingLeft,
                 mRect.top + paddingTop,
-                mRect.right + paddingRight,
-                mRect.bottom + paddingBottom);
+                mRect.right - paddingRight,
+                mRect.bottom - paddingBottom);
     }
 
     public void setListener(ShapeOptionsListener listener) {
@@ -82,6 +84,13 @@ public class ShapeOptions {
         return mRect;
     }
 
+    /** Set the background color of the image, using the shape.
+    Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+    premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+    See the Color class for more details. */
+    public int getBackgroundColor() {
+        return mBackgroundColor;
+    }
 
 
 
