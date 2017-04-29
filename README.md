@@ -7,9 +7,9 @@ Several other features will be added, and all the sections of the readme will be
   
 Planned features (for now):  
 * Shapes (Circle, fake circle, oval, fake oval, square, rounded rectangle, fake rounded rectangle, rectangle through ratio, default)
+* Blur support
 * Pinch in/out to zoom
 * Panoramas
-* Blur support
 * Custom target for Picasso/Glide
   
   
@@ -84,12 +84,11 @@ Proguard
 No steps are required, since configuration is already included.  
   
   
-To do:  
-  
-Add options to shapes: background, border  
+Roadmap
+-------
 Add comments and javadoc to Circle and Normal Drawer  
 Add all other shapes  
 Add additional scale types  
-Create code diagram?  
   
-Draw dark transparent frontground on the whole view?  
+  
+Create code diagram?  
