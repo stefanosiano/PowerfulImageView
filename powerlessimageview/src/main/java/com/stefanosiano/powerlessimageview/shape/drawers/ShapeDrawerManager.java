@@ -26,6 +26,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /** Bounds in which the progress indicator will be drawn */
     private final RectF mShapeBounds;
+    private final RectF mImageBounds;
 
     private final Matrix mShaderMatrix;
     private Matrix mImageMatrix;
@@ -67,6 +68,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     public ShapeDrawerManager(View view, final ShapeOptions shapeOptions){
         this.mView = new WeakReference<>(view);
         this.mShapeBounds = new RectF();
+        this.mImageBounds = new RectF();
         this.mShapeOptions = shapeOptions;
         this.mShapeOptions.setListener(this);
         this.mShaderMatrix = new Matrix();
@@ -254,15 +256,15 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         mScaleType = scaleType;
 
-        if(mShapeBounds == null || mDrawable == null || scaleType == null)
+        if(mImageBounds == null || mDrawable == null || scaleType == null)
             return;
 
         mShaderMatrix.reset();
 
         int dWidth = mDrawable.getIntrinsicWidth();
         int dHeight = mDrawable.getIntrinsicHeight();
-        float vWidth = mShapeBounds.width();
-        float vHeight = mShapeBounds.height();
+        float vWidth = mImageBounds.width();
+        float vHeight = mImageBounds.height();
         Rect padding = new Rect(0, 0, 0, 0);
 
         if(mView.get() != null){
@@ -290,8 +292,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 }
 
                 mShaderMatrix.setScale(scale, scale);
-                mShaderMatrix.postTranslate(dx + mShapeBounds.left,
-                        dy + mShapeBounds.top);
+                mShaderMatrix.postTranslate(dx + mImageBounds.left,
+                        dy + mImageBounds.top);
                 break;
 
             case CENTER_INSIDE:
@@ -306,40 +308,40 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 dy = (vHeight - dHeight * scale) * 0.5f;
 
                 mShaderMatrix.setScale(scale, scale);
-                mShaderMatrix.postTranslate(dx + mShapeBounds.left,
-                        dy + mShapeBounds.top);
+                mShaderMatrix.postTranslate(dx + mImageBounds.left,
+                        dy + mImageBounds.top);
                 break;
 
             case FIT_CENTER:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.CENTER);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.CENTER);
                 break;
 
             case FIT_END:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.END);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.END);
                 break;
 
             case FIT_START:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.START);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.START);
                 break;
 
             case FIT_XY:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mShapeBounds, Matrix.ScaleToFit.FILL);
+                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.FILL);
                 break;
 
             case MATRIX:
                 if(mImageMatrix != null)
                     mShaderMatrix.set(mImageMatrix);
 
-                mShaderMatrix.postTranslate(mShapeBounds.left,
-                        mShapeBounds.top);
+                mShaderMatrix.postTranslate(mImageBounds.left,
+                        mImageBounds.top);
                 break;
 
             default:
             case CENTER:
 
                 mShaderMatrix.setTranslate(
-                        ((vWidth - dWidth) * 0.5f + mShapeBounds.left),
-                        ((vHeight - dHeight) * 0.5f + mShapeBounds.top));
+                        ((vWidth - dWidth) * 0.5f + mImageBounds.left),
+                        ((vHeight - dHeight) * 0.5f + mImageBounds.top));
                 break;
         }
 
@@ -399,7 +401,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         mShapeOptions = options;
         //set calculated bounds to our progress bounds
-        mShapeBounds.set(mShapeOptions.getRect());
+        mShapeBounds.set(mShapeOptions.getShapeBounds());
+        mImageBounds.set(mShapeOptions.getImageBounds());
 
         setScaleType(mScaleType);
 
