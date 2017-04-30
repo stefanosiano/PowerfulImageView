@@ -59,6 +59,7 @@ public final class ProgressOptions implements Parcelable {
     /** Color of the progress indicator shadow border */
     private int mShadowBorderColor;
 
+
     //variables used to calculate bounds
 
     /** Size of the indicator */
@@ -599,7 +600,7 @@ public final class ProgressOptions implements Parcelable {
         this.mRtlDisabled = rtlDisabled;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
-            listener.get().onModeUpdated(this);
+            listener.get().onSizeUpdated(this);
     }
 
     /**
@@ -689,6 +690,7 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Set the width of the progress indicator shadow border.
+     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
      *
      * @param shadowBorderWidth Width of the progress indicator shadow border
      */
@@ -1000,7 +1002,6 @@ public final class ProgressOptions implements Parcelable {
     public interface ProgressOptionsListener{
         void onOptionsUpdated(ProgressOptions options);
         void onSizeUpdated(ProgressOptions options);
-        void onModeUpdated(ProgressOptions options);
     }
 
 }

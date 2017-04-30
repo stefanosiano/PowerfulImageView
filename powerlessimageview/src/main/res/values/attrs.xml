@@ -175,6 +175,17 @@
              See the Color class for more details. -->
         <attr name="piv_shape_border_color" format="color" />
 
+        <!-- Set the ratio of the image. Doing so, width is calculated as height * ratio -->
+        <attr name="piv_shape_ratio" format="float" />
+
+        <!-- Set the x radius of the image. Used in rounded rectangles -->
+        <attr name="piv_shape_radius_x" format="float" />
+
+        <!-- Set the y radius of the image. Used in rounded rectangles -->
+        <attr name="piv_shape_radius_y" format="float" />
+
+        <!-- Set the solid color used by solid shapes -->
+        <attr name="piv_shape_solid_color" format="color" />
 
     </declare-styleable>
 </resources>

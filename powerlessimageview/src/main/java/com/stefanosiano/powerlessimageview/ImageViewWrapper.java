@@ -47,7 +47,7 @@ abstract class ImageViewWrapper extends ImageView {
 
 
 
-    abstract void onBitmapChanged(Drawable d, Bitmap b);
+    abstract void onBitmapChanged();
 
     /* Methods to check! Should they be handled by ShapeDrawerManager? */
     @Override
@@ -128,31 +128,31 @@ abstract class ImageViewWrapper extends ImageView {
     @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
-        onBitmapChanged(getDrawable(), getBitmapFromDrawable(getDrawable()));
+        onBitmapChanged();
     }
 
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        onBitmapChanged(getDrawable(), getBitmapFromDrawable(getDrawable()));
+        onBitmapChanged();
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
-        onBitmapChanged(drawable, getBitmapFromDrawable(drawable));
+        onBitmapChanged();
     }
 
     @Override
     public void setImageIcon(Icon icon) {
         super.setImageIcon(icon);
-        onBitmapChanged(getDrawable(), getBitmapFromDrawable(getDrawable()));
+        onBitmapChanged();
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        onBitmapChanged(getDrawable(), bm);
+        onBitmapChanged();
     }
 
     @Override

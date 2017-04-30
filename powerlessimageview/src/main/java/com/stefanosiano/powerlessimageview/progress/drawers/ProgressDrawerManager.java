@@ -254,16 +254,6 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         mShadowDrawer.setup(mProgressOptions);
     }
 
-    /**
-     * Called when the progress mode changes.
-     * The drawer is updated and the right one is used.
-     */
-    @Override
-    public void onModeUpdated(ProgressOptions options) {
-        mProgressOptions = options;
-        changeProgressMode(mProgressMode);
-    }
-
 
 
 

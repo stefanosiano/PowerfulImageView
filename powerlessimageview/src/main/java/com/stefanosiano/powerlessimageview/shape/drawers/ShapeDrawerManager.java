@@ -110,26 +110,26 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         switch (shapeMode){
 
+            case SQUARE:
+
+                if(mCircleShapeDrawer == null)
+                    mCircleShapeDrawer = new CircleShapeDrawer(mBitmap);
+                mShapeDrawer = mCircleShapeDrawer;
+                break;
+
             case CIRCLE:
 
-                //shape drawer
-                if(mCircleShapeDrawer == null){
+                if(mCircleShapeDrawer == null)
                     mCircleShapeDrawer = new CircleShapeDrawer(mBitmap);
-                    mShapeDrawer = mCircleShapeDrawer;
-                }
-
-                //front/back drawer
+                mShapeDrawer = mCircleShapeDrawer;
                 break;
 
             default:
             case NORMAL:
 
-                //shape drawer
-                if(mNormalShapeDrawer == null){
+                if(mNormalShapeDrawer == null)
                     mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
-                    mShapeDrawer = mNormalShapeDrawer;
-                }
-
+                mShapeDrawer = mNormalShapeDrawer;
                 break;
         }
         //mShapeDrawer.setListener(listener);
@@ -165,7 +165,17 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         float drawableWidth = mDrawable == null ? 0 : mDrawable.getIntrinsicWidth() + view.getPaddingLeft() + view.getPaddingRight();
         float drawableHeight = mDrawable == null ? 0 : mDrawable.getIntrinsicHeight() + view.getPaddingTop() + view.getPaddingBottom();
 
-        float usedRatio = 1f;
+        float usedRatio;
+        switch (mShapeMode){
+            case CIRCLE:
+            case SQUARE:
+                usedRatio = 1f;
+                break;
+            case OVAL:
+            case RECTANGLE:
+                default:
+                usedRatio = mShapeOptions.getRatio();
+        }
 
 
         switch (wMode){
@@ -410,16 +420,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
-    /**
-     * Called when the shape mode changes.
-     * The drawer is updated and the right one is used.
-     */
-    @Override
-    public void onModeUpdated(ShapeOptions options) {
-        mShapeOptions = options;
-        changeShapeMode(mShapeMode);
-    }
-
 
     public int getMeasuredHeight() {
         return (int) mMeasuredHeight;
@@ -436,10 +436,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         return mShapeMode;
     }
 
+
+
+
+
     /** Saves state into a bundle. */
     public Bundle saveInstanceState() {
         Bundle bundle = new Bundle();
-        //bundle.putParcelable("shape_options", mShapeOptions);
+        bundle.putParcelable("shape_options", mShapeOptions);
         bundle.putInt("shape_mode", mShapeMode.getValue());
 
         return bundle;
@@ -450,7 +454,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         if (state == null)
             return;
 
-        //mShapeOptions.setOptions((ShapeOptions) state.getParcelable("shape_options"));
+        mShapeOptions.setOptions((ShapeOptions) state.getParcelable("shape_options"));
         PivShapeMode shapeMode = PivShapeMode.fromValue(state.getInt("shape_mode"));
         onSizeUpdated(mShapeOptions);
         changeShapeMode(shapeMode);
