@@ -189,12 +189,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     protected void onDraw(Canvas canvas) {
 
         //draw image shape
-
-        // It looks like i need this...
-        if(mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
-            super.onDraw(canvas);
-        else
-            mShapeDrawerManager.onDraw(canvas);
+        mShapeDrawerManager.onDraw(canvas);
 
         //draw progress indicator
         mProgressDrawerManager.onDraw(canvas);

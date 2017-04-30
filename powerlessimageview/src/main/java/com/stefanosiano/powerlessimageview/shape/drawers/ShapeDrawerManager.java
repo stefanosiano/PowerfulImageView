@@ -24,23 +24,33 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     //Using a weakRefence to be sure to not leak memory
     private final WeakReference<View> mView;
 
-    /** Bounds in which the progress indicator will be drawn */
+    /** Bounds of the shape */
     private final RectF mShapeBounds;
+
+    /** Bounds of the image */
     private final RectF mImageBounds;
 
+    /** Matrix used by the drawers to scale the image */
     private final Matrix mShaderMatrix;
+
+    /** Custom matrix used with MATRIX scale type */
     private Matrix mImageMatrix;
+
+    /** Scale type of the image */
     private ImageView.ScaleType mScaleType;
 
+    /** Bitmap to be drawn */
     private Bitmap mBitmap;
+
+    /** Drawable of the view */
     private Drawable mDrawable;
 
+    /** Measured width, based on mode */
     private float mMeasuredWidth;
+
+    /** Measured height, based on mode */
     private float mMeasuredHeight;
 
-
-    //Variables used to initialize drawers
-    private ShapeDrawerListener listener;
 
     //Drawers
     private CircleShapeDrawer mCircleShapeDrawer;
@@ -50,13 +60,11 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     /** Interface used to switch between its implementations, based on the shape and options selected. */
     private ShapeDrawer mShapeDrawer;
 
-    /** Shape of the image */
+    /** Shape mode of the image */
     private PivShapeMode mShapeMode = null;
 
     /** Options used by shape drawers */
     private ShapeOptions mShapeOptions;
-
-
 
 
 
@@ -74,21 +82,15 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         this.mShaderMatrix = new Matrix();
         this.mShaderMatrix.reset();
         this.mBitmap = null;
-        this.listener = new ShapeDrawerListener() {
-            @Override
-            public void onRequestInvalidate() {
-
-                if(mView.get() != null) {
-                    //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
-                    //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-                    mView.get().postInvalidate((int) mShapeBounds.left - 1, (int) mShapeBounds.top - 1, (int) mShapeBounds.right + 1, (int) mShapeBounds.bottom + 1);
-                }
-            }
-        };
         this.mShapeDrawer = new NormalShapeDrawer(null, null);
     }
 
 
+    /**
+     * n
+     * @param drawable
+     * @param bitmap
+     */
     public void changeBitmap(Drawable drawable, Bitmap bitmap){
         this.mDrawable = drawable;
         this.mBitmap = bitmap;
@@ -355,7 +357,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 break;
         }
 
-        mShapeDrawer.setMatrix(mShaderMatrix);
+        mShapeDrawer.setMatrix(scaleType, mShaderMatrix);
     }
 
 
@@ -376,7 +378,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /** Draws the image */
     public final void onDraw(Canvas canvas) {
-        mShapeDrawer.draw(canvas, mShapeBounds);
+        mShapeDrawer.draw(canvas, mImageBounds);
     }
 
     /**

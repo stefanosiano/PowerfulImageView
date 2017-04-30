@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
@@ -15,7 +16,7 @@ import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 public interface ShapeDrawer {
 
     void changeBitmap(Drawable drawable, Bitmap bitmap);
-    void setMatrix(Matrix matrix);
+    void setMatrix(ImageView.ScaleType scaleType, Matrix matrix);
     void setup(ShapeOptions shapeOptions);
-    void draw(Canvas canvas, RectF shapeBounds);
+    void draw(Canvas canvas, RectF imageBounds);
 }

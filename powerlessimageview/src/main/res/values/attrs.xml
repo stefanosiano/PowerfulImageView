@@ -132,7 +132,7 @@
 
         <!-- SHAPE OPTIONS -->
 
-        <!-- Progress mode of the indicator. Normal mode will ignore any option! -->
+        <!-- Progress mode of the indicator -->
         <attr name="piv_shape_mode" format="enum" >
             <enum name="normal" value="0"/>
             <enum name="circle" value="1"/>

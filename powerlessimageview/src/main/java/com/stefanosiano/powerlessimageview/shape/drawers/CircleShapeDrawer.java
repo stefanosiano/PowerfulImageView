@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
@@ -49,7 +50,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void setMatrix(Matrix matrix) {
+    public void setMatrix(ImageView.ScaleType scaleType, Matrix matrix) {
         mBitmapShader.setLocalMatrix(matrix);
     }
 
@@ -76,7 +77,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF shapeBounds) {
+    public void draw(Canvas canvas, RectF imageBounds) {
         if(mBackPaint.getColor() != Color.TRANSPARENT)
             canvas.drawCircle(cx, cy, radius, mBackPaint);
         canvas.drawCircle(cx, cy, radius, mBitmapPaint);
