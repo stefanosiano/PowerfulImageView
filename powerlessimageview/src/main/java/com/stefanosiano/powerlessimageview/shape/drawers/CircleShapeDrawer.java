@@ -77,7 +77,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, RectF imageBounds) {
+    public void draw(Canvas canvas, RectF shapeBounds, RectF imageBounds) {
         if(mBackPaint.getColor() != Color.TRANSPARENT)
             canvas.drawCircle(cx, cy, radius, mBackPaint);
         canvas.drawCircle(cx, cy, radius, mBitmapPaint);

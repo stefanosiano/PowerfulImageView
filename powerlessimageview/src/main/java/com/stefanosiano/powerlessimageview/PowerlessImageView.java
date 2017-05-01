@@ -168,7 +168,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     void onBitmapChanged() {
         //when initializing (in constructor) it gets called, but it is still null
         if(mShapeDrawerManager != null)
-            mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
+            mShapeDrawerManager.changeBitmap(getDrawable().getCurrent(), getBitmapFromDrawable(getDrawable().getCurrent()));
     }
 
     @Override
@@ -258,6 +258,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         Bundle bundle = new Bundle();
         bundle.putParcelable("super_state", super.onSaveInstanceState());
         bundle.putParcelable("progress_drawer_manager", mProgressDrawerManager.saveInstanceState());
+        bundle.putParcelable("shape_drawer_manager", mShapeDrawerManager.saveInstanceState());
 
         return bundle;
     }
@@ -267,7 +268,8 @@ public class PowerlessImageView extends ImageViewWrapper {
     protected void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {// implicit null check
             Bundle bundle = (Bundle) state;
-            mProgressDrawerManager.restoreInstanceState((Bundle) bundle.getParcelable("progress_options"));
+            mProgressDrawerManager.restoreInstanceState((Bundle) bundle.getParcelable("progress_drawer_manager"));
+            mShapeDrawerManager.restoreInstanceState((Bundle) bundle.getParcelable("shape_drawer_manager"));
             state = bundle.getParcelable("super_state");
         }
         super.onRestoreInstanceState(state);

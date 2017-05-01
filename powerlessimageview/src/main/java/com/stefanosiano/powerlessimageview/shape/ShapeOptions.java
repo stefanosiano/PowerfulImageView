@@ -175,11 +175,22 @@ public class ShapeOptions implements Parcelable {
         int smallSize = w < h ? w : h;
 
         switch(mode){
+
             case CIRCLE:
+            case SQUARE:
+            case SOLID_CIRCLE:
                 mShapeBounds.set((w - smallSize) /2,
                         (h - smallSize) /2,
                         (w + smallSize) /2,
                         (h + smallSize) /2);
+                break;
+
+            case RECTANGLE:
+            case ROUNDED_RECTANGLE:
+            case SOLID_ROUNDED_RECTANGLE:
+            case OVAL:
+            case SOLID_OVAL:
+                mShapeBounds.set(0, 0, w, h);
                 break;
 
             default:
@@ -428,7 +439,7 @@ public class ShapeOptions implements Parcelable {
         this.mRatio = ratio;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode);
         if(listener.get() != null)
-            listener.get().onSizeUpdated(this);
+            listener.get().onRequestMeasure(this);
     }
 
     /** Set the x radius of the shape. Used by rounded rectangles */
@@ -464,6 +475,7 @@ public class ShapeOptions implements Parcelable {
     public interface ShapeOptionsListener{
         void onOptionsUpdated(ShapeOptions options);
         void onSizeUpdated(ShapeOptions options);
+        void onRequestMeasure(ShapeOptions options);
     }
 
 

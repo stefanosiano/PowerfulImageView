@@ -62,6 +62,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
      *
      * @param view View to show progress indicator into
+     * @param progressOptions Options of the progress indicator
      */
     public ProgressDrawerManager(View view, final ProgressOptions progressOptions){
         this.mView = new WeakReference<>(view);

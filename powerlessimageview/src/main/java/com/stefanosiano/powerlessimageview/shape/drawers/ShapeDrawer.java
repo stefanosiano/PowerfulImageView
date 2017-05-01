@@ -18,5 +18,5 @@ public interface ShapeDrawer {
     void changeBitmap(Drawable drawable, Bitmap bitmap);
     void setMatrix(ImageView.ScaleType scaleType, Matrix matrix);
     void setup(ShapeOptions shapeOptions);
-    void draw(Canvas canvas, RectF imageBounds);
+    void draw(Canvas canvas, RectF shapeBounds, RectF imageBounds);
 }

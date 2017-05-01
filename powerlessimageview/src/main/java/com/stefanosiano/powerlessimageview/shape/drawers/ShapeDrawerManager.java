@@ -72,6 +72,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
      * Manager class for shape drawers. Used to initialize and get the instances of the needed drawers.
      *
      * @param view View to show the image into
+     * @param shapeOptions Options of the shape
      */
     public ShapeDrawerManager(View view, final ShapeOptions shapeOptions){
         this.mView = new WeakReference<>(view);
@@ -87,9 +88,10 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
 
     /**
-     * n
-     * @param drawable
-     * @param bitmap
+     * Method that updates the drawable and bitmap to show
+     *
+     * @param drawable drawable to show on normal, square and rectangle shapes
+     * @param bitmap bitmap to show on rounded, circle and oval shapes
      */
     public void changeBitmap(Drawable drawable, Bitmap bitmap){
         this.mDrawable = drawable;
@@ -112,18 +114,60 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         switch (shapeMode){
 
-            case SQUARE:
+            case CIRCLE:
 
                 if(mCircleShapeDrawer == null)
                     mCircleShapeDrawer = new CircleShapeDrawer(mBitmap);
                 mShapeDrawer = mCircleShapeDrawer;
                 break;
 
-            case CIRCLE:
+            case SQUARE:
 
-                if(mCircleShapeDrawer == null)
-                    mCircleShapeDrawer = new CircleShapeDrawer(mBitmap);
-                mShapeDrawer = mCircleShapeDrawer;
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
+                break;
+
+            case RECTANGLE:
+
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
+                break;
+
+            case OVAL:
+
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
+                break;
+
+            case ROUNDED_RECTANGLE:
+
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
+                break;
+
+            case SOLID_CIRCLE:
+
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
+                break;
+
+            case SOLID_OVAL:
+
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
+                break;
+
+            case SOLID_ROUNDED_RECTANGLE:
+
+                if(mNormalShapeDrawer == null)
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             default:
@@ -134,7 +178,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
         }
-        //mShapeDrawer.setListener(listener);
     }
 
 
@@ -151,6 +194,9 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
+    /**
+     * Measure the view and its content to determine the measured width and the measured height
+     */
     public void onMeasure(float w, float h, int wMode, int hMode, View view){
 
         // EXACTLY: size value was set to a specific value. This can also get triggered when match_parent
@@ -171,10 +217,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         switch (mShapeMode){
             case CIRCLE:
             case SQUARE:
+            case SOLID_CIRCLE:
                 usedRatio = 1f;
                 break;
-            case OVAL:
             case RECTANGLE:
+            case ROUNDED_RECTANGLE:
+            case SOLID_ROUNDED_RECTANGLE:
+            case OVAL:
+            case SOLID_OVAL:
                 default:
                 usedRatio = mShapeOptions.getRatio();
         }
@@ -257,13 +307,21 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     }
 
-
-
+    /**
+     * Sets the custom matrix to be used with the MATRIX scale type
+     *
+     * @param matrix Custom matrix to be used with the MATRIX scale type
+     */
     public void setImageMatrix(Matrix matrix){
         this.mImageMatrix = matrix;
         setScaleType(ImageView.ScaleType.MATRIX);
     }
 
+    /**
+     * Sets the scale type used to draw the image
+     *
+     * @param scaleType Scale type used to draw the image
+     */
     public void setScaleType(ImageView.ScaleType scaleType){
 
         mScaleType = scaleType;
@@ -363,7 +421,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /**
      * Changes the shape mode of the image.
-     * Warning: Normal mode will ignore any option!
      *
      * @param shapeMode mode to change the image into
      */
@@ -378,7 +435,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /** Draws the image */
     public final void onDraw(Canvas canvas) {
-        mShapeDrawer.draw(canvas, mImageBounds);
+        mShapeDrawer.draw(canvas, mShapeBounds, mImageBounds);
     }
 
     /**
@@ -389,10 +446,15 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
-
-    interface ShapeDrawerListener{
-        /** Request to invalidate the image bounds */
-        void onRequestInvalidate();
+    /**
+     * Called when an option that requires onMeasure() call is updated.
+     */
+    @Override
+    public void onRequestMeasure(ShapeOptions options) {
+        mShapeOptions = options;
+        if(mView.get() != null)
+            mView.get().requestLayout();
+        mShapeDrawer.setup(options);
     }
 
     /**
@@ -422,11 +484,22 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     }
 
 
-
+    /**
+     * Returns the measured height to be used in onMeasure() method of the view.
+     * It is calculated based on the shape of the image and its size.
+     *
+     * @return Measured height to be used in onMeasure() method of the view.
+     */
     public int getMeasuredHeight() {
         return (int) mMeasuredHeight;
     }
 
+    /**
+     * Returns the measured width to be used in onMeasure() method of the view.
+     * It is calculated based on the shape of the image and its size.
+     *
+     * @return Measured width to be used in onMeasure() method of the view.
+     */
     public int getMeasuredWidth() {
         return (int) mMeasuredWidth;
     }

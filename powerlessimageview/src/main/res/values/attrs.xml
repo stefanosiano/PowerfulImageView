@@ -139,6 +139,10 @@
             <enum name="square" value="2"/>
             <enum name="rectangle" value="3"/>
             <enum name="oval" value="4"/>
+            <enum name="rounded_rectangle" value="5"/>
+            <enum name="solid_circle" value="6"/>
+            <enum name="solid_oval" value="7"/>
+            <enum name="solid_rounded_rectangle" value="8"/>
         </attr>
 
         <!-- Set the background color of the image, using the shape.
