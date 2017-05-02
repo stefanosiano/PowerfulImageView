@@ -12,19 +12,31 @@ import android.widget.ImageView;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
- * Created by stefano on 14/04/17.
+ * ShapeDrawer that draws the drawable directly into the shape.
  */
 
 final class NormalShapeDrawer implements ShapeDrawer {
 
+    /** Paint used to draw the shape background */
     private final Paint mBackPaint;
+
+    /** Paint used to draw the shape frontground */
     private final Paint mFrontPaint;
 
+    /** Matrix used to modify the canvas and draw */
     private Matrix mMatrix;
+
+    /** Drawable to draw in the shape */
     private Drawable mDrawable;
+
+    /** Scale type selected */
     private ImageView.ScaleType mScaleType;
 
-    NormalShapeDrawer(Drawable drawable, Bitmap bitmap) {
+
+    /**
+     * ShapeDrawer that draws the drawable directly into the shape.
+     */
+    NormalShapeDrawer(Drawable drawable) {
         this.mDrawable = drawable;
         this.mBackPaint = new Paint();
         this.mFrontPaint = new Paint();
@@ -63,6 +75,7 @@ final class NormalShapeDrawer implements ShapeDrawer {
                 mDrawable.draw(canvas);
             }
             else {
+                //I save the state, apply the matrix and restore the state of the canvas
                 final int saveCount = canvas.getSaveCount();
                 canvas.save();
 

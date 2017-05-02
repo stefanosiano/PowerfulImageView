@@ -172,8 +172,12 @@ public class ShapeOptions implements Parcelable {
         mCalculatedLastPaddingRight = paddingRight;
         mCalculatedLastPaddingBottom = paddingBottom;
 
+        //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
+        //In this case I center the shape into the view
         float smallX = (int) Math.min(w, h * mRatio);
         float smallY = (int) Math.min(h, w / mRatio);
+        //smallest size (used for padding and square/circle shapes
+        float smallSize = (int) Math.min(smallX, smallY);
 
         switch(mode){
 
@@ -182,10 +186,10 @@ public class ShapeOptions implements Parcelable {
             case SOLID_CIRCLE:
                 smallX = Math.min(w, h);
                 smallY = Math.min(h, w);
-                mShapeBounds.set((w - smallX) /2,
-                        (h - smallY) /2,
-                        (w + smallX) /2,
-                        (h + smallY) /2);
+                mShapeBounds.set((w - smallSize) /2,
+                        (h - smallSize) /2,
+                        (w + smallSize) /2,
+                        (h + smallSize) /2);
                 break;
 
             case RECTANGLE:
@@ -218,12 +222,12 @@ public class ShapeOptions implements Parcelable {
         if(!mBorderOverlay)
             mShapeBounds.inset(mBorderWidth, mBorderWidth);
 
-        mCalculatedInnerPadding = Math.max(smallX, smallY) * mInnerPaddingPercent / 100;
+        mCalculatedInnerPadding = smallSize * mInnerPaddingPercent / 100;
         //if mInnerPadding is 0 or more, it overrides mInnerPaddingPercent parameter
         if(mInnerPadding >= 0) mCalculatedInnerPadding = mInnerPadding;
 
-        if(mCalculatedInnerPadding >= Math.max(smallX, smallY) / 2)
-            mCalculatedInnerPadding = Math.max(smallX, smallY) / 2 - 1;
+        if(mCalculatedInnerPadding >= smallSize / 2)
+            mCalculatedInnerPadding = smallSize / 2 - 1;
 
         mImageBounds.set(mShapeBounds);
         mImageBounds.inset(mCalculatedInnerPadding, mCalculatedInnerPadding);

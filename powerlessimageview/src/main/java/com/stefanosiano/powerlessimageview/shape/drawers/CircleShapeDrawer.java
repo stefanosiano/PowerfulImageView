@@ -14,17 +14,27 @@ import android.widget.ImageView;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
- * Created by stefano on 05/04/17.
+ * ShapeDrawer that draws a circle as shape.
  */
 
 final class CircleShapeDrawer implements ShapeDrawer {
 
+    /** Shader to efficiently draw the shape */
     private BitmapShader mBitmapShader;
+
+    /** Paint used to draw the image */
     private final Paint mBitmapPaint;
+
+    /** Paint used to draw the shape background */
     private final Paint mBackPaint;
+
+    /** Paint used to draw the shape border */
     private final Paint mBorderPaint;
+
+    /** Paint used to draw the shape frontground */
     private final Paint mFrontPaint;
 
+    /** Paint used to draw the shape frontground */
     private float cx, cy, radius, borderRadius;
 
     CircleShapeDrawer(Bitmap bitmap) {

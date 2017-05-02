@@ -83,7 +83,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         this.mShaderMatrix = new Matrix();
         this.mShaderMatrix.reset();
         this.mBitmap = null;
-        this.mShapeDrawer = new NormalShapeDrawer(null, null);
+        this.mShapeDrawer = new NormalShapeDrawer(null);
     }
 
 
@@ -124,49 +124,49 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case SQUARE:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             case RECTANGLE:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             case OVAL:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             case ROUNDED_RECTANGLE:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             case SOLID_CIRCLE:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             case SOLID_OVAL:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
             case SOLID_ROUNDED_RECTANGLE:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
 
@@ -174,7 +174,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case NORMAL:
 
                 if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable, mBitmap);
+                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
                 mShapeDrawer = mNormalShapeDrawer;
                 break;
         }
