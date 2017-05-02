@@ -172,17 +172,20 @@ public class ShapeOptions implements Parcelable {
         mCalculatedLastPaddingRight = paddingRight;
         mCalculatedLastPaddingBottom = paddingBottom;
 
-        int smallSize = w < h ? w : h;
+        float smallX = (int) Math.min(w, h * mRatio);
+        float smallY = (int) Math.min(h, w / mRatio);
 
         switch(mode){
 
             case CIRCLE:
             case SQUARE:
             case SOLID_CIRCLE:
-                mShapeBounds.set((w - smallSize) /2,
-                        (h - smallSize) /2,
-                        (w + smallSize) /2,
-                        (h + smallSize) /2);
+                smallX = Math.min(w, h);
+                smallY = Math.min(h, w);
+                mShapeBounds.set((w - smallX) /2,
+                        (h - smallY) /2,
+                        (w + smallX) /2,
+                        (h + smallY) /2);
                 break;
 
             case RECTANGLE:
@@ -190,7 +193,12 @@ public class ShapeOptions implements Parcelable {
             case SOLID_ROUNDED_RECTANGLE:
             case OVAL:
             case SOLID_OVAL:
-                mShapeBounds.set(0, 0, w, h);
+                smallX = (int) Math.min(w, h * mRatio);
+                smallY = (int) Math.min(h, w / mRatio);
+                mShapeBounds.set((w - smallX) /2,
+                        (h - smallY) /2,
+                        (w + smallX) /2,
+                        (h + smallY) /2);
                 break;
 
             default:
@@ -210,12 +218,12 @@ public class ShapeOptions implements Parcelable {
         if(!mBorderOverlay)
             mShapeBounds.inset(mBorderWidth, mBorderWidth);
 
-        mCalculatedInnerPadding = smallSize * mInnerPaddingPercent / 100;
+        mCalculatedInnerPadding = Math.max(smallX, smallY) * mInnerPaddingPercent / 100;
         //if mInnerPadding is 0 or more, it overrides mInnerPaddingPercent parameter
         if(mInnerPadding >= 0) mCalculatedInnerPadding = mInnerPadding;
 
-        if(mCalculatedInnerPadding >= smallSize / 2)
-            mCalculatedInnerPadding = smallSize / 2 - 1;
+        if(mCalculatedInnerPadding >= Math.max(smallX, smallY) / 2)
+            mCalculatedInnerPadding = Math.max(smallX, smallY) / 2 - 1;
 
         mImageBounds.set(mShapeBounds);
         mImageBounds.inset(mCalculatedInnerPadding, mCalculatedInnerPadding);
