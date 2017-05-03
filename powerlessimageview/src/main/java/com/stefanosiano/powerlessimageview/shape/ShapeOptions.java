@@ -181,6 +181,8 @@ public class ShapeOptions implements Parcelable {
 
         //smallest size (used for padding and square/circle shapes)
         float smallSize;
+        //if no ratio was set, i use the view ratio
+        float usedRatio = mRatio <= 0 ? w / (float) h : mRatio;
 
         switch(mode){
 
@@ -201,8 +203,8 @@ public class ShapeOptions implements Parcelable {
             case SOLID_OVAL:
                 //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
                 //In this case I center the shape into the view
-                float smallX = (int) Math.min(w, h * mRatio);
-                float smallY = (int) Math.min(h, w / mRatio);
+                float smallX = (int) Math.min(w, h * usedRatio);
+                float smallY = (int) Math.min(h, w / usedRatio);
                 smallSize = (int) Math.min(smallX, smallY);
                 mShapeBounds.set((w - smallX) /2,
                         (h - smallY) /2,

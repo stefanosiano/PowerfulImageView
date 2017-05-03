@@ -51,7 +51,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final float DEFAULT_SHAPE_INNER_PADDING_PERCENT = 0;
     private static final boolean DEFAULT_SHAPE_BORDER_OVERLAY = false;
     private static final int DEFAULT_SHAPE_INNER_BORDER_WIDTH = 0;
-    private static final float DEFAULT_SHAPE_RATIO = 1;
+    private static final float DEFAULT_SHAPE_RATIO = 0;
     private static final float DEFAULT_SHAPE_RADIUS_X = 1;
     private static final float DEFAULT_SHAPE_RADIUS_Y = 1;
 

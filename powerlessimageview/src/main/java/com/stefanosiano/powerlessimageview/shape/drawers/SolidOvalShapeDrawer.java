@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
- * ShapeDrawer that draws the drawable directly into the shape.
+ * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
 
-final class NormalShapeDrawer implements ShapeDrawer {
+final class SolidOvalShapeDrawer implements ShapeDrawer {
 
     /** Paint used to draw the shape background */
     private final Paint mBackPaint;
@@ -26,6 +26,9 @@ final class NormalShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape border */
     private final Paint mBorderPaint;
 
+    /** Paint used to draw the solid color */
+    private final RectF mSolidRect;
+
     /** Matrix used to modify the canvas and draw */
     private Matrix mMatrix;
 
@@ -35,16 +38,20 @@ final class NormalShapeDrawer implements ShapeDrawer {
     /** Scale type selected */
     private ImageView.ScaleType mScaleType;
 
+    /** Paint used to draw the solid color */
+    private final Paint mSolidPaint;
 
     /**
-     * ShapeDrawer that draws the drawable directly into the shape.
+     * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
      */
-    NormalShapeDrawer(Drawable drawable) {
+    SolidOvalShapeDrawer(Drawable drawable) {
         this.mDrawable = drawable;
         this.mBackPaint = new Paint();
         this.mFrontPaint = new Paint();
         this.mBorderPaint = new Paint();
+        this.mSolidRect = new RectF();
         this.mMatrix = new Matrix();
+        this.mSolidPaint = new Paint();
     }
 
     @Override
@@ -69,6 +76,21 @@ final class NormalShapeDrawer implements ShapeDrawer {
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setStrokeWidth(shapeOptions.getBorderWidth());
+
+        mSolidPaint.setColor(shapeOptions.getSolidColor());
+        mSolidPaint.setAntiAlias(true);
+        mSolidPaint.setStyle(Paint.Style.STROKE);
+
+        //I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
+        //that is the hypotenuse of the triangle built over half width and half height of the rectangle.
+        //I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
+        //Finally i subtract the shape radius, since it will
+        float width = (shapeOptions.getViewBounds().width() + shapeOptions.getViewBounds().height() - shapeOptions.getBorderBounds().width()) / 2;
+
+        mSolidPaint.setStrokeWidth(width);
+
+        mSolidRect.set(shapeOptions.getBorderBounds());
+        mSolidRect.inset(-width/2 - shapeOptions.getBorderWidth()/2, -width/2 - shapeOptions.getBorderWidth()/2);
     }
 
     @Override
@@ -76,7 +98,7 @@ final class NormalShapeDrawer implements ShapeDrawer {
 
         //background
         if(mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(shapeBounds, mBackPaint);
+            canvas.drawOval(shapeBounds, mBackPaint);
 
         //image
         if (mDrawable != null) {
@@ -100,10 +122,13 @@ final class NormalShapeDrawer implements ShapeDrawer {
 
         //frontground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(shapeBounds, mFrontPaint);
+            canvas.drawOval(shapeBounds, mFrontPaint);
 
         //border
         if(mBorderPaint.getStrokeWidth() > 0 && mBorderPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(borderBounds, mBorderPaint);
+            canvas.drawOval(borderBounds, mBorderPaint);
+
+        //solid color
+        canvas.drawOval(mSolidRect, mSolidPaint);
     }
 }

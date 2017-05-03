@@ -26,9 +26,6 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape border */
     private final Paint mBorderPaint;
 
-    /** Paint used to draw the shape border */
-    private final RectF mDrawRect;
-
     /** Matrix used to modify the canvas and draw */
     private Matrix mMatrix;
 
@@ -42,7 +39,7 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
     private final Paint mSolidPaint;
 
     /** Variables used to draw the border and the solid color */
-    private float mCx, mCy, mRadius, mBorderRadius;
+    private float mCx, mCy, mRadius, mSolidRadius, mBorderRadius;
 
     /**
      * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
@@ -52,7 +49,6 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
         this.mBackPaint = new Paint();
         this.mFrontPaint = new Paint();
         this.mBorderPaint = new Paint();
-        this.mDrawRect = new RectF();
         this.mMatrix = new Matrix();
         this.mSolidPaint = new Paint();
     }
@@ -71,9 +67,6 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
 
     @Override
     public void setup(ShapeOptions shapeOptions) {
-
-        mDrawRect.set(shapeOptions.getShapeBounds());
-        mDrawRect.inset(-shapeOptions.getBorderWidth(), -shapeOptions.getBorderWidth());
 
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
         mFrontPaint.setColor(shapeOptions.getFrontgroundColor());
@@ -96,10 +89,11 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
         //Finally i subtract the shape radius, since it will
         float width = (shapeOptions.getViewBounds().width() + shapeOptions.getViewBounds().height() - shapeOptions.getBorderBounds().width()) / 2;
 
-        mRadius = (shapeOptions.getBorderBounds().width() + width + shapeOptions.getBorderWidth()) / 2;
+        mRadius = shapeOptions.getShapeBounds().width() < shapeOptions.getShapeBounds().height() ? shapeOptions.getShapeBounds().width()/2 : shapeOptions.getShapeBounds().height()/2;
+        mSolidRadius = (shapeOptions.getBorderBounds().width() + width + shapeOptions.getBorderWidth()) / 2;
+        mBorderRadius = shapeOptions.getBorderBounds().width() < shapeOptions.getBorderBounds().height() ? shapeOptions.getBorderBounds().width()/2 : shapeOptions.getBorderBounds().height()/2;
         mSolidPaint.setStrokeWidth(width);
 
-        mBorderRadius = shapeOptions.getBorderBounds().width() < shapeOptions.getBorderBounds().height() ? shapeOptions.getBorderBounds().width()/2 : shapeOptions.getBorderBounds().height()/2;
     }
 
     @Override
@@ -107,7 +101,7 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
 
         //background
         if(mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(mDrawRect, mBackPaint);
+            canvas.drawCircle(mCx, mCy, mRadius, mBackPaint);
 
         //image
         if (mDrawable != null) {
@@ -131,13 +125,13 @@ final class SolidCircleShapeDrawer implements ShapeDrawer {
 
         //frontground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(mDrawRect, mFrontPaint);
+            canvas.drawCircle(mCx, mCy, mRadius, mFrontPaint);
 
         //border
-        if(mBorderPaint.getStrokeWidth() > 0 && mBackPaint.getColor() != Color.TRANSPARENT)
+        if(mBorderPaint.getStrokeWidth() > 0 && mBorderPaint.getColor() != Color.TRANSPARENT)
             canvas.drawCircle(mCx, mCy, mBorderRadius, mBorderPaint);
 
         //solid color
-        canvas.drawCircle(mCx, mCy, mRadius, mSolidPaint);
+        canvas.drawCircle(mCx, mCy, mSolidRadius, mSolidPaint);
     }
 }

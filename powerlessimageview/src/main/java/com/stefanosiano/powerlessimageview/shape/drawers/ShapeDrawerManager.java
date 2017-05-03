@@ -61,6 +61,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     private OvalShapeDrawer mOvalShapeDrawer;
     private SolidCircleShapeDrawer mSolidCircleShapeDrawer;
     private RoundedRectangleShapeDrawer mRoundedRectangleShapeDrawer;
+    private SolidOvalShapeDrawer mSolidOvalShapeDrawer;
+    private SolidRoundedRectangleShapeDrawer mSolidRoundedRectangleShapeDrawer;
 
 
     /** Interface used to switch between its implementations, based on the shape and options selected. */
@@ -165,16 +167,16 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
             case SOLID_OVAL:
 
-                if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
-                mShapeDrawer = mNormalShapeDrawer;
+                if(mSolidOvalShapeDrawer == null)
+                    mSolidOvalShapeDrawer = new SolidOvalShapeDrawer(mDrawable);
+                mShapeDrawer = mSolidOvalShapeDrawer;
                 break;
 
             case SOLID_ROUNDED_RECTANGLE:
 
-                if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
-                mShapeDrawer = mNormalShapeDrawer;
+                if(mSolidRoundedRectangleShapeDrawer == null)
+                    mSolidRoundedRectangleShapeDrawer = new SolidRoundedRectangleShapeDrawer(mDrawable);
+                mShapeDrawer = mSolidRoundedRectangleShapeDrawer;
                 break;
 
             default:
@@ -233,7 +235,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case OVAL:
             case SOLID_OVAL:
                 default:
-                usedRatio = mShapeOptions.getRatio();
+                usedRatio = mShapeOptions.getRatio() <= 0 ? w / h : mShapeOptions.getRatio();
         }
 
 

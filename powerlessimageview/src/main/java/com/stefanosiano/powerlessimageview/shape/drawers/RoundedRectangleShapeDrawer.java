@@ -99,7 +99,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
             canvas.drawRoundRect(shapeBounds, mRadiusX, mRadiusY, mFrontPaint);
 
         //border
-        if(mBorderPaint.getStrokeWidth() > 0 && mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRoundRect(borderBounds, mRadiusX, mRadiusY, mBorderPaint);
+        if(mBorderPaint.getStrokeWidth() > 0 && mBorderPaint.getColor() != Color.TRANSPARENT)
+            canvas.drawRoundRect(borderBounds, mRadiusX * borderBounds.height() / imageBounds.height(), mRadiusY * borderBounds.width() / imageBounds.width(), mBorderPaint);
     }
 }

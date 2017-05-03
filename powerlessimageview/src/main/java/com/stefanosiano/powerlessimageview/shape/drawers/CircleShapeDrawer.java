@@ -105,7 +105,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
             canvas.drawCircle(mCx, mCy, mRadius, mFrontPaint);
 
         //border
-        if(mBorderPaint.getStrokeWidth() > 0 && mBackPaint.getColor() != Color.TRANSPARENT)
+        if(mBorderPaint.getStrokeWidth() > 0 && mBorderPaint.getColor() != Color.TRANSPARENT)
             canvas.drawCircle(mCx, mCy, mBorderRadius, mBorderPaint);
     }
 }

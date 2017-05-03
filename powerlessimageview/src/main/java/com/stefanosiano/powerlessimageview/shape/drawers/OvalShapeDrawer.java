@@ -93,7 +93,7 @@ final class OvalShapeDrawer implements ShapeDrawer {
             canvas.drawOval(shapeBounds, mFrontPaint);
 
         //border
-        if(mBorderPaint.getStrokeWidth() > 0 && mBackPaint.getColor() != Color.TRANSPARENT)
+        if(mBorderPaint.getStrokeWidth() > 0 && mBorderPaint.getColor() != Color.TRANSPARENT)
             canvas.drawOval(borderBounds, mBorderPaint);
     }
 }
