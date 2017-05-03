@@ -6,7 +6,7 @@ Right now it provides a progress indicator.
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
 Planned features (for now):  
-* Shapes (Circle, fake circle, oval, fake oval, square, rounded rectangle, fake rounded rectangle, rectangle through ratio, default)
+* Shapes (circle, solid circle, oval, solid oval, square, rounded rectangle, solid rounded rectangle, rectangle, normal)
 * Blur support
 * Pinch in/out to zoom
 * Panoramas
@@ -86,9 +86,8 @@ No steps are required, since configuration is already included.
   
 Roadmap
 -------
-Add comments and javadoc to Circle and Normal Drawer  
-Add all other shapes  
+Add last solid shapes  
 Add additional scale types  
-  
+Write Readme  
   
 Create code diagram?  
