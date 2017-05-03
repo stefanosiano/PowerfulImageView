@@ -10,7 +10,7 @@
 
 
     <com.stefanosiano.powerlessimageview.PowerlessImageView
-        android:layout_width="85dp"
+        android:layout_width="80dp"
         android:layout_height="120dp"
         android:background="#ff707070"
         android:layout_margin="8dp"
@@ -18,12 +18,16 @@
         android:padding="0dp"
 
 
-        app:piv_shape_mode="square"
+        app:piv_shape_inner_padding="10dp"
+        app:piv_shape_mode="solid_circle"
         app:piv_shape_background_color="@color/colorPrimaryDark"
-        app:piv_shape_border_width="0dp"
-        app:piv_shape_border_color="#a0000000"
-        app:piv_shape_border_overlay="false"
+        app:piv_shape_border_width="10dp"
+        app:piv_shape_border_color="#70000000"
+        app:piv_shape_border_overlay="true"
         app:piv_shape_ratio="1.8"
+        app:piv_shape_radius_x="50"
+        app:piv_shape_radius_y="50"
+        app:piv_shape_solid_color="@color/colorAccent"
         android:src="@android:drawable/btn_star" />
 
     <ImageView

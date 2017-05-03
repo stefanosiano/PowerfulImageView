@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
- * ShapeDrawer that draws the drawable directly into the shape.
+ * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
 
-final class NormalShapeDrawer implements ShapeDrawer {
+final class SolidCircleShapeDrawer implements ShapeDrawer {
 
     /** Paint used to draw the shape background */
     private final Paint mBackPaint;
@@ -26,6 +26,9 @@ final class NormalShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape border */
     private final Paint mBorderPaint;
 
+    /** Paint used to draw the shape border */
+    private final RectF mDrawRect;
+
     /** Matrix used to modify the canvas and draw */
     private Matrix mMatrix;
 
@@ -35,16 +38,23 @@ final class NormalShapeDrawer implements ShapeDrawer {
     /** Scale type selected */
     private ImageView.ScaleType mScaleType;
 
+    /** Paint used to draw the solid color */
+    private final Paint mSolidPaint;
+
+    /** Variables used to draw the border and the solid color */
+    private float mCx, mCy, mRadius, mBorderRadius;
 
     /**
-     * ShapeDrawer that draws the drawable directly into the shape.
+     * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
      */
-    NormalShapeDrawer(Drawable drawable) {
+    SolidCircleShapeDrawer(Drawable drawable) {
         this.mDrawable = drawable;
         this.mBackPaint = new Paint();
         this.mFrontPaint = new Paint();
         this.mBorderPaint = new Paint();
+        this.mDrawRect = new RectF();
         this.mMatrix = new Matrix();
+        this.mSolidPaint = new Paint();
     }
 
     @Override
@@ -62,6 +72,9 @@ final class NormalShapeDrawer implements ShapeDrawer {
     @Override
     public void setup(ShapeOptions shapeOptions) {
 
+        mDrawRect.set(shapeOptions.getShapeBounds());
+        mDrawRect.inset(-shapeOptions.getBorderWidth(), -shapeOptions.getBorderWidth());
+
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
         mFrontPaint.setColor(shapeOptions.getFrontgroundColor());
 
@@ -69,6 +82,24 @@ final class NormalShapeDrawer implements ShapeDrawer {
         mBorderPaint.setAntiAlias(true);
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setStrokeWidth(shapeOptions.getBorderWidth());
+
+        mSolidPaint.setColor(shapeOptions.getSolidColor());
+        mSolidPaint.setAntiAlias(true);
+        mSolidPaint.setStyle(Paint.Style.STROKE);
+
+        mCx = shapeOptions.getBorderBounds().centerX();
+        mCy = shapeOptions.getBorderBounds().centerY();
+
+        //I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
+        //that is the hypotenuse of the triangle built over half width and half height of the rectangle.
+        //I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
+        //Finally i subtract the shape radius, since it will
+        float width = (shapeOptions.getViewBounds().width() + shapeOptions.getViewBounds().height() - shapeOptions.getBorderBounds().width()) / 2;
+
+        mRadius = (shapeOptions.getBorderBounds().width() + width + shapeOptions.getBorderWidth()) / 2;
+        mSolidPaint.setStrokeWidth(width);
+
+        mBorderRadius = shapeOptions.getBorderBounds().width() < shapeOptions.getBorderBounds().height() ? shapeOptions.getBorderBounds().width()/2 : shapeOptions.getBorderBounds().height()/2;
     }
 
     @Override
@@ -76,7 +107,7 @@ final class NormalShapeDrawer implements ShapeDrawer {
 
         //background
         if(mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(shapeBounds, mBackPaint);
+            canvas.drawRect(mDrawRect, mBackPaint);
 
         //image
         if (mDrawable != null) {
@@ -100,10 +131,13 @@ final class NormalShapeDrawer implements ShapeDrawer {
 
         //frontground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(shapeBounds, mFrontPaint);
+            canvas.drawRect(mDrawRect, mFrontPaint);
 
         //border
         if(mBorderPaint.getStrokeWidth() > 0 && mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawRect(borderBounds, mBorderPaint);
+            canvas.drawCircle(mCx, mCy, mBorderRadius, mBorderPaint);
+
+        //solid color
+        canvas.drawCircle(mCx, mCy, mRadius, mSolidPaint);
     }
 }

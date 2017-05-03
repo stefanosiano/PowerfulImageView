@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
- * ShapeDrawer that draws a circle as shape.
+ * ShapeDrawer that draws an oval as shape.
  */
 
-final class CircleShapeDrawer implements ShapeDrawer {
+final class OvalShapeDrawer implements ShapeDrawer {
 
     /** Shader to efficiently draw the shape */
     private BitmapShader mBitmapShader;
@@ -34,23 +34,16 @@ final class CircleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape frontground */
     private final Paint mFrontPaint;
 
-    /** Variables used to draw the circle */
-    private float mCx, mCy, mRadius, mBorderRadius;
-
 
     /**
-     * ShapeDrawer that draws a circle as shape.
+     * ShapeDrawer that draws an oval as shape.
      */
-    CircleShapeDrawer(Bitmap bitmap) {
+    OvalShapeDrawer(Bitmap bitmap) {
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mBitmapPaint = new Paint();
         mBackPaint = new Paint();
         mBorderPaint = new Paint();
         mFrontPaint = new Paint();
-        mCx = 0;
-        mCy = 0;
-        mRadius = 0;
-        mBorderRadius = 0;
     }
 
     @Override
@@ -71,11 +64,6 @@ final class CircleShapeDrawer implements ShapeDrawer {
     @Override
     public void setup(ShapeOptions shapeOptions) {
 
-        mCx = shapeOptions.getShapeBounds().centerX();
-        mCy = shapeOptions.getShapeBounds().centerY();
-        mRadius = shapeOptions.getShapeBounds().width() < shapeOptions.getShapeBounds().height() ? shapeOptions.getShapeBounds().width()/2 : shapeOptions.getShapeBounds().height()/2;
-        mBorderRadius = shapeOptions.getBorderBounds().width() < shapeOptions.getBorderBounds().height() ? shapeOptions.getBorderBounds().width()/2 : shapeOptions.getBorderBounds().height()/2;
-
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
         mBackPaint.setAntiAlias(true);
         mBackPaint.setStyle(Paint.Style.FILL);
@@ -95,17 +83,17 @@ final class CircleShapeDrawer implements ShapeDrawer {
 
         //background
         if(mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawCircle(mCx, mCy, mRadius, mBackPaint);
+            canvas.drawOval(shapeBounds, mBackPaint);
 
         //image
-        canvas.drawCircle(mCx, mCy, mRadius, mBitmapPaint);
+        canvas.drawOval(imageBounds, mBitmapPaint);
 
         //frontground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawCircle(mCx, mCy, mRadius, mFrontPaint);
+            canvas.drawOval(shapeBounds, mFrontPaint);
 
         //border
         if(mBorderPaint.getStrokeWidth() > 0 && mBackPaint.getColor() != Color.TRANSPARENT)
-            canvas.drawCircle(mCx, mCy, mBorderRadius, mBorderPaint);
+            canvas.drawOval(borderBounds, mBorderPaint);
     }
 }

@@ -46,5 +46,5 @@ interface ShapeDrawer {
      * @param shapeBounds Bounds of the shape
      * @param imageBounds Bounds of the image (drawable)
      */
-    void draw(Canvas canvas, RectF shapeBounds, RectF imageBounds);
+    void draw(Canvas canvas, RectF borderBounds, RectF shapeBounds, RectF imageBounds);
 }

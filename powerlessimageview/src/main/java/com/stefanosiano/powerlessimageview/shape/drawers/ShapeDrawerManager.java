@@ -27,6 +27,9 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     /** Bounds of the shape */
     private final RectF mShapeBounds;
 
+    /** Bounds of the shape border */
+    private final RectF mBorderBounds;
+
     /** Bounds of the image */
     private final RectF mImageBounds;
 
@@ -55,6 +58,9 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     //Drawers
     private CircleShapeDrawer mCircleShapeDrawer;
     private NormalShapeDrawer mNormalShapeDrawer;
+    private OvalShapeDrawer mOvalShapeDrawer;
+    private SolidCircleShapeDrawer mSolidCircleShapeDrawer;
+    private RoundedRectangleShapeDrawer mRoundedRectangleShapeDrawer;
 
 
     /** Interface used to switch between its implementations, based on the shape and options selected. */
@@ -77,6 +83,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     public ShapeDrawerManager(View view, final ShapeOptions shapeOptions){
         this.mView = new WeakReference<>(view);
         this.mShapeBounds = new RectF();
+        this.mBorderBounds = new RectF();
         this.mImageBounds = new RectF();
         this.mShapeOptions = shapeOptions;
         this.mShapeOptions.setListener(this);
@@ -137,23 +144,23 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
             case OVAL:
 
-                if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
-                mShapeDrawer = mNormalShapeDrawer;
+                if(mOvalShapeDrawer == null)
+                    mOvalShapeDrawer = new OvalShapeDrawer(mBitmap);
+                mShapeDrawer = mOvalShapeDrawer;
                 break;
 
             case ROUNDED_RECTANGLE:
 
-                if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
-                mShapeDrawer = mNormalShapeDrawer;
+                if(mRoundedRectangleShapeDrawer == null)
+                    mRoundedRectangleShapeDrawer = new RoundedRectangleShapeDrawer(mBitmap);
+                mShapeDrawer = mRoundedRectangleShapeDrawer;
                 break;
 
             case SOLID_CIRCLE:
 
-                if(mNormalShapeDrawer == null)
-                    mNormalShapeDrawer = new NormalShapeDrawer(mDrawable);
-                mShapeDrawer = mNormalShapeDrawer;
+                if(mSolidCircleShapeDrawer == null)
+                    mSolidCircleShapeDrawer = new SolidCircleShapeDrawer(mDrawable);
+                mShapeDrawer = mSolidCircleShapeDrawer;
                 break;
 
             case SOLID_OVAL:
@@ -431,11 +438,13 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         mShapeMode = shapeMode;
         updateDrawers(mShapeMode);
         mShapeDrawer.setup(mShapeOptions);
+        if(mView.get() != null)
+            mView.get().postInvalidate();
     }
 
     /** Draws the image */
     public final void onDraw(Canvas canvas) {
-        mShapeDrawer.draw(canvas, mShapeBounds, mImageBounds);
+        mShapeDrawer.draw(canvas, mBorderBounds, mShapeBounds, mImageBounds);
     }
 
     /**
@@ -464,6 +473,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     public void onOptionsUpdated(ShapeOptions options) {
         mShapeOptions = options;
         mShapeDrawer.setup(options);
+        if(mView.get() != null)
+            mView.get().postInvalidate();
     }
 
     /**
@@ -476,11 +487,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         mShapeOptions = options;
         //set calculated bounds to our progress bounds
         mShapeBounds.set(mShapeOptions.getShapeBounds());
+        mBorderBounds.set(mShapeOptions.getBorderBounds());
         mImageBounds.set(mShapeOptions.getImageBounds());
 
         setScaleType(mScaleType);
 
         mShapeDrawer.setup(mShapeOptions);
+        if(mView.get() != null)
+            mView.get().postInvalidate();
     }
 
 

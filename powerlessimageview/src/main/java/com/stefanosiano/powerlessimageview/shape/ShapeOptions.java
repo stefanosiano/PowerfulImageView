@@ -59,6 +59,9 @@ public class ShapeOptions implements Parcelable {
     /** Calculated border bounds */
     private final RectF mBorderBounds;
 
+    /** Calculated border bounds */
+    private final RectF mViewBounds;
+
     /** Calculated padding of the indicator shadow */
     private float mCalculatedInnerPadding;
 
@@ -115,6 +118,7 @@ public class ShapeOptions implements Parcelable {
         this.mSolidColor = solidColor;
         this.mShapeBounds = new RectF(0, 0, 0, 0);
         this.mBorderBounds = new RectF(0, 0, 0, 0);
+        this.mViewBounds = new RectF(0, 0, 0, 0);
         this.mImageBounds = new RectF(0, 0, 0, 0);
 
         this.mCalculatedInnerPadding = 0;
@@ -142,6 +146,7 @@ public class ShapeOptions implements Parcelable {
         this.mShapeBounds.set(other.mShapeBounds);
         this.mImageBounds.set(other.mImageBounds);
         this.mBorderBounds.set(other.mBorderBounds);
+        this.mViewBounds.set(other.mViewBounds);
         this.mCalculatedInnerPadding = other.mCalculatedInnerPadding;
         this.mCalculatedLastW = other.mCalculatedLastW;
         this.mCalculatedLastH = other.mCalculatedLastH;
@@ -172,20 +177,17 @@ public class ShapeOptions implements Parcelable {
         mCalculatedLastPaddingRight = paddingRight;
         mCalculatedLastPaddingBottom = paddingBottom;
 
-        //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
-        //In this case I center the shape into the view
-        float smallX = (int) Math.min(w, h * mRatio);
-        float smallY = (int) Math.min(h, w / mRatio);
-        //smallest size (used for padding and square/circle shapes
-        float smallSize = (int) Math.min(smallX, smallY);
+        mViewBounds.set(0, 0, w, h);
+
+        //smallest size (used for padding and square/circle shapes)
+        float smallSize;
 
         switch(mode){
 
             case CIRCLE:
             case SQUARE:
             case SOLID_CIRCLE:
-                smallX = Math.min(w, h);
-                smallY = Math.min(h, w);
+                smallSize = Math.min(h, w);
                 mShapeBounds.set((w - smallSize) /2,
                         (h - smallSize) /2,
                         (w + smallSize) /2,
@@ -197,8 +199,11 @@ public class ShapeOptions implements Parcelable {
             case SOLID_ROUNDED_RECTANGLE:
             case OVAL:
             case SOLID_OVAL:
-                smallX = (int) Math.min(w, h * mRatio);
-                smallY = (int) Math.min(h, w / mRatio);
+                //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
+                //In this case I center the shape into the view
+                float smallX = (int) Math.min(w, h * mRatio);
+                float smallY = (int) Math.min(h, w / mRatio);
+                smallSize = (int) Math.min(smallX, smallY);
                 mShapeBounds.set((w - smallX) /2,
                         (h - smallY) /2,
                         (w + smallX) /2,
@@ -208,6 +213,7 @@ public class ShapeOptions implements Parcelable {
             default:
             case NORMAL:
                 mShapeBounds.set(0, 0, w, h);
+                smallSize = Math.min(w, h);
                 break;
         }
 
@@ -216,7 +222,11 @@ public class ShapeOptions implements Parcelable {
                 mShapeBounds.right - paddingRight,
                 mShapeBounds.bottom - paddingBottom);
 
+        //Border cannot be bigger than the shape!
+        if(mBorderWidth > mShapeBounds.width()/2) mBorderWidth = (int) mShapeBounds.width()/2;
+
         mBorderBounds.set(mShapeBounds);
+        mBorderBounds.inset(mBorderWidth/2, mBorderWidth/2);
 
         //If border does not overlay, i shrink shape and image bounds
         if(!mBorderOverlay)
@@ -252,6 +262,12 @@ public class ShapeOptions implements Parcelable {
      * Don't change directly its values! If you want to change them, create a copy! */
     public RectF getBorderBounds() {
         return mBorderBounds;
+    }
+
+    /** Returns the view calculated bounds, without padding. Be sure to call calculateBounds() before this!
+     * Don't change directly its values! If you want to change them, create a copy! */
+    public RectF getViewBounds() {
+        return mViewBounds;
     }
 
     /** Returns the image calculated bounds. Be sure to call calculateBounds() before this!
@@ -517,6 +533,7 @@ public class ShapeOptions implements Parcelable {
         dest.writeParcelable(mShapeBounds, flags);
         dest.writeParcelable(mImageBounds, flags);
         dest.writeParcelable(mBorderBounds, flags);
+        dest.writeParcelable(mViewBounds, flags);
         dest.writeFloat(mCalculatedInnerPadding);
         dest.writeInt(mCalculatedLastPaddingLeft);
         dest.writeInt(mCalculatedLastPaddingTop);
@@ -528,7 +545,7 @@ public class ShapeOptions implements Parcelable {
 
 
 
-    protected ShapeOptions(Parcel in) {
+    private ShapeOptions(Parcel in) {
         mBackgroundColor = in.readInt();
         mFrontgroundColor = in.readInt();
         mInnerPadding = in.readInt();
@@ -543,6 +560,7 @@ public class ShapeOptions implements Parcelable {
         mShapeBounds = in.readParcelable(RectF.class.getClassLoader());
         mImageBounds = in.readParcelable(RectF.class.getClassLoader());
         mBorderBounds = in.readParcelable(RectF.class.getClassLoader());
+        mViewBounds = in.readParcelable(RectF.class.getClassLoader());
         mCalculatedInnerPadding = in.readFloat();
         mCalculatedLastPaddingLeft = in.readInt();
         mCalculatedLastPaddingTop = in.readInt();
