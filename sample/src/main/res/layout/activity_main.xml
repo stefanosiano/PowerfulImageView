@@ -24,8 +24,8 @@
         app:piv_shape_border_width="10dp"
         app:piv_shape_border_color="#90000000"
         app:piv_shape_border_overlay="false"
-        app:piv_shape_radius_x="50"
-        app:piv_shape_radius_y="25"
+        app:piv_shape_radius_x="180"
+        app:piv_shape_radius_y="155"
         app:piv_shape_solid_color="#a0ff0000"
         android:src="@android:drawable/btn_star" />
 
