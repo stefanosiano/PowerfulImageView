@@ -86,7 +86,7 @@ No steps are required, since configuration is already included.
   
 Roadmap
 -------
-Add last solid shapes  
+Rounded Rectangle has lots of problem with border and solid color...  
 Add additional scale types  
 Write Readme  
   
