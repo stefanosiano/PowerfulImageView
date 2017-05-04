@@ -3,16 +3,16 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 //fixed data
-def pkgName = 'powerfulimageview'
+def pkgName = 'powerlessimageview'
 def libGroupId = "com.stefanosiano"                                          // Maven Group ID for the artifact
-def libArtifactId = "powerfulimageview"                                     // Maven Artifact ID for the artifact
+def libArtifactId = "powerlessimageview"                                     // Maven Artifact ID for the artifact
 def libName = "Powerless Image View"                                         // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
 def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // Git repository URL
 def libDescription = 'Custom Android ImageView with several added features.' // Library description
 
 //data to change on updates
-def libVersion = "0.2.0"// This is the library version used when deploying the artifact
+def libVersion = "0.2.1"// This is the library version used when deploying the artifact
 def gitTag = '0.2.0_shapes'
 
 group = libGroupId //bintray org/group name

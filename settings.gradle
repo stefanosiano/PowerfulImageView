@@ -1,1 +1,3 @@
-include ':sample', ':powerlessimageview', ':powerfulimageview'
+include ':sample',
+        ':powerlessimageview',
+        ':powerfulimageview'
