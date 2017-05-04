@@ -5,4 +5,5 @@
     <color name="piv_default_progress_shadow_border_color">#000000</color>
     <color name="piv_default_progress_indeterminate_color">#A0A0A0</color>
     <color name="piv_default_progress_shadow_color">#FFFFFF</color>
+    <color name="piv_default_shape_solid_color">#FFFFFF</color>
 </resources>

@@ -10,7 +10,7 @@ import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
  * ShadowDrawer that shows a rectangular shadow background.
  */
 
-public class RectangularShadowDrawer implements ShadowDrawer {
+final class RectangularShadowDrawer implements ShadowDrawer {
 
     /** Paint used to draw the shadow */
     private Paint mShadowPaint;

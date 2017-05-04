@@ -6,17 +6,11 @@ public enum PivProgressMode {
     /** No progress indicator */
     NONE(0),
 
-    /** Circular indeterminate progress indicator */
-    INDETERMINATE(1),
+    /** Circular progress indicator */
+    CIRCULAR(1),
 
-    /** Circular determinate progress indicator */
-    DETERMINATE(2),
-
-    /** Horizontal determinate progress indicator */
-    HORIZONTAL_DETERMINATE(3),
-
-    /** Horizontal indeterminate progress indicator */
-    HORIZONTAL_INDETERMINATE(4);
+    /** Horizontal progress indicator */
+    HORIZONTAL(2);
 
     private final int value;
     PivProgressMode(int value){this.value = value;}
@@ -29,13 +23,9 @@ public enum PivProgressMode {
     public static PivProgressMode fromValue(int value){
         switch (value){
             case 1:
-                return INDETERMINATE;
+                return CIRCULAR;
             case 2:
-                return DETERMINATE;
-            case 3:
-                return HORIZONTAL_DETERMINATE;
-            case 4:
-                return HORIZONTAL_INDETERMINATE;
+                return HORIZONTAL;
             default:
             case 0:
                 return NONE;

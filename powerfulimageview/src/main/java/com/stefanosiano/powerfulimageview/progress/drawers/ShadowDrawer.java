@@ -27,5 +27,5 @@ interface ShadowDrawer {
      * @param canvas Canvas of the View
      * @param shadowBounds Bounds of the progress indicator shadow
      */
-    void draw(Canvas canvas, RectF shadowBounds);
+    void draw(Canvas canvas, RectF shadowBorderBounds, RectF shadowBounds);
 }

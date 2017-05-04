@@ -13,7 +13,7 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
  * ProgressDrawer that shows a determinate bar as progress indicator.
  */
 
-final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
+final class HorizontalProgressDrawer implements ProgressDrawer {
 
 
     /** Default animation duration */
@@ -59,7 +59,7 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
     /**
      * ProgressDrawer that shows a determinate bar as progress indicator.
      */
-    DeterminateHorizontalProgressDrawer() {
+    HorizontalProgressDrawer() {
     }
 
     /**
@@ -132,8 +132,8 @@ final class DeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressBackPaint.setColor(progressOptions.getBackColor());
         mProgressBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        mLeft = progressOptions.getLeft();
-        mRight = progressOptions.getRight();
+        mLeft = progressOptions.getRect().left;
+        mRight = progressOptions.getRect().right;
         mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
         setProgressPercent(progressOptions.getValuePercent());
     }

@@ -23,10 +23,11 @@ import com.stefanosiano.powerlessimageview.shape.drawers.ShapeDrawerManager;
 
 /**
  * Powerful ImageView with several added features (highly customizable):
- *     -Progress indicator: it can be determinate, indeterminate, circular or horizontal.
+ *     -Progress indicator: it can be circular, circular_indeterminate, horizontal or horizontal_indeterminate.
+ *     -Shapes: it can be normal, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle, rectangle, square.
  *
- * It extends AppCompatImageView, allowing the use of VectorDrawables and all AppCompat stuff.
- * The downside is that it needs the Android appcompat-v7 library.
+ * It extends ImageView, avoiding the bloat coming with the use of AppCompat.
+ * The downside is that it does not support AppCompat features, like vector drawables.
  */
 public class PowerlessImageView extends ImageViewWrapper {
 
@@ -55,7 +56,6 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final float DEFAULT_SHAPE_RATIO = 0;
     private static final float DEFAULT_SHAPE_RADIUS_X = 1;
     private static final float DEFAULT_SHAPE_RADIUS_Y = 1;
-    private static final int DEFAULT_SCALE_TYPE = PivShapeScaleType.CENTER.getValue();
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -116,7 +116,7 @@ public class PowerlessImageView extends ImageViewWrapper {
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_ratio, DEFAULT_SHAPE_RATIO),
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_radius_x, DEFAULT_SHAPE_RADIUS_X),
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_radius_y, DEFAULT_SHAPE_RADIUS_Y),
-                getColor(a, R.styleable.PowerlessImageView_piv_shape_solid_color, android.R.color.background_light)
+                getColor(a, R.styleable.PowerlessImageView_piv_shape_solid_color, R.color.piv_default_shape_solid_color)
                 );
 
 

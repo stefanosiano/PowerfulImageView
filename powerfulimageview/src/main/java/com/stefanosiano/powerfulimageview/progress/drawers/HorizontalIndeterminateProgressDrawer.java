@@ -12,7 +12,7 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
 /**
  * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
  */
-final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
+final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
     
     
     /** Default animation duration */
@@ -49,7 +49,7 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
     /**
      * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
      */
-    IndeterminateHorizontalProgressDrawer() {
+    HorizontalIndeterminateProgressDrawer() {
         this.isShrinking = false;
         this.mStartX = 0;
         this.mEndX = 0;
@@ -71,8 +71,8 @@ final class IndeterminateHorizontalProgressDrawer implements ProgressDrawer {
         mProgressPaint.setColor(progressOptions.getIndeterminateColor());
         mProgressPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        mLeft = progressOptions.getLeft();
-        mRight = progressOptions.getRight();
+        mLeft = progressOptions.getRect().left;
+        mRight = progressOptions.getRect().right;
         setProgressValues(isShrinking ? mStartX : mEndX);
     }
 

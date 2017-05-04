@@ -13,7 +13,7 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
  * ProgressDrawer that shows a determinate circle as progress indicator.
  */
 
-final class DeterminateProgressDrawer implements ProgressDrawer {
+final class CircularProgressDrawer implements ProgressDrawer {
 
 
     /** Default animation duration */
@@ -60,7 +60,7 @@ final class DeterminateProgressDrawer implements ProgressDrawer {
     /**
      * ProgressDrawer that shows a determinate circle as progress indicator.
      */
-    DeterminateProgressDrawer() {
+    CircularProgressDrawer() {
     }
 
     /**

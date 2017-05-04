@@ -4,6 +4,9 @@
         For more informations visit https://github.com/stefanosiano/PowerfulImageView -->
     <declare-styleable name="PowerfulImageView">
 
+
+        <!-- PROGRESS OPTIONS -->
+
         <!-- Set whether the determinate drawer should update its progress with an animation.
              If the drawer is not determinate or horizontal_determinate it's ignored.
              If true it updates its progress with an animation, otherwise it will update instantly -->
@@ -34,6 +37,9 @@
         <!-- Set the padding of the progress indicator. -->
         <attr name="piv_progress_padding" format="dimension" />
 
+        <!-- Set the width of the shadow border. -->
+        <attr name="piv_progress_shadow_border_width" format="dimension" />
+
         <!-- Percentage value of the progress indicator, used by determinate drawers.
              If the percentage is higher than 100, it is treated as (value % 100).
              If the percentage is lower than 0, it is treated as 0.
@@ -55,6 +61,12 @@
              See the Color class for more details. -->
         <attr name="piv_progress_back_color" format="color" />
 
+        <!-- Set the color of the progress indicator shadow border.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_shadow_border_color" format="color" />
+
         <!-- Set the indeterminate color of the indicator, used by indeterminate drawers.
              If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
@@ -66,6 +78,9 @@
              If true, start will always be treated as left and end as right.
              If false, on api 17+, gravity will be treated accordingly to rtl rules. -->
         <attr name="piv_progress_rtl_disabled" format="boolean" />
+
+        <!-- Set whether the view should show an indeterminate progress indicator. -->
+        <attr name="piv_progress_indeterminate" format="boolean" />
 
         <!-- Set whether to show a wedge or a circle, used by circular determinate drawer.
              If the drawer is not determinate it's ignored.
@@ -109,10 +124,85 @@
         <!-- Progress mode of the indicator. -->
         <attr name="piv_progress_mode" format="enum" >
             <enum name="disabled" value="0"/>
-            <enum name="indeterminate" value="1"/>
-            <enum name="determinate" value="2"/>
-            <enum name="horizontal_determinate" value="3"/>
-            <enum name="horizontal_indeterminate" value="4"/>
+            <enum name="circular" value="1"/>
+            <enum name="horizontal" value="2"/>
         </attr>
+
+
+
+        <!-- SHAPE OPTIONS -->
+
+        <!-- Progress mode of the indicator -->
+        <attr name="piv_shape_mode" format="enum" >
+            <enum name="normal" value="0"/>
+            <enum name="circle" value="1"/>
+            <enum name="square" value="2"/>
+            <enum name="rectangle" value="3"/>
+            <enum name="oval" value="4"/>
+            <enum name="rounded_rectangle" value="5"/>
+            <enum name="solid_circle" value="6"/>
+            <enum name="solid_oval" value="7"/>
+            <enum name="solid_rounded_rectangle" value="8"/>
+        </attr>
+
+        <!-- Custom scale type of the indicator -->
+        <attr name="piv_shape_scaleType" format="enum" >
+            <enum name="matrix" value="0"/>
+            <enum name="fitXY" value="1"/>
+            <enum name="fitStart" value="2"/>
+            <enum name="fitCenter" value="3"/>
+            <enum name="fitEnd" value="4"/>
+            <enum name="center" value="5"/>
+            <enum name="centerCrop" value="6"/>
+            <enum name="centerInside" value="7"/>
+            <enum name="topCrop" value="8"/>
+        </attr>
+
+        <!-- Set the background color of the image, using the shape.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_background_color" format="color" />
+
+        <!-- Set the frontground color of the image, using the shape.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_frontground_color" format="color" />
+
+        <!-- Set the inner padding of the image relative to the view.
+             It's used only if piv_shape_inner_padding is less than 0.
+             If the percentage is higher than 100, it is treated as (value % 100).
+             If the percentage is lower than 0, it is ignored. -->
+        <attr name="piv_shape_inner_padding_percent" format="float" />
+
+        <!-- Set the inner padding of the image relative to the view
+             Overrides piv_shape_inner_padding_percent. -->
+        <attr name="piv_shape_inner_padding" format="dimension" />
+
+        <!-- Set whether the border should be paint over the image. -->
+        <attr name="piv_shape_border_overlay" format="boolean" />
+
+        <!-- Set the border width of the image. -->
+        <attr name="piv_shape_border_width" format="dimension" />
+
+        <!-- Set the border color of the image.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_border_color" format="color" />
+
+        <!-- Set the ratio of the image. Doing so, width is calculated as height * ratio -->
+        <attr name="piv_shape_ratio" format="float" />
+
+        <!-- Set the x radius of the image. Used in rounded rectangles -->
+        <attr name="piv_shape_radius_x" format="float" />
+
+        <!-- Set the y radius of the image. Used in rounded rectangles -->
+        <attr name="piv_shape_radius_y" format="float" />
+
+        <!-- Set the solid color used by solid shapes -->
+        <attr name="piv_shape_solid_color" format="color" />
+
     </declare-styleable>
 </resources>
