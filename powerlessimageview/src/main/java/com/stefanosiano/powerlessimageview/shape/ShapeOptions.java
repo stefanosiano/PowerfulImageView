@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference;
  * Class that helps managing the options that will be used by the shape drawers.
  */
 
-public class ShapeOptions implements Parcelable {
+public final class ShapeOptions implements Parcelable {
 
     //Options used directly by drawers
 

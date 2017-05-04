@@ -25,6 +25,12 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.stefanosiano.powerfulimageview.PowerfulImageView { *; }
+
 -keep class com.stefanosiano.powerfulimageview.progress.PivProgressGravity { *; }
 -keep class com.stefanosiano.powerfulimageview.progress.PivProgressMode { *; }
 -keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.progress.ProgressOptions { *; }
+
+-keep class com.stefanosiano.powerfulimageview.shape.PivShapeMode { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.PivShapeScaleType { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.ShapeOptions { *; }
+
