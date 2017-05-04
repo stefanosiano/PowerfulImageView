@@ -56,7 +56,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
     private ProgressOptions mProgressOptions;
 
     /** Listener to handle things from drawers */
-    private ProgressDrawerListener listener;
+    private final ProgressDrawerListener listener;
 
     /**
      * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
