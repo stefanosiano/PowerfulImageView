@@ -86,8 +86,8 @@ No steps are required, since configuration is already included.
   
 Roadmap
 -------
-Rounded Rectangle has lots of problem with border and solid color...  
-Add additional scale types  
-Write Readme  
+Publish new version  
+Rewrite Readme  
   
 Create code diagram?  
+Rounded Rectangle has some problem with border (with overlay=false) and solid color (with border)...  
