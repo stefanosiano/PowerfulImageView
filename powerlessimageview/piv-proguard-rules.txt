@@ -24,12 +24,12 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.stefanosiano.powerlessimageview.PowerlessImageView { *; }
+-keep class powerfulimageview.PowerlessImageView { *; }
 
--keep class com.stefanosiano.powerlessimageview.progress.PivProgressGravity { *; }
--keep class com.stefanosiano.powerlessimageview.progress.PivProgressMode { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerlessimageview.progress.ProgressOptions { *; }
+-keep class powerfulimageview.progress.PivProgressGravity { *; }
+-keep class powerfulimageview.progress.PivProgressMode { *; }
+-keep,includedescriptorclasses class powerfulimageview.progress.ProgressOptions { *; }
 
--keep class com.stefanosiano.powerlessimageview.shape.PivShapeMode { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerlessimageview.shape.PivShapeScaleType { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerlessimageview.shape.ShapeOptions { *; }
+-keep class powerfulimageview.shape.PivShapeMode { *; }
+-keep,includedescriptorclasses class powerfulimageview.shape.PivShapeScaleType { *; }
+-keep,includedescriptorclasses class powerfulimageview.shape.ShapeOptions { *; }
