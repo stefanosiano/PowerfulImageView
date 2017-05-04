@@ -17,6 +17,7 @@ import com.stefanosiano.powerlessimageview.progress.PivProgressMode;
 import com.stefanosiano.powerlessimageview.progress.ProgressOptions;
 import com.stefanosiano.powerlessimageview.progress.drawers.ProgressDrawerManager;
 import com.stefanosiano.powerlessimageview.shape.PivShapeMode;
+import com.stefanosiano.powerlessimageview.shape.PivShapeScaleType;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 import com.stefanosiano.powerlessimageview.shape.drawers.ShapeDrawerManager;
 
@@ -54,6 +55,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final float DEFAULT_SHAPE_RATIO = 0;
     private static final float DEFAULT_SHAPE_RADIUS_X = 1;
     private static final float DEFAULT_SHAPE_RADIUS_Y = 1;
+    private static final int DEFAULT_SCALE_TYPE = PivShapeScaleType.CENTER.getValue();
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -119,6 +121,8 @@ public class PowerlessImageView extends ImageViewWrapper {
 
 
         PivShapeMode shapeMode = PivShapeMode.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_shape_mode, DEFAULT_SHAPE_MODE));
+        //I use the android scale type used as default. If a PivShapeScaleType type is passed, it overrides Android scaleType
+        PivShapeScaleType scaleType = PivShapeScaleType.fromValue(a.getInteger(R.styleable.PowerlessImageView_piv_shape_scaleType, PivShapeScaleType.getFromScaleType(getScaleType()).getValue()));
 
         a.recycle();
 
@@ -131,8 +135,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
         mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
-        mShapeDrawerManager.setImageMatrix(getImageMatrix());
-        mShapeDrawerManager.setScaleType(getScaleType());
+        mShapeDrawerManager.setScaleType(scaleType);
     }
 
     @Override
@@ -174,6 +177,12 @@ public class PowerlessImageView extends ImageViewWrapper {
     @Override
     public void setScaleType(ScaleType scaleType) {
         super.setScaleType(scaleType);
+        if(mShapeDrawerManager != null)
+            mShapeDrawerManager.setScaleType(PivShapeScaleType.getFromScaleType(scaleType));
+    }
+
+    public void setScaleType(PivShapeScaleType scaleType) {
+        super.setScaleType(ScaleType.MATRIX);
         if(mShapeDrawerManager != null)
             mShapeDrawerManager.setScaleType(scaleType);
     }

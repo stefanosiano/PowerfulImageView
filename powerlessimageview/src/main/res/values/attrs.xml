@@ -145,6 +145,19 @@
             <enum name="solid_rounded_rectangle" value="8"/>
         </attr>
 
+        <!-- Custom scale type of the indicator -->
+        <attr name="piv_shape_scaleType" format="enum" >
+            <enum name="matrix" value="0"/>
+            <enum name="fitXY" value="1"/>
+            <enum name="fitStart" value="2"/>
+            <enum name="fitCenter" value="3"/>
+            <enum name="fitEnd" value="4"/>
+            <enum name="center" value="5"/>
+            <enum name="centerCrop" value="6"/>
+            <enum name="centerInside" value="7"/>
+            <enum name="topCrop" value="8"/>
+        </attr>
+
         <!-- Set the background color of the image, using the shape.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.

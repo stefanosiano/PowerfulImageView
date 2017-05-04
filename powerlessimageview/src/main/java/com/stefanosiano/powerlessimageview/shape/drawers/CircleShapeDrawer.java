@@ -11,6 +11,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.stefanosiano.powerlessimageview.shape.PivShapeScaleType;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
@@ -64,7 +65,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void setMatrix(ImageView.ScaleType scaleType, Matrix matrix) {
+    public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {
         mBitmapShader.setLocalMatrix(matrix);
     }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.stefanosiano.powerlessimageview.shape.PivShapeMode;
+import com.stefanosiano.powerlessimageview.shape.PivShapeScaleType;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 import java.lang.ref.WeakReference;
@@ -40,7 +41,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     private Matrix mImageMatrix;
 
     /** Scale type of the image */
-    private ImageView.ScaleType mScaleType;
+    private PivShapeScaleType mScaleType;
 
     /** Bitmap to be drawn */
     private Bitmap mBitmap;
@@ -323,7 +324,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
      */
     public void setImageMatrix(Matrix matrix){
         this.mImageMatrix = matrix;
-        setScaleType(ImageView.ScaleType.MATRIX);
+        setScaleType(PivShapeScaleType.MATRIX);
     }
 
     /**
@@ -331,7 +332,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
      *
      * @param scaleType Scale type used to draw the image
      */
-    public void setScaleType(ImageView.ScaleType scaleType){
+    public void setScaleType(PivShapeScaleType scaleType){
 
         mScaleType = scaleType;
 
@@ -367,6 +368,23 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 } else {
                     scale = vWidth / (float) dWidth;
                     dy = (vHeight - dHeight * scale) * 0.5f;
+                    dx = 0;
+                }
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate(dx + mImageBounds.left,
+                        dy + mImageBounds.top);
+                break;
+
+            case TOP_CROP:
+                if (dWidth * vHeight > vWidth * dHeight) {
+                    scale = vHeight / (float) dHeight;
+                    dx = (vWidth - dWidth * scale) * 0.5f;
+                    dy = 0;
+
+                } else {
+                    scale = vWidth / (float) dWidth;
+                    dy = 0;
                     dx = 0;
                 }
 

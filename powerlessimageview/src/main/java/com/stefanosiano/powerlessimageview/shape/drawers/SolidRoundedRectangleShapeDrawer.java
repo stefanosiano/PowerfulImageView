@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.stefanosiano.powerlessimageview.shape.PivShapeScaleType;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
@@ -36,7 +37,7 @@ final class SolidRoundedRectangleShapeDrawer implements ShapeDrawer {
     private Drawable mDrawable;
 
     /** Scale type selected */
-    private ImageView.ScaleType mScaleType;
+    private PivShapeScaleType mScaleType;
 
     /** Paint used to draw the solid color */
     private final Paint mSolidPaint;
@@ -63,7 +64,7 @@ final class SolidRoundedRectangleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void setMatrix(ImageView.ScaleType scaleType, Matrix matrix) {
+    public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {
         this.mScaleType = scaleType;
         this.mMatrix = matrix;
 
@@ -111,7 +112,7 @@ final class SolidRoundedRectangleShapeDrawer implements ShapeDrawer {
         if (mDrawable != null) {
 
             //if scaleType is XY, we should draw the image on the whole view
-            if(mScaleType != null && mScaleType == ImageView.ScaleType.FIT_XY) {
+            if(mScaleType != null && mScaleType == PivShapeScaleType.FIT_XY) {
                 mDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
                 mDrawable.getBounds().inset(10, 10);
                 mDrawable.draw(canvas);
@@ -121,7 +122,7 @@ final class SolidRoundedRectangleShapeDrawer implements ShapeDrawer {
                 final int saveCount = canvas.getSaveCount();
                 canvas.save();
 
-                if (mScaleType != null && mScaleType != ImageView.ScaleType.FIT_XY)
+                if (mScaleType != null && mScaleType != PivShapeScaleType.FIT_XY)
                     canvas.concat(mMatrix);
 
                 mDrawable.draw(canvas);

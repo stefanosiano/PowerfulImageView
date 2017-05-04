@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.stefanosiano.powerlessimageview.shape.PivShapeScaleType;
 import com.stefanosiano.powerlessimageview.shape.ShapeOptions;
 
 /**
@@ -28,7 +29,7 @@ interface ShapeDrawer {
      * @param scaleType ScaleType selected for the shape
      * @param matrix Matrix to be applied for the shape
      */
-    void setMatrix(ImageView.ScaleType scaleType, Matrix matrix);
+    void setMatrix(PivShapeScaleType scaleType, Matrix matrix);
 
     /**
      * Initialize or updates all the variables needed to work.
