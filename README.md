@@ -3,10 +3,10 @@ PowerfulImageView
 
 Custom Android ImageView with several added features.  
 Right now it provides a progress indicator.  
+It also supports several shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle.  
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
 Planned features (for now):  
-* Shapes (circle, solid circle, oval, solid oval, square, rounded rectangle, solid rounded rectangle, rectangle, normal)
 * Blur support
 * Pinch in/out to zoom
 * Panoramas
@@ -58,13 +58,13 @@ repositories {
 To use **Powerful**ImageView:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.1.3'
+    compile 'com.stefanosiano:powerfulimageview:0.2.1'
 }
 ```
 To use **Powerless**ImageView:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.1.3'
+    compile 'com.stefanosiano:powerlessimageview:0.2.1'
 }
 ```
   
@@ -86,7 +86,6 @@ No steps are required, since configuration is already included.
   
 Roadmap
 -------
-Publish new version  
 Rewrite Readme  
   
 Create code diagram?  
