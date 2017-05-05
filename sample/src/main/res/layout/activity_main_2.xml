@@ -13,10 +13,21 @@
         android:background="#80a0a0a0"
 
         app:piv_progress_indeterminate_color="@color/colorAccent"
+        app:piv_progress_size_percent="50"
+        app:piv_progress_mode="circular"/>
+
+    <com.stefanosiano.powerfulimageview.PowerfulImageView
+        android:id="@+id/piv2"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        android:background="#80a0a0a0"
+        android:layout_marginTop="50dp"
+
+        app:piv_progress_indeterminate_color="@color/colorAccent"
         app:piv_progress_size_percent="100"
-        app:piv_progress_shadow_padding="2dp"
-        app:piv_progress_border_width="8dp"
-        app:piv_progress_value_percent="0"
-        app:piv_progress_mode="disabled"/>
+        app:piv_progress_border_width="20dp"
+        app:piv_progress_shadow_padding="4dp"
+        app:piv_progress_mode="horizontal"/>
 
 </LinearLayout>

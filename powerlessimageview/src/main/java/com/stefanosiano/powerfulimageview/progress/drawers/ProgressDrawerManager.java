@@ -3,6 +3,7 @@ package com.stefanosiano.powerfulimageview.progress.drawers;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
@@ -191,9 +192,10 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      * It also starts animation of indeterminate progress indicator.
      *
      * @param progressMode mode to change the progress indicator into
+     * @param forceUpdate if the drawer should be updated, regardless of anything (may occur when changing indeterminate flag)
      */
-    public final void changeProgressMode(PivProgressMode progressMode){
-        if(mProgressMode != null && mProgressMode == progressMode)
+    public final void changeProgressMode(PivProgressMode progressMode, boolean forceUpdate){
+        if(mProgressMode != null && mProgressMode == progressMode && !forceUpdate)
             return;
 
         if(mProgressDrawer != null)
@@ -237,6 +239,17 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         mProgressOptions = options;
     }
 
+
+    /**
+     * Called when an option that changes the progress mode is updated: The drawer is calculated again.
+     * This may occur when changing the indeterminate flag, or setting a progress value,
+     */
+    @Override
+    public void onModeUpdated(ProgressOptions options) {
+        mProgressOptions = options;
+        changeProgressMode(mProgressMode, true);
+    }
+
     /**
      * Called when an option that changes the size of the progress indicator is updated.
      * The bounds are calculated again, and it propagates the update to the progress drawers.
@@ -276,6 +289,6 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         mProgressOptions.setOptions((ProgressOptions) state.getParcelable("progress_options"));
         PivProgressMode progressMode = PivProgressMode.fromValue(state.getInt("progress_mode"));
         onSizeUpdated(mProgressOptions);
-        changeProgressMode(progressMode);
+        changeProgressMode(progressMode, false);
     }
 }

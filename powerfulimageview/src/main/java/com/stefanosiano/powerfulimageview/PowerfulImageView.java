@@ -21,7 +21,7 @@ import com.stefanosiano.powerfulimageview.shape.drawers.ShapeDrawerManager;
 
 /**
  * Powerful ImageView with several added features (highly customizable):
- *     -Progress indicator: it can be circular, circular_indeterminate, horizontal or horizontal_indeterminate.
+ *     -Progress indicator: it can be circular, horizontal or disabled.
  *     -Shapes: it can be normal, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle, rectangle, square.
  *
  * It extends AppCompatImageView, allowing the use of VectorDrawables and all AppCompat stuff.
@@ -210,7 +210,7 @@ public class PowerfulImageView extends ImageViewWrapper {
      * @param progressMode mode to change the progress indicator into
      */
     public final void changeProgressMode(PivProgressMode progressMode){
-        mProgressDrawerManager.changeProgressMode(progressMode);
+        mProgressDrawerManager.changeProgressMode(progressMode, false);
     }
 
 
@@ -247,7 +247,6 @@ public class PowerfulImageView extends ImageViewWrapper {
      * @param progress Percentage value of the progress
      */
     public void setProgress(float progress){
-        getProgressOptions().setIndeterminate(false);
         getProgressOptions().setValuePercent(progress);
     }
 

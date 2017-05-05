@@ -3,6 +3,7 @@ package com.stefanosiano.powerfulimageview.progress;
 import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
@@ -13,7 +14,7 @@ import java.lang.ref.WeakReference;
 public final class ProgressOptions implements Parcelable {
 
     //Options used directly by drawers
-    
+
     /** If the determinate drawer should update its progress with an animation */
     private boolean mDeterminateAnimationEnabled;
 
@@ -448,6 +449,7 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Percentage value of the progress indicator, used by determinate drawers.
+     * If the drawer is indeterminate, it will change its state and make it determinate.
      * If the percentage is higher than 100, it is treated as (value % 100).
      * If the percentage is lower than 0, it is treated as 0.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
@@ -461,8 +463,18 @@ public final class ProgressOptions implements Parcelable {
         if(valuePercent < 0)
             valuePercent = 0;
         this.mValuePercent = valuePercent;
-        if(listener.get() != null)
-            listener.get().onOptionsUpdated(this);
+
+        //if it's indeterminate, I change it to determinate and the mode changes, otherwise I just update current drawer
+        boolean modeChanged = mIsIndeterminate;
+
+        this.mIsIndeterminate = false;
+
+        if(listener.get() != null) {
+            if(modeChanged)
+                listener.get().onModeUpdated(this);
+            else
+                listener.get().onOptionsUpdated(this);
+        }
     }
 
     /**
@@ -610,9 +622,16 @@ public final class ProgressOptions implements Parcelable {
      *                      If false, determinate is drawn.
      */
     public void setIndeterminate(boolean isIndeterminate) {
+        //if it's indeterminate, I change it to determinate and the mode changes, otherwise I just update current drawer
+        boolean modeChanged = mIsIndeterminate != isIndeterminate;
         this.mIsIndeterminate = isIndeterminate;
-        if(listener.get() != null)
-            listener.get().onOptionsUpdated(this);
+
+        if(listener.get() != null) {
+            if(modeChanged)
+                listener.get().onModeUpdated(this);
+            else
+                listener.get().onOptionsUpdated(this);
+        }
     }
 
     /**
@@ -1002,6 +1021,7 @@ public final class ProgressOptions implements Parcelable {
     public interface ProgressOptionsListener{
         void onOptionsUpdated(ProgressOptions options);
         void onSizeUpdated(ProgressOptions options);
+        void onModeUpdated(ProgressOptions options);
     }
 
 }
