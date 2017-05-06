@@ -63,7 +63,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
 
     public PowerfulImageView(Context context) {
-        this(context, null, 0);
+        this(context, null);
     }
 
     public PowerfulImageView(Context context, AttributeSet attrs) {

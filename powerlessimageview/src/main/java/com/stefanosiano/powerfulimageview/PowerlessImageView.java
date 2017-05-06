@@ -63,7 +63,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
 
     public PowerlessImageView(Context context) {
-        this(context, null, 0);
+        this(context, null);
     }
 
     public PowerlessImageView(Context context, AttributeSet attrs) {

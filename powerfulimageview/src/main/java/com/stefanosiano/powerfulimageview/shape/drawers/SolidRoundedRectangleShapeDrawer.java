@@ -89,10 +89,11 @@ final class SolidRoundedRectangleShapeDrawer implements ShapeDrawer {
 
         //At maximum, the rounded rectangle can become an oval, so I calculate width in the same way of the oval.
         //I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
-        //that is the hypotenuse of the triangle built over half width and half height of the rectangle.
-        //I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
-        //Finally i subtract the shape radius, since it will
-        float width = (shapeOptions.getImageBounds().width() + shapeOptions.getImageBounds().height() - shapeOptions.getShapeBounds().width()) / 2;
+        //that is the hypotenuse of the triangle built over radii of the rounded rectangle.
+        //I also add any space between the image and the view (given by any padding)
+        float width = Math.max(shapeOptions.getViewBounds().width() - shapeOptions.getBorderBounds().width() + mRadiusX
+                , shapeOptions.getViewBounds().height() - shapeOptions.getBorderBounds().height() + mRadiusY)
+                / 2;
 
         mSolidPaint.setStrokeWidth(width);
 

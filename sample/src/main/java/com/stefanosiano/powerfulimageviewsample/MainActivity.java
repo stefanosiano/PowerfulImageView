@@ -14,8 +14,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_2);
-
+        setContentView(R.layout.activity_main_3);
+/*
         final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
         final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);
         piw.changeProgressMode(PivProgressMode.CIRCULAR);
@@ -70,6 +70,6 @@ public class MainActivity extends Activity {
         };
 
         piw.postDelayed(runnable, 2500);
-        piw.postDelayed(runnable3, 2500);
+        piw.postDelayed(runnable3, 2500);*/
     }
 }
