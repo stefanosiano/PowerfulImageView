@@ -39,26 +39,15 @@ Instructions
 ------------
   
 The library is highly customizable. However, for very basic integration, you may need just:  
-
-1) Progress  
-
+  
 Via xml:  
 ```
 app:piv_progress_mode="circular"
-```
-Via Java:  
-```
-progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
-```
-  
-2) Shapes  
-
-Via xml:  
-```
 app:piv_shape_mode="circle"
 ```
 Via Java:  
 ```
+progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
 progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
 ```
   
@@ -74,20 +63,18 @@ repositories {
 }
 ```
 
-To use **Powerful**ImageView, which supports vector drawables and tinting on older apis, but brings in the whole AppCompat library:  
+To use **Powerful**ImageView, which extends AppcompatImageView and supports vector drawables and tinting on older apis, but brings in the whole AppCompat library:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerfulimageview:0.2.1'
 }
 ```
-To use **Powerless**ImageView, which is a slick variant without AppCompat features, like vector drawables support or tinting on older apis:  
+To use **Powerless**ImageView, which extends ImageView and doesn't have AppCompat features:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerlessimageview:0.2.1'
 }
 ```
-If you already use AppCompat library, or you want to use vector drawables, go with **Powerful**ImageView. Otherwise use **Powerless**ImageView.  
-
   
   
 Proguard
