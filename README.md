@@ -35,23 +35,6 @@ Most applications need some kind of shape. Since the library wants to show a pro
   
   
   
-Instructions
-------------
-  
-The library is highly customizable. However, for very basic integration, you may need just:  
-  
-Via xml:  
-```
-app:piv_progress_mode="circular"
-app:piv_shape_mode="circle"
-```
-Via Java:  
-```
-progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
-progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
-```
-  
-  
   
   
 Gradle
@@ -77,6 +60,29 @@ dependencies {
 ```
   
   
+Usage
+-----
+  
+The library is highly customizable. However, for very basic integration, you may need just:  
+  
+Via xml:  
+```
+app:piv_progress_mode="circular"
+app:piv_shape_mode="circle"
+```
+Via Java:  
+```
+progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
+progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
+```
+  
+List of all XML attributes:  
+  
+| Name | Type | Default | Description |
+|:----:|:----:|:-------:|:-----------:|
+  
+  
+  
 Proguard
 --------
 No steps are required, since configuration is already included.  
@@ -93,4 +99,6 @@ Notes
   
 Roadmap
 -------
-Create code diagram?  
+List all available attributes  
+Create code diagram  
+Study blurring  
