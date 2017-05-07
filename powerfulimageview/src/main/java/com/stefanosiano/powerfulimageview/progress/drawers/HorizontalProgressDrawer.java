@@ -52,6 +52,9 @@ final class HorizontalProgressDrawer implements ProgressDrawer {
     /** Shown progress x coordinate of the front rectangle */
     private float mCurrentFrontX;
 
+    /** Whether to reverse the progress */
+    private boolean mIsProgressReversed;
+
     /** Listener to handle things from the drawer */
     private ProgressDrawerManager.ProgressDrawerListener listener;
 
@@ -135,6 +138,9 @@ final class HorizontalProgressDrawer implements ProgressDrawer {
         mLeft = progressOptions.getRect().left;
         mRight = progressOptions.getRect().right;
         mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled();
+
+        mIsProgressReversed = progressOptions.isProgressReversed();
+
         setProgressPercent(progressOptions.getValuePercent());
     }
 
@@ -145,8 +151,14 @@ final class HorizontalProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawRect(mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressBackPaint);
-        canvas.drawRect(progressBounds.left, progressBounds.top, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint);
+        if(!mIsProgressReversed) {
+            canvas.drawRect(mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressBackPaint);
+            canvas.drawRect(progressBounds.left, progressBounds.top, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint);
+        }
+        else {
+            canvas.drawRect(progressBounds.left, progressBounds.top, progressBounds.right - mCurrentFrontX, progressBounds.bottom, mProgressBackPaint);
+            canvas.drawRect(progressBounds.right - mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressFrontPaint);
+        }
     }
 
     @Override

@@ -54,6 +54,9 @@ final class CircularProgressDrawer implements ProgressDrawer {
     /** Whether to draw wedges or simple arcs */
     private boolean drawWedge;
 
+    /** Whether to reverse the progress */
+    private boolean mIsProgressReversed;
+
     /** Listener to handle things from the drawer */
     private ProgressDrawerManager.ProgressDrawerListener listener;
 
@@ -68,7 +71,6 @@ final class CircularProgressDrawer implements ProgressDrawer {
      * @param progressAngle Angle used to calculate the front and back arcs
      */
     private void setRealProgressAngle(int progressAngle) {
-
         this.mProgressBackStartAngle = progressAngle - 90;
         this.mProgressBackSweepAngle = 360 - progressAngle;
         this.mCurrentProgressFrontSweepAngle = progressAngle;
@@ -141,6 +143,8 @@ final class CircularProgressDrawer implements ProgressDrawer {
         mProgressBackPaint.setAntiAlias(true);
         mProgressBackPaint.setStyle(Paint.Style.STROKE);
 
+        mIsProgressReversed = progressOptions.isProgressReversed();
+
         setProgressPercent(progressOptions.getValuePercent());
     }
 
@@ -149,8 +153,14 @@ final class CircularProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawArc(progressBounds, mProgressBackStartAngle, mProgressBackSweepAngle, drawWedge, mProgressBackPaint);
-        canvas.drawArc(progressBounds, -90, mCurrentProgressFrontSweepAngle, drawWedge, mProgressFrontPaint);
+        if(!mIsProgressReversed) {
+            canvas.drawArc(progressBounds, mProgressBackStartAngle, mProgressBackSweepAngle, drawWedge, mProgressBackPaint);
+            canvas.drawArc(progressBounds, -90, mCurrentProgressFrontSweepAngle, drawWedge, mProgressFrontPaint);
+        }
+        else {
+            canvas.drawArc(progressBounds, -90, mProgressBackSweepAngle, drawWedge, mProgressBackPaint);
+            canvas.drawArc(progressBounds, -90, -mCurrentProgressFrontSweepAngle, drawWedge, mProgressFrontPaint);
+        }
     }
 
     @Override

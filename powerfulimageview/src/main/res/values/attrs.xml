@@ -91,6 +91,9 @@
              If true, the shadow is drawn -->
         <attr name="piv_progress_shadow_enabled" format="boolean" />
 
+        <!-- Set whether the progress should be reversed, used by drawers -->
+        <attr name="piv_progress_reversed" format="boolean" />
+
         <!-- Set the shadow color of the indicator, used by drawers.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.

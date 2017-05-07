@@ -3,7 +3,6 @@ package com.stefanosiano.powerfulimageview.progress;
 import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
@@ -75,11 +74,14 @@ public final class ProgressOptions implements Parcelable {
     /** Gravity of the indicator */
     private PivProgressGravity mGravity;
 
-    /** Whether the view is using right to left layout (used for gravity option) */
+    /** Whether the progress should be reversed */
+    private boolean mIsProgressReversed;
+
+    /** Whether the view is using right to left layout (used for gravity option and progress direction) */
     private boolean mIsRtl;
 
-    /** Whether the view should use or ignore right to left layout (used for gravity option) */
-    private boolean mRtlDisabled;
+    /** Whether the view should use or ignore right to left layout (used for gravity option and progress direction) */
+    private boolean mIsRtlDisabled;
 
     /** Whether the progress indicator is indeterminate or not */
     private boolean mIsIndeterminate;
@@ -147,10 +149,11 @@ public final class ProgressOptions implements Parcelable {
      * @param shadowPaddingPercent Padding of the progress indicator, relative to its shadow, as a percentage of the shadow
      * @param shadowBorderWidth Width of the progress indicator shadow border
      * @param shadowBorderColor Color of the progress indicator shadow border
+     * @param isProgressReversed Whether the progress should be reversed
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
-                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor) {
+                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor, boolean isProgressReversed) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -165,7 +168,7 @@ public final class ProgressOptions implements Parcelable {
         this.mIndeterminateColor = indeterminateColor;
         this.mGravity = PivProgressGravity.fromValue(gravity);
         this.mIsRtl = rtl;
-        this.mRtlDisabled = disableRtlSupport;
+        this.mIsRtlDisabled = disableRtlSupport;
         this.mIsIndeterminate = isIndeterminate;
         this.mDrawWedge = drawWedge;
         this.mShadowEnabled = shadowEnabled;
@@ -174,6 +177,7 @@ public final class ProgressOptions implements Parcelable {
         this.mShadowPaddingPercent = shadowPaddingPercent;
         this.mShadowBorderWidth = shadowBorderWidth;
         this.mShadowBorderColor = shadowBorderColor;
+        this.mIsProgressReversed = isProgressReversed;
 
         //initialization of private fields used for calculations
         this.mCalculatedSize = 0;
@@ -208,7 +212,7 @@ public final class ProgressOptions implements Parcelable {
         this.mSizePercent = other.mSizePercent;
         this.mGravity = other.mGravity;
         this.mIsRtl = other.mIsRtl;
-        this.mRtlDisabled = other.mRtlDisabled;
+        this.mIsRtlDisabled = other.mIsRtlDisabled;
         this.mIsIndeterminate = other.mIsIndeterminate;
         this.mCalculatedSize = other.mCalculatedSize;
         this.mCalculatedShadowPadding = other.mCalculatedShadowPadding;
@@ -219,6 +223,7 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedLastW = other.mCalculatedLastW;
         this.mCalculatedLastH = other.mCalculatedLastH;
         this.mCalculatedLastMode = other.mCalculatedLastMode;
+        this.mIsProgressReversed = other.mIsProgressReversed;
         this.listener = other.listener;
     }
 
@@ -307,9 +312,9 @@ public final class ProgressOptions implements Parcelable {
             case CIRCULAR:
 
                 //horizontal gravity
-                if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
+                if(mGravity.isGravityLeft(mIsRtl && !mIsRtlDisabled)){
                     left = mPadding;
-                } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
+                } else if(mGravity.isGravityRight(mIsRtl && !mIsRtlDisabled)){
                     left = w - mCalculatedSize - mPadding;
                 } else {
                     left = (w - mCalculatedSize) /2;
@@ -342,9 +347,9 @@ public final class ProgressOptions implements Parcelable {
             case HORIZONTAL:
 
                 //horizontal gravity
-                if(mGravity.isGravityLeft(mIsRtl && !mRtlDisabled)){
+                if(mGravity.isGravityLeft(mIsRtl && !mIsRtlDisabled)){
                     left = mPadding;
-                } else if(mGravity.isGravityRight(mIsRtl && !mRtlDisabled)){
+                } else if(mGravity.isGravityRight(mIsRtl && !mIsRtlDisabled)){
                     left = w - mCalculatedSize - mPadding;
                 } else {
                     left = (w - mCalculatedSize)/2;
@@ -609,10 +614,22 @@ public final class ProgressOptions implements Parcelable {
      *                      If false, on api 17+, gravity will be treated accordingly to rtl rules.
      */
     public void setRtlDisabled(boolean rtlDisabled) {
-        this.mRtlDisabled = rtlDisabled;
+        this.mIsRtlDisabled = rtlDisabled;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
         if(listener.get() != null)
             listener.get().onSizeUpdated(this);
+    }
+
+    /**
+     * Set whether the view should use right to left layout (used for gravity option)
+     *
+     * @param progressReversed If true, progress will be reversed. It gets adjusted by rtl rules (if rtl is not disabled)
+     */
+    public void setProgressReversed(boolean progressReversed) {
+        this.mIsProgressReversed = progressReversed;
+
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
     }
 
     /**
@@ -774,7 +791,7 @@ public final class ProgressOptions implements Parcelable {
      * @return Wheter rtl support is disabled
      */
     public boolean isRtlDisabled() {
-        return mRtlDisabled;
+        return mIsRtlDisabled;
     }
 
     /**
@@ -824,11 +841,16 @@ public final class ProgressOptions implements Parcelable {
         return this.mCalculatedShadowPadding;
     }
 
+    /**
+     * @return Whether the progress should be reversed
+     */
+    public boolean isProgressReversed() {
+        //if view is rtl, and rtl is not disabled, I change the direction
+        return (mIsRtl && !mIsRtlDisabled) ? !mIsProgressReversed : mIsProgressReversed;
+    }
 
 
-
-
-// *************** Fields used by drawers ****************
+    // *************** Fields used by drawers ****************
 
     /**
      * If the determinate drawer should update its progress with an animation
@@ -956,8 +978,9 @@ public final class ProgressOptions implements Parcelable {
         dest.writeInt(mPadding);
         dest.writeFloat(mSizePercent);
         dest.writeByte((byte) (mIsRtl ? 1 : 0));
-        dest.writeByte((byte) (mRtlDisabled ? 1 : 0));
+        dest.writeByte((byte) (mIsRtlDisabled ? 1 : 0));
         dest.writeByte((byte) (mIsIndeterminate ? 1 : 0));
+        dest.writeByte((byte) (mIsProgressReversed ? 1 : 0));
         dest.writeFloat(mCalculatedSize);
         dest.writeInt(mCalculatedShadowPadding);
         dest.writeInt(mCalculatedBorderWidth);
@@ -988,8 +1011,9 @@ public final class ProgressOptions implements Parcelable {
         mPadding = in.readInt();
         mSizePercent = in.readFloat();
         mIsRtl = in.readByte() != 0;
-        mRtlDisabled = in.readByte() != 0;
+        mIsRtlDisabled = in.readByte() != 0;
         mIsIndeterminate = in.readByte() != 0;
+        mIsProgressReversed = in.readByte() != 0;
         mCalculatedSize = in.readFloat();
         mCalculatedShadowPadding = in.readInt();
         mCalculatedBorderWidth = in.readInt();

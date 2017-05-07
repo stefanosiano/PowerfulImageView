@@ -18,36 +18,7 @@
             android:layout_width="150dp"
             android:layout_height="96dp"
             android:scaleType="centerCrop"
-            android:background="#eaeaea"
             android:layout_margin="8dp"
-            android:src="@drawable/sf1" />
-
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:background="#eaeaea"
-            android:layout_margin="8dp"
-            app:piv_shape_ratio="1.6"
-            app:piv_shape_mode="oval"
-            app:piv_shape_solid_color="@color/colorAccent"
-            android:src="@drawable/sf1" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:background="#eaeaea"
-            android:layout_margin="8dp"
-            app:piv_shape_ratio="1.6"
-            app:piv_shape_mode="rectangle"
             android:src="@drawable/sf1" />
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
@@ -56,10 +27,8 @@
             android:scaleType="centerCrop"
             android:layout_margin="8dp"
             app:piv_shape_ratio="1.6"
-            app:piv_shape_mode="rounded_rectangle"
-            app:piv_shape_radius_x="100"
-            app:piv_shape_radius_y="100"
-            app:piv_shape_border_width="0dp"
+            app:piv_shape_mode="oval"
+            app:piv_shape_border_width="1dp"
             app:piv_shape_border_color="@android:color/black"
             app:piv_shape_solid_color="@color/colorAccent"
             android:src="@drawable/sf1" />
@@ -75,16 +44,48 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:background="#eaeaea"
+            android:layout_margin="8dp"
+            app:piv_shape_ratio="1.6"
+            app:piv_shape_mode="rectangle"
+            app:piv_shape_border_width="1dp"
+            app:piv_shape_border_color="@android:color/black"
+            android:src="@drawable/sf1" />
+
+        <com.stefanosiano.powerfulimageview.PowerfulImageView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:layout_margin="8dp"
+            app:piv_shape_ratio="1.6"
+            app:piv_shape_mode="rounded_rectangle"
+            app:piv_shape_radius_x="100"
+            app:piv_shape_radius_y="100"
+            app:piv_shape_border_width="1dp"
+            app:piv_shape_border_color="@android:color/black"
+            app:piv_shape_solid_color="@color/colorAccent"
+            android:src="@drawable/sf1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.stefanosiano.powerfulimageview.PowerfulImageView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             android:layout_margin="8dp"
             android:src="@drawable/sf1"
+            app:piv_shape_border_width="1dp"
+            app:piv_shape_border_color="@android:color/black"
             app:piv_shape_mode="square"/>
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:background="#eaeaea"
             android:layout_margin="8dp"
             android:src="@drawable/sf1"
             app:piv_shape_mode="circle"

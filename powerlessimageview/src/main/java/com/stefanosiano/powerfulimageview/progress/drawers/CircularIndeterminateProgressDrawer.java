@@ -50,6 +50,9 @@ final class CircularIndeterminateProgressDrawer implements ProgressDrawer {
     /** Last sweep angle offset. Used when calling setup(), so it doesn't change angle */
     private int mLastSweepAngleOffset;
 
+    /** Whether to reverse the progress */
+    private boolean mIsProgressReversed;
+
     /** Listener to handle things from the drawer */
     private ProgressDrawerManager.ProgressDrawerListener listener;
 
@@ -59,6 +62,7 @@ final class CircularIndeterminateProgressDrawer implements ProgressDrawer {
     CircularIndeterminateProgressDrawer() {
         this.mOffset = 0;
         this.isShrinking = false;
+        this.mIsProgressReversed = false;
         this.mProgressStartAngle = -90;
         this.mProgressSweepAngle = 180;
         this.mLastStartAngleOffset = 0;
@@ -75,6 +79,8 @@ final class CircularIndeterminateProgressDrawer implements ProgressDrawer {
         mProgressPaint.setStrokeWidth(progressOptions.getCalculatedBorderWidth());
         mProgressPaint.setAntiAlias(true);
         mProgressPaint.setStyle(Paint.Style.STROKE);
+
+        mIsProgressReversed = progressOptions.isProgressReversed();
 
         setProgressAngle(mLastStartAngleOffset, mLastSweepAngleOffset);
     }
@@ -122,7 +128,12 @@ final class CircularIndeterminateProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawArc(progressBounds, mProgressStartAngle, mProgressSweepAngle, false, mProgressPaint);
+        if(!mIsProgressReversed) {
+            canvas.drawArc(progressBounds, mProgressStartAngle, mProgressSweepAngle, false, mProgressPaint);
+        }
+        else {
+            canvas.drawArc(progressBounds, -mProgressStartAngle, -mProgressSweepAngle, false, mProgressPaint);
+        }
     }
 
     @Override

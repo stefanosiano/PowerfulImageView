@@ -42,6 +42,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final boolean DEFAULT_PROGRESS_INDETERMINATE = true;
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
+    private static final boolean DEFAULT_PROGRESS_REVERSED = false;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
     private static final int DEFAULT_SHAPE_MODE = PivShapeMode.NORMAL.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
@@ -97,7 +98,8 @@ public class PowerfulImageView extends ImageViewWrapper {
                 a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_PADDING, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.PowerfulImageView_piv_progress_shadow_padding_percent, DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT),
                 a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH, getResources().getDisplayMetrics())),
-                getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color)
+                getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_reversed, DEFAULT_PROGRESS_REVERSED)
         );
 
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));

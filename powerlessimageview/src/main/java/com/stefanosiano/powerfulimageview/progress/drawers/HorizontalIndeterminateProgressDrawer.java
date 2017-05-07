@@ -13,8 +13,8 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
  * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
  */
 final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
-    
-    
+
+
     /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 1000;
 
@@ -38,6 +38,9 @@ final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
 
     /** Whether the progress is shrinking or expanding. Used to adjust behaviour during animation */
     private boolean isShrinking;
+
+    /** Whether to reverse the progress */
+    private boolean mIsProgressReversed;
 
     /** Custom animation duration. If it's less then 0, default duration is used */
     private long mProgressAnimationDuration = -1;
@@ -74,6 +77,8 @@ final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
         mLeft = progressOptions.getRect().left;
         mRight = progressOptions.getRect().right;
         setProgressValues(isShrinking ? mStartX : mEndX);
+
+        mIsProgressReversed = progressOptions.isProgressReversed();
     }
 
 
@@ -91,7 +96,7 @@ final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
             this.mStartX = mLeft;
             this.mEndX = currentX;
         }
-        
+
         listener.onRequestInvalidate();
     }
 
@@ -108,7 +113,12 @@ final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
 
     @Override
     public void draw(Canvas canvas, RectF progressBounds) {
-        canvas.drawRect(mStartX, progressBounds.top, mEndX, progressBounds.bottom, mProgressPaint);
+        if(!mIsProgressReversed) {
+            canvas.drawRect(mStartX, progressBounds.top, mEndX, progressBounds.bottom, mProgressPaint);
+        }
+        else {
+            canvas.drawRect(progressBounds.right - mEndX, progressBounds.top, progressBounds.right + progressBounds.left - mStartX, progressBounds.bottom, mProgressPaint);
+        }
     }
 
     @Override
