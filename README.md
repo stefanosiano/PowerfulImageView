@@ -2,8 +2,9 @@ PowerfulImageView
 =================
 
 Custom Android ImageView with several added features.  
-Right now it provides a progress indicator.  
-It also supports several shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle.  
+1) Progress indicator: circular, horizontal, disabled  
+2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle.  
+  
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
 Planned features (for now):  
@@ -14,35 +15,52 @@ Planned features (for now):
   
   
 Full load effect:  
-
-![Load progress with shadow](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/load%20circular.gif) 
-![Load horizontal progress with shadow](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/load%20horizontal.gif)
-
+![Full load effect](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/full_load.gif) 
+  
+Shapes:  
+![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
   
 Determinate circular and horizontal progress with shadow and different gravity:  
-
-![Determinate progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20gravity.png) 
-![Determinate horizontal progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/screen%20determinate%20horizontal%20gravity.png)
   
   
-Indeterminate circular and horizontal progress with shadow and different gravity:  
-
-![Indeterminate progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/indeterminate.gif) 
-![Indeterminate horizontal progress with shadow and different gravity](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/horizontal%20indeterminate.gif)
-
-
 Motivations
 -----------
-
+  
+1) Progress:  
 Most applications use images loaded from the internet. There are a lot of great libraries to handle these cases, like [Picasso](https://github.com/square/picasso) or [Glide](https://github.com/bumptech/glide). These libraries allows you to show placeholders in your imageViews while downloading/processing the image, too.  
 While this helps a lot, the placeholder doesn't provide any feedback or information to the user. So I created this library to show a progress indicator directly into the Image View, imitating the Android material circular progress bar, to show the current download (or an indeterminate progress bar when the image is downloaded, but processing).  
 This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.
-
-
-**Notes**  
   
-PowerfulImageView requires a minimum API level of 12.  
-Indeterminate animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library.
+2) Shapes:  
+Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. Circle, oval and rounded rectangle shapes are achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/).  
+  
+  
+  
+Instructions
+------------
+  
+The library is highly customizable. However, for very basic integration, you may need just:  
+
+1) Progress  
+Via xml:  
+```
+app:piv_progress_mode="circular"
+```
+Via Java:  
+```
+progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
+```
+  
+2) Shapes  
+Via xml:  
+```
+app:piv_shape_mode="circle"
+```
+Via Java:  
+```
+progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
+```
+  
   
   
   
@@ -83,10 +101,16 @@ Proguard
 --------
 No steps are required, since configuration is already included.  
   
+
+Notes
+-----
+  
+1) PowerfulImageView requires a minimum API level of 12.  
+2) Indeterminate animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library.
+3) The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.
+4) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
+  
   
 Roadmap
 -------
-Rewrite Readme  
-  
 Create code diagram?  
-Rounded Rectangle has some problem with border (with overlay=false) and solid color (with border)...  
