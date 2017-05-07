@@ -51,7 +51,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     private static final int DEFAULT_SHAPE_INNER_PADDING = -1;
     private static final float DEFAULT_SHAPE_INNER_PADDING_PERCENT = 0;
     private static final boolean DEFAULT_SHAPE_BORDER_OVERLAY = false;
-    private static final int DEFAULT_SHAPE_INNER_BORDER_WIDTH = 0;
+    private static final int DEFAULT_SHAPE_BORDER_WIDTH = 0;
     private static final float DEFAULT_SHAPE_RATIO = 0;
     private static final float DEFAULT_SHAPE_RADIUS_X = 1;
     private static final float DEFAULT_SHAPE_RADIUS_Y = 1;
@@ -112,7 +112,7 @@ public class PowerlessImageView extends ImageViewWrapper {
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_inner_padding_percent, DEFAULT_SHAPE_INNER_PADDING_PERCENT),
                 a.getBoolean(R.styleable.PowerlessImageView_piv_shape_border_overlay, DEFAULT_SHAPE_BORDER_OVERLAY),
                 getColor(a, R.styleable.PowerlessImageView_piv_shape_border_color, android.R.color.transparent),
-                a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_shape_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_INNER_BORDER_WIDTH, getResources().getDisplayMetrics())),
+                a.getDimensionPixelSize(R.styleable.PowerlessImageView_piv_shape_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_BORDER_WIDTH, getResources().getDisplayMetrics())),
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_ratio, DEFAULT_SHAPE_RATIO),
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_radius_x, DEFAULT_SHAPE_RADIUS_X),
                 a.getFloat(R.styleable.PowerlessImageView_piv_shape_radius_y, DEFAULT_SHAPE_RADIUS_Y),

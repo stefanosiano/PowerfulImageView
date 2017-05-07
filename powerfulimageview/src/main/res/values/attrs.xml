@@ -7,8 +7,8 @@
 
         <!-- PROGRESS OPTIONS -->
 
-        <!-- Set whether the determinate drawer should update its progress with an animation.
-             If the drawer is not determinate or horizontal_determinate it's ignored.
+        <!-- Set whether the progress should update with an animation.
+             If the progress is indeterminate it's ignored.
              If true it updates its progress with an animation, otherwise it will update instantly -->
         <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
 
@@ -40,10 +40,10 @@
         <!-- Set the width of the shadow border. -->
         <attr name="piv_progress_shadow_border_width" format="dimension" />
 
-        <!-- Percentage value of the progress indicator, used by determinate drawers.
+        <!-- Percentage value of the progress indicator, used by determinate progress.
              If the percentage is higher than 100, it is treated as (value % 100).
              If the percentage is lower than 0, it is treated as 0.
-             If the drawer is not determinate or horizontal_determinate it's ignored.
+             If the progress is indeterminate or horizontal_determinate it's ignored.
              Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0! -->
         <attr name="piv_progress_value_percent" format="float" />
 
