@@ -20,7 +20,6 @@ Full load effect:
 Shapes:  
 ![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
   
-Determinate circular and horizontal progress with shadow and different gravity:  
   
   
 Motivations
@@ -42,6 +41,7 @@ Instructions
 The library is highly customizable. However, for very basic integration, you may need just:  
 
 1) Progress  
+
 Via xml:  
 ```
 app:piv_progress_mode="circular"
@@ -52,6 +52,7 @@ progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
 ```
   
 2) Shapes  
+
 Via xml:  
 ```
 app:piv_shape_mode="circle"
@@ -73,28 +74,20 @@ repositories {
 }
 ```
 
-To use **Powerful**ImageView:  
+To use **Powerful**ImageView, which supports vector drawables and tinting on older apis, but brings in the whole AppCompat library:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerfulimageview:0.2.1'
 }
 ```
-To use **Powerless**ImageView:  
+To use **Powerless**ImageView, which is a slick variant without AppCompat features, like vector drawables support or tinting on older apis:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerlessimageview:0.2.1'
 }
 ```
-  
-PowerfulImageView vs PowerlessImageView
----------------------------------------
-**PowerfulImageView**  
-It supports vector drawables and tinting on older apis, but brings in the whole AppCompat library.  
-If you already use AppCompat library, or you want to use vector drawables, go with it.  
-  
-**PowerlessImageView**  
-Slick variant without AppCompat features, like vector drawables support or tinting on older apis.  
-If you don't want to use AppCompat library, and are fine without vector drawables, go with it.  
+If you already use AppCompat library, or you want to use vector drawables, go with **Powerful**ImageView. Otherwise use **Powerless**ImageView.  
+
   
   
 Proguard
