@@ -103,7 +103,6 @@ List of all XML attributes:
 |piv_progress_reversed|boolean|false|Set whether the progress should be reversed.|
 |piv_progress_gravity|enum|center|Set the gravity of the indicator. It will follow the rtl layout (on api 17+), if not disabled. Values are: center, start, end, top, top_start, top_end, bottom, bottom_start, bottom_end|
 |piv_progress_mode|enum|disabled|Progress mode of the indicator. Values are: disabled, circular, horizontal|
-
 |SHAPE OPTIONS| | |
 |piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
 |piv_shape_frontground_color|color|transparent|Set the frontground color of the image, using the shape.|
@@ -132,11 +131,12 @@ Notes
 1) PowerfulImageView requires a minimum API level of 12.  
 2) Indeterminate animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library.
 3) The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.
-4) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
+4) Solid shapes are simple shapes with a solid color drawn over them. They support out of the box any animation and image loader library, and cover background, too. Non-solid shapes don't cover background, but they provide real shapes, allowing users to see anything behind the shape.
+5) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
   
   
 Roadmap
 -------
-List all available attributes  
+List all java methods  
 Create code diagram  
 Study blurring  
