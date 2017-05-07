@@ -3,7 +3,7 @@ PowerfulImageView
 
 Custom Android ImageView with several added features.  
 1) Progress indicator: circular, horizontal, disabled  
-2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle.  
+2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types.  
   
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
@@ -80,7 +80,45 @@ List of all XML attributes:
   
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
-  
+|PROGRESS OPTIONS| | |
+|piv_progress_border_width|dimension|-1|Width of the progress indicator. Overrides piv_progress_border_width_percent.|
+|piv_progress_border_width_percent|float|10|Width of the progress indicator as percentage of the progress indicator size. It's used only if piv_progress_border_width is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored|
+|piv_progress_size|dimension|-1|Size of the progress indicator. Overrides piv_progress_size_percent. It's less than 0, it is ignored.|
+|piv_progress_size_percent|float|40|Set the size of the progress indicator. It's used only if piv_progress_size is less than 0. If the percentage is higher than 100, it is treated as (value % 100).|
+|piv_progress_shadow_padding|dimension|-1|Set the padding of the progress indicator relative to its shadow. Overrides piv_progress_shadow_padding_percent.|
+|piv_progress_shadow_padding_percent|float|10|Set the padding of the progress indicator relative to its shadow. It's used only if piv_progress_shadow_padding is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored.|
+|piv_progress_padding|dimension|2dp|Set the padding of the progress indicator.|
+|piv_progress_shadow_border_width|dimension|1dp|Set the width of the shadow border.|
+|piv_progress_value_percent|float|0|Percentage value of the progress indicator, used by determinate progress. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is treated as 0. If the progress is indeterminate it's ignored.|
+|piv_progress_front_color|color|#00A000|Set the front color of the indicator. If the drawer is indeterminate it's ignored.|
+|piv_progress_back_color|color|#CCCCCC|Set the back color of the indicator. If the drawer is indeterminate it's ignored.|
+|piv_progress_shadow_border_color|color|#000000|Set the color of the progress indicator shadow border.|
+|piv_progress_shadow_color|color|#FFFFFF|Set the shadow color of the indicator.|
+|piv_progress_indeterminate_color|color|#A0A0A0|Set the indeterminate color of the indicator. If the drawer is determinate it's ignored.|
+|piv_progress_determinate_animation_enabled|boolean|true|Set whether the progress should update with an animation. If the progress is indeterminate it's ignored. If true it updates its progress with an animation, otherwise it will update instantly|
+|piv_progress_rtl_disabled|boolean|language-based|Set whether the view should use right to left layout. If true, start will always be treated as left and end as right. If false, on api 17+, gravity will be treated accordingly to rtl rules.|
+|piv_progress_indeterminate|boolean|true|Set whether the view should show an indeterminate progress indicator.|
+|piv_progress_draw_wedge|boolean|false|Set whether to show a wedge or a circle, used by circular progress. If the progress is not circular it's ignored. If true, a wedge is drawn, otherwise a circle will be drawn.|
+|piv_progress_shadow_enabled|boolean|true|Set whether to show a progress shadow, used by drawers. If true, the shadow is drawn.|
+|piv_progress_reversed|boolean|false|Set whether the progress should be reversed.|
+|piv_progress_gravity|enum|center|Set the gravity of the indicator. It will follow the rtl layout (on api 17+), if not disabled. Values are: center, start, end, top, top_start, top_end, bottom, bottom_start, bottom_end|
+|piv_progress_mode|enum|disabled|Progress mode of the indicator. Values are: disabled, circular, horizontal|
+
+|SHAPE OPTIONS| | |
+|piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
+|piv_shape_frontground_color|color|transparent|Set the frontground color of the image, using the shape.|
+|piv_shape_inner_padding|dimension|-1|Set the inner padding of the image relative to the view. Overrides piv_shape_inner_padding_percent.|
+|piv_shape_inner_padding_percent|float|0|Set the inner padding of the image relative to the view. It's used only if piv_shape_inner_padding is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored.|
+|piv_shape_border_overlay|boolean|false|Set whether the border should be paint over the image.|
+|piv_shape_border_width|dimension|0dp|Set the border width of the image.|
+|piv_shape_border_color|color|transparent|Set the border color of the image.|
+|piv_shape_ratio|float|based on view size|Set the ratio of the image. Doing so, width is calculated as height * ratio|
+|piv_shape_radius_x|float|1|Set the x radius of the image. Used in rounded rectangles|
+|piv_shape_radius_y|float|1|Set the y radius of the image. Used in rounded rectangles|
+|piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
+|piv_shape_mode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
+|piv_shape_scaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop|
+
   
   
 Proguard
