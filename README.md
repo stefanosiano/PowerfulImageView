@@ -76,11 +76,13 @@ progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
 progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
 ```
   
-List of all XML attributes:  
+List of all XML attributes
+--------------------------
+  
+**Progress options**  
   
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
-|PROGRESS OPTIONS| | |
 |piv_progress_border_width|dimension|-1|Width of the progress indicator. Overrides piv_progress_border_width_percent.|
 |piv_progress_border_width_percent|float|10|Width of the progress indicator as percentage of the progress indicator size. It's used only if piv_progress_border_width is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored|
 |piv_progress_size|dimension|-1|Size of the progress indicator. Overrides piv_progress_size_percent. It's less than 0, it is ignored.|
@@ -103,7 +105,12 @@ List of all XML attributes:
 |piv_progress_reversed|boolean|false|Set whether the progress should be reversed.|
 |piv_progress_gravity|enum|center|Set the gravity of the indicator. It will follow the rtl layout (on api 17+), if not disabled. Values are: center, start, end, top, top_start, top_end, bottom, bottom_start, bottom_end|
 |piv_progress_mode|enum|disabled|Progress mode of the indicator. Values are: disabled, circular, horizontal|
-|SHAPE OPTIONS| | |
+  
+  
+**Shape options**  
+  
+| Name | Type | Default | Description |
+|:----:|:----:|:-------:|:-----------:|
 |piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
 |piv_shape_frontground_color|color|transparent|Set the frontground color of the image, using the shape.|
 |piv_shape_inner_padding|dimension|-1|Set the inner padding of the image relative to the view. Overrides piv_shape_inner_padding_percent.|
@@ -117,7 +124,25 @@ List of all XML attributes:
 |piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
 |piv_shape_mode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
 |piv_shape_scaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop|
+  
+**Java methods**  
 
+All progress and shape options are available via  
+
+```
+progressImageView.getProgressOptions().set...
+progressImageView.getShapeOptions().set...
+```
+  
+Convenience methods are provided for:  
+  
+| Name | Param | Description |
+|:----:|:-----:|:-----------:|
+|changeProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
+|setProgress|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
+|setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
+|changeShapeMode|PivShapeMode|Changes the shape of the image.|
+|setScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
   
   
 Proguard
