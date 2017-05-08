@@ -191,6 +191,7 @@ public final class ProgressOptions implements Parcelable {
         this.mCalculatedLastMode = PivProgressMode.NONE;
     }
 
+    /** Updates the values of the current options, copying the passed values */
     public void setOptions (ProgressOptions other) {
         this.mDeterminateAnimationEnabled = other.mDeterminateAnimationEnabled;
         this.mBorderWidth = other.mBorderWidth;
@@ -231,6 +232,8 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Calculates the bounds of the progress indicator, based on progress options and mode.
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     *
+     * Do not use this method directly! If you want the size to be calculated again, call requestLayout()!
      *
      * @param w Width of the View
      * @param h Height of the View
@@ -908,6 +911,8 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Set the listener that will update the progress drawers on changes
+     *
+     * Do not use this method, as it is intended for internal reasons!
      *
      * @param listener Listener that will update the progress drawers on changes
      */

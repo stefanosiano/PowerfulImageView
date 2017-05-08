@@ -131,6 +131,7 @@ public final class ShapeOptions implements Parcelable {
         this.mCalculatedLastMode = PivShapeMode.NORMAL;
     }
 
+    /** Updates the values of the current options, copying the passed values */
     public void setOptions(ShapeOptions other) {
         this.mBackgroundColor = other.mBackgroundColor;
         this.mFrontgroundColor = other.mFrontgroundColor;
@@ -161,6 +162,8 @@ public final class ShapeOptions implements Parcelable {
     /**
      * Calculates the bounds of the image, based on shape options and mode.
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     *
+     * Do not use this method directly! If you want the size to be calculated again, call requestLayout()!
      *
      * @param w Width of the View
      * @param h Height of the View
@@ -248,6 +251,8 @@ public final class ShapeOptions implements Parcelable {
     /**
      * Set the listener that will update the shape drawers on changes
      *
+     * Do not use this method, as it is intended for internal reasons!
+     *
      * @param listener Listener that will update the shape drawers on changes
      */
     public void setListener(ShapeOptionsListener listener) {
@@ -286,9 +291,9 @@ public final class ShapeOptions implements Parcelable {
     }
 
     /** Set the background color of the image, using the shape.
-    Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-    premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-    See the Color class for more details. */
+     Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+     premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     See the Color class for more details. */
     public void setBackgroundColor(int backgroundColor) {
         this.mBackgroundColor = backgroundColor;
         if(listener.get() != null)

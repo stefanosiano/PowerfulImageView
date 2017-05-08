@@ -131,6 +131,7 @@ public final class ShapeOptions implements Parcelable {
         this.mCalculatedLastMode = PivShapeMode.NORMAL;
     }
 
+    /** Updates the values of the current options, copying the passed values */
     public void setOptions(ShapeOptions other) {
         this.mBackgroundColor = other.mBackgroundColor;
         this.mFrontgroundColor = other.mFrontgroundColor;
@@ -161,6 +162,8 @@ public final class ShapeOptions implements Parcelable {
     /**
      * Calculates the bounds of the image, based on shape options and mode.
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     *
+     * Do not use this method directly! If you want the size to be calculated again, call requestLayout()!
      *
      * @param w Width of the View
      * @param h Height of the View
@@ -247,6 +250,8 @@ public final class ShapeOptions implements Parcelable {
 
     /**
      * Set the listener that will update the shape drawers on changes
+     *
+     * Do not use this method, as it is intended for internal reasons!
      *
      * @param listener Listener that will update the shape drawers on changes
      */
