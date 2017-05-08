@@ -3,7 +3,7 @@ PowerfulImageView
 
 Custom Android ImageView with several added features.  
 1) Progress indicator: circular, horizontal, disabled  
-2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types.  
+2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like top_crop.  
   
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
@@ -60,6 +60,8 @@ dependencies {
 ```
   
   
+  
+  
 Usage
 -----
   
@@ -75,6 +77,10 @@ Via Java:
 progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
 progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
 ```
+  
+  
+  
+  
   
 List of all XML attributes
 --------------------------
@@ -145,11 +151,19 @@ Convenience methods are provided for:
 |setScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
   
   
+  
+  
+  
+  
+  
 Proguard
 --------
 No steps are required, since configuration is already included.  
   
-
+  
+  
+  
+  
 Notes
 -----
   
@@ -160,8 +174,49 @@ Notes
 5) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
   
   
+  
+  
+  
+  
+  
+  
+Tips
+----
+  
+Options may be overwheilming. Also, you should have a consistent UI. So, you should define a custom style for the progress options, configuring all the aspects of the PowerfulImageView progress, and then use your own style anywhere you need. This is good for theming, too!  
+You can then apply custom styles for shapes, if you want. To do so, you just need to add your configuration in your styles.xml file like this:  
+  
+```
+    <style name="MyPivStyle">
+        <item name="piv_progress_indeterminate_color">@color/colorAccent</item>
+        <item name="piv_progress_front_color">@color/colorPrimary</item>
+        <item name="piv_progress_back_color">@color/colorAccent</item>
+        <item name="piv_progress_indeterminate">false</item>
+        <item name="piv_progress_mode">circular</item>
+        ...
+    </style>
+```
+  
+Then apply it like this:  
+  
+```
+    <com.stefanosiano.powerfulimageview.PowerfulImageView
+        android:id="@+id/piv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MyPivStyle"/>  
+```
+  
+  
+  
+  
+  
+  
 Roadmap
 -------
-List all java methods  
 Create code diagram  
-Study blurring  
+Study blurring methods  
+
+
+
+
