@@ -181,6 +181,14 @@ public class PowerlessImageView extends ImageViewWrapper {
             mShapeDrawerManager.setScaleType(PivShapeScaleType.getFromScaleType(scaleType));
     }
 
+    /**
+     *
+     * Controls how the image should be resized or moved to match the size of this ImageView.
+     * Added to provide additional custom scale types.
+     * Overrides ImageView's setScaleType(ImageView.ScaleType) method.
+     *
+     * @param scaleType The desired scaling mode.
+     */
     public void setScaleType(PivShapeScaleType scaleType) {
         super.setScaleType(ScaleType.MATRIX);
         if(mShapeDrawerManager != null)
@@ -240,6 +248,13 @@ public class PowerlessImageView extends ImageViewWrapper {
      */
     public final ProgressOptions getProgressOptions() {
         return mProgressDrawerManager.getProgressOptions();
+    }
+
+    /**
+     * @return The options of the shape
+     */
+    public final ShapeOptions getShapeOptions() {
+        return mShapeDrawerManager.getShapeOptions();
     }
 
     /**

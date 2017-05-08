@@ -7,4 +7,12 @@
 
     </style>
 
+    <style name="MyPivStyle">
+        <item name="piv_progress_indeterminate_color">@color/colorAccent</item>
+        <item name="piv_progress_front_color">@color/colorPrimary</item>
+        <item name="piv_progress_back_color">@color/colorAccent</item>
+        <item name="piv_progress_indeterminate">false</item>
+        <item name="piv_progress_mode">circular</item>
+    </style>
+
 </resources>
