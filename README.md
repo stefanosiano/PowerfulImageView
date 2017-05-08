@@ -49,13 +49,13 @@ repositories {
 To use **Powerful**ImageView, which extends AppcompatImageView and supports vector drawables and tinting on older apis, but brings in the whole AppCompat library:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.2.2'
+    compile 'com.stefanosiano:powerfulimageview:0.2.3'
 }
 ```
 To use **Powerless**ImageView, which extends ImageView and doesn't have AppCompat features:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.2.2'
+    compile 'com.stefanosiano:powerlessimageview:0.2.3'
 }
 ```
   
