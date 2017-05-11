@@ -15,12 +15,26 @@ import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
 interface ShapeDrawer {
 
     /**
-     * Method that updates the drawable and bitmap to show
+     * Method that updates the drawable to show
      *
      * @param drawable drawable to show on normal, square and rectangle shapes
+     */
+    void changeDrawable(Drawable drawable);
+
+
+    /**
+     * Method that informs if the drawer requires the bitmap
+     *
+     * @return Whether this drawer requires the changeBitmap() method
+     */
+    boolean requireBitmap();
+
+    /**
+     * Method that updates the bitmap to show
+     *
      * @param bitmap bitmap to show on rounded, circle and oval shapes
      */
-    void changeBitmap(Drawable drawable, Bitmap bitmap);
+    void changeBitmap(Bitmap bitmap);
 
     /**
      * Sets the matrix to be used in the shape, and the current scale type

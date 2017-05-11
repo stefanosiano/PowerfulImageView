@@ -48,9 +48,15 @@ final class NormalShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void changeBitmap(Drawable drawable, Bitmap bitmap) {
+    public void changeDrawable(Drawable drawable) {
         this.mDrawable = drawable;
     }
+
+    @Override
+    public boolean requireBitmap() {return false;}
+
+    @Override
+    public void changeBitmap(Bitmap bitmap) {}
 
     @Override
     public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {

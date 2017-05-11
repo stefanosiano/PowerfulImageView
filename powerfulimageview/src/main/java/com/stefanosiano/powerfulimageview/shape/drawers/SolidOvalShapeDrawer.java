@@ -55,7 +55,13 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void changeBitmap(Drawable drawable, Bitmap bitmap) {
+    public boolean requireBitmap() {return false;}
+
+    @Override
+    public void changeBitmap(Bitmap bitmap) {}
+
+    @Override
+    public void changeDrawable(Drawable drawable) {
         this.mDrawable = drawable;
     }
 

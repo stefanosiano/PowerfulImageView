@@ -50,7 +50,13 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
     }
 
     @Override
-    public void changeBitmap(Drawable drawable, Bitmap bitmap) {
+    public void changeDrawable(Drawable drawable) {}
+
+    @Override
+    public boolean requireBitmap() {return true;}
+
+    @Override
+    public void changeBitmap(Bitmap bitmap) {
 
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 

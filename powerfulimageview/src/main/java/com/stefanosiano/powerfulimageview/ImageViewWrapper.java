@@ -3,11 +3,8 @@ package com.stefanosiano.powerfulimageview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -157,40 +154,6 @@ abstract class ImageViewWrapper extends AppCompatImageView {
     @SuppressWarnings("deprecation")
     protected int getColor(TypedArray a, int colorId, int defaultColorId){
         return a.getColor(colorId, ContextCompat.getColor(getContext(), defaultColorId));
-    }
-
-
-    /**
-     * @return Returns the bitmap of the drawable
-     */
-    protected Bitmap getBitmapFromDrawable(Drawable drawable) {
-        if (drawable == null) {
-            return null;
-        }
-
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        try {
-            Bitmap bitmap;
-
-            if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-            } else if (drawable instanceof ColorDrawable) {
-                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-            } else {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 }

@@ -134,7 +134,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
-        mShapeDrawerManager.changeBitmap(getDrawable(), getBitmapFromDrawable(getDrawable()));
+        mShapeDrawerManager.changeBitmap(getDrawable().getCurrent());
         mShapeDrawerManager.setScaleType(scaleType);
     }
 
@@ -171,7 +171,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     void onBitmapChanged() {
         //when initializing (in constructor) it gets called, but it is still null
         if(mShapeDrawerManager != null)
-            mShapeDrawerManager.changeBitmap(getDrawable().getCurrent(), getBitmapFromDrawable(getDrawable().getCurrent()));
+            mShapeDrawerManager.changeBitmap(getDrawable().getCurrent());
     }
 
     @Override

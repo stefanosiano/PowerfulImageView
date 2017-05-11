@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -41,9 +43,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
     /** Scale type of the image */
     private PivShapeScaleType mScaleType;
-
-    /** Bitmap to be drawn */
-    private Bitmap mBitmap;
 
     /** Drawable of the view */
     private Drawable mDrawable;
@@ -91,7 +90,6 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         this.mShapeOptions.setListener(this);
         this.mShaderMatrix = new Matrix();
         this.mShaderMatrix.reset();
-        this.mBitmap = null;
         this.mShapeDrawer = new NormalShapeDrawer(null);
     }
 
@@ -99,13 +97,60 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     /**
      * Method that updates the drawable and bitmap to show
      *
-     * @param drawable drawable to show on normal, square and rectangle shapes
-     * @param bitmap bitmap to show on rounded, circle and oval shapes
+     * @param drawable drawable to show
      */
-    public void changeBitmap(Drawable drawable, Bitmap bitmap){
+    public void changeBitmap(Drawable drawable){
         this.mDrawable = drawable;
-        this.mBitmap = bitmap;
-        mShapeDrawer.changeBitmap(drawable, bitmap);
+        mShapeDrawer.changeDrawable(drawable);
+        if(mShapeDrawer.requireBitmap())
+            mShapeDrawer.changeBitmap(getBitmapFromDrawable(drawable));
+    }
+
+    /**
+     * @return Returns the bitmap of the drawable
+     */
+    private Bitmap getBitmapFromDrawable(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        try {
+            Bitmap bitmap;
+
+            if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+            } else if (drawable instanceof ColorDrawable) {
+                bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+            } else {
+                //bitmap size should not be bigger than the view size
+                float ratio = drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
+                int sizeX;
+                int sizeY;
+                if(drawable.getIntrinsicWidth() > mMeasuredWidth)
+                    sizeX = (int) Math.max(mMeasuredWidth, mMeasuredHeight * ratio);
+                else
+                    sizeX = drawable.getIntrinsicWidth();
+
+                if(drawable.getIntrinsicWidth() > mMeasuredWidth)
+                    sizeY = (int) Math.max(mMeasuredHeight, mMeasuredWidth / ratio);
+                else
+                    sizeY = drawable.getIntrinsicWidth();
+
+                bitmap = Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888);
+            }
+
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -126,7 +171,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case CIRCLE:
 
                 if(mCircleShapeDrawer == null)
-                    mCircleShapeDrawer = new CircleShapeDrawer(mBitmap);
+                    mCircleShapeDrawer = new CircleShapeDrawer(getBitmapFromDrawable(mDrawable));
                 mShapeDrawer = mCircleShapeDrawer;
                 break;
 
@@ -147,14 +192,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case OVAL:
 
                 if(mOvalShapeDrawer == null)
-                    mOvalShapeDrawer = new OvalShapeDrawer(mBitmap);
+                    mOvalShapeDrawer = new OvalShapeDrawer(getBitmapFromDrawable(mDrawable));
                 mShapeDrawer = mOvalShapeDrawer;
                 break;
 
             case ROUNDED_RECTANGLE:
 
                 if(mRoundedRectangleShapeDrawer == null)
-                    mRoundedRectangleShapeDrawer = new RoundedRectangleShapeDrawer(mBitmap);
+                    mRoundedRectangleShapeDrawer = new RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable));
                 mShapeDrawer = mRoundedRectangleShapeDrawer;
                 break;
 
