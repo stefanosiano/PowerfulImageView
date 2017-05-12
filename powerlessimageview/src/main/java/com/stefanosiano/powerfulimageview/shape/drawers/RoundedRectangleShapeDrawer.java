@@ -34,6 +34,9 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape frontground */
     private final Paint mFrontPaint;
 
+    /** Matrix used to draw the shape */
+    private Matrix mMatrix;
+
     /** Variables used to draw the rounded rectangle */
     private float mRadiusX, mRadiusY;
 
@@ -43,6 +46,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
      */
     RoundedRectangleShapeDrawer(Bitmap bitmap) {
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mBitmapShader.setLocalMatrix(mMatrix);
         mBitmapPaint = new Paint();
         mBackPaint = new Paint();
         mBorderPaint = new Paint();
@@ -59,6 +63,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
     public void changeBitmap(Bitmap bitmap) {
 
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mBitmapShader.setLocalMatrix(mMatrix);
 
         mBitmapPaint.setShader(mBitmapShader);
         mBitmapPaint.setAntiAlias(true);
@@ -67,6 +72,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
 
     @Override
     public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {
+        this.mMatrix = matrix;
         mBitmapShader.setLocalMatrix(matrix);
     }
 

@@ -34,6 +34,9 @@ final class CircleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape frontground */
     private final Paint mFrontPaint;
 
+    /** Matrix used to draw the shape */
+    private Matrix mMatrix;
+
     /** Variables used to draw the circle */
     private float mCx, mCy, mRadius, mBorderRadius;
 
@@ -43,6 +46,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
      */
     CircleShapeDrawer(Bitmap bitmap) {
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mBitmapShader.setLocalMatrix(mMatrix);
         mBitmapPaint = new Paint();
         mBackPaint = new Paint();
         mBorderPaint = new Paint();
@@ -63,6 +67,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
     public void changeBitmap(Bitmap bitmap) {
 
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mBitmapShader.setLocalMatrix(mMatrix);
 
         mBitmapPaint.setShader(mBitmapShader);
         mBitmapPaint.setAntiAlias(true);
@@ -71,6 +76,7 @@ final class CircleShapeDrawer implements ShapeDrawer {
 
     @Override
     public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {
+        this.mMatrix = matrix;
         mBitmapShader.setLocalMatrix(matrix);
     }
 

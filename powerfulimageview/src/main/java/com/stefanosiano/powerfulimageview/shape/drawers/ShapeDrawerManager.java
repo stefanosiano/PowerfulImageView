@@ -47,6 +47,9 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     /** Drawable of the view */
     private Drawable mDrawable;
 
+    /** Last bitmap calculated (i reuse this, so I don't decode it again) */
+    private Bitmap mLastBitmap;
+
     /** Measured width, based on mode */
     private float mMeasuredWidth;
 
@@ -99,18 +102,22 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
      *
      * @param drawable drawable to show
      */
-    public void changeBitmap(Drawable drawable){
+    public void changeDrawable(Drawable drawable){
+        Drawable mLastDrawable = mDrawable;
         this.mDrawable = drawable;
+        setScaleType(mScaleType);
         mShapeDrawer.changeDrawable(drawable);
-        if(mShapeDrawer.requireBitmap())
-            mShapeDrawer.changeBitmap(getBitmapFromDrawable(drawable));
+        if(mShapeDrawer.requireBitmap()) {
+            mLastBitmap = getBitmapFromDrawable(mLastDrawable, drawable);
+            mShapeDrawer.changeBitmap(mLastBitmap);
+        }
     }
 
     /**
      * @return Returns the bitmap of the drawable
      */
-    private Bitmap getBitmapFromDrawable(Drawable drawable) {
-        if (drawable == null) {
+    private Bitmap getBitmapFromDrawable(Drawable mLastDrawable, Drawable drawable) {
+        if (drawable == null || mMeasuredWidth <= 0 || mMeasuredHeight <= 0) {
             return null;
         }
 
@@ -130,15 +137,25 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 float ratio = drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
                 int sizeX;
                 int sizeY;
-                if(drawable.getIntrinsicWidth() > mMeasuredWidth)
-                    sizeX = (int) Math.max(mMeasuredWidth, mMeasuredHeight * ratio);
-                else
-                    sizeX = drawable.getIntrinsicWidth();
+                int maxWidth = (int) Math.max(mMeasuredWidth, mMeasuredHeight * ratio);
+                int maxHeight = (int) Math.max(mMeasuredHeight, mMeasuredHeight / ratio);
 
-                if(drawable.getIntrinsicWidth() > mMeasuredWidth)
-                    sizeY = (int) Math.max(mMeasuredHeight, mMeasuredWidth / ratio);
-                else
-                    sizeY = drawable.getIntrinsicWidth();
+                if(drawable.getIntrinsicWidth() > maxWidth && maxWidth > 0 && drawable.getIntrinsicHeight() > maxHeight && maxHeight > 0){
+                    sizeX = maxWidth;
+                    sizeY = maxHeight;
+                }
+                else {
+                    sizeX = drawable.getIntrinsicWidth();
+                    sizeY = drawable.getIntrinsicHeight();
+                }
+
+                //if i already decoded the bitmap i reuse it
+                if(sizeX > 0 && sizeY > 0 && mLastBitmap != null && mLastDrawable == mDrawable)
+                    return mLastBitmap;
+
+                //otherwise I free its memory
+                if(mLastBitmap != null)
+                    mLastBitmap.recycle();
 
                 bitmap = Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888);
             }
@@ -146,6 +163,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
+
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +189,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case CIRCLE:
 
                 if(mCircleShapeDrawer == null)
-                    mCircleShapeDrawer = new CircleShapeDrawer(getBitmapFromDrawable(mDrawable));
+                    mCircleShapeDrawer = new CircleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable));
                 mShapeDrawer = mCircleShapeDrawer;
                 break;
 
@@ -192,14 +210,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             case OVAL:
 
                 if(mOvalShapeDrawer == null)
-                    mOvalShapeDrawer = new OvalShapeDrawer(getBitmapFromDrawable(mDrawable));
+                    mOvalShapeDrawer = new OvalShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable));
                 mShapeDrawer = mOvalShapeDrawer;
                 break;
 
             case ROUNDED_RECTANGLE:
 
                 if(mRoundedRectangleShapeDrawer == null)
-                    mRoundedRectangleShapeDrawer = new RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable));
+                    mRoundedRectangleShapeDrawer = new RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable));
                 mShapeDrawer = mRoundedRectangleShapeDrawer;
                 break;
 
@@ -554,7 +572,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
         mBorderBounds.set(mShapeOptions.getBorderBounds());
         mImageBounds.set(mShapeOptions.getImageBounds());
 
-        setScaleType(mScaleType);
+        changeDrawable(mDrawable);
 
         mShapeDrawer.setup(mShapeOptions);
         if(mView.get() != null)

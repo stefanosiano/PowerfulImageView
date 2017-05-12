@@ -34,12 +34,16 @@ final class OvalShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape frontground */
     private final Paint mFrontPaint;
 
+    /** Matrix used to draw the shape */
+    private Matrix mMatrix;
+
 
     /**
      * ShapeDrawer that draws an oval as shape.
      */
     OvalShapeDrawer(Bitmap bitmap) {
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mBitmapShader.setLocalMatrix(mMatrix);
         mBitmapPaint = new Paint();
         mBackPaint = new Paint();
         mBorderPaint = new Paint();
@@ -55,6 +59,7 @@ final class OvalShapeDrawer implements ShapeDrawer {
     @Override
     public void changeBitmap(Bitmap bitmap) {
         this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        mBitmapShader.setLocalMatrix(mMatrix);
 
         mBitmapPaint.setShader(mBitmapShader);
         mBitmapPaint.setAntiAlias(true);
@@ -63,6 +68,7 @@ final class OvalShapeDrawer implements ShapeDrawer {
 
     @Override
     public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {
+        this.mMatrix = matrix;
         mBitmapShader.setLocalMatrix(matrix);
     }
 
