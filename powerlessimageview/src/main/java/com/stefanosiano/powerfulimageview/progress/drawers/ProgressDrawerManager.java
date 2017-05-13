@@ -222,6 +222,12 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         return mProgressOptions;
     }
 
+    /**
+     * @return The selected progress mode
+     */
+    public PivProgressMode getProgressMode() {
+        return mProgressMode;
+    }
 
     interface ProgressDrawerListener{
         /** Request to invalidate the progress indicator bounds */

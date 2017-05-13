@@ -252,6 +252,20 @@ public class PowerfulImageView extends ImageViewWrapper {
     }
 
     /**
+     * @return The selected progress mode
+     */
+    public PivProgressMode getProgressMode(){
+        return mProgressDrawerManager.getProgressMode();
+    }
+
+    /**
+     * @return The selected shape mode
+     */
+    public PivShapeMode getShapeMode(){
+        return mShapeDrawerManager.getShapeMode();
+    }
+
+    /**
      * @return The options of the shape
      */
     public final ShapeOptions getShapeOptions() {
