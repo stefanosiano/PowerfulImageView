@@ -22,17 +22,21 @@ Shapes:
   
   
   
-Motivations
------------
+Background
+----------
   
-1) Progress:  
+**Progress:**  
 Most applications use images loaded from the internet. There are a lot of great libraries to handle these cases, like [Picasso](https://github.com/square/picasso) or [Glide](https://github.com/bumptech/glide). These libraries allows you to show placeholders in your imageViews while downloading/processing the image, too.  
 While this helps a lot, the placeholder doesn't provide any feedback or information to the user. So I created this library to show a progress indicator directly into the Image View, imitating the Android material circular progress bar, to show the current download (or an indeterminate progress bar when the image is downloaded, but processing).  
 This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.
   
-2) Shapes:  
-Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. Circle, oval and rounded rectangle shapes are achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/).  
   
+**Shapes:**  
+Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type may be added (currently top_crop has been added).  
+Shapes are divided into 3 types:  
+1) Rectanglular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews;
+2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations (even applied by image loaders like Glide) may cause issues. Mechanisms to prevent out of memory exceptions are in place, but you may have an image with a random alpha value. To avoid this, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate();
+3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library, and cover background, too, but you won't be able to see what's behind them (solid color shouldn't be transparent). Non-solid shapes don't cover background, but they provide real shapes, allowing users to see anything behind the shape.
   
   
   
@@ -49,13 +53,13 @@ repositories {
 To use **Powerful**ImageView, which extends AppcompatImageView and supports vector drawables and tinting on older apis:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.2.3'
+    compile 'com.stefanosiano:powerfulimageview:0.2.5'
 }
 ```
 To use **Powerless**ImageView, which extends ImageView and doesn't depend on AppCompat library:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.2.3'
+    compile 'com.stefanosiano:powerlessimageview:0.2.5'
 }
 ```
   
@@ -145,9 +149,11 @@ Convenience methods are provided for:
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
 |changeProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
+|getProgressMode| |Get the current progress mode selected.|
 |setProgress|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
 |setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
 |changeShapeMode|PivShapeMode|Changes the shape of the image.|
+|getShapeMode| |Get the current shape mode selected. It can then be used to check whether the shape is rectangular, rounded or solid through its methods.|
 |setScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
   
   
@@ -168,10 +174,9 @@ Notes
 -----
   
 1) PowerfulImageView requires a minimum API level of 12.  
-2) Indeterminate animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library.
+2) Indeterminate animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library, to reduce battery consumption.
 3) The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.
-4) Solid shapes are simple shapes with a solid color drawn over them. They support out of the box any animation and image loader library, and cover background, too. Non-solid shapes don't cover background, but they provide real shapes, allowing users to see anything behind the shape.
-5) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
+4) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
   
   
   
