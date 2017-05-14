@@ -62,4 +62,16 @@ public enum PivShapeMode {
                 return NORMAL;
         }
     }
+
+    public boolean isRounded(){
+        return this == CIRCLE ||this == OVAL ||this == ROUNDED_RECTANGLE;
+    }
+
+    public boolean isSolid(){
+        return this == SOLID_CIRCLE ||this == SOLID_OVAL ||this == SOLID_ROUNDED_RECTANGLE;
+    }
+
+    public boolean isRectangular(){
+        return this == NORMAL ||this == SQUARE ||this == RECTANGLE;
+    }
 }
