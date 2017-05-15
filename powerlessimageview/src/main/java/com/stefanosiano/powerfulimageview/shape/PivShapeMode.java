@@ -63,14 +63,33 @@ public enum PivShapeMode {
         }
     }
 
+    /**
+     * Shapes achieved through bitmap shaders.
+     * Note: They are incompatible with animations, so you shouldn't use them. Also, vector drawables
+     *      don't scale as expected.
+     *
+     * @return True if the image is circle, oval or rounded_rectangle, false otherwise
+     */
     public boolean isRounded(){
         return this == CIRCLE ||this == OVAL ||this == ROUNDED_RECTANGLE;
     }
 
+    /**
+     * Solid shapes are shapes with a solid color drawn over them. They are very efficient and compatible
+     * with any image loader library, any animation and any drawable. They also cover eventual backgrounds.
+     * Note: If you want to show something behind the image, you cannot use these shapes.
+     *
+     * @return True if the image is solid_circle, solid_oval or solid_rounded_rectangle, false otherwise
+     */
     public boolean isSolid(){
         return this == SOLID_CIRCLE ||this == SOLID_OVAL ||this == SOLID_ROUNDED_RECTANGLE;
     }
 
+    /**
+     * Only size is changed in these shapes. They should perform as efficiently as normal imageViews
+     *
+     * @return True if the image is normal, square or rectangle, false otherwise
+     */
     public boolean isRectangular(){
         return this == NORMAL ||this == SQUARE ||this == RECTANGLE;
     }
