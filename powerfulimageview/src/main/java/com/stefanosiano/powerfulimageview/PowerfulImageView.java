@@ -2,6 +2,7 @@ package com.stefanosiano.powerfulimageview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Build;
@@ -10,6 +11,9 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
+import com.stefanosiano.powerfulimageview.blur.BlurDrawerManager;
+import com.stefanosiano.powerfulimageview.blur.BlurOptions;
+import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
 import com.stefanosiano.powerfulimageview.progress.PivProgressGravity;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
@@ -61,6 +65,9 @@ public class PowerfulImageView extends ImageViewWrapper {
 
     /** Helper class to manage the shape of the image and its options */
     private final ShapeDrawerManager mShapeDrawerManager;
+
+    /** Helper class to manage the blurring of the image and its options */
+    private final BlurDrawerManager mBlurDrawerManager;
 
 
     public PowerfulImageView(Context context) {
@@ -124,18 +131,23 @@ public class PowerfulImageView extends ImageViewWrapper {
         //I use the android scale type used as default. If a PivShapeScaleType type is passed, it overrides Android scaleType
         PivShapeScaleType scaleType = PivShapeScaleType.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_shape_scaleType, PivShapeScaleType.getFromScaleType(getScaleType()).getValue()));
 
+
+        BlurOptions blurOptions = new BlurOptions();
+        PivBlurMode blurMode = PivBlurMode.fromValue(0);
+
         a.recycle();
 
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
+        this.mBlurDrawerManager = new BlurDrawerManager(this, blurOptions);
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
+        changeBlurMode(blurMode, 10);
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
-        if(getDrawable() != null)
-            mShapeDrawerManager.changeDrawable(getDrawable().getCurrent());
+        onDrawableChanged(true);
         mShapeDrawerManager.setScaleType(scaleType);
     }
 
@@ -146,6 +158,8 @@ public class PowerfulImageView extends ImageViewWrapper {
         mProgressDrawerManager.onSizeChanged(w, h);
 
         mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
+
+        mBlurDrawerManager.setSize(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight());
     }
 
     @Override
@@ -168,11 +182,25 @@ public class PowerfulImageView extends ImageViewWrapper {
         setMeasuredDimension(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight());
     }
 
+    /**
+     * Method called when the drawable has been changed, thruogh a set..() method
+     *
+     * @param isBlurred True if the image is already blurred, False otherwise
+     */
     @Override
-    void onBitmapChanged() {
+    void onDrawableChanged(boolean isBlurred) {
+
+        //if the image comes from super methods and i need to blur it, I blur it
+        if(!isBlurred && mBlurDrawerManager != null && mBlurDrawerManager.shouldBlur()){
+            mBlurDrawerManager.changeDrawable(getDrawable().getCurrent());
+            setBlurredBitmap(mBlurDrawerManager.getBlurredBitmap());
+            return;
+        }
+
         //when initializing (in constructor) it gets called, but it is still null
-        if(mShapeDrawerManager != null && getDrawable() != null)
+        if (mShapeDrawerManager != null && getDrawable() != null)
             mShapeDrawerManager.changeDrawable(getDrawable().getCurrent());
+
     }
 
     @Override
@@ -232,6 +260,20 @@ public class PowerfulImageView extends ImageViewWrapper {
      */
     public final void changeShapeMode(PivShapeMode shapeMode){
         mShapeDrawerManager.changeShapeMode(shapeMode);
+    }
+
+
+    /**
+     * Changes the blur mode of the image.
+     *
+     * @param blurMode mode to use to blur the image
+     * @param radius radius to use when blurring the image: the higher the radius, the more the blurring.
+     */
+    public final void changeBlurMode(PivBlurMode blurMode, int radius){
+        mBlurDrawerManager.changeBlurMode(blurMode, radius);
+        Bitmap blurredBitmap = mBlurDrawerManager.getBlurredBitmap();
+        if(blurredBitmap != null)
+            setBlurredBitmap(blurredBitmap);
     }
 
 

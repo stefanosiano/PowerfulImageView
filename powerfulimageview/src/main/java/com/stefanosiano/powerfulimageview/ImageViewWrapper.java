@@ -35,7 +35,12 @@ abstract class ImageViewWrapper extends AppCompatImageView {
 
 
 
-    abstract void onBitmapChanged();
+    /**
+     * Method called when the drawable has been changed, thruogh a set..() method
+     *
+     * @param isBlurred True if the image is already bluured, False otherwise
+     */
+    abstract void onDrawableChanged(boolean isBlurred);
 
     /* Methods to check! Should they be handled by ShapeDrawerManager? */
     @Override
@@ -113,34 +118,40 @@ abstract class ImageViewWrapper extends AppCompatImageView {
 
     //these methods propagate their effects to the methods of the PIV
 
+
     @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
-        onBitmapChanged();
+        onDrawableChanged(false);
     }
 
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        onBitmapChanged();
+        onDrawableChanged(false);
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
-        onBitmapChanged();
+        onDrawableChanged(false);
     }
 
     @Override
     public void setImageIcon(Icon icon) {
         super.setImageIcon(icon);
-        onBitmapChanged();
+        onDrawableChanged(false);
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        onBitmapChanged();
+        onDrawableChanged(false);
+    }
+
+    protected void setBlurredBitmap(Bitmap bm) {
+        super.setImageBitmap(bm);
+        onDrawableChanged(true);
     }
 
     @Override
