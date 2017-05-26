@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur;
+package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,11 +7,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.stefanosiano.powerfulimageview.blur.BlurOptions;
+import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
+
 /**
  * Created by stefano on 19/05/17.
  */
 
-public final class BlurDrawerManager {
+public final class BlurManager {
 
     private Drawable mDrawable;
 
@@ -20,6 +23,9 @@ public final class BlurDrawerManager {
     private Bitmap mBlurredBitmap;
 
     private PivBlurMode mMode;
+
+    private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
+    private BlurAlgorithm mBlurAlgorithm;
 
     private int mWidth;
     private int mHeight;
@@ -32,7 +38,7 @@ public final class BlurDrawerManager {
      * @param view View to show the blurred image into
      * @param blurOptions Options of the blur
      */
-    public BlurDrawerManager(View view, final BlurOptions blurOptions){
+    public BlurManager(View view, final BlurOptions blurOptions){
 
     }
 
@@ -50,14 +56,6 @@ public final class BlurDrawerManager {
     }
 
     /**
-     * @return The blurred bitmap. If any problem occurs, the original bitmap will be returned.
-     */
-    public Bitmap getBlurredBitmap(){
-        mBlurredBitmap = blur(mLastRadius);
-        return mBlurredBitmap != null ? mBlurredBitmap : mOriginalBitmap;
-    }
-
-    /**
      * Changes the blur mode of the image.
      *
      * @param blurMode mode to use to blur the image
@@ -65,27 +63,54 @@ public final class BlurDrawerManager {
     public final void changeBlurMode(PivBlurMode blurMode, int radius){
         this.mLastRadius = mRadius;
         this.mRadius = radius;
+
+        switch (blurMode){
+            case DISABLED:
+                if(mGaussianFastBlurAlgorithm == null)
+                    mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
+                mBlurAlgorithm = mGaussianFastBlurAlgorithm;
+                break;
+        }
     }
 
 
     public Bitmap blur(int radius){
+        if(mLastRadius == radius && mBlurredBitmap != null){
+            //if I already blurred the image with this radius, I return it
+            return mBlurredBitmap;
+        }
         this.mLastRadius = mRadius;
         this.mRadius = radius;
 
-        return mOriginalBitmap;
+        if(mOriginalBitmap == null)
+            return null;
+
+        mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap);
+        return mBlurredBitmap;
     }
 
-    public boolean shouldBlur(){
-        return mMode != PivBlurMode.DISABLED && mRadius > 0;
-    }
 
-
-
-    public void setSize(int width, int height){
+    public void onSizeChanged(int width, int height){
         this.mWidth = width;
         this.mHeight = height;
     }
 
+    /**
+     * Check if the current options require the bitmap to be blurred
+     *
+     * @return True if the bitmap should be blurred, false otherwise
+     */
+    public boolean shouldBlur(){
+        return mMode != PivBlurMode.DISABLED && mRadius > 0;
+    }
+
+    /**
+     * @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned.
+     */
+    public Bitmap getLastBlurredBitmap(){
+        mBlurredBitmap = blur(mRadius);
+        return mBlurredBitmap != null ? mBlurredBitmap : mOriginalBitmap;
+    }
 
     /**
      * @return Returns the bitmap of the drawable

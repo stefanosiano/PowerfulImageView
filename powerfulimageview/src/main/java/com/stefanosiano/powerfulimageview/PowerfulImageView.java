@@ -11,7 +11,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import com.stefanosiano.powerfulimageview.blur.BlurDrawerManager;
+import com.stefanosiano.powerfulimageview.blur.algorithms.BlurManager;
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
 import com.stefanosiano.powerfulimageview.progress.PivProgressGravity;
@@ -67,7 +67,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private final ShapeDrawerManager mShapeDrawerManager;
 
     /** Helper class to manage the blurring of the image and its options */
-    private final BlurDrawerManager mBlurDrawerManager;
+    private final BlurManager mBlurManager;
 
 
     public PowerfulImageView(Context context) {
@@ -139,7 +139,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
-        this.mBlurDrawerManager = new BlurDrawerManager(this, blurOptions);
+        this.mBlurManager = new BlurManager(this, blurOptions);
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
@@ -147,7 +147,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
-        onDrawableChanged(true);
+        onDrawableChanged(false);
         mShapeDrawerManager.setScaleType(scaleType);
     }
 
@@ -159,7 +159,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
 
-        mBlurDrawerManager.setSize(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight());
+        mBlurManager.onSizeChanged(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight());
     }
 
     @Override
@@ -191,9 +191,10 @@ public class PowerfulImageView extends ImageViewWrapper {
     void onDrawableChanged(boolean isBlurred) {
 
         //if the image comes from super methods and i need to blur it, I blur it
-        if(!isBlurred && mBlurDrawerManager != null && mBlurDrawerManager.shouldBlur()){
-            mBlurDrawerManager.changeDrawable(getDrawable().getCurrent());
-            setBlurredBitmap(mBlurDrawerManager.getBlurredBitmap());
+        if(!isBlurred && mBlurManager != null && mBlurManager.shouldBlur() && getDrawable() != null){
+            mBlurManager.changeDrawable(getDrawable().getCurrent());
+            //todo it gets always called: setBitmap calls setDrawableImage...
+            setBlurredBitmap(mBlurManager.getLastBlurredBitmap());
             return;
         }
 
@@ -270,8 +271,11 @@ public class PowerfulImageView extends ImageViewWrapper {
      * @param radius radius to use when blurring the image: the higher the radius, the more the blurring.
      */
     public final void changeBlurMode(PivBlurMode blurMode, int radius){
-        mBlurDrawerManager.changeBlurMode(blurMode, radius);
-        Bitmap blurredBitmap = mBlurDrawerManager.getBlurredBitmap();
+        if(mBlurManager == null)
+            return;
+
+        mBlurManager.changeBlurMode(blurMode, radius);
+        Bitmap blurredBitmap = mBlurManager.getLastBlurredBitmap();
         if(blurredBitmap != null)
             setBlurredBitmap(blurredBitmap);
     }

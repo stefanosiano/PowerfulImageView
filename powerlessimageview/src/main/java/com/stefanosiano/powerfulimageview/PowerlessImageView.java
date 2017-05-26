@@ -169,7 +169,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     }
 
     @Override
-    void onBitmapChanged() {
+    void onDrawableChanged(boolean isBlurred) {
         //when initializing (in constructor) it gets called, but it is still null
         if(mShapeDrawerManager != null && getDrawable() != null)
             mShapeDrawerManager.changeDrawable(getDrawable().getCurrent());
