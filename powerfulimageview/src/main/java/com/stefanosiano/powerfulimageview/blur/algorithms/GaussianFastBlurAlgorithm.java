@@ -19,7 +19,7 @@ public class GaussianFastBlurAlgorithm implements BlurAlgorithm {
 
     @Override
     public void setup(BlurOptions options) {
-        this.radius = 10;
+        this.radius = 32;
     }
 
     @Override
@@ -49,8 +49,10 @@ public class GaussianFastBlurAlgorithm implements BlurAlgorithm {
                     }
                 }
             }
-            original.setPixels(pix, 0, w, 0, 0, w, h);
-            return original;
+
+            Bitmap blurred = Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
+            //original.setPixels(pix, 0, w, 0, 0, w, h);
+            return blurred;
         }
 
 }

@@ -39,7 +39,6 @@ public final class BlurManager {
      * @param blurOptions Options of the blur
      */
     public BlurManager(View view, final BlurOptions blurOptions){
-
     }
 
     /**
@@ -48,8 +47,8 @@ public final class BlurManager {
      * @param drawable drawable to show
      */
     public void changeDrawable(Drawable drawable) {
-        if(mMode == PivBlurMode.DISABLED)
-            return;
+        //if(mMode == PivBlurMode.DISABLED)
+//            return;
         Drawable mLastDrawable = mDrawable;
         this.mDrawable = drawable;
         this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
@@ -79,11 +78,14 @@ public final class BlurManager {
             //if I already blurred the image with this radius, I return it
             return mBlurredBitmap;
         }
-        this.mLastRadius = mRadius;
+        this.mLastRadius = radius;
         this.mRadius = radius;
 
         if(mOriginalBitmap == null)
             return null;
+
+        if(mBlurredBitmap != null)
+            mBlurredBitmap.recycle();
 
         mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap);
         return mBlurredBitmap;
@@ -93,6 +95,9 @@ public final class BlurManager {
     public void onSizeChanged(int width, int height){
         this.mWidth = width;
         this.mHeight = height;
+
+        if(shouldBlur())
+            changeDrawable(mDrawable);
     }
 
     /**

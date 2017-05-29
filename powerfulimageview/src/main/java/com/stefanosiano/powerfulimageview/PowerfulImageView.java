@@ -69,6 +69,8 @@ public class PowerfulImageView extends ImageViewWrapper {
     /** Helper class to manage the blurring of the image and its options */
     private final BlurManager mBlurManager;
 
+    private boolean mIsBlurred;
+
 
     public PowerfulImageView(Context context) {
         this(context, null);
@@ -140,11 +142,13 @@ public class PowerfulImageView extends ImageViewWrapper {
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
         this.mBlurManager = new BlurManager(this, blurOptions);
+        this.mIsBlurred = false;
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
         changeBlurMode(blurMode, 10);
 
+        this.mIsBlurred = false;
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
         onDrawableChanged(false);
@@ -159,7 +163,10 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
 
-        mBlurManager.onSizeChanged(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight());
+        mBlurManager.onSizeChanged(w, h);
+
+        this.mIsBlurred = false;
+        onDrawableChanged(false);
     }
 
     @Override
@@ -191,9 +198,8 @@ public class PowerfulImageView extends ImageViewWrapper {
     void onDrawableChanged(boolean isBlurred) {
 
         //if the image comes from super methods and i need to blur it, I blur it
-        if(!isBlurred && mBlurManager != null && mBlurManager.shouldBlur() && getDrawable() != null){
+        if(!mIsBlurred && mBlurManager != null && mBlurManager.shouldBlur() && getDrawable() != null){
             mBlurManager.changeDrawable(getDrawable().getCurrent());
-            //todo it gets always called: setBitmap calls setDrawableImage...
             setBlurredBitmap(mBlurManager.getLastBlurredBitmap());
             return;
         }
@@ -223,6 +229,12 @@ public class PowerfulImageView extends ImageViewWrapper {
         super.setScaleType(ScaleType.MATRIX);
         if(mShapeDrawerManager != null)
             mShapeDrawerManager.setScaleType(scaleType);
+    }
+
+    @Override
+    protected void setBlurredBitmap(Bitmap bm) {
+        mIsBlurred = true;
+        super.setBlurredBitmap(bm);
     }
 
     @Override
