@@ -5,6 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -146,7 +149,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
-        changeBlurMode(blurMode, 10);
+        changeBlurMode(blurMode, 0);
 
         this.mIsBlurred = false;
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
@@ -164,9 +167,6 @@ public class PowerfulImageView extends ImageViewWrapper {
         mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
 
         mBlurManager.onSizeChanged(w, h);
-
-        this.mIsBlurred = false;
-        onDrawableChanged(false);
     }
 
     @Override
@@ -198,9 +198,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     void onDrawableChanged(boolean isBlurred) {
 
         //if the image comes from super methods and i need to blur it, I blur it
-        if(!mIsBlurred && mBlurManager != null && mBlurManager.shouldBlur() && getDrawable() != null){
-            mBlurManager.changeDrawable(getDrawable().getCurrent());
-            setBlurredBitmap(mBlurManager.getLastBlurredBitmap());
+        if(blurBitmap()){
             return;
         }
 
@@ -236,6 +234,7 @@ public class PowerfulImageView extends ImageViewWrapper {
         mIsBlurred = true;
         super.setBlurredBitmap(bm);
     }
+
 
     @Override
     public void setImageMatrix(Matrix matrix) {
@@ -287,9 +286,20 @@ public class PowerfulImageView extends ImageViewWrapper {
             return;
 
         mBlurManager.changeBlurMode(blurMode, radius);
-        Bitmap blurredBitmap = mBlurManager.getLastBlurredBitmap();
-        if(blurredBitmap != null)
-            setBlurredBitmap(blurredBitmap);
+    }
+
+    private boolean blurBitmap(){
+
+        if(mBlurManager == null || getDrawable() == null)
+            return false;
+
+        boolean shouldBlur = mBlurManager.shouldBlur(getDrawable().getCurrent());
+
+        mBlurManager.changeDrawable(getDrawable().getCurrent());
+        if(shouldBlur)
+            setBlurredBitmap(mBlurManager.getLastBlurredBitmap());
+
+        return shouldBlur;
     }
 
 

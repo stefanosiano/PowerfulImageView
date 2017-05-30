@@ -138,7 +138,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 int sizeX;
                 int sizeY;
                 int maxWidth = (int) Math.max(mMeasuredWidth, mMeasuredHeight * ratio);
-                int maxHeight = (int) Math.max(mMeasuredHeight, mMeasuredHeight / ratio);
+                int maxHeight = (int) Math.max(mMeasuredHeight, mMeasuredWidth / ratio);
 
                 if(drawable.getIntrinsicWidth() > maxWidth && maxWidth > 0 && drawable.getIntrinsicHeight() > maxHeight && maxHeight > 0){
                     sizeX = maxWidth;

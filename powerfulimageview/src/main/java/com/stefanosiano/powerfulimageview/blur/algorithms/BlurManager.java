@@ -47,11 +47,10 @@ public final class BlurManager {
      * @param drawable drawable to show
      */
     public void changeDrawable(Drawable drawable) {
-        //if(mMode == PivBlurMode.DISABLED)
-//            return;
         Drawable mLastDrawable = mDrawable;
         this.mDrawable = drawable;
-        this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
+        if(shouldBlur(mDrawable))
+            this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
     }
 
     /**
@@ -60,8 +59,6 @@ public final class BlurManager {
      * @param blurMode mode to use to blur the image
      */
     public final void changeBlurMode(PivBlurMode blurMode, int radius){
-        this.mLastRadius = mRadius;
-        this.mRadius = radius;
 
         switch (blurMode){
             case DISABLED:
@@ -70,19 +67,27 @@ public final class BlurManager {
                 mBlurAlgorithm = mGaussianFastBlurAlgorithm;
                 break;
         }
+
+        mLastRadius = -1;
+        this.mRadius = radius;
+        //blur(radius);
     }
 
 
     public Bitmap blur(int radius){
-        if(mLastRadius == radius && mBlurredBitmap != null){
-            //if I already blurred the image with this radius, I return it
-            return mBlurredBitmap;
-        }
-        this.mLastRadius = radius;
         this.mRadius = radius;
 
         if(mOriginalBitmap == null)
             return null;
+
+        if(mLastRadius == radius && mBlurredBitmap != null){
+            this.mLastRadius = radius;
+
+            //if I already blurred the image with this radius, I return it
+            return mBlurredBitmap;
+        }
+
+        this.mLastRadius = radius;
 
         if(mBlurredBitmap != null)
             mBlurredBitmap.recycle();
@@ -95,9 +100,7 @@ public final class BlurManager {
     public void onSizeChanged(int width, int height){
         this.mWidth = width;
         this.mHeight = height;
-
-        if(shouldBlur())
-            changeDrawable(mDrawable);
+        changeDrawable(mDrawable);
     }
 
     /**
@@ -105,8 +108,8 @@ public final class BlurManager {
      *
      * @return True if the bitmap should be blurred, false otherwise
      */
-    public boolean shouldBlur(){
-        return mMode != PivBlurMode.DISABLED && mRadius > 0;
+    public boolean shouldBlur(Drawable drawable){
+        return (mMode != PivBlurMode.DISABLED && mRadius > 0 && mLastRadius != mRadius);// || mDrawable != drawable;
     }
 
     /**
@@ -142,7 +145,7 @@ public final class BlurManager {
                 int sizeX;
                 int sizeY;
                 int maxWidth = (int) Math.max(mWidth, mHeight * ratio);
-                int maxHeight = (int) Math.max(mHeight, mHeight / ratio);
+                int maxHeight = (int) Math.max(mHeight, mWidth / ratio);
 
                 if(drawable.getIntrinsicWidth() > maxWidth && maxWidth > 0 && drawable.getIntrinsicHeight() > maxHeight && maxHeight > 0){
                     sizeX = maxWidth;
