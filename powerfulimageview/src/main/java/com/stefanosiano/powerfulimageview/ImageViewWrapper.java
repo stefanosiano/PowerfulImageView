@@ -150,8 +150,8 @@ abstract class ImageViewWrapper extends AppCompatImageView {
     }
 
     protected void setBlurredBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-        onDrawableChanged(true);
+        setImageBitmap(bm);
+        //onDrawableChanged(true);
     }
 
     @Override

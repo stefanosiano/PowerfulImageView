@@ -1,7 +1,9 @@
 package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -49,8 +51,7 @@ public final class BlurManager {
     public void changeDrawable(Drawable drawable) {
         Drawable mLastDrawable = mDrawable;
         this.mDrawable = drawable;
-        if(shouldBlur(mDrawable))
-            this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
+        this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
     }
 
     /**
@@ -80,6 +81,9 @@ public final class BlurManager {
         if(mOriginalBitmap == null)
             return null;
 
+        if(mOriginalBitmap.isRecycled())
+            return null;
+
         if(mLastRadius == radius && mBlurredBitmap != null){
             this.mLastRadius = radius;
 
@@ -93,7 +97,7 @@ public final class BlurManager {
             mBlurredBitmap.recycle();
 
         mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap);
-        return mBlurredBitmap;
+        return mOriginalBitmap;
     }
 
 
@@ -109,7 +113,7 @@ public final class BlurManager {
      * @return True if the bitmap should be blurred, false otherwise
      */
     public boolean shouldBlur(Drawable drawable){
-        return (mMode != PivBlurMode.DISABLED && mRadius > 0 && mLastRadius != mRadius);// || mDrawable != drawable;
+        return mMode != PivBlurMode.DISABLED && mRadius > 0 && (mLastRadius != mRadius || mDrawable != drawable);
     }
 
     /**
@@ -124,49 +128,52 @@ public final class BlurManager {
      * @return Returns the bitmap of the drawable
      */
     private Bitmap getOriginalBitmapFromDrawable(Drawable mLastDrawable, Drawable drawable) {
-        if (drawable == null || mWidth <= 0 || mHeight <= 0) {
+        Bitmap bitmap;
+
+        if (drawable == null){// || mWidth <= 0 || mHeight <= 0) {
             return null;
         }
 
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
+        //bitmap size should not be bigger than the view size
+        float ratio = drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
+        int sizeX;
+        int sizeY;
+        int maxWidth = (int) Math.max(mWidth, mHeight * ratio) / 4;
+        int maxHeight = (int) Math.max(mHeight, mWidth / ratio) / 4;
+
+        if (drawable.getIntrinsicWidth() > maxWidth && maxWidth > 0 && drawable.getIntrinsicHeight() > maxHeight && maxHeight > 0) {
+            sizeX = maxWidth;
+            sizeY = maxHeight;
+        } else {
+            sizeX = drawable.getIntrinsicWidth();
+            sizeY = drawable.getIntrinsicHeight();
         }
 
-        try {
-            Bitmap bitmap;
+        //if i already decoded the bitmap i reuse it
+        if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mLastDrawable == drawable)
+            return mOriginalBitmap;
 
-            if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        //otherwise I free its memory
+        if (mOriginalBitmap != null)
+            mOriginalBitmap.recycle();
+
+
+        try {
+
+
+
+            if (drawable instanceof BitmapDrawable) {
+                //Bitmap src = ((BitmapDrawable) drawable).getBitmap();
+                //return Bitmap.createScaledBitmap(src, sizeX, sizeY, false);
+                bitmap = Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888);
+            } else if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
                 bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
             } else if (drawable instanceof ColorDrawable) {
                 bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             } else {
-                //bitmap size should not be bigger than the view size
-                float ratio = drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
-                int sizeX;
-                int sizeY;
-                int maxWidth = (int) Math.max(mWidth, mHeight * ratio);
-                int maxHeight = (int) Math.max(mHeight, mWidth / ratio);
-
-                if(drawable.getIntrinsicWidth() > maxWidth && maxWidth > 0 && drawable.getIntrinsicHeight() > maxHeight && maxHeight > 0){
-                    sizeX = maxWidth;
-                    sizeY = maxHeight;
-                }
-                else {
-                    sizeX = drawable.getIntrinsicWidth();
-                    sizeY = drawable.getIntrinsicHeight();
-                }
-
-                //if i already decoded the bitmap i reuse it
-                if(sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && mLastDrawable == drawable)
-                    return mOriginalBitmap;
-
-                //otherwise I free its memory
-                if(mOriginalBitmap != null)
-                    mOriginalBitmap.recycle();
 
                 bitmap = Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888);
             }
-
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
@@ -176,5 +183,6 @@ public final class BlurManager {
             e.printStackTrace();
             return null;
         }
+
     }
 }

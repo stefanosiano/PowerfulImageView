@@ -14,7 +14,7 @@ public class GaussianFastBlurAlgorithm implements BlurAlgorithm {
     private int radius;
 
     public GaussianFastBlurAlgorithm() {
-        this.radius = 8;
+        this.radius = 2;
     }
 
     @Override

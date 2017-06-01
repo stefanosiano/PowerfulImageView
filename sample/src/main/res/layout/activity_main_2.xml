@@ -12,12 +12,14 @@
         android:scaleType="centerCrop"
         android:background="#80a0a0a0"
 
-        android:src="@drawable/sf1"
+        android:src="@drawable/ic_3d_rotation_black_24dp"
 
         app:piv_progress_indeterminate_color="@color/colorAccent"
         app:piv_progress_size_percent="50"
         app:piv_progress_value_percent="40"
-        app:piv_progress_mode="disabled"/>
+        app:piv_progress_mode="disabled"
+
+        app:piv_shape_mode="circle"/>
 
     <com.stefanosiano.powerfulimageview.PowerfulImageView
         android:id="@+id/piv2"

@@ -72,7 +72,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     /** Helper class to manage the blurring of the image and its options */
     private final BlurManager mBlurManager;
 
-    private boolean mIsBlurred;
+    private boolean mCheckBlur = true;
 
 
     public PowerfulImageView(Context context) {
@@ -145,13 +145,11 @@ public class PowerfulImageView extends ImageViewWrapper {
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
         this.mBlurManager = new BlurManager(this, blurOptions);
-        this.mIsBlurred = false;
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
-        changeBlurMode(blurMode, 0);
+        changeBlurMode(blurMode, 1);
 
-        this.mIsBlurred = false;
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
         onDrawableChanged(false);
@@ -198,9 +196,13 @@ public class PowerfulImageView extends ImageViewWrapper {
     void onDrawableChanged(boolean isBlurred) {
 
         //if the image comes from super methods and i need to blur it, I blur it
-        if(blurBitmap()){
-            return;
+        if(mCheckBlur) {
+            mCheckBlur = false;
+            if(blurBitmap())
+                return;
         }
+
+        mCheckBlur = true;
 
         //when initializing (in constructor) it gets called, but it is still null
         if (mShapeDrawerManager != null && getDrawable() != null)
@@ -231,7 +233,6 @@ public class PowerfulImageView extends ImageViewWrapper {
 
     @Override
     protected void setBlurredBitmap(Bitmap bm) {
-        mIsBlurred = true;
         super.setBlurredBitmap(bm);
     }
 
