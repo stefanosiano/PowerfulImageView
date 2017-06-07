@@ -14,11 +14,13 @@ public class GaussianFastBlurAlgorithm implements BlurAlgorithm {
     private int radius;
 
     public GaussianFastBlurAlgorithm() {
-        this.radius = 2;
+        this.radius = 0;
     }
 
     @Override
-    public void setup(BlurOptions options) {}
+    public void setup(BlurOptions options) {
+        radius = options.getRadius();
+    }
 
     @Override
     public Bitmap blur(Bitmap original) {

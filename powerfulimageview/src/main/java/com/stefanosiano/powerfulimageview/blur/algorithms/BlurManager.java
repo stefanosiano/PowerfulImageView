@@ -24,6 +24,8 @@ public final class BlurManager {
 
     private Bitmap mBlurredBitmap;
 
+    private BlurOptions mBlurOptions;
+
     private PivBlurMode mMode;
 
     private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
@@ -41,6 +43,7 @@ public final class BlurManager {
      * @param blurOptions Options of the blur
      */
     public BlurManager(View view, final BlurOptions blurOptions){
+        mBlurOptions = blurOptions;
     }
 
     /**
@@ -50,8 +53,16 @@ public final class BlurManager {
      */
     public void changeDrawable(Drawable drawable) {
         Drawable mLastDrawable = mDrawable;
+        Bitmap lastOriginalBitmap = mOriginalBitmap;
         this.mDrawable = drawable;
         this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
+
+        if(lastOriginalBitmap != mOriginalBitmap) {
+            if(lastOriginalBitmap != null)
+                lastOriginalBitmap.recycle();
+            mLastRadius = -1;
+            blur(mRadius);
+        }
     }
 
     /**
@@ -61,22 +72,18 @@ public final class BlurManager {
      */
     public final void changeBlurMode(PivBlurMode blurMode, int radius){
 
-        switch (blurMode){
-            case DISABLED:
-                if(mGaussianFastBlurAlgorithm == null)
-                    mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
-                mBlurAlgorithm = mGaussianFastBlurAlgorithm;
-                break;
-        }
-
+        updateDrawers(blurMode);
         mLastRadius = -1;
         this.mRadius = radius;
-        //blur(radius);
+        mBlurOptions.setRadius(radius);
+
+        mBlurAlgorithm.setup(mBlurOptions);
     }
 
 
     public Bitmap blur(int radius){
         this.mRadius = radius;
+        mBlurOptions.setRadius(radius);
 
         if(mOriginalBitmap == null)
             return null;
@@ -96,6 +103,7 @@ public final class BlurManager {
         if(mBlurredBitmap != null)
             mBlurredBitmap.recycle();
 
+        mBlurAlgorithm.setup(mBlurOptions);
         mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap);
         return mOriginalBitmap;
     }
@@ -104,7 +112,17 @@ public final class BlurManager {
     public void onSizeChanged(int width, int height){
         this.mWidth = width;
         this.mHeight = height;
-        changeDrawable(mDrawable);
+    }
+
+    private void updateDrawers(PivBlurMode blurMode){
+        switch (blurMode){
+            default:
+            case DISABLED:
+                if(mGaussianFastBlurAlgorithm == null)
+                    mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
+                mBlurAlgorithm = mGaussianFastBlurAlgorithm;
+                break;
+        }
     }
 
     /**
@@ -130,12 +148,12 @@ public final class BlurManager {
     private Bitmap getOriginalBitmapFromDrawable(Drawable mLastDrawable, Drawable drawable) {
         Bitmap bitmap;
 
-        if (drawable == null){// || mWidth <= 0 || mHeight <= 0) {
+        if (drawable == null || mWidth <= 0 || mHeight <= 0) {
             return null;
         }
 
         //bitmap size should not be bigger than the view size
-        float ratio = drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
+        float ratio = (float) drawable.getIntrinsicWidth() / (float) drawable.getIntrinsicHeight();
         int sizeX;
         int sizeY;
         int maxWidth = (int) Math.max(mWidth, mHeight * ratio) / 4;

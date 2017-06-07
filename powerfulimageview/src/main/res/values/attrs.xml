@@ -207,5 +207,13 @@
         <!-- Set the solid color used by solid shapes -->
         <attr name="piv_shape_solid_color" format="color" />
 
+
+
+        <!-- BLUR OPTIONS -->
+
+        <!-- Set the blur radius used -->
+        <attr name="piv_blur_radius" format="integer" />
+
+
     </declare-styleable>
 </resources>

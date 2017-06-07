@@ -5,4 +5,18 @@ package com.stefanosiano.powerfulimageview.blur;
  */
 
 public class BlurOptions {
+
+    private int mRadius;
+
+    public BlurOptions(int radius) {
+        this.mRadius = radius;
+    }
+
+    public int getRadius() {
+        return mRadius;
+    }
+
+    public void setRadius(int radius) {
+        this.mRadius = radius;
+    }
 }
