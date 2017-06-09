@@ -18,7 +18,7 @@
         app:piv_progress_size_percent="50"
         app:piv_progress_value_percent="40"
         app:piv_progress_mode="disabled"
-        app:piv_blur_radius="2"
+        app:piv_blur_radius="5"
 
         app:piv_shape_mode="normal"/>
 

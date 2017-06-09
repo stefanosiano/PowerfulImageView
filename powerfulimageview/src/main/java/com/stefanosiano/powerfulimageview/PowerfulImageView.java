@@ -72,6 +72,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     /** Helper class to manage the blurring of the image and its options */
     private final BlurManager mBlurManager;
 
+    /** Flag used to control if blurring bitmap should be checked */
     private boolean mCheckBlur = false;
 
 
@@ -283,14 +284,12 @@ public class PowerfulImageView extends ImageViewWrapper {
             return;
 
         mBlurManager.changeBlurMode(blurMode, radius);
+        blurBitmap();
     }
 
     private boolean blurBitmap(){
 
-        if(!mCheckBlur)
-            return false;
-
-        if(mBlurManager == null || getDrawable() == null)
+        if(!mCheckBlur || mBlurManager == null || getDrawable() == null)
             return false;
 
         boolean shouldBlur = mBlurManager.shouldBlur(getDrawable().getCurrent());
