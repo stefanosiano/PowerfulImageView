@@ -51,10 +51,12 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final boolean DEFAULT_PROGRESS_REVERSED = false;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
-    private static final int DEFAULT_SHAPE_MODE = PivShapeMode.NORMAL.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
     private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 10;
     private static final int DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 1;
+
+    //Shape initialization constants
+    private static final int DEFAULT_SHAPE_MODE = PivShapeMode.NORMAL.getValue();
     private static final int DEFAULT_SHAPE_INNER_PADDING = -1;
     private static final float DEFAULT_SHAPE_INNER_PADDING_PERCENT = 0;
     private static final boolean DEFAULT_SHAPE_BORDER_OVERLAY = false;
@@ -62,6 +64,12 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final float DEFAULT_SHAPE_RATIO = 0;
     private static final float DEFAULT_SHAPE_RADIUS_X = 1;
     private static final float DEFAULT_SHAPE_RADIUS_Y = 1;
+
+    //Blur initialization constants
+    private static final int DEFAULT_BLUR_RADIUS = 0;
+    private static final float DEFAULT_BLUR_DOWNSAMPLING_RATE = 4;
+    private static final boolean DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK = true;
+    private static final boolean DEFAULT_BLUR_KEEP_ORIGINAL = true;
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -139,7 +147,10 @@ public class PowerfulImageView extends ImageViewWrapper {
 
 
         BlurOptions blurOptions = new BlurOptions(
-                a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, 0)
+                a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_RADIUS),
+                a.getFloat(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_DOWNSAMPLING_RATE),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_KEEP_ORIGINAL),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK)
         );
 
         PivBlurMode blurMode = PivBlurMode.fromValue(0);
@@ -287,6 +298,11 @@ public class PowerfulImageView extends ImageViewWrapper {
         blurBitmap();
     }
 
+    /**
+     * Blur the image, if needed.
+     * @return True if the image is blurred and will be set through setBitmap()
+     *         False if the image doesn't need to be blurred
+     */
     private boolean blurBitmap(){
 
         if(!mCheckBlur || mBlurManager == null || getDrawable() == null)
