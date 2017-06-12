@@ -219,7 +219,8 @@
         <!-- Set the blur radius used -->
         <attr name="piv_blur_radius" format="integer" />
 
-        <!-- Rate to downSample the image width and height, based on the view size -->
+        <!-- Rate to downSample the image width and height, based on the view size. The bitmap is
+            downsampled to be no more than the view size divided by this rate. -->
         <attr name="piv_blur_down_sampling_rate" format="float" />
 
         <!-- Whether the original bitmap should be kept in memory -->

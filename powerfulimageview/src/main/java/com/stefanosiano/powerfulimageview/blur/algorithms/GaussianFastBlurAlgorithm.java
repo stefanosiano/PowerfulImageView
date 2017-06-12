@@ -5,25 +5,17 @@ import android.graphics.Bitmap;
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
 /**
+ * Algorithm taken by
  * http://stackoverflow.com/a/13436737/774398
  * by gordi
  */
 
 final class GaussianFastBlurAlgorithm implements BlurAlgorithm {
 
-    private int radius;
-
-    GaussianFastBlurAlgorithm() {
-        this.radius = 0;
-    }
+    GaussianFastBlurAlgorithm() {}
 
     @Override
-    public void setup(BlurOptions options) {
-        radius = options.getRadius();
-    }
-
-    @Override
-    public Bitmap blur(Bitmap original) {
+    public Bitmap blur(Bitmap original, int radius, BlurOptions options) {
 
             int w = original.getWidth();
             int h = original.getHeight();
@@ -58,9 +50,19 @@ final class GaussianFastBlurAlgorithm implements BlurAlgorithm {
                 }
             }
 
-            Bitmap blurred = Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
-            //original.setPixels(pix, 0, w, 0, 0, w, h);
-            return blurred;
+            if(options.isKeepOriginal()) {
+                return Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
+            }
+            else {
+                if (original.isMutable()) {
+                    original.setPixels(pix, 0, w, 0, 0, w, h);
+                    return original;
+                }
+                else {
+                    original.recycle();
+                    return Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
+                }
+            }
         }
 
 }

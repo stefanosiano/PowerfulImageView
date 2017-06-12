@@ -9,7 +9,5 @@ import com.stefanosiano.powerfulimageview.blur.BlurOptions;
  */
 
 public interface BlurAlgorithm {
-
-    void setup(BlurOptions options);
-    Bitmap blur(Bitmap original);
+    public Bitmap blur(Bitmap original, int radius, BlurOptions options);
 }

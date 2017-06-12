@@ -5,10 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.View;
+import android.widget.ImageView;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Manager class for blurring. Used to manage and blur the image.
@@ -49,13 +51,17 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius */
     private int mLastRadius;
 
+    //Using a weakRefence to be sure to not leak memory
+    private final WeakReference<ImageView> mView;
+
     /**
      * Manager class for blur. Used to initialize and blur the image with the right algorithm.
      *
      * @param view View to show the blurred image into
      * @param blurOptions Options of the blur
      */
-    public BlurManager(View view, final BlurOptions blurOptions){
+    public BlurManager(ImageView view, final BlurOptions blurOptions){
+        mView = new WeakReference<>(view);
         mBlurOptions = blurOptions;
     }
 
@@ -93,8 +99,6 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         updateAlgorithms(blurMode);
         mLastRadius = -1;
         mRadius = radius;
-
-        mBlurAlgorithm.setup(mBlurOptions);
     }
 
 
@@ -120,9 +124,14 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         if(mBlurredBitmap != null)
             mBlurredBitmap.recycle();
 
-        mBlurAlgorithm.setup(mBlurOptions);
-        mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap);
-        return mBlurredBitmap;
+        if(mBlurOptions.isKeepOriginal()){
+            mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+            return mBlurredBitmap;
+        }
+        else {
+            mOriginalBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+            return mOriginalBitmap;
+        }
     }
 
 
@@ -138,6 +147,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @param blurMode Algorithm to use
      */
     private void updateAlgorithms(PivBlurMode blurMode){
+        //todo use mUseRsFallback!
         switch (blurMode){
             default:
             case DISABLED:
@@ -161,8 +171,8 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned.
      */
     public Bitmap getLastBlurredBitmap(){
-        mBlurredBitmap = blur(mRadius);
-        return mBlurredBitmap != null ? mBlurredBitmap : mOriginalBitmap;
+        Bitmap bitmap = blur(mRadius);
+        return bitmap != null ? bitmap : mOriginalBitmap;
     }
 
     /**
@@ -191,7 +201,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         }
 
         //if i already decoded the bitmap i reuse it
-        if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mLastDrawable == drawable)
+        if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mOriginalBitmap.getWidth() == sizeX && mOriginalBitmap.getHeight() == mHeight && mLastDrawable == drawable)
             return mOriginalBitmap;
 
         //otherwise I free its memory
@@ -226,11 +236,24 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     @Override
     public void onKeepOriginalChanged() {
-
+        //If keepOriginal is false, i release original bitmap and swap it with the blurred one, if it exists
+        if(!mBlurOptions.isKeepOriginal()) {
+            if (mBlurredBitmap != null && mBlurredBitmap != mOriginalBitmap) {
+                mOriginalBitmap.recycle();
+                mOriginalBitmap = mBlurredBitmap;
+                mBlurredBitmap = null;
+            }
+        }
     }
 
     @Override
     public void onDownsamplingRateChanged() {
-
+        //if downSampling rate changes, i reload the bitmap and blur it
+        changeDrawable(mDrawable);
+        if(mView.get() != null) {
+            Bitmap bitmap = getLastBlurredBitmap();
+            if(bitmap != null)
+                mView.get().setImageBitmap(getLastBlurredBitmap());
+        }
     }
 }
