@@ -1,9 +1,7 @@
 package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,27 +11,42 @@ import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
 
 /**
- * Created by stefano on 19/05/17.
+ * Manager class for blurring. Used to manage and blur the image.
  */
 
-public final class BlurManager {
+public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
+    /** Drawable of the imageview to blur */
     private Drawable mDrawable;
 
+    /** Original bitmap, downsampled if needed */
     private Bitmap mOriginalBitmap;
 
+    /** Last blurred bitmap */
     private Bitmap mBlurredBitmap;
 
+    /** Options to use to blur bitmap */
     private BlurOptions mBlurOptions;
 
+    /** Mode to use to blur the image */
     private PivBlurMode mMode;
 
+    /** Strength of the blur */
+    private int mRadius;
+
+    //Algorithms
     private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
+
+    /** Selected algorithm to blur the image */
     private BlurAlgorithm mBlurAlgorithm;
 
+    /** Width of the view. Used to calculate the original bitmap */
     private int mWidth;
+
+    /** Height of the view. Used to calculate the original bitmap */
     private int mHeight;
-    private int mRadius;
+
+    /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius */
     private int mLastRadius;
 
     /**
@@ -72,28 +85,32 @@ public final class BlurManager {
      */
     public final void changeBlurMode(PivBlurMode blurMode, int radius){
 
-        updateDrawers(blurMode);
+        //If there's no change, I don't do anything
+        if(blurMode == mMode && radius == mRadius)
+            return;
+
+        //otherwise i need to blur the image again
+        updateAlgorithms(blurMode);
         mLastRadius = -1;
-        this.mRadius = radius;
-        mBlurOptions.setRadius(radius);
+        mRadius = radius;
 
         mBlurAlgorithm.setup(mBlurOptions);
     }
 
 
+    /**
+     * Blurs the image, if not already blurred
+     *
+     * @param radius Strength of the blurring
+     * @return The blurred image
+     */
     public Bitmap blur(int radius){
-        this.mRadius = radius;
-        mBlurOptions.setRadius(radius);
+        mRadius = radius;
 
-        if(mOriginalBitmap == null)
-            return null;
-
-        if(mOriginalBitmap.isRecycled())
+        if(mOriginalBitmap == null || mOriginalBitmap.isRecycled())
             return null;
 
         if(mLastRadius == radius && mBlurredBitmap != null){
-            this.mLastRadius = radius;
-
             //if I already blurred the image with this radius, I return it
             return mBlurredBitmap;
         }
@@ -105,16 +122,22 @@ public final class BlurManager {
 
         mBlurAlgorithm.setup(mBlurOptions);
         mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap);
-        return mOriginalBitmap;
+        return mBlurredBitmap;
     }
 
 
+    /** Updates the saved width and height, used to calculate the blurred bitmap */
     public void onSizeChanged(int width, int height){
         this.mWidth = width;
         this.mHeight = height;
     }
 
-    private void updateDrawers(PivBlurMode blurMode){
+    /**
+     * Updates the algorithm used to blur the image
+     *
+     * @param blurMode Algorithm to use
+     */
+    private void updateAlgorithms(PivBlurMode blurMode){
         switch (blurMode){
             default:
             case DISABLED:
@@ -143,7 +166,7 @@ public final class BlurManager {
     }
 
     /**
-     * @return Returns the bitmap of the drawable
+     * @return Returns the bitmap of the drawable, downsampled if needed
      */
     private Bitmap getOriginalBitmapFromDrawable(Drawable mLastDrawable, Drawable drawable) {
         Bitmap bitmap;
@@ -156,8 +179,8 @@ public final class BlurManager {
         float ratio = (float) drawable.getIntrinsicWidth() / (float) drawable.getIntrinsicHeight();
         int sizeX;
         int sizeY;
-        int maxWidth = (int) Math.max(mWidth, mHeight * ratio) / 4;
-        int maxHeight = (int) Math.max(mHeight, mWidth / ratio) / 4;
+        int maxWidth = (int) (Math.max(mWidth, mHeight * ratio) / mBlurOptions.getDownSamplingRate());
+        int maxHeight = (int) (Math.max(mHeight, mWidth / ratio) / mBlurOptions.getDownSamplingRate());
 
         if (drawable.getIntrinsicWidth() > maxWidth && maxWidth > 0 && drawable.getIntrinsicHeight() > maxHeight && maxHeight > 0) {
             sizeX = maxWidth;
@@ -178,11 +201,7 @@ public final class BlurManager {
 
         try {
 
-
-
             if (drawable instanceof BitmapDrawable) {
-                //Bitmap src = ((BitmapDrawable) drawable).getBitmap();
-                //return Bitmap.createScaledBitmap(src, sizeX, sizeY, false);
                 bitmap = Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888);
             } else if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
                 bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
@@ -201,6 +220,17 @@ public final class BlurManager {
             e.printStackTrace();
             return null;
         }
+
+    }
+
+
+    @Override
+    public void onKeepOriginalChanged() {
+
+    }
+
+    @Override
+    public void onDownsamplingRateChanged() {
 
     }
 }

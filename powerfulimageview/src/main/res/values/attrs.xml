@@ -211,9 +211,22 @@
 
         <!-- BLUR OPTIONS -->
 
+        <!-- Set the mode of the blur to use -->
+        <attr name="piv_blur_mode" format="enum" >
+            <enum name="disabled" value="0"/>
+        </attr>
+
         <!-- Set the blur radius used -->
         <attr name="piv_blur_radius" format="integer" />
 
+        <!-- Rate to downSample the image width and height, based on the view size -->
+        <attr name="piv_blur_down_sampling_rate" format="float" />
+
+        <!-- Whether the original bitmap should be kept in memory -->
+        <attr name="piv_blur_keep_original" format="boolean" />
+
+        <!-- Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs -->
+        <attr name="piv_blur_use_rs_fallback" format="boolean" />
 
     </declare-styleable>
 </resources>

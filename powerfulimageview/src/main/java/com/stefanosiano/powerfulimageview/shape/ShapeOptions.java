@@ -129,6 +129,7 @@ public final class ShapeOptions implements Parcelable {
         this.mCalculatedLastPaddingRight = 0;
         this.mCalculatedLastPaddingBottom = 0;
         this.mCalculatedLastMode = PivShapeMode.NORMAL;
+        this.listener = new WeakReference<>(null);
     }
 
     /** Updates the values of the current options, copying the passed values */

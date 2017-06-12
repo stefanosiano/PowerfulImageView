@@ -70,6 +70,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final float DEFAULT_BLUR_DOWNSAMPLING_RATE = 4;
     private static final boolean DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK = true;
     private static final boolean DEFAULT_BLUR_KEEP_ORIGINAL = true;
+    private static final int DEFAULT_BLUR_MODE = PivBlurMode.DISABLED.getValue();
 
     /** Helper class to manage the progress indicator and its options */
     private final ProgressDrawerManager mProgressDrawerManager;
@@ -147,13 +148,14 @@ public class PowerfulImageView extends ImageViewWrapper {
 
 
         BlurOptions blurOptions = new BlurOptions(
-                a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_RADIUS),
-                a.getFloat(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_DOWNSAMPLING_RATE),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_KEEP_ORIGINAL),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK)
+                a.getFloat(R.styleable.PowerfulImageView_piv_blur_down_sampling_rate, DEFAULT_BLUR_DOWNSAMPLING_RATE),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_keep_original, DEFAULT_BLUR_KEEP_ORIGINAL),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_use_rs_fallback, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK)
         );
 
-        PivBlurMode blurMode = PivBlurMode.fromValue(0);
+        int blurRadius = a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_RADIUS);
+        int blurModeValue = a.getInteger(R.styleable.PowerfulImageView_piv_blur_mode, DEFAULT_BLUR_MODE);
+        PivBlurMode blurMode = PivBlurMode.fromValue(blurModeValue);
 
         a.recycle();
 
@@ -161,11 +163,11 @@ public class PowerfulImageView extends ImageViewWrapper {
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
         this.mBlurManager = new BlurManager(this, blurOptions);
 
-        mCheckBlur = blurOptions.getRadius() > 0;
+        mCheckBlur = blurRadius > 0;
 
         changeProgressMode(progressMode);
         changeShapeMode(shapeMode);
-        changeBlurMode(blurMode, blurOptions.getRadius());
+        changeBlurMode(blurMode, blurRadius);
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
@@ -183,7 +185,6 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         mBlurManager.onSizeChanged(w, h);
         blurBitmap();
-
     }
 
     @Override

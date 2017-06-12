@@ -189,6 +189,7 @@ public final class ProgressOptions implements Parcelable {
         this.mShadowRect = new RectF(0,0,0,0);
         this.mShadowBorderRect = new RectF(0,0,0,0);
         this.mCalculatedLastMode = PivProgressMode.NONE;
+        this.listener = new WeakReference<>(null);
     }
 
     /** Updates the values of the current options, copying the passed values */
@@ -849,7 +850,7 @@ public final class ProgressOptions implements Parcelable {
      */
     public boolean isProgressReversed() {
         //if view is rtl, and rtl is not disabled, I change the direction
-        return (mIsRtl && !mIsRtlDisabled) ? !mIsProgressReversed : mIsProgressReversed;
+        return (mIsRtl && !mIsRtlDisabled) != mIsProgressReversed;
     }
 
 
