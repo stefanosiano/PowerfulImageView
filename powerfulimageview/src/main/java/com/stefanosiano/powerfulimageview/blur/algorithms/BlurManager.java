@@ -1,10 +1,12 @@
 package com.stefanosiano.powerfulimageview.blur.algorithms;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v8.renderscript.RenderScript;
 import android.widget.ImageView;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
@@ -38,6 +40,8 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     //Algorithms
     private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
+    private GaussianRenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
+    private DummyBlurAlgorithm mDummyBlurAlgorithm;
 
     /** Selected algorithm to blur the image */
     private BlurAlgorithm mBlurAlgorithm;
@@ -63,6 +67,11 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     public BlurManager(ImageView view, final BlurOptions blurOptions){
         mView = new WeakReference<>(view);
         mBlurOptions = blurOptions;
+        mMode = PivBlurMode.DISABLED;
+        mLastRadius = -1;
+        mRadius = 0;
+        mWidth = 0;
+        mHeight = 0;
     }
 
     /**
@@ -95,6 +104,13 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         if(blurMode == mMode && radius == mRadius)
             return;
 
+        //updating renderscript context if needed
+        if(mView.get() != null)
+            removeContext();
+        mMode = blurMode;
+        if(mView.get() != null)
+            addContext(mView.get().getContext());
+
         //otherwise i need to blur the image again
         updateAlgorithms(blurMode);
         mLastRadius = -1;
@@ -124,6 +140,8 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         if(mBlurredBitmap != null)
             mBlurredBitmap.recycle();
 
+        //todo use mUseRsFallback!
+
         if(mBlurOptions.isKeepOriginal()){
             mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
             return mBlurredBitmap;
@@ -141,21 +159,50 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         this.mHeight = height;
     }
 
+
     /**
      * Updates the algorithm used to blur the image
      *
      * @param blurMode Algorithm to use
      */
     private void updateAlgorithms(PivBlurMode blurMode){
+        RenderScript renderScript = RenderscriptManager.getRenderScript();
         //todo use mUseRsFallback!
         switch (blurMode){
-            default:
-            case DISABLED:
+
+            case GAUSSIAN_RS:
+                if(renderScript != null) {
+                    if (mGaussianRenderscriptBlurAlgorithm == null)
+                        mGaussianRenderscriptBlurAlgorithm = new GaussianRenderscriptBlurAlgorithm();
+                    mBlurAlgorithm = mGaussianRenderscriptBlurAlgorithm;
+                }
+                //if renderscript is null, there was a problem getting it: let's use java or dummy
+                else if(mBlurOptions.isUseRsFallback()){
+                    if (mGaussianFastBlurAlgorithm == null)
+                        mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
+                    mBlurAlgorithm = mGaussianFastBlurAlgorithm;
+                }
+                else {
+                    if(mDummyBlurAlgorithm == null)
+                        mDummyBlurAlgorithm = new DummyBlurAlgorithm();
+                    mBlurAlgorithm = mDummyBlurAlgorithm;
+                }
+                break;
+
+            case GAUSSIAN:
                 if(mGaussianFastBlurAlgorithm == null)
                     mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
                 mBlurAlgorithm = mGaussianFastBlurAlgorithm;
                 break;
+            default:
+
+            case DISABLED:
+                if(mDummyBlurAlgorithm == null)
+                    mDummyBlurAlgorithm = new DummyBlurAlgorithm();
+                mBlurAlgorithm = mDummyBlurAlgorithm;
+                break;
         }
+        mBlurAlgorithm.setRenderscript(renderScript);
     }
 
     /**
@@ -233,6 +280,34 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     }
 
+
+    public void addContext(Context context){
+        switch (mMode){
+            case GAUSSIAN_RS:
+                RenderscriptManager.addContext(context);
+                updateAlgorithms(mMode);
+                break;
+
+            case GAUSSIAN:
+            case DISABLED:
+                default:
+                    break;
+        }
+    }
+
+    public void removeContext(){
+        switch (mMode){
+            case GAUSSIAN_RS:
+                RenderscriptManager.removeContext();
+                updateAlgorithms(mMode);
+                break;
+
+            case GAUSSIAN:
+            case DISABLED:
+            default:
+                break;
+        }
+    }
 
     @Override
     public void onKeepOriginalChanged() {

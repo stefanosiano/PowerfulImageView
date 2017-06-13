@@ -214,6 +214,8 @@
         <!-- Set the mode of the blur to use -->
         <attr name="piv_blur_mode" format="enum" >
             <enum name="disabled" value="0"/>
+            <enum name="gaussian_fast" value="1"/>
+            <enum name="gaussian_rs" value="2"/>
         </attr>
 
         <!-- Set the blur radius used -->

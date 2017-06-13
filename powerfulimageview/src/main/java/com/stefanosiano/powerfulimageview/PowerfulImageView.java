@@ -5,9 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -375,12 +372,17 @@ public class PowerfulImageView extends ImageViewWrapper {
     }
 
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mBlurManager.addContext(getContext());
+    }
 
-
-
-
-
-
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mBlurManager.removeContext();
+    }
 
     /** Save the state of the view. */
     @Override

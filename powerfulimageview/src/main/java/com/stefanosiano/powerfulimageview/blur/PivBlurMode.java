@@ -5,7 +5,9 @@ package com.stefanosiano.powerfulimageview.blur;
  */
 
 public enum PivBlurMode {
-    DISABLED(0);
+    DISABLED(0),
+    GAUSSIAN(1),
+    GAUSSIAN_RS(2);
 
 
     private final int value;
@@ -18,6 +20,10 @@ public enum PivBlurMode {
     /** Returns the mode associated to the passed value, or disabled if the value is invalid */
     public static PivBlurMode fromValue(int value){
         switch (value){
+            case 2:
+                return GAUSSIAN_RS;
+            case 1:
+                return GAUSSIAN;
             default:
             case 0:
                 return DISABLED;

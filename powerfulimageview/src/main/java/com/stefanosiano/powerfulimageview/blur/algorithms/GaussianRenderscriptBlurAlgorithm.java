@@ -8,20 +8,30 @@ import android.support.v8.renderscript.ScriptIntrinsicBlur;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
+import java.lang.ref.WeakReference;
+
 
 /**
  * Simple example of ScriptIntrinsicBlur Renderscript gaussion blur.
  * In production always use this algorithm as it is the fastest on Android.
  */
-public class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
-    private RenderScript rs;
+final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
+    private WeakReference<RenderScript> renderscript;
 
-    public GaussianRenderscriptBlurAlgorithm(RenderScript rs) {
-        this.rs = rs;
+    public GaussianRenderscriptBlurAlgorithm() {
+    }
+
+    @Override
+    public void setRenderscript(RenderScript renderscript) {
+        this.renderscript = new WeakReference<>(renderscript);
     }
 
     @Override
     public Bitmap blur(Bitmap original, int radius, BlurOptions options) {
+        RenderScript rs = renderscript.get();
+        if(rs == null)
+            throw new IllegalArgumentException("Renderscript is null!!!");
+
         final Allocation input = Allocation.createFromBitmap(rs, original);
         final Allocation output = Allocation.createTyped(rs, input.getType());
         final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));

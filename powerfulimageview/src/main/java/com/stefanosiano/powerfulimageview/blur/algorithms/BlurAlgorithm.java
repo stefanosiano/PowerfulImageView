@@ -1,6 +1,7 @@
 package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.graphics.Bitmap;
+import android.support.v8.renderscript.RenderScript;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
@@ -9,5 +10,6 @@ import com.stefanosiano.powerfulimageview.blur.BlurOptions;
  */
 
 public interface BlurAlgorithm {
-    public Bitmap blur(Bitmap original, int radius, BlurOptions options);
+    void setRenderscript(RenderScript renderscript);
+    Bitmap blur(Bitmap original, int radius, BlurOptions options);
 }
