@@ -26,8 +26,11 @@ public class RenderscriptManager {
 
     public synchronized static void removeContext(){
         int c = count.decrementAndGet();
-        if(c == 0)
+        if(c == 0) {
             applicationContext = null;
+            renderScript.destroy();
+            renderScript = null;
+        }
     }
 
     public static RenderScript getRenderScript(){

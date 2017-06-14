@@ -39,19 +39,26 @@ final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
         script.setInput(input);
         script.forEach(output);
 
-        Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
         if(options.isKeepOriginal()) {
+            Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
             output.copyTo(bitmap);
+            input.destroy();
+            output.destroy();
             return bitmap;
         }
         else {
             if (original.isMutable()) {
                 output.copyTo(original);
+                input.destroy();
+                output.destroy();
                 return original;
             }
             else {
+                Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
                 original.recycle();
                 output.copyTo(bitmap);
+                input.destroy();
+                output.destroy();
                 return bitmap;
             }
         }

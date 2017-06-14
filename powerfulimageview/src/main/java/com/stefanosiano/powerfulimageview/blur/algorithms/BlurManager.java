@@ -119,20 +119,20 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
 
     /**
-     * Blurs the image, if not already blurred
+     * Blurs the image, if not already blurred.
+     * To get the image call getLastBlurredBitmap()!
      *
      * @param radius Strength of the blurring
-     * @return The blurred image
      */
-    public Bitmap blur(int radius){
+    public void blur(int radius){
         mRadius = radius;
 
         if(mOriginalBitmap == null || mOriginalBitmap.isRecycled())
-            return null;
+            return;
 
+        //if I already blurred the image with this radius, I don't do anything
         if(mLastRadius == radius && mBlurredBitmap != null){
-            //if I already blurred the image with this radius, I return it
-            return mBlurredBitmap;
+            return;
         }
 
         this.mLastRadius = radius;
@@ -141,14 +141,13 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             mBlurredBitmap.recycle();
 
         //todo use mUseRsFallback!
+        //todo add flag to release renderscript context as soon as blur is done
 
         if(mBlurOptions.isKeepOriginal()){
             mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
-            return mBlurredBitmap;
         }
         else {
             mOriginalBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
-            return mOriginalBitmap;
         }
     }
 
@@ -218,8 +217,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned.
      */
     public Bitmap getLastBlurredBitmap(){
-        Bitmap bitmap = blur(mRadius);
-        return bitmap != null ? bitmap : mOriginalBitmap;
+        return mBlurredBitmap != null ? mBlurredBitmap : mOriginalBitmap;
     }
 
     /**

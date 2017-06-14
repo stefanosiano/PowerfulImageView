@@ -115,12 +115,10 @@ abstract class ImageViewWrapper extends AppCompatImageView {
 
 
     //these methods propagate their effects to the methods of the PIV
-
-
     @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
-        onDrawableChanged();
+        //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     }
 
     @Override
@@ -138,13 +136,13 @@ abstract class ImageViewWrapper extends AppCompatImageView {
     @Override
     public void setImageIcon(Icon icon) {
         super.setImageIcon(icon);
-        onDrawableChanged();
+        //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        onDrawableChanged();
+        //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     }
 
     @Override
