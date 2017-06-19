@@ -6,10 +6,22 @@ import android.support.v8.renderscript.RenderScript;
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
 /**
- * Created by stefano on 26/05/17.
+ * Algorithm to blur the image
  */
 
-public interface BlurAlgorithm {
+interface BlurAlgorithm {
+
+    /** Sets the renderscript context to this algorithm. Pass it before blurring! */
     void setRenderscript(RenderScript renderscript);
-    Bitmap blur(Bitmap original, int radius, BlurOptions options);
+
+    /**
+     * Blurs the image
+     *
+     * @param original Bitmap to blur
+     * @param radius Radius of the algorithm
+     * @param options Options of the blurring
+     * @return The blurred bitmap
+     * @throws RenderscriptException If renderscript is used and something goes wrong with it
+     */
+    Bitmap blur(Bitmap original, int radius, BlurOptions options) throws RenderscriptException;
 }

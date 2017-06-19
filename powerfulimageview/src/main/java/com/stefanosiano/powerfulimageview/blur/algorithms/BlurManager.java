@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v8.renderscript.RenderScript;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
@@ -37,6 +38,9 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     /** Strength of the blur */
     private int mRadius;
+
+    /** Whether the renderscript context is managed: if I added this view's context to the RenderscriptManager */
+    private boolean mIsRenderscriptManaged;
 
     //Algorithms
     private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
@@ -72,6 +76,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         mRadius = 0;
         mWidth = 0;
         mHeight = 0;
+        mIsRenderscriptManaged = false;
     }
 
     /**
@@ -106,10 +111,10 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
         //updating renderscript context if needed
         if(mView.get() != null)
-            removeContext();
+            removeContext(true);
         mMode = blurMode;
         if(mView.get() != null)
-            addContext(mView.get().getContext());
+            addContext(mView.get().getContext(), true);
 
         //otherwise i need to blur the image again
         updateAlgorithms(blurMode);
@@ -140,14 +145,53 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         if(mBlurredBitmap != null)
             mBlurredBitmap.recycle();
 
-        //todo use mUseRsFallback!
-        //todo add flag to release renderscript context as soon as blur is done
+        Bitmap bitmap = null;
+        try {
+            if (!mBlurOptions.isStaticBlur() && !mIsRenderscriptManaged && mView.get() != null) {
+                addContext(mView.get().getContext(), false);
+                updateAlgorithms(mMode);
+            }
+            bitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
 
-        if(mBlurOptions.isKeepOriginal()){
-            mBlurredBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+        } catch (RenderscriptException e){
+            //Something wrong occurred with renderscript: fallback to java or nothing, based on option...
+
+            //changing mode to fallback one
+            mMode = getFallbackMode(mMode);
+
+            Log.w(BlurManager.class.getSimpleName(), e.getLocalizedMessage());
+            Log.w(BlurManager.class.getSimpleName(), "Falling back to another blurring method: " + mMode.name());
+
+            updateAlgorithms(mMode);
+
+            try {
+                bitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+            } catch (RenderscriptException e1){
+                bitmap = null;
+            }
+
         }
-        else {
-            mOriginalBitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+        finally {
+            if (!mBlurOptions.isStaticBlur() && mIsRenderscriptManaged)
+                removeContext(false);
+        }
+        if (mBlurOptions.isStaticBlur()) {
+            mBlurredBitmap = bitmap;
+        }
+        else mOriginalBitmap = bitmap;
+
+    }
+
+    /** Returns the fallback mode for renderscript method, if anything goes wrong */
+    private PivBlurMode getFallbackMode(PivBlurMode mode){
+        if(!mBlurOptions.isUseRsFallback())
+            return PivBlurMode.DISABLED;
+
+        switch (mode){
+            case GAUSSIAN_RS:
+                return PivBlurMode.GAUSSIAN;
+            default:
+                return mode;
         }
     }
 
@@ -166,7 +210,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      */
     private void updateAlgorithms(PivBlurMode blurMode){
         RenderScript renderScript = RenderscriptManager.getRenderScript();
-        //todo use mUseRsFallback!
+
         switch (blurMode){
 
             case GAUSSIAN_RS:
@@ -279,42 +323,69 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     }
 
 
-    public void addContext(Context context){
-        switch (mMode){
-            case GAUSSIAN_RS:
-                RenderscriptManager.addContext(context);
-                updateAlgorithms(mMode);
-                break;
+    /**
+     * If the blur is static renderscript context is managed by the manager itself, to release it as soon as possible.
+     * If the blur is not static renderscript context is managed by the view itself, to keep it as long as it needs.
+     *
+     * @param context context to get the renderscript from
+     * @param fromView If the function was called by the view
+     */
+    public void addContext(Context context, boolean fromView){
+        if(context != null && mBlurOptions.isStaticBlur() != fromView) {
+            switch (mMode) {
+                case GAUSSIAN_RS:
+                    mIsRenderscriptManaged = true;
+                    RenderscriptManager.addContext(context.getApplicationContext());
+                    updateAlgorithms(mMode);
+                    break;
 
-            case GAUSSIAN:
-            case DISABLED:
+                case GAUSSIAN:
+                case DISABLED:
                 default:
                     break;
+            }
         }
     }
 
-    public void removeContext(){
-        switch (mMode){
-            case GAUSSIAN_RS:
-                RenderscriptManager.removeContext();
-                updateAlgorithms(mMode);
-                break;
+    /**
+     * If the blur is static renderscript context is managed by the manager itself, to release it as soon as possible.
+     * If the blur is not static renderscript context is managed by the view itself, to keep it as long as it needs.
+     *
+     * @param fromView If the function was called by the view
+     */
+    public void removeContext(boolean fromView){
+        if(mBlurOptions.isStaticBlur() != fromView) {
+            switch (mMode) {
+                case GAUSSIAN_RS:
+                    mIsRenderscriptManaged = false;
+                    RenderscriptManager.removeContext();
+                    updateAlgorithms(mMode);
+                    break;
 
-            case GAUSSIAN:
-            case DISABLED:
-            default:
-                break;
+                case GAUSSIAN:
+                case DISABLED:
+                default:
+                    break;
+            }
         }
     }
 
     @Override
-    public void onKeepOriginalChanged() {
-        //If keepOriginal is false, i release original bitmap and swap it with the blurred one, if it exists
-        if(!mBlurOptions.isKeepOriginal()) {
+    public void onStaticBlurChanged() {
+        //If staticBlur is false, i release original bitmap and swap it with the blurred one, if it exists
+        if(!mBlurOptions.isStaticBlur()) {
             if (mBlurredBitmap != null && mBlurredBitmap != mOriginalBitmap) {
                 mOriginalBitmap.recycle();
                 mOriginalBitmap = mBlurredBitmap;
                 mBlurredBitmap = null;
+            }
+            if(mIsRenderscriptManaged && mView.get() != null) {
+                addContext(mView.get().getContext(), false);
+            }
+        }
+        else {
+            if (mIsRenderscriptManaged) {
+                removeContext(false);
             }
         }
     }

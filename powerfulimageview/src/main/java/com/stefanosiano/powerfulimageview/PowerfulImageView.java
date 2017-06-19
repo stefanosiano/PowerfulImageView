@@ -66,7 +66,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final int DEFAULT_BLUR_RADIUS = 0;
     private static final float DEFAULT_BLUR_DOWNSAMPLING_RATE = 4;
     private static final boolean DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK = true;
-    private static final boolean DEFAULT_BLUR_KEEP_ORIGINAL = true;
+    private static final boolean DEFAULT_BLUR_STATIC = false;
     private static final int DEFAULT_BLUR_MODE = PivBlurMode.DISABLED.getValue();
 
     /** Helper class to manage the progress indicator and its options */
@@ -146,7 +146,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         BlurOptions blurOptions = new BlurOptions(
                 a.getFloat(R.styleable.PowerfulImageView_piv_blur_down_sampling_rate, DEFAULT_BLUR_DOWNSAMPLING_RATE),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_keep_original, DEFAULT_BLUR_KEEP_ORIGINAL),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_static, DEFAULT_BLUR_STATIC),
                 a.getBoolean(R.styleable.PowerfulImageView_piv_blur_use_rs_fallback, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK)
         );
 
@@ -375,13 +375,13 @@ public class PowerfulImageView extends ImageViewWrapper {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mBlurManager.addContext(getContext());
+        mBlurManager.addContext(getContext(), true);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mBlurManager.removeContext();
+        mBlurManager.removeContext(true);
     }
 
     /** Save the state of the view. */

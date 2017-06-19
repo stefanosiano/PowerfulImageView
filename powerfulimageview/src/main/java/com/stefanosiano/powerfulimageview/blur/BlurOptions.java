@@ -11,8 +11,8 @@ public final class BlurOptions {
     /** Rate to downSample the image width and height, based on the view size */
     private float mDownSamplingRate;
 
-    /** Whether the original bitmap should be kept in memory. If false, trying to blur a second time won't have effect */
-    private boolean mKeepOriginal;
+    /** Whether the original bitmap should be blurred only once. If true, optimizations occur. If false, trying to blur a second time won't have effect */
+    private boolean mIsStaticBlur;
 
     /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs */
     private boolean mUseRsFallback;
@@ -24,18 +24,18 @@ public final class BlurOptions {
      * Creates the object that will manage the blur options
      *
      * @param downSamplingRate Rate to downSample the image width and height, based on the view size. Cannot be less than 1
-     * @param keepOriginal Whether the original bitmap should be kept in memory. If false, trying to blur a second time won't have effect
+     * @param isStaticBlur Whether the original bitmap should be kept in memory. If false, trying to blur a second time won't have effect
      * @param useRsFallback Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs
      */
-    public BlurOptions(float downSamplingRate, boolean keepOriginal, boolean useRsFallback) {
+    public BlurOptions(float downSamplingRate, boolean isStaticBlur, boolean useRsFallback) {
         this.mDownSamplingRate = downSamplingRate;
         if(mDownSamplingRate < 1) mDownSamplingRate = 1;
-        this.mKeepOriginal = keepOriginal;
+        this.mIsStaticBlur = isStaticBlur;
         this.mUseRsFallback = useRsFallback;
     }
 
     public interface BlurOptionsListener{
-        void onKeepOriginalChanged();
+        void onStaticBlurChanged();
         void onDownsamplingRateChanged();
     }
 
@@ -65,20 +65,20 @@ public final class BlurOptions {
     }
 
     /**
-     * @return If the original bitmap should be kept in memory
+     * @return If the original bitmap should be blurred only once
      */
-    public boolean isKeepOriginal() {
-        return mKeepOriginal;
+    public boolean isStaticBlur() {
+        return mIsStaticBlur;
     }
 
     /**
-     * @param keepOriginal If the original bitmap should be kept in memory. If the image is already blurred
+     * @param isStaticBlur If the original bitmap should be blurred only once. If the image is already blurred
      *                     and false is passed to this function, original bitmap memory will be released.
      */
-    public void setKeepOriginal(boolean keepOriginal) {
-        this.mKeepOriginal = keepOriginal;
+    public void setStaticBlur(boolean isStaticBlur) {
+        this.mIsStaticBlur = isStaticBlur;
         if(this.listener.get() != null)
-            this.listener.get().onKeepOriginalChanged();
+            this.listener.get().onStaticBlurChanged();
     }
 
     /**

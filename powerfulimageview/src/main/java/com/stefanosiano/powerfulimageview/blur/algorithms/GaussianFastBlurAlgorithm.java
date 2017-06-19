@@ -13,8 +13,6 @@ import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
 final class GaussianFastBlurAlgorithm implements BlurAlgorithm {
 
-    GaussianFastBlurAlgorithm() {}
-
     @Override
     public void setRenderscript(RenderScript renderscript) {
 
@@ -56,7 +54,7 @@ final class GaussianFastBlurAlgorithm implements BlurAlgorithm {
                 }
             }
 
-            if(options.isKeepOriginal()) {
+            if(options.isStaticBlur()) {
                 return Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
             }
             else {

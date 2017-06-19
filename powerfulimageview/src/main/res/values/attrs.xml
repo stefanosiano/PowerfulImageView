@@ -225,8 +225,8 @@
             downsampled to be no more than the view size divided by this rate. -->
         <attr name="piv_blur_down_sampling_rate" format="float" />
 
-        <!-- Whether the original bitmap should be kept in memory -->
-        <attr name="piv_blur_keep_original" format="boolean" />
+        <!-- Whether the original bitmap should be blurred only once. If so, optimizations occur -->
+        <attr name="piv_blur_static" format="boolean" />
 
         <!-- Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs -->
         <attr name="piv_blur_use_rs_fallback" format="boolean" />

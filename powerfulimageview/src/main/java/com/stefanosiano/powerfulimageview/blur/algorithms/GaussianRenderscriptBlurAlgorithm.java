@@ -18,28 +18,32 @@ import java.lang.ref.WeakReference;
 final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
     private WeakReference<RenderScript> renderscript;
 
-    public GaussianRenderscriptBlurAlgorithm() {
-    }
-
     @Override
     public void setRenderscript(RenderScript renderscript) {
         this.renderscript = new WeakReference<>(renderscript);
     }
 
     @Override
-    public Bitmap blur(Bitmap original, int radius, BlurOptions options) {
+    public Bitmap blur(Bitmap original, int radius, BlurOptions options) throws RenderscriptException {
         RenderScript rs = renderscript.get();
         if(rs == null)
-            throw new IllegalArgumentException("Renderscript is null!!!");
+            throw new RenderscriptException("Renderscript is null!");
 
-        final Allocation input = Allocation.createFromBitmap(rs, original);
-        final Allocation output = Allocation.createTyped(rs, input.getType());
-        final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-        script.setRadius(radius);
-        script.setInput(input);
-        script.forEach(output);
+        Allocation input, output;
+        ScriptIntrinsicBlur script;
 
-        if(options.isKeepOriginal()) {
+        try {
+            input = Allocation.createFromBitmap(rs, original);
+            output = Allocation.createTyped(rs, input.getType());
+            script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            script.setRadius(radius);
+            script.setInput(input);
+            script.forEach(output);
+        }   catch (Exception e){
+            throw new RenderscriptException("Renderscript error while blurring!");
+        }
+
+        if(options.isStaticBlur()) {
             Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
             output.copyTo(bitmap);
             input.destroy();
