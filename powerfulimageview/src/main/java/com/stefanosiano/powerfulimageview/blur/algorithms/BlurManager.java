@@ -56,6 +56,12 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     /** Height of the view. Used to calculate the original bitmap */
     private int mHeight;
 
+    /** Last width of the calculated bitmap. Used to calculate the original bitmap */
+    private int mLastSizeX;
+
+    /** Last height of the calculated bitmap. Used to calculate the original bitmap */
+    private int mLastSizeY;
+
     /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius */
     private int mLastRadius;
 
@@ -76,6 +82,8 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         mRadius = 0;
         mWidth = 0;
         mHeight = 0;
+        mLastSizeX = 0;
+        mLastSizeY = 0;
         mIsRenderscriptManaged = false;
     }
 
@@ -147,7 +155,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
         Bitmap bitmap = null;
         try {
-            if (!mBlurOptions.isStaticBlur() && !mIsRenderscriptManaged && mView.get() != null) {
+            if (!mIsRenderscriptManaged && mView.get() != null) {
                 addContext(mView.get().getContext(), false);
                 updateAlgorithms(mMode);
             }
@@ -172,13 +180,14 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
         }
         finally {
-            if (!mBlurOptions.isStaticBlur() && mIsRenderscriptManaged)
+            if (mIsRenderscriptManaged)
                 removeContext(false);
         }
         if (mBlurOptions.isStaticBlur()) {
-            mBlurredBitmap = bitmap;
+            mOriginalBitmap = bitmap;
         }
-        else mOriginalBitmap = bitmap;
+        else
+            mBlurredBitmap = bitmap;
 
     }
 
@@ -289,9 +298,13 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             sizeY = drawable.getIntrinsicHeight();
         }
 
+        //todo improve this check: mLastDrawable == drawable  - The drawable changes always when i blur the image!
         //if i already decoded the bitmap i reuse it
-        if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mOriginalBitmap.getWidth() == sizeX && mOriginalBitmap.getHeight() == mHeight && mLastDrawable == drawable)
+        if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable == drawable)
             return mOriginalBitmap;
+
+        mLastSizeX = sizeX;
+        mLastSizeY = sizeY;
 
         //otherwise I free its memory
         if (mOriginalBitmap != null)
@@ -372,20 +385,20 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     @Override
     public void onStaticBlurChanged() {
-        //If staticBlur is false, i release original bitmap and swap it with the blurred one, if it exists
-        if(!mBlurOptions.isStaticBlur()) {
+        //If staticBlur is true, i release original bitmap and swap it with the blurred one, if it exists
+        if(mBlurOptions.isStaticBlur()) {
             if (mBlurredBitmap != null && mBlurredBitmap != mOriginalBitmap) {
                 mOriginalBitmap.recycle();
                 mOriginalBitmap = mBlurredBitmap;
                 mBlurredBitmap = null;
             }
-            if(mIsRenderscriptManaged && mView.get() != null) {
-                addContext(mView.get().getContext(), false);
+            if (mIsRenderscriptManaged) {
+                removeContext(false);
             }
         }
         else {
-            if (mIsRenderscriptManaged) {
-                removeContext(false);
+            if(mIsRenderscriptManaged && mView.get() != null) {
+                addContext(mView.get().getContext(), true);
             }
         }
     }

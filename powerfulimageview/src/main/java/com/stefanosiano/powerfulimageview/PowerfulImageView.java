@@ -182,6 +182,10 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         mBlurManager.onSizeChanged(w, h);
         blurBitmap();
+
+        //todo remove these lines: used to debug live/static blur
+        changeBlurMode(PivBlurMode.GAUSSIAN, 4);
+        blurBitmap();
     }
 
     @Override

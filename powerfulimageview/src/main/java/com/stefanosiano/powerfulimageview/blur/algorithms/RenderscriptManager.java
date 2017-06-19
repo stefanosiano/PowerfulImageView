@@ -2,6 +2,7 @@ package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.content.Context;
 import android.support.v8.renderscript.RenderScript;
+import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,8 +35,13 @@ public class RenderscriptManager {
     }
 
     public static RenderScript getRenderScript(){
-        if(renderScript == null && applicationContext != null)
-            renderScript = RenderScript.create(applicationContext);
+        if(renderScript == null && applicationContext != null) {
+            try {
+                renderScript = RenderScript.create(applicationContext);
+            } catch (Exception e){
+                Log.e(BlurManager.class.getSimpleName(), e.getLocalizedMessage());
+            }
+        }
 
         return renderScript;
     }
