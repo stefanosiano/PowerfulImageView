@@ -18,12 +18,12 @@
         app:piv_progress_size_percent="50"
         app:piv_progress_value_percent="40"
         app:piv_progress_mode="disabled"
-        app:piv_blur_radius="1"
-        app:piv_blur_down_sampling_rate="1"
+        app:piv_blur_radius="3"
+        app:piv_blur_down_sampling_rate="2"
 
         app:piv_blur_mode="gaussian_fast"
         app:piv_blur_use_rs_fallback="false"
-        app:piv_blur_static="false"
+        app:piv_blur_static="true"
 
         app:piv_shape_mode="normal"/>
 

@@ -43,7 +43,7 @@ final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
             throw new RenderscriptException("Renderscript error while blurring!");
         }
 
-        if(options.isStaticBlur()) {
+        if(!options.isStaticBlur()) {
             Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
             output.copyTo(bitmap);
             input.destroy();

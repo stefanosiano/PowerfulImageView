@@ -54,7 +54,7 @@ final class GaussianFastBlurAlgorithm implements BlurAlgorithm {
                 }
             }
 
-            if(options.isStaticBlur()) {
+            if(!options.isStaticBlur()) {
                 return Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
             }
             else {

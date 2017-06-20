@@ -102,7 +102,6 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             if(lastOriginalBitmap != null)
                 lastOriginalBitmap.recycle();
             mLastRadius = -1;
-            blur(mRadius);
         }
     }
 
@@ -150,7 +149,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
         this.mLastRadius = radius;
 
-        if(mBlurredBitmap != null)
+        if(mBlurredBitmap != null && mOriginalBitmap != mBlurredBitmap)
             mBlurredBitmap.recycle();
 
         Bitmap bitmap = null;
@@ -184,10 +183,9 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 removeContext(false);
         }
         if (mBlurOptions.isStaticBlur()) {
-            mOriginalBitmap = bitmap;
+            mOriginalBitmap = bitmap == null ? mOriginalBitmap : bitmap;
         }
-        else
-            mBlurredBitmap = bitmap;
+        mBlurredBitmap = bitmap == null ? mBlurredBitmap : bitmap;
 
     }
 
@@ -206,9 +204,11 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
 
     /** Updates the saved width and height, used to calculate the blurred bitmap */
-    public void onSizeChanged(int width, int height){
+    public void onSizeChanged(int width, int height, Drawable drawable){
         this.mWidth = width;
         this.mHeight = height;
+        if(drawable != null)
+            changeDrawable(drawable);
     }
 
 
@@ -262,14 +262,16 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      *
      * @return True if the bitmap should be blurred, false otherwise
      */
-    public boolean shouldBlur(Drawable drawable){
-        return mMode != PivBlurMode.DISABLED && mRadius > 0 && (mLastRadius != mRadius || mDrawable != drawable);
+    public boolean shouldBlur(Drawable drawable, boolean checkDrawable){
+        return mMode != PivBlurMode.DISABLED && mRadius > 0 &&
+                (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable));
     }
 
     /**
      * @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned.
      */
     public Bitmap getLastBlurredBitmap(){
+        blur(mRadius);
         return mBlurredBitmap != null ? mBlurredBitmap : mOriginalBitmap;
     }
 
@@ -306,10 +308,6 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         mLastSizeX = sizeX;
         mLastSizeY = sizeY;
 
-        //otherwise I free its memory
-        if (mOriginalBitmap != null)
-            mOriginalBitmap.recycle();
-
 
         try {
 
@@ -330,7 +328,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return mOriginalBitmap;
         }
 
     }
@@ -407,6 +405,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     public void onDownsamplingRateChanged() {
         //if downSampling rate changes, i reload the bitmap and blur it
         changeDrawable(mDrawable);
+        blur(mRadius);
         if(mView.get() != null) {
             Bitmap bitmap = getLastBlurredBitmap();
             if(bitmap != null)
