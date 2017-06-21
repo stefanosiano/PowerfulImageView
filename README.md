@@ -93,15 +93,12 @@ List of all XML attributes
   
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
-|piv_progress_border_width|dimension|-1|Width of the progress indicator. Overrides piv_progress_border_width_percent.|
-|piv_progress_border_width_percent|float|10|Width of the progress indicator as percentage of the progress indicator size. It's used only if piv_progress_border_width is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored|
-|piv_progress_size|dimension|-1|Size of the progress indicator. Overrides piv_progress_size_percent. It's less than 0, it is ignored.|
-|piv_progress_size_percent|float|40|Set the size of the progress indicator. It's used only if piv_progress_size is less than 0. If the percentage is higher than 100, it is treated as (value % 100).|
-|piv_progress_shadow_padding|dimension|-1|Set the padding of the progress indicator relative to its shadow. Overrides piv_progress_shadow_padding_percent.|
-|piv_progress_shadow_padding_percent|float|10|Set the padding of the progress indicator relative to its shadow. It's used only if piv_progress_shadow_padding is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored.|
+|piv_progress_border_width|dimension-fraction|10%|Width of the progress indicator border, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
+|piv_progress_size|dimension-fraction|40%|Size of the progress indicator, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
+|piv_progress_shadow_padding|dimension-fraction|10%|Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100)|
 |piv_progress_padding|dimension|2dp|Set the padding of the progress indicator.|
 |piv_progress_shadow_border_width|dimension|1dp|Set the width of the shadow border.|
-|piv_progress_value_percent|float|0|Percentage value of the progress indicator, used by determinate progress. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is treated as 0. If the progress is indeterminate it's ignored.|
+|piv_progress_value|float|0|Percentage value of the progress indicator, used by determinate progress. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is treated as 0. If the progress is indeterminate it's ignored.|
 |piv_progress_front_color|color|#00A000|Set the front color of the indicator. If the drawer is indeterminate it's ignored.|
 |piv_progress_back_color|color|#CCCCCC|Set the back color of the indicator. If the drawer is indeterminate it's ignored.|
 |piv_progress_shadow_border_color|color|#000000|Set the color of the progress indicator shadow border.|
@@ -123,8 +120,7 @@ List of all XML attributes
 |:----:|:----:|:-------:|:-----------:|
 |piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
 |piv_shape_frontground_color|color|transparent|Set the frontground color of the image, using the shape.|
-|piv_shape_inner_padding|dimension|-1|Set the inner padding of the image relative to the view. Overrides piv_shape_inner_padding_percent.|
-|piv_shape_inner_padding_percent|float|0|Set the inner padding of the image relative to the view. It's used only if piv_shape_inner_padding is less than 0. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is ignored.|
+|piv_shape_inner_padding|dimension-fraction|0|Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
 |piv_shape_border_overlay|boolean|false|Set whether the border should be paint over the image.|
 |piv_shape_border_width|dimension|0dp|Set the border width of the image.|
 |piv_shape_border_color|color|transparent|Set the border color of the image.|
