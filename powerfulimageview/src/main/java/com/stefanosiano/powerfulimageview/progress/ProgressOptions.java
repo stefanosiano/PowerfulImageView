@@ -151,7 +151,7 @@ public final class ProgressOptions implements Parcelable {
      * @param shadowBorderColor Color of the progress indicator shadow border
      * @param isProgressReversed Whether the progress should be reversed
      */
-    public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, int padding, float sizePercent, float valuePercent,
+    public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, float sizePercent, int padding, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
                            boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor, boolean isProgressReversed) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
@@ -427,7 +427,6 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Width of the progress indicator.
-     * Overrides border width set through setBorderWidthPercent().
      * If it's lower than 0, it is ignored.
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
      *
@@ -447,7 +446,8 @@ public final class ProgressOptions implements Parcelable {
      *
      * @param borderWidthPercent Percentage of the progress indicator size, as a float from 0 to 100
      */
-    public void setBorderWidthPercent(float borderWidthPercent) {
+    public void setBorderWidth(float borderWidthPercent) {
+        this.mBorderWidth = -1;
         if(borderWidthPercent > 100)
             borderWidthPercent = borderWidthPercent % 100;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -466,7 +466,7 @@ public final class ProgressOptions implements Parcelable {
      *
      * @param valuePercent Percentage of the progress indicator, as a float from 0 to 100
      */
-    public void setValuePercent(float valuePercent) {
+    public void setValue(float valuePercent) {
         if(valuePercent > 100)
             valuePercent = valuePercent % 100;
         if(valuePercent < 0)
@@ -548,24 +548,6 @@ public final class ProgressOptions implements Parcelable {
             listener.get().onOptionsUpdated(this);
     }
 
-    /**
-     * Size of the progress indicator.
-     *
-     * Overrides size set through setSizePercent().
-     * It's less than 0, it is ignored.
-     * Note that it may be different from the actual size used to draw the progress, since it is
-     *      calculated based on the View size, on the sizePercent option and on the padding option.
-     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
-     *
-     * @param size Size of the progress indicator
-     */
-    public void setSize(int size) {
-        this.mSize = size;
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
-        if(listener.get() != null)
-            listener.get().onSizeUpdated(this);
-    }
-
 
     /**
      * Set the padding of the progress indicator.
@@ -582,14 +564,30 @@ public final class ProgressOptions implements Parcelable {
     }
 
     /**
+     * Size of the progress indicator.
+     *
+     * Note that it may be different from the actual size used to draw the progress, since it is
+     *      calculated based on the View size and on the padding option.
+     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
+     *
+     * @param size Size of the progress indicator
+     */
+    public void setSize(int size) {
+        this.mSize = size;
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);
+        if(listener.get() != null)
+            listener.get().onSizeUpdated(this);
+    }
+
+    /**
      * Set the size of the progress indicator.
      *
-     * It's used only if progressSize is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
      *
      * @param sizePercent Progress indicator size as a percentage of the whole View, as a float from 0 to 100
      */
-    public void setSizePercent(float sizePercent) {
+    public void setSize(float sizePercent) {
+        this.mSize = -1;
         if(sizePercent > 100)
             sizePercent = sizePercent % 100;
         this.mSizePercent = sizePercent;
@@ -685,7 +683,6 @@ public final class ProgressOptions implements Parcelable {
     /**
      * Set the padding of the progress indicator relative to its shadow.
      * If it's lower than 0, it is ignored.
-     * Overrides shadow padding set through setShadowPaddingPercent().
      *
      * @param padding Padding of the progress indicator shadow
      */
@@ -698,12 +695,12 @@ public final class ProgressOptions implements Parcelable {
 
     /**
      * Set the padding of the progress indicator relative to its shadow.
-     * It's used only if shadowPadding is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
      *
      * @param paddingPercent Progress indicator shadow padding as a percentage of the whole shadow, as a float from 0 to 100
      */
-    public void setShadowPaddingPercent(float paddingPercent) {
+    public void setShadowPadding(float paddingPercent) {
+        this.mShadowPadding = -1;
         if(paddingPercent > 100)
             mShadowPaddingPercent = paddingPercent % 100;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode);

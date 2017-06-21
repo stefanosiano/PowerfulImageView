@@ -414,7 +414,6 @@ public final class ShapeOptions implements Parcelable {
     /**
      * Set the inner padding of the image relative to the shape.
      * If it's lower than 0, it is ignored.
-     * Overrides inner padding set through setInnerPaddingPercent().
      *
      * @param innerPadding Inner padding of the image relative to the shape
      */
@@ -427,12 +426,12 @@ public final class ShapeOptions implements Parcelable {
 
     /**
      * Set the inner padding of the image relative to the shape, as a percentage of the shape size.
-     * It's used only if innerPadding is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
      *
      * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage of the shape size, as a float from 0 to 100
      */
-    public void setInnerPaddingPercent(float innerPaddingPercent) {
+    public void setInnerPadding(float innerPaddingPercent) {
+        this.mInnerPadding = -1;
         this.mInnerPaddingPercent = innerPaddingPercent;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode);
         if(listener.get() != null)

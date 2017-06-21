@@ -42,6 +42,9 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     /** Whether the renderscript context is managed: if I added this view's context to the RenderscriptManager */
     private boolean mIsRenderscriptManaged;
 
+    /** Whether the bitmap has been already blurred. On static blur, it will only  blur once! */
+    private boolean mIsAlreadyBlurred;
+
     //Algorithms
     private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
     private GaussianRenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
@@ -85,6 +88,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         mLastSizeX = 0;
         mLastSizeY = 0;
         mIsRenderscriptManaged = false;
+        mIsAlreadyBlurred = false;
     }
 
     /**
@@ -99,6 +103,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         this.mOriginalBitmap = getOriginalBitmapFromDrawable(mLastDrawable, drawable);
 
         if(lastOriginalBitmap != mOriginalBitmap) {
+            mIsAlreadyBlurred = false;
             if(lastOriginalBitmap != null)
                 lastOriginalBitmap.recycle();
             mLastRadius = -1;
@@ -147,6 +152,9 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             return;
         }
 
+        if(mIsAlreadyBlurred && mBlurOptions.isStaticBlur())
+            return;
+
         this.mLastRadius = radius;
 
         if(mBlurredBitmap != null && mOriginalBitmap != mBlurredBitmap)
@@ -159,6 +167,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 updateAlgorithms(mMode);
             }
             bitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+            mIsAlreadyBlurred = true;
 
         } catch (RenderscriptException e){
             //Something wrong occurred with renderscript: fallback to java or nothing, based on option...
@@ -173,6 +182,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
             try {
                 bitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+                mIsAlreadyBlurred = true;
             } catch (RenderscriptException e1){
                 bitmap = null;
             }

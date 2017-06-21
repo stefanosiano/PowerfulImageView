@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 progress += 18;
-                piw.getProgressOptions().setValuePercent(progress);
+                piw.getProgressOptions().setValue(progress);
 
                 if(progress < 100)
                     piw.postDelayed(this, 700);

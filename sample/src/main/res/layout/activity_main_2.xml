@@ -15,11 +15,13 @@
         android:src="@drawable/sf1"
 
         app:piv_progress_indeterminate_color="@color/colorAccent"
-        app:piv_progress_size_percent="50"
-        app:piv_progress_value_percent="40"
-        app:piv_progress_mode="disabled"
-        app:piv_blur_radius="3"
-        app:piv_blur_down_sampling_rate="2"
+        app:piv_progress_size="-10%"
+        app:piv_progress_value="40"
+        app:piv_progress_mode="circular"
+
+
+        app:piv_blur_radius="1"
+        app:piv_blur_down_sampling_rate="4"
 
         app:piv_blur_mode="gaussian_fast"
         app:piv_blur_use_rs_fallback="false"

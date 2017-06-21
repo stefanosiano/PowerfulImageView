@@ -35,18 +35,18 @@ final class GaussianFastBlurAlgorithm implements BlurAlgorithm {
                     for(int j = r; j < w - r; j++) {
                         int lefCol = j - r;
                         int rigCol = j + r;
-                        int curCol = j;
+                        //j is current column
 
                         int tl = pix[topRow + lefCol];
                         int tr = pix[topRow + rigCol];
-                        int tc = pix[topRow + curCol];
+                        int tc = pix[topRow + j];
                         int bl = pix[botRow + lefCol];
                         int br = pix[botRow + rigCol];
-                        int bc = pix[botRow + curCol];
+                        int bc = pix[botRow + j];
                         int cl = pix[curRow + lefCol];
                         int cr = pix[curRow + rigCol];
 
-                        pix[curRow + curCol] = 0xFF000000 |
+                        pix[curRow + j] = 0xFF000000 |
                                 (((tl & 0xFF) + (tr & 0xFF) + (tc & 0xFF) + (bl & 0xFF) + (br & 0xFF) + (bc & 0xFF) + (cl & 0xFF) + (cr & 0xFF)) >> 3) & 0xFF |
                                 (((tl & 0xFF00) + (tr & 0xFF00) + (tc & 0xFF00) + (bl & 0xFF00) + (br & 0xFF00) + (bc & 0xFF00) + (cl & 0xFF00) + (cr & 0xFF00)) >> 3) & 0xFF00 |
                                 (((tl & 0xFF0000) + (tr & 0xFF0000) + (tc & 0xFF0000) + (bl & 0xFF0000) + (br & 0xFF0000) + (bc & 0xFF0000) + (cl & 0xFF0000) + (cr & 0xFF0000)) >> 3) & 0xFF0000;

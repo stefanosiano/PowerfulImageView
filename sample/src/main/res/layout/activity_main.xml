@@ -86,15 +86,13 @@
                 app:piv_progress_shadow_border_width="14dp"
                 app:piv_progress_shadow_border_color="@android:color/white"
                 app:piv_progress_shadow_color="#000000"
-                app:piv_progress_shadow_enabled="true"
                 app:piv_progress_border_width="20dp"
                 app:piv_progress_shadow_padding="4dp"
                 app:piv_progress_gravity="top_start"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="horizontal"
                 app:piv_progress_front_color="@color/colorAccent"
                 app:piv_progress_back_color="@color/colorPrimaryDark"
-                app:piv_progress_size_percent="100"
                 app:piv_progress_indeterminate="false"/>
 
         </TableRow>
@@ -109,7 +107,7 @@
                 android:layout_margin="8dp"
 
                 app:piv_progress_gravity="start"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
             <com.stefanosiano.powerfulimageview.PowerlessImageView
@@ -120,7 +118,7 @@
                 android:layout_margin="8dp"
 
                 app:piv_progress_gravity="center"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
             <com.stefanosiano.powerfulimageview.PowerlessImageView
@@ -131,7 +129,7 @@
                 android:layout_margin="8dp"
 
                 app:piv_progress_gravity="end"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
         </TableRow>
@@ -146,7 +144,7 @@
                 android:layout_margin="8dp"
 
                 app:piv_progress_gravity="bottom_start"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
             <com.stefanosiano.powerfulimageview.PowerlessImageView
@@ -157,7 +155,7 @@
                 android:layout_margin="8dp"
 
                 app:piv_progress_gravity="bottom"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
             <com.stefanosiano.powerfulimageview.PowerlessImageView
@@ -168,7 +166,7 @@
                 android:layout_margin="8dp"
 
                 app:piv_progress_gravity="bottom_end"
-                app:piv_progress_value_percent="30"
+                app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
         </TableRow>

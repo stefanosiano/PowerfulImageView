@@ -12,27 +12,17 @@
              If true it updates its progress with an animation, otherwise it will update instantly -->
         <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
 
-        <!-- Width of the progress indicator.
-             Overrides piv_progress_border_width_percent. -->
-        <attr name="piv_progress_border_width" format="dimension" />
+        <!-- Width of the progress indicator border, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100) -->
+        <attr name="piv_progress_border_width" format="dimension|fraction" />
 
-        <!-- Width of the progress indicator as percentage of the progress indicator size.
-             It's used only if piv_progress_border_width is less than 0
+        <!-- Size of the progress indicator, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
              If the percentage is higher than 100, it is treated as (value % 100).
-             If the percentage is lower than 0, it is ignored -->
-        <attr name="piv_progress_border_width_percent" format="float" />
-
-        <!-- Size of the progress indicator.
-             Overrides piv_progress_size_percent.
-             It's less than 0, it is ignored.
              Note that it may be different from the actual size used to draw the progress, since it is
-             calculated based on the View size, on the sizePercent option and on the padding option. -->
-        <attr name="piv_progress_size" format="dimension" />
-
-        <!-- Set the size of the progress indicator.
-             It's used only if piv_progress_size is less than 0.
-             If the percentage is higher than 100, it is treated as (value % 100). -->
-        <attr name="piv_progress_size_percent" format="float" />
+             calculated based on the View size and on the padding option. -->
+        <attr name="piv_progress_size" format="dimension|fraction" />
 
         <!-- Set the padding of the progress indicator. -->
         <attr name="piv_progress_padding" format="dimension" />
@@ -45,7 +35,7 @@
              If the percentage is lower than 0, it is treated as 0.
              If the progress is indeterminate or horizontal_determinate it's ignored.
              Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0! -->
-        <attr name="piv_progress_value_percent" format="float" />
+        <attr name="piv_progress_value" format="float" />
 
         <!-- Set the front color of the indicator, used by determinate drawers.
              If the drawer is not determinate or horizontal_determinate it's ignored.
@@ -100,15 +90,10 @@
              See the Color class for more details. -->
         <attr name="piv_progress_shadow_color" format="color" />
 
-        <!-- Set the padding of the progress indicator relative to its shadow.
-             It's used only if piv_progress_shadow_padding is less than 0.
-             If the percentage is higher than 100, it is treated as (value % 100).
-             If the percentage is lower than 0, it is ignored. -->
-        <attr name="piv_progress_shadow_padding_percent" format="float" />
-
-        <!-- Set the padding of the progress indicator relative to its shadow.
-             Overrides piv_progress_shadow_padding_percent. -->
-        <attr name="piv_progress_shadow_padding" format="dimension" />
+        <!-- Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100) -->
+        <attr name="piv_progress_shadow_padding" format="dimension|fraction" />
 
         <!-- Set the gravity of the indicator.
              It will follow the right to left layout (on api 17+), if not disabled. -->
@@ -173,15 +158,10 @@
              See the Color class for more details. -->
         <attr name="piv_shape_frontground_color" format="color" />
 
-        <!-- Set the inner padding of the image relative to the view.
-             It's used only if piv_shape_inner_padding is less than 0.
-             If the percentage is higher than 100, it is treated as (value % 100).
-             If the percentage is lower than 0, it is ignored. -->
-        <attr name="piv_shape_inner_padding_percent" format="float" />
-
-        <!-- Set the inner padding of the image relative to the view
-             Overrides piv_shape_inner_padding_percent. -->
-        <attr name="piv_shape_inner_padding" format="dimension" />
+        <!-- Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100) -->
+        <attr name="piv_shape_inner_padding" format="dimension|fraction" />
 
         <!-- Set whether the border should be paint over the image. -->
         <attr name="piv_shape_border_overlay" format="boolean" />

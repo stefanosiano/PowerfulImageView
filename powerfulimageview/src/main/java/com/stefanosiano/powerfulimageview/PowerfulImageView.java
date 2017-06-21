@@ -40,7 +40,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final int DEFAULT_PROGRESS_SIZE = -1;
     private static final float DEFAULT_PROGRESS_SIZE_PERCENT = 40;
     private static final int DEFAULT_PROGRESS_PADDING = 2;
-    private static final int DEFAULT_PROGRESS_PERCENT = 0;
+    private static final int DEFAULT_PROGRESS_VALUE = 0;
     private static final int DEFAULT_PROGRESS_GRAVITY = PivProgressGravity.CENTER.getValue();
     private static final boolean DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT = false;
     private static final boolean DEFAULT_PROGRESS_INDETERMINATE = true;
@@ -95,15 +95,23 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.PowerfulImageView, defStyleAttr, 0);
 
+        //using typed values to remove useless redundancy of attributes (dimension and percentage)
+        TypedValue tvSize = new TypedValue();
+        TypedValue tvBorderWidth = new TypedValue();
+        TypedValue tvShadowPadding = new TypedValue();
+        a.getValue(R.styleable.PowerfulImageView_piv_progress_size, tvSize);
+        a.getValue(R.styleable.PowerfulImageView_piv_progress_border_width, tvBorderWidth);
+        a.getValue(R.styleable.PowerfulImageView_piv_progress_shadow_padding, tvShadowPadding);
+
         //get all the options from xml or default constants and initialize ProgressOptions object
         ProgressOptions progressOptions = new ProgressOptions(
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_WIDTH, getResources().getDisplayMetrics())),
-                a.getFloat(R.styleable.PowerfulImageView_piv_progress_border_width_percent, DEFAULT_PROGRESS_WIDTH_PERCENT),
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_size, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SIZE, getResources().getDisplayMetrics())),
+                tvBorderWidth.type == TypedValue.TYPE_DIMENSION ? (int) tvBorderWidth.getDimension(getResources().getDisplayMetrics()) : DEFAULT_PROGRESS_WIDTH,
+                tvBorderWidth.type == TypedValue.TYPE_FRACTION ? tvBorderWidth.getFraction(100, 100) : DEFAULT_PROGRESS_WIDTH_PERCENT,
+                tvSize.type == TypedValue.TYPE_DIMENSION ? (int) tvSize.getDimension(getResources().getDisplayMetrics()) : DEFAULT_PROGRESS_SIZE,
+                tvSize.type == TypedValue.TYPE_FRACTION ? tvSize.getFraction(100, 100) : DEFAULT_PROGRESS_SIZE_PERCENT,
                 a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING, getResources().getDisplayMetrics())),
-                a.getFloat(R.styleable.PowerfulImageView_piv_progress_size_percent, DEFAULT_PROGRESS_SIZE_PERCENT),
-                a.getFloat(R.styleable.PowerfulImageView_piv_progress_value_percent, DEFAULT_PROGRESS_PERCENT),
+                a.getFloat(R.styleable.PowerfulImageView_piv_progress_value, DEFAULT_PROGRESS_VALUE),
                 getColor(a, R.styleable.PowerfulImageView_piv_progress_front_color, R.color.piv_default_progress_front_color),
                 getColor(a, R.styleable.PowerfulImageView_piv_progress_back_color, R.color.piv_default_progress_back_color),
                 getColor(a, R.styleable.PowerfulImageView_piv_progress_indeterminate_color, R.color.piv_default_progress_indeterminate_color),
@@ -114,8 +122,8 @@ public class PowerfulImageView extends ImageViewWrapper {
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE),
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_shadow_enabled, DEFAULT_PROGRESS_SHADOW_ENABLED),
                 getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_color, R.color.piv_default_progress_shadow_color),
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_PADDING, getResources().getDisplayMetrics())),
-                a.getFloat(R.styleable.PowerfulImageView_piv_progress_shadow_padding_percent, DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT),
+                tvShadowPadding.type == TypedValue.TYPE_DIMENSION ? (int) tvShadowPadding.getDimension(getResources().getDisplayMetrics()) : DEFAULT_PROGRESS_SHADOW_PADDING,
+                tvShadowPadding.type == TypedValue.TYPE_FRACTION ? tvShadowPadding.getFraction(100, 100) : DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT,
                 a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH, getResources().getDisplayMetrics())),
                 getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color),
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_reversed, DEFAULT_PROGRESS_REVERSED)
@@ -124,11 +132,14 @@ public class PowerfulImageView extends ImageViewWrapper {
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
 
 
+        TypedValue tvShapeInnerPadding = new TypedValue();
+        a.getValue(R.styleable.PowerfulImageView_piv_shape_inner_padding, tvShapeInnerPadding);
+
         ShapeOptions shapeOptions = new ShapeOptions(
                 getColor(a, R.styleable.PowerfulImageView_piv_shape_background_color, android.R.color.transparent),
                 getColor(a, R.styleable.PowerfulImageView_piv_shape_frontground_color, android.R.color.transparent),
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_shape_inner_padding, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_INNER_PADDING, getResources().getDisplayMetrics())),
-                a.getFloat(R.styleable.PowerfulImageView_piv_shape_inner_padding_percent, DEFAULT_SHAPE_INNER_PADDING_PERCENT),
+                tvShapeInnerPadding.type == TypedValue.TYPE_DIMENSION ? (int) tvShapeInnerPadding.getDimension(getResources().getDisplayMetrics()) : DEFAULT_SHAPE_INNER_PADDING,
+                tvShapeInnerPadding.type == TypedValue.TYPE_FRACTION ? tvShapeInnerPadding.getFraction(100, 100) : DEFAULT_SHAPE_INNER_PADDING_PERCENT,
                 a.getBoolean(R.styleable.PowerfulImageView_piv_shape_border_overlay, DEFAULT_SHAPE_BORDER_OVERLAY),
                 getColor(a, R.styleable.PowerfulImageView_piv_shape_border_color, android.R.color.transparent),
                 a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_shape_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_BORDER_WIDTH, getResources().getDisplayMetrics())),
@@ -369,7 +380,7 @@ public class PowerfulImageView extends ImageViewWrapper {
      * @param progress Percentage value of the progress
      */
     public void setProgress(float progress){
-        getProgressOptions().setValuePercent(progress);
+        getProgressOptions().setValue(progress);
     }
 
 
