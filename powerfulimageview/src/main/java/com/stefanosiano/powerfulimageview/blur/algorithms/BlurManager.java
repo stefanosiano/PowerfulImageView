@@ -122,10 +122,10 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             return;
 
         //updating renderscript context if needed
-        if(mView.get() != null)
+        if (mIsRenderscriptManaged)
             removeContext(true);
         mMode = blurMode;
-        if(mView.get() != null)
+        if (!mIsRenderscriptManaged && mView.get() != null)
             addContext(mView.get().getContext(), true);
 
         //otherwise i need to blur the image again
@@ -172,11 +172,10 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         } catch (RenderscriptException e){
             //Something wrong occurred with renderscript: fallback to java or nothing, based on option...
 
-            //changing mode to fallback one
-            mMode = getFallbackMode(mMode);
+            //changing mode to fallback one if enabled
+            mMode = mBlurOptions.isUseRsFallback() ? mMode.getFallbackMode() : PivBlurMode.DISABLED;
 
-            Log.w(BlurManager.class.getSimpleName(), e.getLocalizedMessage());
-            Log.w(BlurManager.class.getSimpleName(), "Falling back to another blurring method: " + mMode.name());
+            Log.w(BlurManager.class.getSimpleName(), e.getLocalizedMessage() + "\nFalling back to another blurring method: " + mMode.name());
 
             updateAlgorithms(mMode);
 
@@ -199,19 +198,6 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     }
 
-    /** Returns the fallback mode for renderscript method, if anything goes wrong */
-    private PivBlurMode getFallbackMode(PivBlurMode mode){
-        if(!mBlurOptions.isUseRsFallback())
-            return PivBlurMode.DISABLED;
-
-        switch (mode){
-            case GAUSSIAN_RS:
-                return PivBlurMode.GAUSSIAN;
-            default:
-                return mode;
-        }
-    }
-
 
     /** Updates the saved width and height, used to calculate the blurred bitmap */
     public void onSizeChanged(int width, int height, Drawable drawable){
@@ -228,27 +214,20 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @param blurMode Algorithm to use
      */
     private void updateAlgorithms(PivBlurMode blurMode){
-        RenderScript renderScript = RenderscriptManager.getRenderScript();
+        RenderScript renderScript;
 
         switch (blurMode){
 
             case GAUSSIAN_RS:
+                renderScript = RenderscriptManager.getRenderScript();
                 if(renderScript != null) {
                     if (mGaussianRenderscriptBlurAlgorithm == null)
                         mGaussianRenderscriptBlurAlgorithm = new GaussianRenderscriptBlurAlgorithm();
                     mBlurAlgorithm = mGaussianRenderscriptBlurAlgorithm;
+                    mBlurAlgorithm.setRenderscript(renderScript);
                 }
                 //if renderscript is null, there was a problem getting it: let's use java or dummy
-                else if(mBlurOptions.isUseRsFallback()){
-                    if (mGaussianFastBlurAlgorithm == null)
-                        mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
-                    mBlurAlgorithm = mGaussianFastBlurAlgorithm;
-                }
-                else {
-                    if(mDummyBlurAlgorithm == null)
-                        mDummyBlurAlgorithm = new DummyBlurAlgorithm();
-                    mBlurAlgorithm = mDummyBlurAlgorithm;
-                }
+                updateAlgorithms(mBlurOptions.isUseRsFallback() ? blurMode.getFallbackMode() : PivBlurMode.DISABLED);
                 break;
 
             case GAUSSIAN:
@@ -264,7 +243,6 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 mBlurAlgorithm = mDummyBlurAlgorithm;
                 break;
         }
-        mBlurAlgorithm.setRenderscript(renderScript);
     }
 
     /**
@@ -310,7 +288,6 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             sizeY = drawable.getIntrinsicHeight();
         }
 
-        //todo improve this check: mLastDrawable == drawable  - The drawable changes always when i blur the image!
         //if i already decoded the bitmap i reuse it
         if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable == drawable)
             return mOriginalBitmap;

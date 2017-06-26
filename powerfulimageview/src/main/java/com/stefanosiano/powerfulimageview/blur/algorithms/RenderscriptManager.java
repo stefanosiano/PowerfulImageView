@@ -7,16 +7,17 @@ import android.util.Log;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by stefano on 13/06/17.
+ * Manager class for renderscript related stuff. Using this, there will be only one instance of
+ * renderscript context at a time.
  */
 
-public class RenderscriptManager {
+final class RenderscriptManager {
 
     private static AtomicInteger count;
     private static Context applicationContext;
     private static RenderScript renderScript;
 
-    public synchronized static void addContext(Context context){
+    synchronized static void addContext(Context context){
         if(count == null){
             count = new AtomicInteger(0);
         }
@@ -25,16 +26,17 @@ public class RenderscriptManager {
             applicationContext = context.getApplicationContext();
     }
 
-    public synchronized static void removeContext(){
+    synchronized static void removeContext(){
         int c = count.decrementAndGet();
         if(c == 0) {
             applicationContext = null;
-            renderScript.destroy();
+            if(renderScript != null)
+                renderScript.destroy();
             renderScript = null;
         }
     }
 
-    public static RenderScript getRenderScript(){
+    static RenderScript getRenderScript(){
         if(renderScript == null && applicationContext != null) {
             try {
                 renderScript = RenderScript.create(applicationContext);
