@@ -387,7 +387,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mBlurManager.addContext(getContext(), true);
+        mBlurManager.addContext(true);
     }
 
     @Override
