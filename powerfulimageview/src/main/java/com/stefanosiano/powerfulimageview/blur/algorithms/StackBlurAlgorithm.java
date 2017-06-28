@@ -40,9 +40,6 @@ import java.util.concurrent.Executors;
 
 final class StackBlurAlgorithm implements BlurAlgorithm {
 
-    //todo fix thread management and share them through all instances!
-    static final int EXECUTOR_THREADS = Runtime.getRuntime().availableProcessors();
-    static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(EXECUTOR_THREADS);
 
     private static final short[] stackblur_mul = {
             512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512,
@@ -95,7 +92,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
         int h = original.getHeight();
         int[] currentPixels = new int[w * h];
         original.getPixels(currentPixels, 0, w, 0, 0, w, h);
-        int cores = EXECUTOR_THREADS;
+        int cores = Runtime.getRuntime().availableProcessors();
 
         ArrayList<BlurTask> horizontal = new ArrayList<>(cores);
         ArrayList<BlurTask> vertical = new ArrayList<>(cores);
@@ -105,13 +102,13 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
         }
 
         try {
-            EXECUTOR.invokeAll(horizontal);
+            SharedBlurManager.getExecutorService().invokeAll(horizontal);
         } catch (InterruptedException e) {
             return null;
         }
 
         try {
-            EXECUTOR.invokeAll(vertical);
+            SharedBlurManager.getExecutorService().invokeAll(vertical);
         } catch (InterruptedException e) {
             return null;
         }

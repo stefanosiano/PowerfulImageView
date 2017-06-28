@@ -4,20 +4,25 @@ import android.content.Context;
 import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Manager class for renderscript related stuff. Using this, there will be only one instance of
- * renderscript context at a time.
+ * Manager class for content shared through all instances of BlurManager
+ * Renderscript related stuff
+ * ThreadPool for java blurring methods
  */
 
-final class RenderscriptManager {
+final class SharedBlurManager {
 
     private static AtomicInteger count;
     private static Context applicationContext;
     private static RenderScript renderScript;
 
-    synchronized static void addContext(Context context){
+    private static ExecutorService executorService;
+
+    synchronized static void addRenderscriptContext(Context context){
         if(count == null){
             count = new AtomicInteger(0);
         }
@@ -26,7 +31,7 @@ final class RenderscriptManager {
             applicationContext = context.getApplicationContext();
     }
 
-    synchronized static void removeContext(){
+    synchronized static void removeRenderscriptContext(){
         int c = count.decrementAndGet();
         if(c == 0) {
             applicationContext = null;
@@ -36,7 +41,7 @@ final class RenderscriptManager {
         }
     }
 
-    static RenderScript getRenderScript(){
+    synchronized static RenderScript getRenderScriptContext(){
         if(renderScript == null && applicationContext != null) {
             try {
                 renderScript = RenderScript.create(applicationContext);
@@ -46,5 +51,12 @@ final class RenderscriptManager {
         }
 
         return renderScript;
+    }
+
+    synchronized static ExecutorService getExecutorService(){
+        if(executorService == null || executorService.isShutdown())
+            executorService = Executors.newCachedThreadPool();
+
+        return executorService;
     }
 }

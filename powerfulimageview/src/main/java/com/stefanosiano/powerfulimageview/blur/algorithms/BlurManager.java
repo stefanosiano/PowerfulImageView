@@ -39,7 +39,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     /** Strength of the blur */
     private int mRadius;
 
-    /** Whether the renderscript context is managed: if I added this view's context to the RenderscriptManager */
+    /** Whether the renderscript context is managed: if I added this view's context to the SharedBlurManager */
     private boolean mIsRenderscriptManaged;
 
     /** Whether the bitmap has been already blurred. On static blur, it will only  blur once! */
@@ -216,7 +216,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         switch (blurMode){
 
             case STACK_RS:
-                renderScript = RenderscriptManager.getRenderScript();
+                renderScript = SharedBlurManager.getRenderScriptContext();
                 if(renderScript != null) {
                     if (mStackRenderscriptBlurAlgorithm == null)
                         mStackRenderscriptBlurAlgorithm = new StackRenderscriptBlurAlgorithm();
@@ -235,7 +235,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 break;
 
             case GAUSSIAN_RS:
-                renderScript = RenderscriptManager.getRenderScript();
+                renderScript = SharedBlurManager.getRenderScriptContext();
                 if(renderScript != null) {
                     if (mGaussianRenderscriptBlurAlgorithm == null)
                         mGaussianRenderscriptBlurAlgorithm = new GaussianRenderscriptBlurAlgorithm();
@@ -353,7 +353,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         if(mView.get().getContext().getApplicationContext() != null && mBlurOptions.isStaticBlur() != fromView) {
             if(mMode.isUsesRenderscript()) {
                 mIsRenderscriptManaged = true;
-                RenderscriptManager.addContext(context.getApplicationContext());
+                SharedBlurManager.addRenderscriptContext(context.getApplicationContext());
             }
         }
     }
@@ -373,7 +373,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             switch (mMode) {
                 case GAUSSIAN_RS:
                     mIsRenderscriptManaged = false;
-                    RenderscriptManager.removeContext();
+                    SharedBlurManager.removeRenderscriptContext();
                     updateAlgorithms(mMode);
                     break;
 
