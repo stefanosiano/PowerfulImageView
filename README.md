@@ -129,7 +129,7 @@ List of all XML attributes
 |piv_shape_radius_y|float|1|Set the y radius of the image. Used in rounded rectangles|
 |piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
 |piv_shape_mode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
-|piv_shape_scaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop|
+|piv_shape_scaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop, bottomCrop|
   
 **Java methods**  
 
