@@ -14,18 +14,12 @@
 
         android:src="@drawable/sf1"
 
-        app:piv_progress_indeterminate_color="@color/colorAccent"
-        app:piv_progress_size="-10%"
-        app:piv_progress_value="40"
-        app:piv_progress_mode="disabled"
+        app:piv_blur_radius="0"
+        app:piv_blur_down_sampling_rate="8"
 
-
-        app:piv_blur_radius="18"
-        app:piv_blur_down_sampling_rate="1"
-
-        app:piv_blur_mode="stack"
+        app:piv_blur_mode="gaussian_fast"
         app:piv_blur_use_rs_fallback="false"
-        app:piv_blur_static="true"
+        app:piv_blur_static="false"
 
         app:piv_shape_mode="normal"/>
 

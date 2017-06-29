@@ -298,7 +298,7 @@ public class PowerfulImageView extends ImageViewWrapper {
      * @param radius radius to use when blurring the image: the higher the radius, the more the blurring.
      */
     public final void changeBlurMode(PivBlurMode blurMode, int radius){
-        mCheckBlur = radius > 0;
+        mCheckBlur = blurMode != PivBlurMode.DISABLED;
         if(mBlurManager == null)
             return;
 

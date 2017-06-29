@@ -60,7 +60,15 @@ public enum PivShapeScaleType {
      * (minus padding). The image is then translated so that the top of the image is shown.
      * From XML, use this syntax: <code>app:piv_shape_scaleType="topCrop"</code>.
      */
-    TOP_CROP (8);
+    TOP_CROP (8),
+    /**
+     * Scale the image uniformly (maintain the image's aspect ratio) so
+     * that both dimensions (width and height) of the image will be equal
+     * to or larger than the corresponding dimension of the view
+     * (minus padding). The image is then translated so that the bottom of the image is shown.
+     * From XML, use this syntax: <code>app:piv_shape_scaleType="topCrop"</code>.
+     */
+    BOTTOM_CROP (9);
 
     
     private final int value;
@@ -115,6 +123,8 @@ public enum PivShapeScaleType {
                 return CENTER_INSIDE;
             case 8:
                 return TOP_CROP;
+            case 9:
+                return BOTTOM_CROP;
             default:
             case 5:
                 return CENTER;

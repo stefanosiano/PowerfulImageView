@@ -144,6 +144,7 @@
             <enum name="centerCrop" value="6"/>
             <enum name="centerInside" value="7"/>
             <enum name="topCrop" value="8"/>
+            <enum name="bottomCrop" value="9"/>
         </attr>
 
         <!-- Set the background color of the image, using the shape.

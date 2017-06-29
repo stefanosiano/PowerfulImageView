@@ -18,57 +18,95 @@ public class GaussianBlurAlgorithm implements BlurAlgorithm {
     @Override
     public Bitmap blur(Bitmap original, int radius, BlurOptions options) throws RenderscriptException {
 
-        int[] filter = {1, 2, 1};
-        if (filter.length % filterWidth != 0) {
-            throw new IllegalArgumentException("filter contains a incomplete row");
-        }
-
-        final int w = original.getWidth();
-        final int h = original.getHeight();
-        int sum = 0;
-        int filterWidth = w*h;
-
-        for(int i = 0; i < filter.length; i++)
-            sum += filter[i];
-
+        int w = original.getWidth();
+        int h = original.getHeight();
         int[] pix = new int[w * h];
+
         original.getPixels(pix, 0, w, 0, 0, w, h);
+        apply(pix, pix, w, h);
 
-        int[] output = new int[pix.length];
+        return Bitmap.createBitmap(pix, w, h, Bitmap.Config.ARGB_8888);
+    }
 
-        final int pixelIndexOffset = w - filterWidth;
-        final int centerOffsetX = filterWidth / 2;
-        final int centerOffsetY = filter.length / filterWidth / 2;
 
-        // apply filter
-        for (int i = h - filter.length / filterWidth + 1, j = w - filterWidth + 1, y = 0; y < i; y++) {
-            for (int x = 0; x < w; x++) {
-                int r = 0;
-                int g = 0;
-                int b = 0;
-                for (int filterIndex = 0, pixelIndex = y * j + x;
-                     filterIndex < filter.length;
-                     pixelIndex += pixelIndexOffset) {
-                    for (int fx = 0; fx < filterWidth; fx++, pixelIndex++, filterIndex++) {
-                        int col = pix[pixelIndex];
-                        int factor = filter[filterIndex];
 
-                        // sum up color channels seperately
-                        r += ((col >>> 16) & 0xFF) * factor;
-                        g += ((col >>> 8) & 0xFF) * factor;
-                        b += (col & 0xFF) * factor;
-                    }
+
+
+
+
+
+
+
+    // extract a channel value from a RGB 'int' packed color
+    static int getChannel(int color, int channel) {
+        return  (color >> (8*channel)) & 0xFF;
+    }
+
+    // shift a color value of the corresponding channel offset
+    static int channelShift(int color, int channel) {
+        return (color&0xFF)<<(8*channel);
+    }
+
+    // sample a repeated image. Returns a valid result for any x and y.
+    // w is the image width, h the image height and pix the image itself.
+    static int getPixRepeat(int x, int y, int w, int h, int [] pix)
+    {
+        int x2 = (x+w) % w;
+        int y2 = (y+h) % h;
+        return pix[y2*w+x2];
+    }
+
+    // appy a 5x5 gaussian blur of sigma = 1.
+    // Put the result into dstpix. Both images must have the same size,
+    // defined by w and h (for width and height).
+    static void apply(int[] srcpix, int[] dstpix, int w, int h) {
+
+        int [] tmppix = new int[w*h + 1];
+
+        // horizontal filtering
+        for (int y=0; y<h; ++y) {
+
+            int pos = y*w;
+
+            for(int x=0; x<w; ++x) {
+
+                // accumulate each channel for this pixel
+                int r=0;
+                for (int c=0; c<4; c++) {
+                    // [1 4 6 4 1] filter
+                    r += channelShift((
+                            (getChannel(getPixRepeat(x-2,y,w,h,srcpix), c) +
+                                    getChannel(getPixRepeat(x-1,y,w,h,srcpix), c)*4 +
+                                    getChannel(getPixRepeat(x  ,y,w,h,srcpix), c)*6 +
+                                    getChannel(getPixRepeat(x+1,y,w,h,srcpix), c)*4 +
+                                    getChannel(getPixRepeat(x+2,y,w,h,srcpix), c)) / 16
+                    ), c);
                 }
-                r /= sum;
-                g /= sum;
-                b /= sum;
-                // combine channels with full opacity
-                output[x + centerOffsetX + (y + centerOffsetY) * j] = (r << 16) | (g << 8) | b | 0xFF000000;
+
+                // store the pixel
+                tmppix[pos + x] = r;
             }
         }
 
-        //BufferedImage result = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        //result.setRGB(0, 0, w, h, output, 0, w);
-        return null;
+        // vertical filtering
+        for (int x=0; x<w; ++x) {
+
+            int pos = x;
+
+            for (int y=0; y<h; y++) {
+                int r=0;
+                for (int c=0; c<4; c++) {
+                    r += channelShift((
+                            (getChannel(getPixRepeat(x,y-2,w,h,tmppix), c) +
+                                    getChannel(getPixRepeat(x,y-1,w,h,tmppix), c)*4 +
+                                    getChannel(getPixRepeat(x,y  ,w,h,tmppix), c)*6 +
+                                    getChannel(getPixRepeat(x,y+1,w,h,tmppix), c)*4 +
+                                    getChannel(getPixRepeat(x,y+2,w,h,tmppix), c)) / 16
+                    ), c);
+                }
+                dstpix[pos] = r;//+(0xff << 24);
+                pos += w;
+            }
+        }
     }
 }

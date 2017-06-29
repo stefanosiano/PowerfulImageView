@@ -455,6 +455,23 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                         dy + mImageBounds.top);
                 break;
 
+            case BOTTOM_CROP:
+                if (dWidth * vHeight > vWidth * dHeight) {
+                    scale = vHeight / (float) dHeight;
+                    dx = (vWidth - dWidth * scale) * 0.5f;
+                    dy = 0;
+
+                } else {
+                    scale = vWidth / (float) dWidth;
+                    dy = vHeight - dHeight * scale;
+                    dx = 0;
+                }
+
+                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.postTranslate(dx + mImageBounds.left,
+                        dy + mImageBounds.top);
+                break;
+
             case CENTER_INSIDE:
                 if (dWidth <= vWidth && dHeight <= vHeight) {
                     scale = 1.0f;

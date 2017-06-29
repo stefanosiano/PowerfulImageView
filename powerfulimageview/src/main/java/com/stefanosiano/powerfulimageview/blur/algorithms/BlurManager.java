@@ -46,7 +46,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     private boolean mIsAlreadyBlurred;
 
     //Algorithms
-    private GaussianFastBlurAlgorithm mGaussianFastBlurAlgorithm;
+    private GaussianBlurAlgorithm mGaussianFastBlurAlgorithm;
     private GaussianRenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
     private StackBlurAlgorithm mStackBlurAlgorithm;
     private StackRenderscriptBlurAlgorithm mStackRenderscriptBlurAlgorithm;
@@ -249,7 +249,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
             case GAUSSIAN:
                 if(mGaussianFastBlurAlgorithm == null)
-                    mGaussianFastBlurAlgorithm = new GaussianFastBlurAlgorithm();
+                    mGaussianFastBlurAlgorithm = new GaussianBlurAlgorithm();
                 mBlurAlgorithm = mGaussianFastBlurAlgorithm;
                 break;
 
@@ -268,7 +268,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @return True if the bitmap should be blurred, false otherwise
      */
     public boolean shouldBlur(Drawable drawable, boolean checkDrawable){
-        return mMode != PivBlurMode.DISABLED && mRadius > 0 &&
+        return mMode != PivBlurMode.DISABLED &&
                 (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable));
     }
 
