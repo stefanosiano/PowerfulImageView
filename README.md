@@ -3,7 +3,7 @@ PowerfulImageView
 
 Custom Android ImageView with several added features.  
 1) Progress indicator: circular, horizontal, disabled  
-2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like top_crop.  
+2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like topCrop and bottomCrop.  
   
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
@@ -32,7 +32,7 @@ This is flexible enough to let you use the progress in other ways, like tracking
   
   
 **Shapes:**  
-Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type may be added (currently top_crop has been added).  
+Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type may be added (currently topCrop and bottomCrop have been added).  
 Shapes are divided into 3 types:  
 1) Rectanglular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews;
 2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations (even applied by image loaders like Glide) may cause issues. Mechanisms to prevent out of memory exceptions are in place, but you may have an image with a random alpha value. To avoid this, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate();
