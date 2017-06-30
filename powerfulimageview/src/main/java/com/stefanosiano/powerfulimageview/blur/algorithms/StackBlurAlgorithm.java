@@ -12,6 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ *
+ * Mofidied version of the following algorithm, to take into account alpha channel, too.
+ *
  * Blur using Java code.
  *
  * This is a compromise between Gaussian Blur and Box blur
@@ -116,7 +119,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
         return Bitmap.createBitmap(currentPixels, w, h, Bitmap.Config.ARGB_8888);
     }
 
-    private static void blurIteration(int[] src, int w, int h, int radius, int cores, int core, int step) {
+    private void blurIteration(int[] src, int w, int h, int radius, int cores, int core, int step) {
         int x, y, xp, yp, i;
         int sp;
         int stack_start;
@@ -125,9 +128,9 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
         int src_i;
         int dst_i;
 
-        long sum_r, sum_g, sum_b,
-                sum_in_r, sum_in_g, sum_in_b,
-                sum_out_r, sum_out_g, sum_out_b;
+        long sum_r, sum_g, sum_b, sum_a,
+                sum_in_r, sum_in_g, sum_in_b, sum_in_a,
+                sum_out_r, sum_out_g, sum_out_b, sum_out_a;
 
         int wm = w - 1;
         int hm = h - 1;
@@ -143,9 +146,9 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
             for(y = minY; y < maxY; y++)
             {
-                sum_r = sum_g = sum_b =
-                        sum_in_r = sum_in_g = sum_in_b =
-                                sum_out_r = sum_out_g = sum_out_b = 0;
+                sum_r = sum_g = sum_b = sum_a =
+                        sum_in_r = sum_in_g = sum_in_b = sum_in_a =
+                                sum_out_r = sum_out_g = sum_out_b = sum_out_a = 0;
 
                 src_i = w * y; // start of line (0,y)
 
@@ -153,9 +156,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                 {
                     stack_i    = i;
                     stack[stack_i] = src[src_i];
+                    sum_a += ((src[src_i] >>> 24) & 0xff) * (i + 1);
                     sum_r += ((src[src_i] >>> 16) & 0xff) * (i + 1);
                     sum_g += ((src[src_i] >>> 8) & 0xff) * (i + 1);
                     sum_b += (src[src_i] & 0xff) * (i + 1);
+                    sum_out_a += ((src[src_i] >>> 24) & 0xff);
                     sum_out_r += ((src[src_i] >>> 16) & 0xff);
                     sum_out_g += ((src[src_i] >>> 8) & 0xff);
                     sum_out_b += (src[src_i] & 0xff);
@@ -167,9 +172,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                     if (i <= wm) src_i += 1;
                     stack_i = i + radius;
                     stack[stack_i] = src[src_i];
+                    sum_a += ((src[src_i] >>> 24) & 0xff) * (radius + 1 - i);
                     sum_r += ((src[src_i] >>> 16) & 0xff) * (radius + 1 - i);
                     sum_g += ((src[src_i] >>> 8) & 0xff) * (radius + 1 - i);
                     sum_b += (src[src_i] & 0xff) * (radius + 1 - i);
+                    sum_in_a += ((src[src_i] >>> 24) & 0xff);
                     sum_in_r += ((src[src_i] >>> 16) & 0xff);
                     sum_in_g += ((src[src_i] >>> 8) & 0xff);
                     sum_in_b += (src[src_i] & 0xff);
@@ -185,11 +192,13 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                 {
                     src[dst_i] = (int)
                             ((src[dst_i] & 0xff000000) |
+                                    ((((sum_a * mul_sum) >>> shr_sum) & 0xff) << 24) |
                                     ((((sum_r * mul_sum) >>> shr_sum) & 0xff) << 16) |
                                     ((((sum_g * mul_sum) >>> shr_sum) & 0xff) << 8) |
                                     ((((sum_b * mul_sum) >>> shr_sum) & 0xff)));
                     dst_i += 1;
 
+                    sum_a -= sum_out_a;
                     sum_r -= sum_out_r;
                     sum_g -= sum_out_g;
                     sum_b -= sum_out_b;
@@ -198,6 +207,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                     if (stack_start >= div) stack_start -= div;
                     stack_i = stack_start;
 
+                    sum_out_a -= ((stack[stack_i] >>> 24) & 0xff);
                     sum_out_r -= ((stack[stack_i] >>> 16) & 0xff);
                     sum_out_g -= ((stack[stack_i] >>> 8) & 0xff);
                     sum_out_b -= (stack[stack_i] & 0xff);
@@ -210,9 +220,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
                     stack[stack_i] = src[src_i];
 
+                    sum_in_a += ((src[src_i] >>> 24) & 0xff);
                     sum_in_r += ((src[src_i] >>> 16) & 0xff);
                     sum_in_g += ((src[src_i] >>> 8) & 0xff);
                     sum_in_b += (src[src_i] & 0xff);
+                    sum_a    += sum_in_a;
                     sum_r    += sum_in_r;
                     sum_g    += sum_in_g;
                     sum_b    += sum_in_b;
@@ -221,9 +233,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                     if (sp >= div) sp = 0;
                     stack_i = sp;
 
+                    sum_out_a += ((stack[stack_i] >>> 24) & 0xff);
                     sum_out_r += ((stack[stack_i] >>> 16) & 0xff);
                     sum_out_g += ((stack[stack_i] >>> 8) & 0xff);
                     sum_out_b += (stack[stack_i] & 0xff);
+                    sum_in_a  -= ((stack[stack_i] >>> 24) & 0xff);
                     sum_in_r  -= ((stack[stack_i] >>> 16) & 0xff);
                     sum_in_g  -= ((stack[stack_i] >>> 8) & 0xff);
                     sum_in_b  -= (stack[stack_i] & 0xff);
@@ -238,20 +252,21 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
             int minX = core * w / cores;
             int maxX = (core + 1) * w / cores;
 
-            for(x = minX; x < maxX; x++)
-            {
-                sum_r =    sum_g =    sum_b =
-                        sum_in_r = sum_in_g = sum_in_b =
-                                sum_out_r = sum_out_g = sum_out_b = 0;
+            for(x = minX; x < maxX; x++) {
+                sum_r = sum_g = sum_b = sum_a =
+                        sum_in_r = sum_in_g = sum_in_b = sum_in_a =
+                                sum_out_r = sum_out_g = sum_out_b = sum_out_a = 0;
 
                 src_i = x; // x,0
                 for(i = 0; i <= radius; i++)
                 {
                     stack_i    = i;
                     stack[stack_i] = src[src_i];
+                    sum_a           += ((src[src_i] >>> 24) & 0xff) * (i + 1);
                     sum_r           += ((src[src_i] >>> 16) & 0xff) * (i + 1);
                     sum_g           += ((src[src_i] >>> 8) & 0xff) * (i + 1);
                     sum_b           += (src[src_i] & 0xff) * (i + 1);
+                    sum_out_a       += ((src[src_i] >>> 24) & 0xff);
                     sum_out_r       += ((src[src_i] >>> 16) & 0xff);
                     sum_out_g       += ((src[src_i] >>> 8) & 0xff);
                     sum_out_b       += (src[src_i] & 0xff);
@@ -262,9 +277,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
                     stack_i = i + radius;
                     stack[stack_i] = src[src_i];
+                    sum_a += ((src[src_i] >>> 24) & 0xff) * (radius + 1 - i);
                     sum_r += ((src[src_i] >>> 16) & 0xff) * (radius + 1 - i);
                     sum_g += ((src[src_i] >>> 8) & 0xff) * (radius + 1 - i);
                     sum_b += (src[src_i] & 0xff) * (radius + 1 - i);
+                    sum_in_a += ((src[src_i] >>> 24) & 0xff);
                     sum_in_r += ((src[src_i] >>> 16) & 0xff);
                     sum_in_g += ((src[src_i] >>> 8) & 0xff);
                     sum_in_b += (src[src_i] & 0xff);
@@ -279,11 +296,13 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                 {
                     src[dst_i] = (int)
                             ((src[dst_i] & 0xff000000) |
+                                    ((((sum_a * mul_sum) >>> shr_sum) & 0xff) << 24) |
                                     ((((sum_r * mul_sum) >>> shr_sum) & 0xff) << 16) |
                                     ((((sum_g * mul_sum) >>> shr_sum) & 0xff) << 8) |
                                     ((((sum_b * mul_sum) >>> shr_sum) & 0xff)));
                     dst_i += w;
 
+                    sum_a -= sum_out_a;
                     sum_r -= sum_out_r;
                     sum_g -= sum_out_g;
                     sum_b -= sum_out_b;
@@ -292,6 +311,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                     if(stack_start >= div) stack_start -= div;
                     stack_i = stack_start;
 
+                    sum_out_a -= ((stack[stack_i] >>> 24) & 0xff);
                     sum_out_r -= ((stack[stack_i] >>> 16) & 0xff);
                     sum_out_g -= ((stack[stack_i] >>> 8) & 0xff);
                     sum_out_b -= (stack[stack_i] & 0xff);
@@ -304,9 +324,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
                     stack[stack_i] = src[src_i];
 
+                    sum_in_a += ((src[src_i] >>> 24) & 0xff);
                     sum_in_r += ((src[src_i] >>> 16) & 0xff);
                     sum_in_g += ((src[src_i] >>> 8) & 0xff);
                     sum_in_b += (src[src_i] & 0xff);
+                    sum_a    += sum_in_a;
                     sum_r    += sum_in_r;
                     sum_g    += sum_in_g;
                     sum_b    += sum_in_b;
@@ -315,9 +337,11 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
                     if (sp >= div) sp = 0;
                     stack_i = sp;
 
+                    sum_out_a += ((stack[stack_i] >>> 24) & 0xff);
                     sum_out_r += ((stack[stack_i] >>> 16) & 0xff);
                     sum_out_g += ((stack[stack_i] >>> 8) & 0xff);
                     sum_out_b += (stack[stack_i] & 0xff);
+                    sum_in_a  -= ((stack[stack_i] >>> 24) & 0xff);
                     sum_in_r  -= ((stack[stack_i] >>> 16) & 0xff);
                     sum_in_g  -= ((stack[stack_i] >>> 8) & 0xff);
                     sum_in_b  -= (stack[stack_i] & 0xff);
@@ -327,7 +351,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
     }
 
-    private static class BlurTask implements Callable<Void> {
+    private class BlurTask implements Callable<Void> {
         private final int[] _src;
         private final int _w;
         private final int _h;

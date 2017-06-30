@@ -5,11 +5,17 @@ import android.support.v8.renderscript.RenderScript;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+
 /**
  * Created by stefano on 28/06/17.
  */
 
-public class GaussianBlurAlgorithm implements BlurAlgorithm {
+final class GaussianBlurAlgorithm implements BlurAlgorithm {
+
+    private int w, h;
+
     @Override
     public void setRenderscript(RenderScript renderscript) {
 
@@ -18,12 +24,33 @@ public class GaussianBlurAlgorithm implements BlurAlgorithm {
     @Override
     public Bitmap blur(Bitmap original, int radius, BlurOptions options) throws RenderscriptException {
 
-        int w = original.getWidth();
-        int h = original.getHeight();
+        w = original.getWidth();
+        h = original.getHeight();
         int[] pix = new int[w * h];
-
         original.getPixels(pix, 0, w, 0, 0, w, h);
-        apply(pix, pix, w, h);
+        //apply(pix, w, h);
+
+        int cores = Runtime.getRuntime().availableProcessors();
+        cores = 2;
+
+        ArrayList<BlurTask> horizontal = new ArrayList<>(cores);
+        ArrayList<BlurTask> vertical = new ArrayList<>(cores);
+        for (int i = 0; i < cores; i++) {
+            horizontal.add(new BlurTask(pix, w, h, radius, cores, i, 1));
+            vertical.add(new BlurTask(pix, w, h, radius, cores, i, 2));
+        }
+
+        try {
+            SharedBlurManager.getExecutorService().invokeAll(horizontal);
+        } catch (InterruptedException e) {
+            return null;
+        }
+
+        try {
+            SharedBlurManager.getExecutorService().invokeAll(vertical);
+        } catch (InterruptedException e) {
+            return null;
+        }
 
         return Bitmap.createBitmap(pix, w, h, Bitmap.Config.ARGB_8888);
     }
@@ -31,82 +58,150 @@ public class GaussianBlurAlgorithm implements BlurAlgorithm {
 
 
 
-
-
-
-
-
-
-    // extract a channel value from a RGB 'int' packed color
-    static int getChannel(int color, int channel) {
-        return  (color >> (8*channel)) & 0xFF;
-    }
-
-    // shift a color value of the corresponding channel offset
-    static int channelShift(int color, int channel) {
-        return (color&0xFF)<<(8*channel);
-    }
-
     // sample a repeated image. Returns a valid result for any x and y.
     // w is the image width, h the image height and pix the image itself.
-    static int getPixRepeat(int x, int y, int w, int h, int [] pix)
-    {
-        int x2 = (x+w) % w;
-        int y2 = (y+h) % h;
-        return pix[y2*w+x2];
+    private int getPixel(int x, int y, int [] pix) {
+        //if the pixel doen't exists i return a transparent pixel
+        if(x < 0) x = 0;
+        if(x >= w) x = w-1;
+        if(y < 0) y = 0;
+        if(y >= h) y = h-1;
+
+        return pix[y*w+x];
     }
 
-    // appy a 5x5 gaussian blur of sigma = 1.
-    // Put the result into dstpix. Both images must have the same size,
-    // defined by w and h (for width and height).
-    static void apply(int[] srcpix, int[] dstpix, int w, int h) {
 
-        int [] tmppix = new int[w*h + 1];
+    private int[] getFilter(){
+        return new int[]{1, 4, 6, 4, 1};
+    }
+
+
+    private void apply(int[] srcPix, int w, int h, int radius, int cores, int core, int step) {
+
+        //getting gaussian filter
+        int[] gaussianFilter = getFilter();
+        int filterLength = gaussianFilter.length;
+
+        //getting gaussian filter sum to normalize values later
+        int gaussianFilterSum = 0;
+        for(int x : gaussianFilter)
+            gaussianFilterSum += x;
+
+        //auxiliary array used to store current pixels to blur. Moving this through all the image, i don't use additional memory!
+        int [] tmpPix = new int[filterLength];
+
 
         // horizontal filtering
-        for (int y=0; y<h; ++y) {
+        if (step == 1) {
+            int minY = core * h / cores;
+            int maxY = (core + 1) * h / cores;
 
-            int pos = y*w;
+            for (int y = minY; y < maxY; y++) {
 
-            for(int x=0; x<w; ++x) {
+                int row = y * w;
+                int position = 0;
 
-                // accumulate each channel for this pixel
-                int r=0;
-                for (int c=0; c<4; c++) {
-                    // [1 4 6 4 1] filter
-                    r += channelShift((
-                            (getChannel(getPixRepeat(x-2,y,w,h,srcpix), c) +
-                                    getChannel(getPixRepeat(x-1,y,w,h,srcpix), c)*4 +
-                                    getChannel(getPixRepeat(x  ,y,w,h,srcpix), c)*6 +
-                                    getChannel(getPixRepeat(x+1,y,w,h,srcpix), c)*4 +
-                                    getChannel(getPixRepeat(x+2,y,w,h,srcpix), c)) / 16
-                    ), c);
+                for (int x = 0; x < w; ++x) {
+
+                    // accumulate each channel for this pixel
+                    int r = 0;
+                    for (int c = 0; c < 4; c++) {
+
+                        int channelColor = 0;
+
+                        //applying blur to the filterLength close pixels, weighting through the corresponding filter
+                        for (int i = 0; i < filterLength; i++)
+                            channelColor += (getPixel(x + i - filterLength / 2, y, srcPix) >> (8 * c) & 0xFF) * gaussianFilter[i];
+
+                        channelColor = channelColor / gaussianFilterSum;
+                        r += (channelColor & 0xFF) << (8 * c);
+                    }
+
+                    // store the pixel
+                    position = row + x;
+                    if (position >= filterLength)
+                        srcPix[position - filterLength] = tmpPix[position % filterLength];
+
+                    tmpPix[position % filterLength] = r;
                 }
 
-                // store the pixel
-                tmppix[pos + x] = r;
+                position++;
+                for (int i = 0; i < filterLength; i++)
+                    srcPix[position - filterLength + i] = tmpPix[(position + i) % filterLength];
+
             }
         }
+
 
         // vertical filtering
-        for (int x=0; x<w; ++x) {
+        if (step == 2) {
+            int minX = core * w / cores;
+            int maxX = (core + 1) * w / cores;
 
-            int pos = x;
+            for (int x = minX; x < maxX; x++) {
 
-            for (int y=0; y<h; y++) {
-                int r=0;
-                for (int c=0; c<4; c++) {
-                    r += channelShift((
-                            (getChannel(getPixRepeat(x,y-2,w,h,tmppix), c) +
-                                    getChannel(getPixRepeat(x,y-1,w,h,tmppix), c)*4 +
-                                    getChannel(getPixRepeat(x,y  ,w,h,tmppix), c)*6 +
-                                    getChannel(getPixRepeat(x,y+1,w,h,tmppix), c)*4 +
-                                    getChannel(getPixRepeat(x,y+2,w,h,tmppix), c)) / 16
-                    ), c);
+                int row = x;
+                int position = 0;
+
+                for (int y = 0; y < h; y++) {
+
+                    // accumulate each channel for this pixel
+                    int r = 0;
+                    for (int c = 0; c < 4; c++) {
+
+                        int channelColor = 0;
+
+                        //applying blur to the filterLength close pixels, weighting through the corresponding filter
+                        for (int i = 0; i < filterLength; i++)
+                            channelColor += (getPixel(x, y + i - filterLength / 2, srcPix) >> (8 * c) & 0xFF) * gaussianFilter[i];
+
+                        channelColor = channelColor / gaussianFilterSum;
+                        r += (channelColor & 0xFF) << (8 * c);
+                    }
+
+                    if (position >= filterLength)
+                        srcPix[row - filterLength * w] = tmpPix[position % filterLength];
+
+                    tmpPix[position % filterLength] = r;
+
+                    position++;
+                    row += w;
                 }
-                dstpix[pos] = r;//+(0xff << 24);
-                pos += w;
+
+                for (int i = 0; i < filterLength; i++)
+                    srcPix[row - (filterLength - i) * w] = tmpPix[(position + i) % filterLength];
+
             }
         }
+
+    }
+
+
+
+
+    private class BlurTask implements Callable<Void> {
+        private final int[] _src;
+        private final int _w;
+        private final int _h;
+        private final int _radius;
+        private final int _totalCores;
+        private final int _coreIndex;
+        private final int _round;
+
+        BlurTask(int[] src, int w, int h, int radius, int totalCores, int coreIndex, int round) {
+            _src = src;
+            _w = w;
+            _h = h;
+            _radius = radius;
+            _totalCores = totalCores;
+            _coreIndex = coreIndex;
+            _round = round;
+        }
+
+        @Override public Void call() throws Exception {
+            apply(_src, _w, _h, _radius, _totalCores, _coreIndex, _round);
+            return null;
+        }
+
     }
 }
