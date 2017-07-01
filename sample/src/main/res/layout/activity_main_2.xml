@@ -15,14 +15,14 @@
         android:src="@drawable/sf1"
 
         app:piv_blur_radius="1"
-        app:piv_blur_down_sampling_rate="28"
+        app:piv_blur_down_sampling_rate="2"
 
         app:piv_blur_mode="gaussian_fast"
         app:piv_blur_use_rs_fallback="false"
         app:piv_blur_static="false"
 
         app:piv_shape_mode="normal"/>
-
+<!--
     <com.stefanosiano.powerfulimageview.PowerfulImageView
         android:id="@+id/piv2"
         android:layout_width="match_parent"
@@ -40,6 +40,6 @@
         app:piv_blur_static="false"
 
         app:piv_shape_mode="normal"/>
-
+-->
 
 </LinearLayout>

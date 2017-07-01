@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
 
-        final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv2);
+        final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
 //        final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);
         piw.changeProgressMode(PivProgressMode.CIRCULAR);
 //        piw2.changeProgressMode(PivProgressMode.HORIZONTAL);
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
             }
         };
 */
-        piw.postDelayed(runnable, 2500);
+//        piw.postDelayed(runnable, 2500);
         //piw.postDelayed(runnable3, 2500);
     }
 }

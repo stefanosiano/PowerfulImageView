@@ -28,10 +28,8 @@ final class GaussianBlurAlgorithm implements BlurAlgorithm {
         h = original.getHeight();
         int[] pix = new int[w * h];
         original.getPixels(pix, 0, w, 0, 0, w, h);
-        //apply(pix, w, h);
 
         int cores = Runtime.getRuntime().availableProcessors();
-        cores = 2;
 
         ArrayList<BlurTask> horizontal = new ArrayList<>(cores);
         ArrayList<BlurTask> vertical = new ArrayList<>(cores);
@@ -95,6 +93,7 @@ final class GaussianBlurAlgorithm implements BlurAlgorithm {
         if (step == 1) {
             int minY = core * h / cores;
             int maxY = (core + 1) * h / cores;
+            int minIndex = minY * w;
 
             for (int y = minY; y < maxY; y++) {
 
@@ -119,7 +118,7 @@ final class GaussianBlurAlgorithm implements BlurAlgorithm {
 
                     // store the pixel
                     position = row + x;
-                    if (position >= filterLength)
+                    if (position >= minIndex + filterLength)
                         srcPix[position - filterLength] = tmpPix[position % filterLength];
 
                     tmpPix[position % filterLength] = r;
