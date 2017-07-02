@@ -47,7 +47,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
     //Algorithms
     private GaussianBlurAlgorithm mGaussianFastBlurAlgorithm;
-    private GaussianRenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
+    private Gaussian5x5RenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
     private StackBlurAlgorithm mStackBlurAlgorithm;
     private StackRenderscriptBlurAlgorithm mStackRenderscriptBlurAlgorithm;
     private DummyBlurAlgorithm mDummyBlurAlgorithm;
@@ -238,7 +238,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 renderScript = SharedBlurManager.getRenderScriptContext();
                 if(renderScript != null) {
                     if (mGaussianRenderscriptBlurAlgorithm == null)
-                        mGaussianRenderscriptBlurAlgorithm = new GaussianRenderscriptBlurAlgorithm();
+                        mGaussianRenderscriptBlurAlgorithm = new Gaussian5x5RenderscriptBlurAlgorithm();
                     mBlurAlgorithm = mGaussianRenderscriptBlurAlgorithm;
                     mBlurAlgorithm.setRenderscript(renderScript);
                 }

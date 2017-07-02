@@ -34,20 +34,22 @@ final class GaussianBlurAlgorithm implements BlurAlgorithm {
         ArrayList<BlurTask> horizontal = new ArrayList<>(cores);
         ArrayList<BlurTask> vertical = new ArrayList<>(cores);
         for (int i = 0; i < cores; i++) {
-            horizontal.add(new BlurTask(pix, w, h, radius, cores, i, 1));
-            vertical.add(new BlurTask(pix, w, h, radius, cores, i, 2));
+            horizontal.add(new BlurTask(pix, w, h, cores, i, 1));
+            vertical.add(new BlurTask(pix, w, h, cores, i, 2));
         }
 
-        try {
-            SharedBlurManager.getExecutorService().invokeAll(horizontal);
-        } catch (InterruptedException e) {
-            return null;
-        }
+        for(int i = 0; i < radius; i++) {
+            try {
+                SharedBlurManager.getExecutorService().invokeAll(horizontal);
+            } catch (InterruptedException e) {
+                return null;
+            }
 
-        try {
-            SharedBlurManager.getExecutorService().invokeAll(vertical);
-        } catch (InterruptedException e) {
-            return null;
+            try {
+                SharedBlurManager.getExecutorService().invokeAll(vertical);
+            } catch (InterruptedException e) {
+                return null;
+            }
         }
 
         return Bitmap.createBitmap(pix, w, h, Bitmap.Config.ARGB_8888);
@@ -74,7 +76,7 @@ final class GaussianBlurAlgorithm implements BlurAlgorithm {
     }
 
 
-    private void apply(int[] srcPix, int w, int h, int radius, int cores, int core, int step) {
+    private void apply(int[] srcPix, int w, int h, int cores, int core, int step) {
 
         //getting gaussian filter
         int[] gaussianFilter = getFilter();
@@ -182,23 +184,21 @@ final class GaussianBlurAlgorithm implements BlurAlgorithm {
         private final int[] _src;
         private final int _w;
         private final int _h;
-        private final int _radius;
         private final int _totalCores;
         private final int _coreIndex;
         private final int _round;
 
-        BlurTask(int[] src, int w, int h, int radius, int totalCores, int coreIndex, int round) {
+        BlurTask(int[] src, int w, int h, int totalCores, int coreIndex, int round) {
             _src = src;
             _w = w;
             _h = h;
-            _radius = radius;
             _totalCores = totalCores;
             _coreIndex = coreIndex;
             _round = round;
         }
 
         @Override public Void call() throws Exception {
-            apply(_src, _w, _h, _radius, _totalCores, _coreIndex, _round);
+            apply(_src, _w, _h, _totalCores, _coreIndex, _round);
             return null;
         }
 
