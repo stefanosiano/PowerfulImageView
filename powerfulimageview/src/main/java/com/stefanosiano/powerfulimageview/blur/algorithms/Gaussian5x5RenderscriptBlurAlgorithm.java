@@ -14,9 +14,9 @@ import java.lang.ref.WeakReference;
  * Created by stefano on 7/2/17.
  */
 
-public class Gaussian5x5RenderscriptBlurAlgorithm implements BlurAlgorithm {
+final class Gaussian5x5RenderscriptBlurAlgorithm implements BlurAlgorithm {
 
-    private float[] coefficientMatrix = new float[] {
+    private final float[] coefficientMatrix = new float[] {
             0.0030f,    0.0133f,    0.0219f,    0.0133f,    0.0030f,
             0.0133f,    0.0596f,    0.0983f,    0.0596f,    0.0133f,
             0.0219f,    0.0983f,    0.1621f,    0.0983f,    0.0219f,
