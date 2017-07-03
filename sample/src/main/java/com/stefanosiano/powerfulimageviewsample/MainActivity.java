@@ -1,6 +1,7 @@
 package com.stefanosiano.powerfulimageviewsample;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.stefanosiano.powerfulimageview.PowerfulImageView;
@@ -44,6 +45,8 @@ public class MainActivity extends Activity {
                 }
             }
         };
+
+        piw.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.sf1));
 /*
 
         final Runnable runnable4 = new Runnable() {

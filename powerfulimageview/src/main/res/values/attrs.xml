@@ -195,10 +195,14 @@
         <!-- Set the mode of the blur to use -->
         <attr name="piv_blur_mode" format="enum" >
             <enum name="disabled" value="0"/>
-            <enum name="gaussian_fast" value="1"/>
-            <enum name="gaussian_rs" value="2"/>
-            <enum name="stack" value="3"/>
-            <enum name="stack_rs" value="4"/>
+            <enum name="gaussian5x5" value="1"/>
+            <enum name="gaussian5x5_rs" value="2"/>
+            <enum name="gaussian3x3" value="3"/>
+            <enum name="gaussian3x3_rs" value="4"/>
+            <enum name="gaussian" value="5"/>
+            <enum name="gaussian_rs" value="6"/>
+            <enum name="stack" value="7"/>
+            <enum name="stack_rs" value="8"/>
         </attr>
 
         <!-- Set the blur radius used -->

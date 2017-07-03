@@ -46,8 +46,12 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     private boolean mIsAlreadyBlurred;
 
     //Algorithms
-    private GaussianBlurAlgorithm mGaussianFastBlurAlgorithm;
-    private Gaussian5x5RenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
+    private Gaussian5x5BlurAlgorithm mGaussian5x5BlurAlgorithm;
+    private Gaussian5x5RenderscriptBlurAlgorithm mGaussian5x5RenderscriptBlurAlgorithm;
+    private Gaussian3x3BlurAlgorithm mGaussian3x3BlurAlgorithm;
+    private Gaussian3x3RenderscriptBlurAlgorithm mGaussian3x3RenderscriptBlurAlgorithm;
+    private GaussianBlurAlgorithm mGaussianBlurAlgorithm;
+    private GaussianRenderscriptBlurAlgorithm mGaussianRenderscriptBlurAlgorithm;
     private StackBlurAlgorithm mStackBlurAlgorithm;
     private StackRenderscriptBlurAlgorithm mStackRenderscriptBlurAlgorithm;
     private DummyBlurAlgorithm mDummyBlurAlgorithm;
@@ -234,11 +238,50 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 mBlurAlgorithm = mStackBlurAlgorithm;
                 break;
 
+            case GAUSSIAN5X5_RS:
+                renderScript = SharedBlurManager.getRenderScriptContext();
+                if(renderScript != null) {
+                    if (mGaussian5x5RenderscriptBlurAlgorithm == null)
+                        mGaussian5x5RenderscriptBlurAlgorithm = new Gaussian5x5RenderscriptBlurAlgorithm();
+                    mBlurAlgorithm = mGaussian5x5RenderscriptBlurAlgorithm;
+                    mBlurAlgorithm.setRenderscript(renderScript);
+                }
+                //if renderscript is null, there was a problem getting it: let's use java or dummy
+                else
+                    updateAlgorithms(mBlurOptions.isUseRsFallback() ? blurMode.getFallbackMode() : PivBlurMode.DISABLED);
+                break;
+
+            case GAUSSIAN5X5:
+                if(mGaussian5x5BlurAlgorithm == null)
+                    mGaussian5x5BlurAlgorithm = new Gaussian5x5BlurAlgorithm();
+                mBlurAlgorithm = mGaussian5x5BlurAlgorithm;
+                break;
+
+            case GAUSSIAN3X3_RS:
+                renderScript = SharedBlurManager.getRenderScriptContext();
+                if(renderScript != null) {
+                    if (mGaussian3x3RenderscriptBlurAlgorithm == null)
+                        mGaussian3x3RenderscriptBlurAlgorithm = new Gaussian3x3RenderscriptBlurAlgorithm();
+                    mBlurAlgorithm = mGaussian3x3RenderscriptBlurAlgorithm;
+                    mBlurAlgorithm.setRenderscript(renderScript);
+                }
+                //if renderscript is null, there was a problem getting it: let's use java or dummy
+                else
+                    updateAlgorithms(mBlurOptions.isUseRsFallback() ? blurMode.getFallbackMode() : PivBlurMode.DISABLED);
+                break;
+
+            case GAUSSIAN3X3:
+                if(mGaussian3x3BlurAlgorithm == null)
+                    mGaussian3x3BlurAlgorithm = new Gaussian3x3BlurAlgorithm();
+                mBlurAlgorithm = mGaussian3x3BlurAlgorithm;
+                break;
+
+
             case GAUSSIAN_RS:
                 renderScript = SharedBlurManager.getRenderScriptContext();
                 if(renderScript != null) {
                     if (mGaussianRenderscriptBlurAlgorithm == null)
-                        mGaussianRenderscriptBlurAlgorithm = new Gaussian5x5RenderscriptBlurAlgorithm();
+                        mGaussianRenderscriptBlurAlgorithm = new GaussianRenderscriptBlurAlgorithm();
                     mBlurAlgorithm = mGaussianRenderscriptBlurAlgorithm;
                     mBlurAlgorithm.setRenderscript(renderScript);
                 }
@@ -248,10 +291,11 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 break;
 
             case GAUSSIAN:
-                if(mGaussianFastBlurAlgorithm == null)
-                    mGaussianFastBlurAlgorithm = new GaussianBlurAlgorithm();
-                mBlurAlgorithm = mGaussianFastBlurAlgorithm;
+                if(mGaussianBlurAlgorithm == null)
+                    mGaussianBlurAlgorithm = new GaussianBlurAlgorithm();
+                mBlurAlgorithm = mGaussianBlurAlgorithm;
                 break;
+
 
             default:
             case DISABLED:
@@ -371,13 +415,13 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
         if(mBlurOptions.isStaticBlur() != fromView) {
             switch (mMode) {
-                case GAUSSIAN_RS:
+                case GAUSSIAN5X5_RS:
                     mIsRenderscriptManaged = false;
                     SharedBlurManager.removeRenderscriptContext();
                     updateAlgorithms(mMode);
                     break;
 
-                case GAUSSIAN:
+                case GAUSSIAN5X5:
                 case DISABLED:
                 default:
                     break;

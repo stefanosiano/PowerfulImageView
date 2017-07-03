@@ -11,7 +11,8 @@ import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by stefano on 7/2/17.
+ * Class that performs the gaussian blur with 5x5 coefficient matrix using renderscript.
+ * Changing radius will repeat the process radius times.
  */
 
 final class Gaussian5x5RenderscriptBlurAlgorithm implements BlurAlgorithm {
@@ -37,7 +38,6 @@ final class Gaussian5x5RenderscriptBlurAlgorithm implements BlurAlgorithm {
         RenderScript rs = renderscript.get();
         if(rs == null)
             throw new RenderscriptException("Renderscript is null!");
-
 
         Allocation input, output;
         try{

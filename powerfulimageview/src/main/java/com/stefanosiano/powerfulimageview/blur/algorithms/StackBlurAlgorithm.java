@@ -44,7 +44,7 @@ import java.util.concurrent.Executors;
 final class StackBlurAlgorithm implements BlurAlgorithm {
 
 
-    private static final short[] stackblur_mul = {
+    private final short[] stackblur_mul = {
             512, 512, 456, 512, 328, 456, 335, 512, 405, 328, 271, 456, 388, 335, 292, 512,
             454, 405, 364, 328, 298, 271, 496, 456, 420, 388, 360, 335, 312, 292, 273, 512,
             482, 454, 428, 405, 383, 364, 345, 328, 312, 298, 284, 271, 259, 496, 475, 456,
@@ -63,7 +63,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
             289, 287, 285, 282, 280, 278, 275, 273, 271, 269, 267, 265, 263, 261, 259
     };
 
-    private static final byte[] stackblur_shr = {
+    private final byte[] stackblur_shr = {
             9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17,
             17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19,
             19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20,
@@ -93,15 +93,15 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
         int w = original.getWidth();
         int h = original.getHeight();
-        int[] currentPixels = new int[w * h];
-        original.getPixels(currentPixels, 0, w, 0, 0, w, h);
+        int[] pix = new int[w * h];
+        original.getPixels(pix, 0, w, 0, 0, w, h);
         int cores = Runtime.getRuntime().availableProcessors();
 
         ArrayList<BlurTask> horizontal = new ArrayList<>(cores);
         ArrayList<BlurTask> vertical = new ArrayList<>(cores);
         for (int i = 0; i < cores; i++) {
-            horizontal.add(new BlurTask(currentPixels, w, h, radius, cores, i, 1));
-            vertical.add(new BlurTask(currentPixels, w, h, radius, cores, i, 2));
+            horizontal.add(new BlurTask(pix, w, h, radius, cores, i, 1));
+            vertical.add(new BlurTask(pix, w, h, radius, cores, i, 2));
         }
 
         try {
@@ -116,7 +116,19 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
             return null;
         }
 
-        return Bitmap.createBitmap(currentPixels, w, h, Bitmap.Config.ARGB_8888);
+        if(!options.isStaticBlur()) {
+            return Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
+        }
+        else {
+            if (original.isMutable()) {
+                original.setPixels(pix, 0, w, 0, 0, w, h);
+                return original;
+            }
+            else {
+                original.recycle();
+                return Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888);
+            }
+        }
     }
 
     private void blurIteration(int[] src, int w, int h, int radius, int cores, int core, int step) {
@@ -277,7 +289,7 @@ final class StackBlurAlgorithm implements BlurAlgorithm {
 
                     stack_i = i + radius;
                     stack[stack_i] = src[src_i];
-                    sum_a += ((src[src_i] >>> 24) & 0xff) * (radius + 1 - i);
+                    sum_a += (((src[src_i] >>> 24) & 0xff) * (radius + 1 - i));
                     sum_r += ((src[src_i] >>> 16) & 0xff) * (radius + 1 - i);
                     sum_g += ((src[src_i] >>> 8) & 0xff) * (radius + 1 - i);
                     sum_b += (src[src_i] & 0xff) * (radius + 1 - i);

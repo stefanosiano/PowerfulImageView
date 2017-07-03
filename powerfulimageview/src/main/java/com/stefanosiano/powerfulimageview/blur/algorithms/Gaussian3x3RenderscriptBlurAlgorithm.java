@@ -4,19 +4,25 @@ import android.graphics.Bitmap;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.support.v8.renderscript.ScriptIntrinsicConvolve3x3;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 
 import java.lang.ref.WeakReference;
 
-
 /**
- * Class that performs the gaussian blur with any kind of radius using renderscript.
- * Increasing radius will change the coefficients used and increase the radius of the blur,
- * resulting in the image more blurry, but slower.
+ * Class that performs the gaussian blur with 3x3 coefficient matrix using renderscript.
+ * Changing radius will repeat the process radius times.
  */
-final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
+
+final class Gaussian3x3RenderscriptBlurAlgorithm implements BlurAlgorithm {
+
+    private final float[] coefficientMatrix = new float[] {
+            0.0387f, 0.1194f, 0.0387f,
+            0.1194f, 0.3676f, 0.1194f,
+            0.0387f, 0.1194f, 0.0387f
+    };
+
     private WeakReference<RenderScript> renderscript;
 
     @Override
@@ -26,35 +32,41 @@ final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
 
     @Override
     public Bitmap blur(Bitmap original, int radius, BlurOptions options) throws RenderscriptException {
+
         RenderScript rs = renderscript.get();
         if(rs == null)
             throw new RenderscriptException("Renderscript is null!");
 
         Allocation input, output;
-        ScriptIntrinsicBlur script;
-
-        try {
+        try{
             input = Allocation.createFromBitmap(rs, original);
             output = Allocation.createTyped(rs, input.getType());
-            script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-            script.setRadius(radius);
-            script.setInput(input);
-            script.forEach(output);
+            final ScriptIntrinsicConvolve3x3 script = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
+            script.setCoefficients(coefficientMatrix);
+            for (int i = 0; i < radius; i++) {
+                script.setInput(input);
+                script.forEach(output);
+                if(input != output)
+                    input.destroy();
+                input = output;
+            }
+
         }   catch (Exception e){
-            throw new RenderscriptException("Renderscript error while blurring!");
+            e.printStackTrace();
+            throw new RenderscriptException("Renderscript error while blurring! \n" + e.getLocalizedMessage());
         }
+
+
 
         if(!options.isStaticBlur()) {
             Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
             output.copyTo(bitmap);
-            input.destroy();
             output.destroy();
             return bitmap;
         }
         else {
             if (original.isMutable()) {
                 output.copyTo(original);
-                input.destroy();
                 output.destroy();
                 return original;
             }
@@ -62,11 +74,9 @@ final class GaussianRenderscriptBlurAlgorithm implements BlurAlgorithm {
                 Bitmap bitmap = Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
                 original.recycle();
                 output.copyTo(bitmap);
-                input.destroy();
                 output.destroy();
                 return bitmap;
             }
         }
-
     }
 }
