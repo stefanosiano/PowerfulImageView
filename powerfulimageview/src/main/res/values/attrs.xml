@@ -201,8 +201,12 @@
             <enum name="gaussian3x3_rs" value="4"/>
             <enum name="gaussian" value="5"/>
             <enum name="gaussian_rs" value="6"/>
-            <enum name="stack" value="7"/>
-            <enum name="stack_rs" value="8"/>
+            <enum name="box3x3" value="7"/>
+            <enum name="box3x3_rs" value="8"/>
+            <enum name="box5x5" value="9"/>
+            <enum name="box5x5_rs" value="10"/>
+            <enum name="stack" value="11"/>
+            <enum name="stack_rs" value="12"/>
         </attr>
 
         <!-- Set the blur radius used -->

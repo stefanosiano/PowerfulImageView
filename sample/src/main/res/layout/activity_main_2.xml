@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.SeekBar"/>
+
     <com.stefanosiano.powerfulimageview.PowerfulImageView
         android:id="@+id/piv"
         android:layout_width="match_parent"
@@ -14,10 +20,10 @@
 
         android:src="@drawable/sf1"
 
-        app:piv_blur_radius="4"
+        app:piv_blur_radius="3"
         app:piv_blur_down_sampling_rate="4"
 
-        app:piv_blur_mode="stack"
+        app:piv_blur_mode="box3x3"
         app:piv_blur_use_rs_fallback="false"
         app:piv_blur_static="false"
 
@@ -33,10 +39,10 @@
 
         android:src="@drawable/sf1"
 
-        app:piv_blur_radius="1"
+        app:piv_blur_radius="3"
         app:piv_blur_down_sampling_rate="4"
 
-        app:piv_blur_mode="gaussian5x5"
+        app:piv_blur_mode="box3x3_rs"
         app:piv_blur_use_rs_fallback="false"
         app:piv_blur_static="false"
 

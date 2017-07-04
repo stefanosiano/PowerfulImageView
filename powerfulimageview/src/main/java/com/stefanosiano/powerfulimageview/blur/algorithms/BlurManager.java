@@ -46,6 +46,10 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     private boolean mIsAlreadyBlurred;
 
     //Algorithms
+    private Box3x3BlurAlgorithm mBox3x3BlurAlgorithm;
+    private Box3x3RenderscriptBlurAlgorithm mBox3x3RenderscriptBlurAlgorithm;
+    private Box5x5BlurAlgorithm mBox5x5BlurAlgorithm;
+    private Box5x5RenderscriptBlurAlgorithm mBox5x5RenderscriptBlurAlgorithm;
     private Gaussian5x5BlurAlgorithm mGaussian5x5BlurAlgorithm;
     private Gaussian5x5RenderscriptBlurAlgorithm mGaussian5x5RenderscriptBlurAlgorithm;
     private Gaussian3x3BlurAlgorithm mGaussian3x3BlurAlgorithm;
@@ -120,8 +124,9 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * Changes the blur mode of the image.
      *
      * @param blurMode mode to use to blur the image
+     * @param radius strength of the image
      */
-    public final void changeBlurMode(PivBlurMode blurMode, int radius){
+    public final void changeRadius(PivBlurMode blurMode, int radius){
 
         //If there's no change, I don't do anything
         if(blurMode == mMode && radius == mRadius)
@@ -135,6 +140,15 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         updateAlgorithms(blurMode);
         mLastRadius = -1;
         mRadius = radius;
+    }
+
+    /**
+     * Changes the blur mode of the image.
+     *
+     * @param radius strength of the image
+     */
+    public final void changeRadius(int radius){
+        changeRadius(mMode, radius);
     }
 
 
@@ -166,7 +180,10 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         Bitmap bitmap;
         addContext(false);
         try {
-            bitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
+            if(radius == 0)
+                bitmap = mOriginalBitmap;
+            else
+                bitmap = mBlurAlgorithm.blur(mOriginalBitmap, mRadius, mBlurOptions);
             mIsAlreadyBlurred = true;
 
         } catch (RenderscriptException e){
@@ -274,6 +291,44 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
                 if(mGaussian3x3BlurAlgorithm == null)
                     mGaussian3x3BlurAlgorithm = new Gaussian3x3BlurAlgorithm();
                 mBlurAlgorithm = mGaussian3x3BlurAlgorithm;
+                break;
+
+            case BOX5X5_RS:
+                renderScript = SharedBlurManager.getRenderScriptContext();
+                if(renderScript != null) {
+                    if (mBox5x5RenderscriptBlurAlgorithm == null)
+                        mBox5x5RenderscriptBlurAlgorithm  = new Box5x5RenderscriptBlurAlgorithm();
+                    mBlurAlgorithm = mBox5x5RenderscriptBlurAlgorithm ;
+                    mBlurAlgorithm.setRenderscript(renderScript);
+                }
+                //if renderscript is null, there was a problem getting it: let's use java or dummy
+                else
+                    updateAlgorithms(mBlurOptions.isUseRsFallback() ? blurMode.getFallbackMode() : PivBlurMode.DISABLED);
+                break;
+
+            case BOX5X5:
+                if(mBox5x5BlurAlgorithm == null)
+                    mBox5x5BlurAlgorithm = new Box5x5BlurAlgorithm();
+                mBlurAlgorithm = mBox5x5BlurAlgorithm;
+                break;
+
+            case BOX3X3_RS:
+                renderScript = SharedBlurManager.getRenderScriptContext();
+                if(renderScript != null) {
+                    if (mBox3x3RenderscriptBlurAlgorithm == null)
+                        mBox3x3RenderscriptBlurAlgorithm = new Box3x3RenderscriptBlurAlgorithm();
+                    mBlurAlgorithm = mBox3x3RenderscriptBlurAlgorithm;
+                    mBlurAlgorithm.setRenderscript(renderScript);
+                }
+                //if renderscript is null, there was a problem getting it: let's use java or dummy
+                else
+                    updateAlgorithms(mBlurOptions.isUseRsFallback() ? blurMode.getFallbackMode() : PivBlurMode.DISABLED);
+                break;
+
+            case BOX3X3:
+                if(mBox3x3BlurAlgorithm == null)
+                    mBox3x3BlurAlgorithm = new Box3x3BlurAlgorithm();
+                mBlurAlgorithm = mBox3x3BlurAlgorithm;
                 break;
 
 
@@ -455,5 +510,11 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             if(bitmap != null)
                 mView.get().setImageBitmap(getLastBlurredBitmap());
         }
+    }
+
+
+    /** Returns the selected mode used for blurring */
+    public PivBlurMode getMode() {
+        return mMode;
     }
 }

@@ -5,7 +5,7 @@ package com.stefanosiano.powerfulimageview.blur.algorithms;
  * Changing radius will repeat the process radius times.
  */
 
-final class Gaussian3x3BlurAlgorithm extends GaussianBaseBlurAlgorithm {
+final class Gaussian3x3BlurAlgorithm extends ConvolveBaseBlurAlgorithm {
 
     @Override
     protected float[] getFilter(){

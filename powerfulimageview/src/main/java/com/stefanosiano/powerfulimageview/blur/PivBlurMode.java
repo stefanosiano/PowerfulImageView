@@ -10,8 +10,12 @@ public enum PivBlurMode {
     GAUSSIAN3X3_RS(4, GAUSSIAN3X3, true),
     GAUSSIAN(5, DISABLED, false),
     GAUSSIAN_RS(6, GAUSSIAN, true),
-    STACK(7, DISABLED, false),
-    STACK_RS(8, STACK, true);
+    BOX3X3(7, DISABLED, false),
+    BOX3X3_RS(8, BOX3X3, true),
+    BOX5X5(9, DISABLED, false),
+    BOX5X5_RS(10, BOX5X5, true),
+    STACK(11, DISABLED, false),
+    STACK_RS(12, STACK, true);
 
 
     private final int value;
@@ -35,10 +39,18 @@ public enum PivBlurMode {
     /** Returns the mode associated to the passed value, or disabled if the value is invalid */
     public static PivBlurMode fromValue(int value){
         switch (value){
-            case 8:
+            case 12:
                 return STACK_RS;
-            case 7:
+            case 11:
                 return STACK;
+            case 10:
+                return BOX5X5_RS;
+            case 9:
+                return BOX5X5;
+            case 8:
+                return BOX3X3_RS;
+            case 7:
+                return BOX3X3;
             case 6:
                 return GAUSSIAN_RS;
             case 5:

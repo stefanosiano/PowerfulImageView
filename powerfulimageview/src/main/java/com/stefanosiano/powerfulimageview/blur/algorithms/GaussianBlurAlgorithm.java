@@ -10,7 +10,7 @@ import com.stefanosiano.powerfulimageview.blur.BlurOptions;
  * resulting in the image more blurry, but slower.
  */
 
-final class GaussianBlurAlgorithm extends GaussianBaseBlurAlgorithm {
+final class GaussianBlurAlgorithm extends ConvolveBaseBlurAlgorithm {
     private int radius;
 
     GaussianBlurAlgorithm() {

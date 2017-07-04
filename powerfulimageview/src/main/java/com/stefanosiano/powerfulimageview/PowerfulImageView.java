@@ -302,7 +302,23 @@ public class PowerfulImageView extends ImageViewWrapper {
         if(mBlurManager == null)
             return;
 
-        mBlurManager.changeBlurMode(blurMode, radius);
+        mBlurManager.changeRadius(blurMode, radius);
+        blurBitmap(false);
+    }
+
+
+    /**
+     * Changes the blur mode of the image.
+     *
+     * @param radius radius to use when blurring the image: the higher the radius, the more but slower the blurring.
+     */
+    public final void changeRadius(int radius){
+        if(mBlurManager == null)
+            return;
+
+        mCheckBlur = mBlurManager.getMode() != PivBlurMode.DISABLED;
+
+        mBlurManager.changeRadius(radius);
         blurBitmap(false);
     }
 

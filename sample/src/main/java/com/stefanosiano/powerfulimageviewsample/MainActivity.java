@@ -3,6 +3,8 @@ package com.stefanosiano.powerfulimageviewsample;
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSeekBar;
+import android.widget.SeekBar;
 
 import com.stefanosiano.powerfulimageview.PowerfulImageView;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
@@ -18,10 +20,29 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main_2);
 
         final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
-//        final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);
-        piw.changeProgressMode(PivProgressMode.CIRCULAR);
+        final AppCompatSeekBar seekBar = (AppCompatSeekBar) findViewById(R.id.seekbar);
+        final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);
+//        piw.changeProgressMode(PivProgressMode.CIRCULAR);
 //        piw2.changeProgressMode(PivProgressMode.HORIZONTAL);
 
+        seekBar.setMax(10);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                piw.changeRadius(progress);
+                piw2.changeRadius(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         final Runnable runnable2 = new Runnable() {
             @Override
@@ -46,7 +67,6 @@ public class MainActivity extends Activity {
             }
         };
 
-        piw.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.sf1));
 /*
 
         final Runnable runnable4 = new Runnable() {
