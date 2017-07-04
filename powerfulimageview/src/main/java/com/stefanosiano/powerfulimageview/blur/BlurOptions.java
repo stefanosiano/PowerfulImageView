@@ -1,12 +1,15 @@
 package com.stefanosiano.powerfulimageview.blur;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.lang.ref.WeakReference;
 
 /**
  * Class that helps managing the options that will be used to blur the image
  */
 
-public final class BlurOptions {
+public final class BlurOptions implements Parcelable {
 
     /** Rate to downSample the image width and height, based on the view size */
     private float mDownSamplingRate;
@@ -36,6 +39,14 @@ public final class BlurOptions {
         this.mIsStaticBlur = isStaticBlur;
         this.mUseRsFallback = useRsFallback;
         this.mNumThreads = numThreads;
+    }
+
+    public void setOptions(BlurOptions other) {
+        this.mDownSamplingRate = other.mDownSamplingRate;
+        this.mIsStaticBlur = other.mIsStaticBlur;
+        this.mUseRsFallback = other.mUseRsFallback;
+        this.mNumThreads = other.mNumThreads;
+        this.listener = other.listener;
     }
 
     public interface BlurOptionsListener{
@@ -113,5 +124,41 @@ public final class BlurOptions {
      */
     public void setNumThreads(int numThreads) {
         this.mNumThreads = numThreads;
+    }
+
+
+
+
+
+    public static final Creator<BlurOptions> CREATOR = new Creator<BlurOptions>() {
+        @Override
+        public BlurOptions createFromParcel(Parcel in) {
+            return new BlurOptions(in);
+        }
+
+        @Override
+        public BlurOptions[] newArray(int size) {
+            return new BlurOptions[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeFloat(mDownSamplingRate);
+        dest.writeByte((byte) (mIsStaticBlur ? 1 : 0));
+        dest.writeByte((byte) (mUseRsFallback ? 1 : 0));
+        dest.writeInt(mNumThreads);
+    }
+
+    protected BlurOptions(Parcel in) {
+        mDownSamplingRate = in.readFloat();
+        mIsStaticBlur = in.readByte() != 0;
+        mUseRsFallback = in.readByte() != 0;
+        mNumThreads = in.readInt();
     }
 }

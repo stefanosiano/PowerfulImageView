@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
 import android.widget.ImageView;
@@ -126,7 +127,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @param blurMode mode to use to blur the image
      * @param radius strength of the image
      */
-    public final void changeRadius(PivBlurMode blurMode, int radius){
+    public final void changeMode(PivBlurMode blurMode, int radius){
 
         //If there's no change, I don't do anything
         if(blurMode == mMode && radius == mRadius)
@@ -148,7 +149,7 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
      * @param radius strength of the image
      */
     public final void changeRadius(int radius){
-        changeRadius(mMode, radius);
+        changeMode(mMode, radius);
     }
 
 
@@ -517,4 +518,30 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
     public PivBlurMode getMode() {
         return mMode;
     }
+
+
+
+    /** Saves state into a bundle. */
+    public Bundle saveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("blur_options", mBlurOptions);
+        bundle.putInt("blur_mode", mMode.getValue());
+        bundle.putInt("blur_radius", mRadius);
+        return bundle;
+    }
+
+    /** Restores state from a bundle. */
+    public void restoreInstanceState(Bundle state) {
+        if (state == null)
+            return;
+
+        mBlurOptions.setOptions((BlurOptions) state.getParcelable("blur_options"));
+        PivBlurMode blurMode = PivBlurMode.fromValue(state.getInt("blur_mode"));
+        mWidth = state.getInt("blur_width");
+        mHeight = state.getInt("blur_height");
+        mRadius = state.getInt("blur_radius");
+        mLastRadius = -1;
+        changeMode(blurMode, mRadius);
+    }
+
 }

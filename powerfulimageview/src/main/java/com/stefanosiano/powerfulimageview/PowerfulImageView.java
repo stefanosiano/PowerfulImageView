@@ -304,7 +304,7 @@ public class PowerfulImageView extends ImageViewWrapper {
         if(mBlurManager == null)
             return;
 
-        mBlurManager.changeRadius(blurMode, radius);
+        mBlurManager.changeMode(blurMode, radius);
         blurBitmap(false);
     }
 
@@ -421,6 +421,7 @@ public class PowerfulImageView extends ImageViewWrapper {
         bundle.putParcelable("super_state", super.onSaveInstanceState());
         bundle.putParcelable("progress_drawer_manager", mProgressDrawerManager.saveInstanceState());
         bundle.putParcelable("shape_drawer_manager", mShapeDrawerManager.saveInstanceState());
+        bundle.putParcelable("blur_manager", mBlurManager.saveInstanceState());
 
         return bundle;
     }
@@ -432,9 +433,11 @@ public class PowerfulImageView extends ImageViewWrapper {
             Bundle bundle = (Bundle) state;
             mProgressDrawerManager.restoreInstanceState((Bundle) bundle.getParcelable("progress_drawer_manager"));
             mShapeDrawerManager.restoreInstanceState((Bundle) bundle.getParcelable("shape_drawer_manager"));
+            mBlurManager.restoreInstanceState((Bundle) bundle.getParcelable("blur_manager"));
             state = bundle.getParcelable("super_state");
         }
         super.onRestoreInstanceState(state);
+        blurBitmap(true);
     }
 }
 
