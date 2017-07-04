@@ -1,7 +1,6 @@
 package com.stefanosiano.powerfulimageviewsample;
 
 import android.app.Activity;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.widget.SeekBar;
@@ -56,13 +55,13 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 progress += 18;
-                piw.getProgressOptions().setValue(progress);
+                piw.changeProgress(progress);
 
                 if(progress < 100)
                     piw.postDelayed(this, 700);
                 else {
                     piw.postDelayed(runnable2, 1200);
-                    piw.setProgressIndeterminate(true);
+                    piw.changeProgressIndeterminate(true);
                 }
             }
         };
@@ -81,13 +80,13 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 progress2 += 18;
-                piw2.setProgress(progress2);
+                piw2.changeProgress(progress2);
 
                 if(progress2 < 100)
                     piw2.postDelayed(this, 800);
                 else {
                     piw2.postDelayed(runnable4, 1200);
-                    piw2.setProgressIndeterminate(true);
+                    piw2.changeProgressIndeterminate(true);
                 }
             }
         };

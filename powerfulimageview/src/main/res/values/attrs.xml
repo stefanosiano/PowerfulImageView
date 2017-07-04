@@ -222,5 +222,8 @@
         <!-- Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs -->
         <attr name="piv_blur_use_rs_fallback" format="boolean" />
 
+        <!-- Number of threads to use to blur the image (no more than available) -->
+        <attr name="piv_blur_num_threads" format="integer" />
+
     </declare-styleable>
 </resources>

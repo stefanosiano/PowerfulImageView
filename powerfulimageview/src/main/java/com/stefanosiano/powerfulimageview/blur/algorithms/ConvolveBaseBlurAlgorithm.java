@@ -32,7 +32,10 @@ abstract class ConvolveBaseBlurAlgorithm implements BlurAlgorithm {
         int[] pix = new int[w * h];
         original.getPixels(pix, 0, w, 0, 0, w, h);
 
-        int cores = Runtime.getRuntime().availableProcessors();
+        int cores = Math.min(options.getNumThreads(), Runtime.getRuntime().availableProcessors());
+        if(cores <= 0)
+            cores = Runtime.getRuntime().availableProcessors();
+
 
         ArrayList<BlurTask> horizontal = new ArrayList<>(cores);
         ArrayList<BlurTask> vertical = new ArrayList<>(cores);

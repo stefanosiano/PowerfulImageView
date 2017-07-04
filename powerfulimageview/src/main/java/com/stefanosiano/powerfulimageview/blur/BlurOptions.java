@@ -17,6 +17,9 @@ public final class BlurOptions {
     /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs */
     private boolean mUseRsFallback;
 
+    /** Number of threads to use to blur the image (no more than available) */
+    private int mNumThreads;
+
     /** Listener that will update the blur manager on changes, with a weak reference to be sure to not leak memory */
     private WeakReference<BlurOptionsListener> listener;
 
@@ -27,11 +30,12 @@ public final class BlurOptions {
      * @param isStaticBlur Whether the original bitmap should be kept in memory. If false, trying to blur a second time won't have effect
      * @param useRsFallback Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs
      */
-    public BlurOptions(float downSamplingRate, boolean isStaticBlur, boolean useRsFallback) {
+    public BlurOptions(float downSamplingRate, boolean isStaticBlur, boolean useRsFallback, int numThreads) {
         this.mDownSamplingRate = downSamplingRate;
         if(mDownSamplingRate < 1) mDownSamplingRate = 1;
         this.mIsStaticBlur = isStaticBlur;
         this.mUseRsFallback = useRsFallback;
+        this.mNumThreads = numThreads;
     }
 
     public interface BlurOptionsListener{
@@ -89,6 +93,11 @@ public final class BlurOptions {
         return mUseRsFallback;
     }
 
+    /** @return Number of threads to use to blur the image */
+    public int getNumThreads() {
+        return mNumThreads;
+    }
+
     /**
      * @param useRsFallback Whether the image should be blurred with the Java equivalent function
      *                      of renderscript one used. Used only if a renderscript mode is selected.
@@ -98,4 +107,11 @@ public final class BlurOptions {
     }
 
 
+    /**
+     * Number of threads to use for blurring
+     * @param numThreads if it's 0 or negative, available cores number will be used
+     */
+    public void setNumThreads(int numThreads) {
+        this.mNumThreads = numThreads;
+    }
 }

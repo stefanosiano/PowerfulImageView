@@ -66,6 +66,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final int DEFAULT_BLUR_RADIUS = 0;
     private static final float DEFAULT_BLUR_DOWNSAMPLING_RATE = 4;
     private static final boolean DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK = true;
+    private static final int DEFAULT_BLUR_NUM_THREADS = 0;
     private static final boolean DEFAULT_BLUR_STATIC = false;
     private static final int DEFAULT_BLUR_MODE = PivBlurMode.DISABLED.getValue();
 
@@ -158,7 +159,8 @@ public class PowerfulImageView extends ImageViewWrapper {
         BlurOptions blurOptions = new BlurOptions(
                 a.getFloat(R.styleable.PowerfulImageView_piv_blur_down_sampling_rate, DEFAULT_BLUR_DOWNSAMPLING_RATE),
                 a.getBoolean(R.styleable.PowerfulImageView_piv_blur_static, DEFAULT_BLUR_STATIC),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_use_rs_fallback, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK)
+                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_use_rs_fallback, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK),
+                a.getInteger(R.styleable.PowerfulImageView_piv_blur_num_threads, DEFAULT_BLUR_NUM_THREADS)
         );
 
         int blurRadius = a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_RADIUS);
@@ -241,11 +243,11 @@ public class PowerfulImageView extends ImageViewWrapper {
      *
      * Controls how the image should be resized or moved to match the size of this ImageView.
      * Added to provide additional custom scale types.
-     * Overrides ImageView's setScaleType(ImageView.ScaleType) method.
+     * Overrides ImageView's changeScaleType(ImageView.ScaleType) method.
      *
      * @param scaleType The desired scaling mode.
      */
-    public void setScaleType(PivShapeScaleType scaleType) {
+    public void changeScaleType(PivShapeScaleType scaleType) {
         super.setScaleType(ScaleType.MATRIX);
         if(mShapeDrawerManager != null)
             mShapeDrawerManager.setScaleType(scaleType);
@@ -355,7 +357,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     /**
      * @param isIndeterminate whether the progress indicator is indeterminate or not
      */
-    public final void setProgressIndeterminate(boolean isIndeterminate){
+    public final void changeProgressIndeterminate(boolean isIndeterminate){
         mProgressDrawerManager.getProgressOptions().setIndeterminate(isIndeterminate);
     }
 
@@ -395,7 +397,7 @@ public class PowerfulImageView extends ImageViewWrapper {
      *
      * @param progress Percentage value of the progress
      */
-    public void setProgress(float progress){
+    public void changeProgress(float progress){
         getProgressOptions().setValue(progress);
     }
 
