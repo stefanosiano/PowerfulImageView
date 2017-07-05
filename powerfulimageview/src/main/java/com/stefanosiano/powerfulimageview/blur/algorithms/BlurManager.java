@@ -515,10 +515,27 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
 
 
     /** Returns the selected mode used for blurring */
-    public PivBlurMode getMode() {
+    public PivBlurMode getBlurMode() {
         return mMode;
     }
 
+    /** Returns the options used for blurring */
+    public BlurOptions getBlurOptions() {
+        return mBlurOptions;
+    }
+
+    /** Returns the selected radius used for blurring */
+    public int getRadius() {
+        return mRadius;
+    }
+
+    /**
+     * @return The original bitmap used to blur. If static blur option is enabled, this will be the
+     * same as the blurred one, since the original bitmap has been released.
+     */
+    public Bitmap getOriginalBitmap() {
+        return mOriginalBitmap;
+    }
 
 
     /** Saves state into a bundle. */

@@ -247,7 +247,7 @@ public class PowerfulImageView extends ImageViewWrapper {
      *
      * @param scaleType The desired scaling mode.
      */
-    public void changeScaleType(PivShapeScaleType scaleType) {
+    public final void changeShapeScaleType(PivShapeScaleType scaleType) {
         super.setScaleType(ScaleType.MATRIX);
         if(mShapeDrawerManager != null)
             mShapeDrawerManager.setScaleType(scaleType);
@@ -314,11 +314,11 @@ public class PowerfulImageView extends ImageViewWrapper {
      *
      * @param radius radius to use when blurring the image: the higher the radius, the more but slower the blurring.
      */
-    public final void changeRadius(int radius){
+    public final void changeBlurRadius(int radius){
         if(mBlurManager == null)
             return;
 
-        mCheckBlur = mBlurManager.getMode() != PivBlurMode.DISABLED;
+        mCheckBlur = mBlurManager.getBlurMode() != PivBlurMode.DISABLED;
 
         mBlurManager.changeRadius(radius);
         blurBitmap(false);
@@ -373,15 +373,22 @@ public class PowerfulImageView extends ImageViewWrapper {
     /**
      * @return The selected progress mode
      */
-    public PivProgressMode getProgressMode(){
+    public final PivProgressMode getProgressMode(){
         return mProgressDrawerManager.getProgressMode();
     }
 
     /**
      * @return The selected shape mode
      */
-    public PivShapeMode getShapeMode(){
+    public final PivShapeMode getShapeMode(){
         return mShapeDrawerManager.getShapeMode();
+    }
+
+    /**
+     * @return The selected shape mode
+     */
+    public final PivBlurMode getBlurMode(){
+        return mBlurManager.getBlurMode();
     }
 
     /**
@@ -392,12 +399,48 @@ public class PowerfulImageView extends ImageViewWrapper {
     }
 
     /**
+     * @return The options of the blur
+     */
+    public final BlurOptions getBlurOptions() {
+        return mBlurManager.getBlurOptions();
+    }
+
+    /**
+     * @return The selected radius used for blurring
+     */
+    public final int getBlurRadius() {
+        return mBlurManager.getRadius();
+    }
+
+    /**
+     * Returns the last blurred bitmap. If the bitmap was never blurred, or blur options, mode or radius
+     * changed since the last blur, the bitmap will be blurred again (if static option is disabled).
+     *
+     * @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned.
+     */
+    public final Bitmap getBlurBlurredBitmap() {
+        return mBlurManager.getLastBlurredBitmap();
+    }
+
+    /**
+     * Returns the original bitmap used to blur. If static blur option is enabled, this will be the
+     * same as the blurred one, since the original bitmap has been released.
+     *
+     * Don't use this method if you didn't enable blur!
+     *
+     * @return The original bitmap, or the blurred one if static blur is enabled.
+     */
+    public final Bitmap getBlurOriginalBitmap() {
+        return mBlurManager.getOriginalBitmap();
+    }
+
+    /**
      * Sets the progress of the current indicator.
      * If the drawer is indeterminate, it will change its state and make it determinate.
      *
      * @param progress Percentage value of the progress
      */
-    public void changeProgress(float progress){
+    public final void changeProgress(float progress){
         getProgressOptions().setValue(progress);
     }
 

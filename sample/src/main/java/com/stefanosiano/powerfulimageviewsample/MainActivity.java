@@ -28,8 +28,8 @@ public class MainActivity extends Activity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                piw.changeRadius(progress);
-                piw2.changeRadius(progress);
+                piw.changeBlurRadius(progress);
+                piw2.changeBlurRadius(progress);
             }
 
             @Override
