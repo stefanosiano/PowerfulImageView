@@ -1,7 +1,7 @@
 package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.graphics.Bitmap;
-import android.support.v8.renderscript.RenderScript;
+import android.renderscript.RenderScript;
 
 import com.stefanosiano.powerfulimageview.blur.BlurOptions;
 

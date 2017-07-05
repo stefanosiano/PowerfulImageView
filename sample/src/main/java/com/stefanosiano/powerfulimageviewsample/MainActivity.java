@@ -2,10 +2,9 @@ package com.stefanosiano.powerfulimageviewsample;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.widget.SeekBar;
 
-import com.stefanosiano.powerfulimageview.PowerfulImageView;
+import com.stefanosiano.powerfulimageview.PowerlessImageView;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 
 
@@ -18,9 +17,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_2);
 
-        final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
-        final AppCompatSeekBar seekBar = (AppCompatSeekBar) findViewById(R.id.seekbar);
-        final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);
+        final PowerlessImageView piw = (PowerlessImageView) findViewById(R.id.piv);
+        final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
+        final PowerlessImageView piw2 = (PowerlessImageView) findViewById(R.id.piv2);
 //        piw.changeProgressMode(PivProgressMode.CIRCULAR);
 //        piw2.changeProgressMode(PivProgressMode.HORIZONTAL);
 

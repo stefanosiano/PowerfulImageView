@@ -34,15 +34,12 @@ abstract class ImageViewWrapper extends ImageView {
 
 
 
-
     /**
-     * Method called when the drawable has been changed, thruogh a set..() method
-     *
-     * @param isBlurred True if the image is already bluured, False otherwise
+     * Method called when the drawable has been changed, through a set..() method
      */
-    abstract void onDrawableChanged(boolean isBlurred);
+    abstract void onDrawableChanged();
 
-    /* Methods to check! Should they be handled by ShapeDrawerManager? */
+    /* Methods to check! They are here just as a reminder of what i could use */
     @Override
     public void setImageMatrix(Matrix matrix) {
         super.setImageMatrix(matrix);
@@ -69,7 +66,6 @@ abstract class ImageViewWrapper extends ImageView {
         super.setImageAlpha(alpha);
     }
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     @Override
     public void setAlpha(int alpha) {
@@ -117,41 +113,34 @@ abstract class ImageViewWrapper extends ImageView {
 
 
     //these methods propagate their effects to the methods of the PIV
-
-
     @Override
     public void setImageResource(int resId) {
         super.setImageResource(resId);
-        onDrawableChanged(false);
+        //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     }
 
     @Override
     public void setImageURI(Uri uri) {
         super.setImageURI(uri);
-        onDrawableChanged(false);
+        onDrawableChanged();
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
-        onDrawableChanged(false);
+        onDrawableChanged();
     }
 
     @Override
     public void setImageIcon(Icon icon) {
         super.setImageIcon(icon);
-        onDrawableChanged(false);
+        //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     }
 
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(bm);
-        onDrawableChanged(false);
-    }
-
-    protected void setBlurredBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-        onDrawableChanged(true);
+        //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     }
 
     @Override

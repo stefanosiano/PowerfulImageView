@@ -13,8 +13,8 @@ import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
  * ProgressDrawer that shows an indeterminate animated bar as progress indicator.
  */
 final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
-
-
+    
+    
     /** Default animation duration */
     private final long DEFAULT_ANIMATION_DURATION = 1000;
 
@@ -96,7 +96,7 @@ final class HorizontalIndeterminateProgressDrawer implements ProgressDrawer {
             this.mStartX = mLeft;
             this.mEndX = currentX;
         }
-
+        
         listener.onRequestInvalidate();
     }
 

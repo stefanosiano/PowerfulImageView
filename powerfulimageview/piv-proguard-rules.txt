@@ -34,4 +34,5 @@
 -keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.PivShapeScaleType { *; }
 -keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.ShapeOptions { *; }
 
--keep class android.support.v8.renderscript.** { *; }
+-keep class com.stefanosiano.powerfulimageview.shape.PivBlurMode { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.BlurOptions { *; }

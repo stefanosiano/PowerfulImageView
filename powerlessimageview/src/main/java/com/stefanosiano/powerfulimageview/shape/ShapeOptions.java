@@ -129,6 +129,7 @@ public final class ShapeOptions implements Parcelable {
         this.mCalculatedLastPaddingRight = 0;
         this.mCalculatedLastPaddingBottom = 0;
         this.mCalculatedLastMode = PivShapeMode.NORMAL;
+        this.listener = new WeakReference<>(null);
     }
 
     /** Updates the values of the current options, copying the passed values */
@@ -291,9 +292,9 @@ public final class ShapeOptions implements Parcelable {
     }
 
     /** Set the background color of the image, using the shape.
-     Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     See the Color class for more details. */
+    Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+    premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+    See the Color class for more details. */
     public void setBackgroundColor(int backgroundColor) {
         this.mBackgroundColor = backgroundColor;
         if(listener.get() != null)
@@ -413,7 +414,6 @@ public final class ShapeOptions implements Parcelable {
     /**
      * Set the inner padding of the image relative to the shape.
      * If it's lower than 0, it is ignored.
-     * Overrides inner padding set through setInnerPaddingPercent().
      *
      * @param innerPadding Inner padding of the image relative to the shape
      */
@@ -426,12 +426,12 @@ public final class ShapeOptions implements Parcelable {
 
     /**
      * Set the inner padding of the image relative to the shape, as a percentage of the shape size.
-     * It's used only if innerPadding is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
      *
      * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage of the shape size, as a float from 0 to 100
      */
-    public void setInnerPaddingPercent(float innerPaddingPercent) {
+    public void setInnerPadding(float innerPaddingPercent) {
+        this.mInnerPadding = -1;
         this.mInnerPaddingPercent = innerPaddingPercent;
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode);
         if(listener.get() != null)

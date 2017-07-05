@@ -27,6 +27,7 @@ import com.stefanosiano.powerfulimageview.shape.drawers.ShapeDrawerManager;
  * Powerful ImageView with several added features (highly customizable):
  *     -Progress indicator: it can be circular, horizontal or disabled.
  *     -Shapes: it can be normal, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle, rectangle, square.
+ *     -Blur: it can use several algorithms, like gaussian, box and stack blur
  *
  * It extends AppCompatImageView, allowing the use of VectorDrawables and all AppCompat stuff.
  * The downside is that it needs the Android appcompat-v7 library.

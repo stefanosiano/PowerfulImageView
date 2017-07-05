@@ -40,7 +40,7 @@ abstract class ImageViewWrapper extends AppCompatImageView {
      */
     abstract void onDrawableChanged();
 
-    /* Methods to check! Should they be handled by ShapeDrawerManager? */
+    /* Methods to check! They are here just as a reminder of what i could use */
     @Override
     public void setImageMatrix(Matrix matrix) {
         super.setImageMatrix(matrix);
@@ -67,7 +67,6 @@ abstract class ImageViewWrapper extends AppCompatImageView {
         super.setImageAlpha(alpha);
     }
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     @Override
     public void setAlpha(int alpha) {
