@@ -1,6 +1,7 @@
 package com.stefanosiano.powerfulimageview.blur.algorithms;
 
 import android.content.Context;
+import android.os.Build;
 import android.renderscript.RenderScript;
 import android.util.Log;
 
@@ -23,6 +24,11 @@ final class SharedBlurManager {
     private static ExecutorService executorService;
 
     synchronized static void addRenderscriptContext(Context context){
+
+        //Renderscript scripts used are available only if api level is at least 18!
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
+            return;
+
         if(count == null){
             count = new AtomicInteger(0);
         }

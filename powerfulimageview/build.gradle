@@ -31,7 +31,7 @@ android {
         consumerProguardFiles 'piv-proguard-rules.txt'
         vectorDrawables.useSupportLibrary = true
 
-        renderscriptTargetApi 14
+        renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
         buildToolsVersion "25.0.3"
 
