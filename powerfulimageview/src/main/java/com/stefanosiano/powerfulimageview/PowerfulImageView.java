@@ -441,7 +441,7 @@ public class PowerfulImageView extends ImageViewWrapper {
      *
      * @param progress Percentage value of the progress
      */
-    public final void changeProgress(float progress){
+    public final void changeProgressValue(float progress){
         getProgressOptions().setValue(progress);
     }
 
