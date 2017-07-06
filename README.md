@@ -2,13 +2,13 @@ PowerfulImageView
 =================
 
 Custom Android ImageView with several added features.  
-1) Progress indicator: circular, horizontal, disabled  
-2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like topCrop and bottomCrop.  
+1) Progress indicator: circular, horizontal, disabled;  
+2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like topCrop and bottomCrop;  
+3) Blur: Blurs the image with gaussian, box or stack blur algorithm. It can use either Renderscript or Java methods, and fallback in case of errors.  
   
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
 Planned features (for now):  
-* Blur support
 * Pinch in/out to zoom
 * Panoramas
 * Custom target for Picasso/Glide
@@ -35,8 +35,16 @@ This is flexible enough to let you use the progress in other ways, like tracking
 Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type may be added (currently topCrop and bottomCrop have been added).  
 Shapes are divided into 3 types:  
 1) Rectanglular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews;
-2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations (even applied by image loaders like Glide) may cause issues. Mechanisms to prevent out of memory exceptions are in place, but you may have an image with a random alpha value. To avoid this, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate();
+2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations (even applied by image loaders like Glide) may cause issues. Mechanisms to prevent out of memory exceptions are in place, but you may have an image with a random alpha value. To avoid this, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate();`
 3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library, and cover background, too, but you won't be able to see what's behind them (solid color shouldn't be transparent). Non-solid shapes don't cover background, but they provide real shapes, allowing users to see anything behind the shape.
+  
+  
+  
+**Blur:**  
+Some applications may need to blur an image. While blurring an image sounds easy at first, there are a lot of things to care about, like renderscript contexts, downscaling image, performance optimizations to not lock the UI thread. This library provides a very easy way to blur the image (as easy as adding blur_mode and blur_radius to the xml element). Also, it's designed to be as efficient and reliable as possible. This means that renderscript context are created and destroied only when necessary, and they are shared through all instances of the PowerfulImageView, improving performances in lists.  
+Blur algorithms are divided into 2 categories:  
+1) Renderscript algorithms: they use renderscript under the hood (support version in PowerfulImageView and normal version in PowerlessImageView). In case of error the corresponding Java algorithm will be used automatically (if enabled by its option);  
+2) Java algorithms: they use java and, while being less performant, they support any version and any device. In case of error the original bitmap will be returned. All Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).  
   
   
   
@@ -50,13 +58,13 @@ repositories {
 }
 ```
 
-To use **Powerful**ImageView, which extends AppcompatImageView and supports vector drawables and tinting on older apis:  
+To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerfulimageview:0.2.5'
 }
 ```
-To use **Powerless**ImageView, which extends ImageView and doesn't depend on AppCompat library:  
+To use **Powerless**ImageView, which extends ImageView, doesn't depend on AppCompat library and uses normal Renderscript:  
 ```
 dependencies {
     compile 'com.stefanosiano:powerlessimageview:0.2.5'
@@ -75,11 +83,14 @@ Via xml:
 ```
 app:piv_progress_mode="circular"
 app:piv_shape_mode="circle"
+app:piv_blur_mode="gaussian5x5"
+app:piv_blur_radius="1"
 ```
 Via Java:  
 ```
-progressImageView.changeProgressMode(PivProgressMode.CIRCULAR);
-progressImageView.changeShapeMode(PivShapeMode.CIRCLE);
+powerfulImageView.changeProgressMode(PivProgressMode.CIRCULAR);
+powerfulImageView.changeShapeMode(PivShapeMode.CIRCLE);
+powerfulImageView.changeBlurMode(PivBlurMode.GAUSSIAN5X5, 1);
 ```
   
   
@@ -184,7 +195,7 @@ Notes
 Tips
 ----
   
-Options may be overwheilming. Also, you should have a consistent UI. So, you should define a custom style for the progress options, configuring all the aspects of the PowerfulImageView progress, and then use your own style anywhere you need. This is good for theming, too!  
+Options (especially progress options) may be overwheilming. Also, you should have a consistent UI. So, you should define a custom style, configuring all the aspects of the PowerfulImageView progress, and then use your own style anywhere you need. This is good for theming, too!  
 You can then apply custom styles for shapes, if you want. To do so, you just need to add your configuration in your styles.xml file like this:  
   
 ```
@@ -216,7 +227,6 @@ Then apply it like this:
 Roadmap
 -------
 Create code diagram  
-Study blurring methods  
 
 
 
