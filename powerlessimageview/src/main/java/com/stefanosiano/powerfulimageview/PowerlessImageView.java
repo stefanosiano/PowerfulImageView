@@ -295,7 +295,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
 
     /**
-     * Changes the blur mode of the image.
+     * Changes the blur mode and the radius to blur the image.
      *
      * @param blurMode mode to use to blur the image
      * @param radius radius to use when blurring the image: the higher the radius, the more the blurring.
@@ -311,7 +311,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
 
     /**
-     * Changes the blur mode of the image.
+     * Changes the blur radius to blur the image.
      *
      * @param radius radius to use when blurring the image: the higher the radius, the more but slower the blurring.
      */
@@ -416,6 +416,8 @@ public class PowerlessImageView extends ImageViewWrapper {
     /**
      * Returns the last blurred bitmap. If the bitmap was never blurred, or blur options, mode or radius
      * changed since the last blur, the bitmap will be blurred again (if static option is disabled).
+     *
+     * Don't use this method if you didn't enable blur!
      *
      * @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned.
      */

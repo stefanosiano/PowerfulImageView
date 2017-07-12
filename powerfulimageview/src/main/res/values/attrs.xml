@@ -7,94 +7,6 @@
 
         <!-- PROGRESS OPTIONS -->
 
-        <!-- Set whether the progress should update with an animation.
-             If the progress is indeterminate it's ignored.
-             If true it updates its progress with an animation, otherwise it will update instantly -->
-        <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
-
-        <!-- Width of the progress indicator border, in a specific dimension or in percentage (20dp or 30%).
-             If the specific dimension is less than 0, it is ignored.
-             If the percentage is higher than 100, it is treated as (value % 100) -->
-        <attr name="piv_progress_border_width" format="dimension|fraction" />
-
-        <!-- Size of the progress indicator, in a specific dimension or in percentage (20dp or 30%).
-             If the specific dimension is less than 0, it is ignored.
-             If the percentage is higher than 100, it is treated as (value % 100).
-             Note that it may be different from the actual size used to draw the progress, since it is
-             calculated based on the View size and on the padding option. -->
-        <attr name="piv_progress_size" format="dimension|fraction" />
-
-        <!-- Set the padding of the progress indicator. -->
-        <attr name="piv_progress_padding" format="dimension" />
-
-        <!-- Set the width of the shadow border. -->
-        <attr name="piv_progress_shadow_border_width" format="dimension" />
-
-        <!-- Percentage value of the progress indicator, used by determinate progress.
-             If the percentage is higher than 100, it is treated as (value % 100).
-             If the percentage is lower than 0, it is treated as 0.
-             If the progress is indeterminate or horizontal_determinate it's ignored.
-             Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0! -->
-        <attr name="piv_progress_value" format="float" />
-
-        <!-- Set the front color of the indicator, used by determinate drawers.
-             If the drawer is not determinate or horizontal_determinate it's ignored.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_progress_front_color" format="color" />
-
-        <!-- Set the back color of the indicator, used by determinate drawers.
-             If the drawer is not determinate or horizontal_determinate it's ignored.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_progress_back_color" format="color" />
-
-        <!-- Set the color of the progress indicator shadow border.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_progress_shadow_border_color" format="color" />
-
-        <!-- Set the indeterminate color of the indicator, used by indeterminate drawers.
-             If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_progress_indeterminate_color" format="color" />
-
-        <!-- Set whether the view should use right to left layout (used for gravity option)
-             If true, start will always be treated as left and end as right.
-             If false, on api 17+, gravity will be treated accordingly to rtl rules. -->
-        <attr name="piv_progress_rtl_disabled" format="boolean" />
-
-        <!-- Set whether the view should show an indeterminate progress indicator. -->
-        <attr name="piv_progress_indeterminate" format="boolean" />
-
-        <!-- Set whether to show a wedge or a circle, used by circular determinate drawer.
-             If the drawer is not determinate it's ignored.
-             If true, a wedge is drawn, otherwise a circle will be drawn -->
-        <attr name="piv_progress_draw_wedge" format="boolean" />
-
-        <!-- Set whether to show a progress shadow, used by drawers.
-             If true, the shadow is drawn -->
-        <attr name="piv_progress_shadow_enabled" format="boolean" />
-
-        <!-- Set whether the progress should be reversed, used by drawers -->
-        <attr name="piv_progress_reversed" format="boolean" />
-
-        <!-- Set the shadow color of the indicator, used by drawers.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_progress_shadow_color" format="color" />
-
-        <!-- Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%).
-             If the specific dimension is less than 0, it is ignored.
-             If the percentage is higher than 100, it is treated as (value % 100) -->
-        <attr name="piv_progress_shadow_padding" format="dimension|fraction" />
-
         <!-- Set the gravity of the indicator.
              It will follow the right to left layout (on api 17+), if not disabled. -->
         <attr name="piv_progress_gravity" format="enum" >
@@ -115,6 +27,98 @@
             <enum name="circular" value="1"/>
             <enum name="horizontal" value="2"/>
         </attr>
+
+        <!-- Set whether the view should show an indeterminate progress indicator. -->
+        <attr name="piv_progress_indeterminate" format="boolean" />
+
+        <!-- Percentage value of the progress indicator, used by determinate progress.
+             If the percentage is higher than 100, it is treated as (value % 100).
+             If the percentage is lower than 0, it is treated as 0.
+             If the progress is indeterminate or horizontal_determinate it's ignored.
+             Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0! -->
+        <attr name="piv_progress_value" format="float" />
+
+        <!-- Size of the progress indicator, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100).
+             Note that it may be different from the actual size used to draw the progress, since it is
+             calculated based on the View size and on the padding option. -->
+        <attr name="piv_progress_size" format="dimension|fraction" />
+
+        <!-- Set the padding of the progress indicator. -->
+        <attr name="piv_progress_padding" format="dimension" />
+
+        <!-- Width of the progress indicator border, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100) -->
+        <attr name="piv_progress_border_width" format="dimension|fraction" />
+
+        <!-- Set the width of the shadow border. -->
+        <attr name="piv_progress_shadow_border_width" format="dimension" />
+
+        <!-- Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100) -->
+        <attr name="piv_progress_shadow_padding" format="dimension|fraction" />
+
+
+
+        <!-- Set whether to show a progress shadow, used by drawers.
+             If true, the shadow is drawn -->
+        <attr name="piv_progress_shadow_enabled" format="boolean" />
+
+        <!-- Set whether the progress should update with an animation.
+             If the progress is indeterminate it's ignored.
+             If true it updates its progress with an animation, otherwise it will update instantly -->
+        <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
+
+        <!-- Set whether the view should use right to left layout (used for gravity option)
+             If true, start will always be treated as left and end as right.
+             If false, on api 17+, gravity will be treated accordingly to rtl rules. -->
+        <attr name="piv_progress_rtl_disabled" format="boolean" />
+
+        <!-- Set whether to show a wedge or a circle, used by circular determinate drawer.
+             If the drawer is not determinate it's ignored.
+             If true, a wedge is drawn, otherwise a circle will be drawn -->
+        <attr name="piv_progress_draw_wedge" format="boolean" />
+
+        <!-- Set whether the progress should be reversed, used by drawers -->
+        <attr name="piv_progress_reversed" format="boolean" />
+
+
+
+        <!-- Set the front color of the indicator, used by determinate drawers.
+             If the drawer is not determinate or horizontal_determinate it's ignored.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_front_color" format="color" />
+
+        <!-- Set the back color of the indicator, used by determinate drawers.
+             If the drawer is not determinate or horizontal_determinate it's ignored.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_back_color" format="color" />
+
+        <!-- Set the indeterminate color of the indicator, used by indeterminate drawers.
+             If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_indeterminate_color" format="color" />
+
+        <!-- Set the shadow color of the indicator, used by drawers.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_shadow_color" format="color" />
+
+        <!-- Set the color of the progress indicator shadow border.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_progress_shadow_border_color" format="color" />
 
 
 
@@ -147,34 +151,14 @@
             <enum name="bottomCrop" value="9"/>
         </attr>
 
-        <!-- Set the background color of the image, using the shape.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_shape_background_color" format="color" />
-
-        <!-- Set the frontground color of the image, using the shape.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_shape_frontground_color" format="color" />
 
         <!-- Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%).
              If the specific dimension is less than 0, it is ignored.
              If the percentage is higher than 100, it is treated as (value % 100) -->
         <attr name="piv_shape_inner_padding" format="dimension|fraction" />
 
-        <!-- Set whether the border should be paint over the image. -->
-        <attr name="piv_shape_border_overlay" format="boolean" />
-
         <!-- Set the border width of the image. -->
         <attr name="piv_shape_border_width" format="dimension" />
-
-        <!-- Set the border color of the image.
-             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-             See the Color class for more details. -->
-        <attr name="piv_shape_border_color" format="color" />
 
         <!-- Set the ratio of the image. Doing so, width is calculated as height * ratio -->
         <attr name="piv_shape_ratio" format="float" />
@@ -187,6 +171,31 @@
 
         <!-- Set the solid color used by solid shapes -->
         <attr name="piv_shape_solid_color" format="color" />
+
+
+
+        <!-- Set whether the border should be paint over the image. -->
+        <attr name="piv_shape_border_overlay" format="boolean" />
+
+
+
+        <!-- Set the background color of the image, using the shape.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_background_color" format="color" />
+
+        <!-- Set the frontground color of the image, using the shape.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_frontground_color" format="color" />
+
+        <!-- Set the border color of the image.
+             Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
+             premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+             See the Color class for more details. -->
+        <attr name="piv_shape_border_color" format="color" />
 
 
 
@@ -222,7 +231,7 @@
         <!-- Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs -->
         <attr name="piv_blur_use_rs_fallback" format="boolean" />
 
-        <!-- Number of threads to use to blur the image (no more than available) -->
+        <!-- Number of threads to use to blur the image (no more than available). If it's less than 1, all available cores are used -->
         <attr name="piv_blur_num_threads" format="integer" />
 
     </declare-styleable>
