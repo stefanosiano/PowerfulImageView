@@ -2,8 +2,8 @@ package com.stefanosiano.powerfulimageview.progress.drawers;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
@@ -186,6 +186,14 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
         onSizeUpdated(mProgressOptions);
     }
 
+    /**
+     * Signals the managed that the drawable changed
+     * @param drawable Drawable to update
+     */
+    public final void changeDrawable(Drawable drawable){
+        if(mProgressOptions.isRemovedOnChange())
+            changeProgressMode(PivProgressMode.NONE, false);
+    }
 
     /**
      * Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate).
@@ -195,7 +203,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      * @param forceUpdate if the drawer should be updated, regardless of anything (may occur when changing indeterminate flag)
      */
     public final void changeProgressMode(PivProgressMode progressMode, boolean forceUpdate){
-        if(mProgressMode != null && mProgressMode == progressMode && !forceUpdate)
+        if((mProgressMode != null && mProgressMode == progressMode) || !forceUpdate)
             return;
 
         if(mProgressDrawer != null)

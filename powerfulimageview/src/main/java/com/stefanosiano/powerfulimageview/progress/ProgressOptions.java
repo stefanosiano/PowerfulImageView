@@ -77,6 +77,9 @@ public final class ProgressOptions implements Parcelable {
     /** Whether the progress should be reversed */
     private boolean mIsProgressReversed;
 
+    /** Whether the progress should be reset on drawable change */
+    private boolean mIsRemovedOnChange;
+
     /** Whether the view is using right to left layout (used for gravity option and progress direction) */
     private boolean mIsRtl;
 
@@ -153,7 +156,7 @@ public final class ProgressOptions implements Parcelable {
      */
     public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, float sizePercent, int padding, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
-                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor, boolean isProgressReversed) {
+                           boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor, boolean isProgressReversed, boolean isRemovedOnChange) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
@@ -178,6 +181,7 @@ public final class ProgressOptions implements Parcelable {
         this.mShadowBorderWidth = shadowBorderWidth;
         this.mShadowBorderColor = shadowBorderColor;
         this.mIsProgressReversed = isProgressReversed;
+        this.mIsRemovedOnChange = isRemovedOnChange;
 
         //initialization of private fields used for calculations
         this.mCalculatedSize = 0;
@@ -635,6 +639,15 @@ public final class ProgressOptions implements Parcelable {
     }
 
     /**
+     * Set whether the progress should be reset on drawable change
+     *
+     * @param removedOnChange If true, the progress will be removed when the drawable changes.
+     */
+    public void setRemovedOnChange(boolean removedOnChange) {
+        this.mIsRemovedOnChange = removedOnChange;
+    }
+
+    /**
      * Set whether the view should use right to left layout (used for gravity option)
      *
      * @param isIndeterminate If true, indeterminate progress is drawn.
@@ -848,6 +861,13 @@ public final class ProgressOptions implements Parcelable {
     public boolean isProgressReversed() {
         //if view is rtl, and rtl is not disabled, I change the direction
         return (mIsRtl && !mIsRtlDisabled) != mIsProgressReversed;
+    }
+
+    /**
+     * @return Whether the progress should be reset on drawable change
+     */
+    public boolean isRemovedOnChange() {
+        return mIsRemovedOnChange;
     }
 
 

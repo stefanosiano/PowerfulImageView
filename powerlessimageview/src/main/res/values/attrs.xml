@@ -85,6 +85,9 @@
         <!-- Set whether the progress should be reversed, used by drawers -->
         <attr name="piv_progress_reversed" format="boolean" />
 
+        <!-- Set whether the progress should be reset when drawable changed, used by drawers -->
+        <attr name="piv_progress_removed_on_change" format="boolean" />
+
 
 
         <!-- Set the front color of the indicator, used by determinate drawers.

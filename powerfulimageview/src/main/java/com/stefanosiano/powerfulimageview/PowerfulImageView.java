@@ -48,6 +48,7 @@ public class PowerfulImageView extends ImageViewWrapper {
     private static final boolean DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE = false;
     private static final boolean DEFAULT_PROGRESS_SHADOW_ENABLED = true;
     private static final boolean DEFAULT_PROGRESS_REVERSED = false;
+    private static final boolean DEFAULT_PROGRESS_REMOVED_ON_CHANGE = true;
     private static final int DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.getValue();
     private static final int DEFAULT_PROGRESS_SHADOW_PADDING = -1;
     private static final float DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 10;
@@ -128,7 +129,8 @@ public class PowerfulImageView extends ImageViewWrapper {
                 tvShadowPadding.type == TypedValue.TYPE_FRACTION ? tvShadowPadding.getFraction(100, 100) : DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT,
                 a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_border_width, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH, getResources().getDisplayMetrics())),
                 getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_reversed, DEFAULT_PROGRESS_REVERSED)
+                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_reversed, DEFAULT_PROGRESS_REVERSED),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_removed_on_change, DEFAULT_PROGRESS_REMOVED_ON_CHANGE)
         );
 
         PivProgressMode progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE));
@@ -226,6 +228,10 @@ public class PowerfulImageView extends ImageViewWrapper {
         if(blurBitmap(true)) {
             return;
         }
+
+        //when initializing (in constructor) it gets called, but it is still null
+        if (mProgressDrawerManager != null && getDrawable() != null)
+            mProgressDrawerManager.changeDrawable(getDrawable().getCurrent());
 
         //when initializing (in constructor) it gets called, but it is still null
         if (mShapeDrawerManager != null && getDrawable() != null)
