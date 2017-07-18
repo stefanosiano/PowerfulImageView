@@ -118,6 +118,7 @@ List of all XML attributes
 |piv_progress_rtl_disabled|boolean|language-based|Set whether the view should use right to left layout. If true, start will always be treated as left and end as right. If false, on api 17+, gravity will be treated accordingly to rtl rules.|
 |piv_progress_draw_wedge|boolean|false|Set whether to show a wedge or a circle, used by circular progress. If the progress is not circular it's ignored. If true, a wedge is drawn, otherwise a circle will be drawn.|
 |piv_progress_reversed|boolean|false|Set whether the progress should be reversed.|
+|piv_progress_removed_on_change|boolean|true|Set whether the progress should be reset when the drawable changes.|
 |piv_progress_front_color|color|#00A000|Set the front color of the indicator. If the drawer is indeterminate it's ignored.|
 |piv_progress_back_color|color|#CCCCCC|Set the back color of the indicator. If the drawer is indeterminate it's ignored.|
 |piv_progress_indeterminate_color|color|#A0A0A0|Set the indeterminate color of the progress indicator.|
