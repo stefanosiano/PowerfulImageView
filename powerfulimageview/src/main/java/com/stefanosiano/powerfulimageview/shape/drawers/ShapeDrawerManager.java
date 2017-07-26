@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.view.View;
 
 import com.stefanosiano.powerfulimageview.shape.PivShapeMode;
@@ -105,12 +106,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
     public void changeDrawable(Drawable drawable){
         Drawable mLastDrawable = mDrawable;
         this.mDrawable = drawable;
-        setScaleType(mScaleType);
         mShapeDrawer.changeDrawable(drawable);
         if(mShapeDrawer.requireBitmap()) {
             mLastBitmap = getBitmapFromDrawable(mLastDrawable, drawable);
             mShapeDrawer.changeBitmap(mLastBitmap);
         }
+        else
+            mLastBitmap = null;
+        setScaleType(mScaleType);
     }
 
     /**
@@ -147,6 +150,12 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 else {
                     sizeX = drawable.getIntrinsicWidth();
                     sizeY = drawable.getIntrinsicHeight();
+                }
+
+                //vector drawables should always display at max resolution
+                if(drawable.getClass().getName().equals("android.graphics.drawable.VectorDrawable") || drawable instanceof VectorDrawableCompat){
+                    sizeX = maxWidth;
+                    sizeY = maxHeight;
                 }
 
                 //if i already decoded the bitmap i reuse it
@@ -403,8 +412,17 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
 
         mShaderMatrix.reset();
 
+        //scale used for vector drawable fix (other bitmaps have dwidth = bitmap width)
+        float scaleX = 1;
+        float scaleY = 1;
         int dWidth = mDrawable.getIntrinsicWidth();
         int dHeight = mDrawable.getIntrinsicHeight();
+
+        if(mLastBitmap != null){
+            scaleX = (float) dWidth / (float) mLastBitmap.getWidth();
+            scaleY = (float) dHeight / (float) mLastBitmap.getHeight();
+        }
+
         float vWidth = mImageBounds.width();
         float vHeight = mImageBounds.height();
         Rect padding = new Rect(0, 0, 0, 0);
@@ -433,7 +451,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                     dx = 0;
                 }
 
-                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.setScale(scale * scaleX, scale * scaleY);
                 mShaderMatrix.postTranslate(dx + mImageBounds.left,
                         dy + mImageBounds.top);
                 break;
@@ -450,7 +468,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                     dx = 0;
                 }
 
-                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.setScale(scale * scaleX, scale * scaleY);
                 mShaderMatrix.postTranslate(dx + mImageBounds.left,
                         dy + mImageBounds.top);
                 break;
@@ -467,7 +485,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                     dx = 0;
                 }
 
-                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.setScale(scale * scaleX, scale * scaleY);
                 mShaderMatrix.postTranslate(dx + mImageBounds.left,
                         dy + mImageBounds.top);
                 break;
@@ -483,28 +501,47 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 dx = (vWidth - dWidth * scale) * 0.5f;
                 dy = (vHeight - dHeight * scale) * 0.5f;
 
-                mShaderMatrix.setScale(scale, scale);
+                mShaderMatrix.setScale(scale * scaleX, scale * scaleY);
+
                 mShaderMatrix.postTranslate(dx + mImageBounds.left,
                         dy + mImageBounds.top);
                 break;
 
             case FIT_CENTER:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.CENTER);
+
+                if(mLastBitmap != null)
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, mLastBitmap.getWidth(), mLastBitmap.getHeight()), mImageBounds, Matrix.ScaleToFit.CENTER);
+                else
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.CENTER);
                 break;
 
             case FIT_END:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.END);
+
+                if(mLastBitmap != null)
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, mLastBitmap.getWidth(), mLastBitmap.getHeight()), mImageBounds, Matrix.ScaleToFit.END);
+                else
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.END);
                 break;
 
             case FIT_START:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.START);
+
+                if(mLastBitmap != null)
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, mLastBitmap.getWidth(), mLastBitmap.getHeight()), mImageBounds, Matrix.ScaleToFit.START);
+                else
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.START);
                 break;
 
             case FIT_XY:
-                mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.FILL);
+
+                if(mLastBitmap != null)
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, mLastBitmap.getWidth(), mLastBitmap.getHeight()), mImageBounds, Matrix.ScaleToFit.FILL);
+                else
+                    mShaderMatrix.setRectToRect(new RectF(0, 0, dWidth, dHeight), mImageBounds, Matrix.ScaleToFit.FILL);
                 break;
 
             case MATRIX:
+                mShaderMatrix.preScale(scaleX, scaleY);
+
                 if(mImageMatrix != null)
                     mShaderMatrix.set(mImageMatrix);
 
@@ -515,7 +552,8 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             default:
             case CENTER:
 
-                mShaderMatrix.setTranslate(
+                mShaderMatrix.setScale(scaleX, scaleY);
+                mShaderMatrix.postTranslate(
                         ((vWidth - dWidth) * 0.5f + mImageBounds.left),
                         ((vHeight - dHeight) * 0.5f + mImageBounds.top));
                 break;

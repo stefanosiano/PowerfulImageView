@@ -20,12 +20,12 @@ version = libVersion //version
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName libVersion
         consumerProguardFiles 'piv-proguard-rules.txt'
@@ -33,14 +33,13 @@ android {
 
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
-        buildToolsVersion "25.0.3"
+        buildToolsVersion "26.0.0"
 
     }
 }
 dependencies {
 
-    //compile 'com.android.support:support-core-utils:26.0.0-beta2'
-    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support:appcompat-v7:26.0.0'
 }
 
 

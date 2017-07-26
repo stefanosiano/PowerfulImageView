@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.SeekBar;
 
-import com.stefanosiano.powerfulimageview.PowerlessImageView;
+import com.stefanosiano.powerfulimageview.PowerfulImageView;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 
 
@@ -15,11 +15,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_2);
-
-        final PowerlessImageView piw = (PowerlessImageView) findViewById(R.id.piv);
+        setContentView(R.layout.activity_main);
+/*
+        final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
-        final PowerlessImageView piw2 = (PowerlessImageView) findViewById(R.id.piv2);
+        final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);
 //        piw.changeProgressMode(PivProgressMode.CIRCULAR);
 //        piw2.changeProgressMode(PivProgressMode.HORIZONTAL);
 

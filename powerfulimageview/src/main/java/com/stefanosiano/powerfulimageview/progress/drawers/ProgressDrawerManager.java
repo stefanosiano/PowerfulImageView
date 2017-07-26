@@ -203,7 +203,7 @@ public final class ProgressDrawerManager implements ProgressOptions.ProgressOpti
      * @param forceUpdate if the drawer should be updated, regardless of anything (may occur when changing indeterminate flag)
      */
     public final void changeProgressMode(PivProgressMode progressMode, boolean forceUpdate){
-        if((mProgressMode != null && mProgressMode == progressMode) || !forceUpdate)
+        if(mProgressMode != null && mProgressMode == progressMode && !forceUpdate)
             return;
 
         if(mProgressDrawer != null)
