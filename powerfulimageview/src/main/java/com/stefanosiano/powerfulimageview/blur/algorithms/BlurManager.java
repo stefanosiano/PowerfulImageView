@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
 import android.widget.ImageView;
@@ -403,6 +404,12 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
         } else {
             sizeX = drawable.getIntrinsicWidth();
             sizeY = drawable.getIntrinsicHeight();
+        }
+
+        //vector drawables should always display at max resolution
+        if(drawable.getClass().getName().equals("android.graphics.drawable.VectorDrawable") || drawable instanceof VectorDrawableCompat){
+            sizeX = maxWidth;
+            sizeY = maxHeight;
         }
 
         //if i already decoded the bitmap i reuse it

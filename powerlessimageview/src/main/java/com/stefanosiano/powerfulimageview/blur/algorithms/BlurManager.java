@@ -405,6 +405,12 @@ public final class BlurManager implements BlurOptions.BlurOptionsListener {
             sizeY = drawable.getIntrinsicHeight();
         }
 
+        //vector drawables should always display at max resolution
+        if(drawable.getClass().getName().equals("android.graphics.drawable.VectorDrawable")){
+            sizeX = maxWidth;
+            sizeY = maxHeight;
+        }
+
         //if i already decoded the bitmap i reuse it
         if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && !mOriginalBitmap.isRecycled() && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable == drawable)
             return mOriginalBitmap;

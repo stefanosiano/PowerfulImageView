@@ -15,8 +15,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-/*
+        setContentView(R.layout.activity_main_2);
+
         final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
         final PowerfulImageView piw2 = (PowerfulImageView) findViewById(R.id.piv2);

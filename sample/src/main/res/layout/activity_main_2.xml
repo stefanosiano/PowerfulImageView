@@ -12,31 +12,31 @@
 
     <com.stefanosiano.powerfulimageview.PowerfulImageView
         android:id="@+id/piv"
-        android:layout_width="match_parent"
+        android:layout_width="220dp"
         android:layout_height="220dp"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         android:background="#80a0a0a0"
 
-        android:src="@drawable/sf1"
+        app:srcCompat="@drawable/ic_3d_rotation_black_24dp"
 
-        app:piv_blur_radius="3"
-        app:piv_blur_down_sampling_rate="4"
+        app:piv_blur_radius="0"
+        app:piv_blur_down_sampling_rate="1"
 
         app:piv_blur_mode="stack"
         app:piv_blur_use_rs_fallback="false"
         app:piv_blur_static="false"
 
-        app:piv_shape_mode="normal"/>
+        app:piv_shape_mode="solid_circle"/>
 
 
     <com.stefanosiano.powerfulimageview.PowerfulImageView
         android:id="@+id/piv2"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         android:background="#80a0a0a0"
 
-        android:src="@drawable/sf1"
+        android:src="@drawable/ic_3d_rotation_black_24dpng"
 
         app:piv_blur_radius="3"
         app:piv_blur_down_sampling_rate="4"
@@ -45,7 +45,7 @@
         app:piv_blur_use_rs_fallback="false"
         app:piv_blur_static="false"
 
-        app:piv_shape_mode="normal"/>
+        app:piv_shape_mode="circle"/>
 
 
 </LinearLayout>

@@ -194,7 +194,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
         mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
 
-        mBlurManager.onSizeChanged(w, h, getDrawable() != null ? getDrawable().getCurrent() : getDrawable());
+        mBlurManager.onSizeChanged(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight(), getDrawable() != null ? getDrawable().getCurrent() : getDrawable());
         blurBitmap(false);
     }
 
