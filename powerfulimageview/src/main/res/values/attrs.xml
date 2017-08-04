@@ -182,17 +182,26 @@
 
 
 
+
+        <!-- Set the foreground drawable to draw under the image.
+         Does not work on rounded shapes! -->
+        <attr name="piv_shape_background" format="reference|color" />
+
+        <!-- Set the foreground drawable to draw over the image.
+         Does not work on rounded shapes! -->
+        <attr name="piv_shape_foreground" format="reference|color" />
+
         <!-- Set the background color of the image, using the shape.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
              See the Color class for more details. -->
         <attr name="piv_shape_background_color" format="color" />
 
-        <!-- Set the frontground color of the image, using the shape.
+        <!-- Set the foreground color of the image, using the shape.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
              See the Color class for more details. -->
-        <attr name="piv_shape_frontground_color" format="color" />
+        <attr name="piv_shape_foreground_color" format="color" />
 
         <!-- Set the border color of the image.
              Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not

@@ -141,7 +141,7 @@ public class PowerlessImageView extends ImageViewWrapper {
 
         ShapeOptions shapeOptions = new ShapeOptions(
                 getColor(a, R.styleable.PowerfulImageView_piv_shape_background_color, android.R.color.transparent),
-                getColor(a, R.styleable.PowerfulImageView_piv_shape_frontground_color, android.R.color.transparent),
+                getColor(a, R.styleable.PowerfulImageView_piv_shape_foreground_color, android.R.color.transparent),
                 tvShapeInnerPadding.type == TypedValue.TYPE_DIMENSION ? (int) tvShapeInnerPadding.getDimension(getResources().getDisplayMetrics()) : DEFAULT_SHAPE_INNER_PADDING,
                 tvShapeInnerPadding.type == TypedValue.TYPE_FRACTION ? tvShapeInnerPadding.getFraction(100, 100) : DEFAULT_SHAPE_INNER_PADDING_PERCENT,
                 a.getBoolean(R.styleable.PowerfulImageView_piv_shape_border_overlay, DEFAULT_SHAPE_BORDER_OVERLAY),
@@ -150,7 +150,9 @@ public class PowerlessImageView extends ImageViewWrapper {
                 a.getFloat(R.styleable.PowerfulImageView_piv_shape_ratio, DEFAULT_SHAPE_RATIO),
                 a.getFloat(R.styleable.PowerfulImageView_piv_shape_radius_x, DEFAULT_SHAPE_RADIUS_X),
                 a.getFloat(R.styleable.PowerfulImageView_piv_shape_radius_y, DEFAULT_SHAPE_RADIUS_Y),
-                getColor(a, R.styleable.PowerfulImageView_piv_shape_solid_color, R.color.piv_default_shape_solid_color)
+                getColor(a, R.styleable.PowerfulImageView_piv_shape_solid_color, R.color.piv_default_shape_solid_color),
+                a.getDrawable(R.styleable.PowerfulImageView_piv_shape_background),
+                a.getDrawable(R.styleable.PowerfulImageView_piv_shape_foreground)
         );
 
 

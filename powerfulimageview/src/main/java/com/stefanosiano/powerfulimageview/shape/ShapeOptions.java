@@ -1,6 +1,7 @@
 package com.stefanosiano.powerfulimageview.shape;
 
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -17,8 +18,8 @@ public final class ShapeOptions implements Parcelable {
     /** Background color of the shape */
     private int mBackgroundColor;
 
-    /** Frontground color of the shape */
-    private int mFrontgroundColor;
+    /** Foreground color of the shape */
+    private int mForegroundColor;
 
     /** Inner padding of the image relative to the shape */
     private int mInnerPadding;
@@ -46,6 +47,12 @@ public final class ShapeOptions implements Parcelable {
 
     /** Color used by solid shapes */
     private int mSolidColor;
+
+    /** Foreground drawable used by shapes */
+    private Drawable mForegroundDrawable;
+
+    /** Background drawable used by shapes */
+    private Drawable mBackgroundDrawable;
 
     // ************** Calculated fields *****************
 
@@ -95,7 +102,7 @@ public final class ShapeOptions implements Parcelable {
      * Creates the object that will be used by shape drawers:
      *
      * @param backgroundColor Background color of the shape
-     * @param frontgroundColor Frontground color of the shape
+     * @param foregroundColor Foreground color of the shape
      * @param innerPadding Inner padding of the image relative to the shape. If it's 0 or more, it applies and overrides "innerPaddingPercent" parameter
      * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage
      * @param borderOverlay Whether the border should be drawn over the image or not
@@ -103,10 +110,10 @@ public final class ShapeOptions implements Parcelable {
      * @param borderWidth Width of the shape border
      * @param ratio Ratio of the shape. Width will be equal to (height * ratio). It's ignored in square and circle shapes
      */
-    public ShapeOptions(int backgroundColor, int frontgroundColor, int innerPadding, float innerPaddingPercent, boolean borderOverlay,
-                        int borderColor, int borderWidth, float ratio, float radiusX, float radiusY, int solidColor) {
+    public ShapeOptions(int backgroundColor, int foregroundColor, int innerPadding, float innerPaddingPercent, boolean borderOverlay,
+                        int borderColor, int borderWidth, float ratio, float radiusX, float radiusY, int solidColor, Drawable backgroundDrawable, Drawable foregroundDrawable) {
         this.mBackgroundColor = backgroundColor;
-        this.mFrontgroundColor = frontgroundColor;
+        this.mForegroundColor = foregroundColor;
         this.mInnerPadding = innerPadding;
         this.mInnerPaddingPercent = innerPaddingPercent;
         this.mBorderOverlay = borderOverlay;
@@ -116,6 +123,8 @@ public final class ShapeOptions implements Parcelable {
         this.mRadiusX = radiusX;
         this.mRadiusY = radiusY;
         this.mSolidColor = solidColor;
+        this.mBackgroundDrawable = backgroundDrawable;
+        this.mForegroundDrawable = foregroundDrawable;
         this.mShapeBounds = new RectF(0, 0, 0, 0);
         this.mBorderBounds = new RectF(0, 0, 0, 0);
         this.mViewBounds = new RectF(0, 0, 0, 0);
@@ -135,7 +144,9 @@ public final class ShapeOptions implements Parcelable {
     /** Updates the values of the current options, copying the passed values */
     public void setOptions(ShapeOptions other) {
         this.mBackgroundColor = other.mBackgroundColor;
-        this.mFrontgroundColor = other.mFrontgroundColor;
+        this.mForegroundColor = other.mForegroundColor;
+        this.mForegroundDrawable = other.mForegroundDrawable;
+        this.mBackgroundDrawable = other.mBackgroundDrawable;
         this.mInnerPadding = other.mInnerPadding;
         this.mInnerPaddingPercent = other.mInnerPaddingPercent;
         this.mBorderOverlay = other.mBorderOverlay;
@@ -305,8 +316,24 @@ public final class ShapeOptions implements Parcelable {
      Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
      premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      See the Color class for more details. */
-    public void setFrontgroundColor(int frontgroundColor) {
-        this.mFrontgroundColor = frontgroundColor;
+    public void setForegroundColor(int foregroundColor) {
+        this.mForegroundColor = foregroundColor;
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
+    }
+
+    /** Set the foreground drawable to be drawn over the image, using the shape.
+        Note: Does not work on rounded shapes! */
+    public void setForegroundDrawable(Drawable foregroundDrawable) {
+        this.mForegroundDrawable = foregroundDrawable;
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
+    }
+
+    /** Set the background drawable to be drawn under the image, using the shape.
+        Note: Does not work on rounded shapes! */
+    public void setBackgroundDrawable(Drawable backgroundDrawable) {
+        this.mBackgroundDrawable = backgroundDrawable;
         if(listener.get() != null)
             listener.get().onOptionsUpdated(this);
     }
@@ -320,10 +347,24 @@ public final class ShapeOptions implements Parcelable {
     }
 
     /**
-     * @return Frontground color of the shape
+     * @return Foreground color of the shape
      */
-    public int getFrontgroundColor() {
-        return mFrontgroundColor;
+    public int getForegroundColor() {
+        return mForegroundColor;
+    }
+
+    /**
+     * @return Foreground drawable of the shape
+     */
+    public Drawable getForegroundDrawable() {
+        return mForegroundDrawable;
+    }
+
+    /**
+     * @return Foreground drawable of the shape
+     */
+    public Drawable getBackgroundDrawable() {
+        return mBackgroundDrawable;
     }
 
     /**
@@ -527,7 +568,7 @@ public final class ShapeOptions implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mBackgroundColor);
-        dest.writeInt(mFrontgroundColor);
+        dest.writeInt(mForegroundColor);
         dest.writeInt(mInnerPadding);
         dest.writeFloat(mInnerPaddingPercent);
         dest.writeByte((byte) (mBorderOverlay ? 1 : 0));
@@ -554,7 +595,7 @@ public final class ShapeOptions implements Parcelable {
 
     private ShapeOptions(Parcel in) {
         mBackgroundColor = in.readInt();
-        mFrontgroundColor = in.readInt();
+        mForegroundColor = in.readInt();
         mInnerPadding = in.readInt();
         mInnerPaddingPercent = in.readFloat();
         mBorderOverlay = in.readByte() != 0;

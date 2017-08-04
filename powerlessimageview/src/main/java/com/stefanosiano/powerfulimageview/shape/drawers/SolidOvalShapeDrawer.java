@@ -20,7 +20,7 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape background */
     private final Paint mBackPaint;
 
-    /** Paint used to draw the shape frontground */
+    /** Paint used to draw the shape foreground */
     private final Paint mFrontPaint;
 
     /** Paint used to draw the shape border */
@@ -34,6 +34,12 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
 
     /** Drawable to draw in the shape */
     private Drawable mDrawable;
+
+    /** Background drawable to draw under the shape */
+    private Drawable mBackgroundDrawable;
+
+    /** Foreground drawable to draw over the shape */
+    private Drawable mForegroundDrawable;
 
     /** Scale type selected */
     private PivShapeScaleType mScaleType;
@@ -76,7 +82,9 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
     public void setup(ShapeOptions shapeOptions) {
 
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
-        mFrontPaint.setColor(shapeOptions.getFrontgroundColor());
+        mFrontPaint.setColor(shapeOptions.getForegroundColor());
+        mForegroundDrawable = shapeOptions.getForegroundDrawable();
+        mBackgroundDrawable = shapeOptions.getBackgroundDrawable();
 
         mBorderPaint.setColor(shapeOptions.getBorderColor());
         mBorderPaint.setAntiAlias(true);
@@ -111,7 +119,15 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
             //if scaleType is XY, we should draw the image on the whole view
             if(mScaleType != null && mScaleType == PivShapeScaleType.FIT_XY) {
                 mDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+                if(mBackgroundDrawable != null){
+                    mBackgroundDrawable.setBounds(mDrawable.getBounds());
+                    mBackgroundDrawable.draw(canvas);
+                }
                 mDrawable.draw(canvas);
+                if(mForegroundDrawable != null){
+                    mForegroundDrawable.setBounds(mDrawable.getBounds());
+                    mForegroundDrawable.draw(canvas);
+                }
             }
             else {
                 //I save the state, apply the matrix and restore the state of the canvas
@@ -121,12 +137,20 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
                 if (mScaleType != PivShapeScaleType.FIT_XY)
                     canvas.concat(mMatrix);
 
+                if(mBackgroundDrawable != null){
+                    mBackgroundDrawable.setBounds(mDrawable.getBounds());
+                    mBackgroundDrawable.draw(canvas);
+                }
                 mDrawable.draw(canvas);
+                if(mForegroundDrawable != null){
+                    mForegroundDrawable.setBounds(mDrawable.getBounds());
+                    mForegroundDrawable.draw(canvas);
+                }
                 canvas.restoreToCount(saveCount);
             }
         }
 
-        //frontground
+        //foreground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)
             canvas.drawOval(shapeBounds, mFrontPaint);
 

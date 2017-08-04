@@ -31,7 +31,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape border */
     private final Paint mBorderPaint;
 
-    /** Paint used to draw the shape frontground */
+    /** Paint used to draw the shape foreground */
     private final Paint mFrontPaint;
 
     /** Matrix used to draw the shape */
@@ -91,7 +91,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
         mBorderPaint.setStyle(Paint.Style.STROKE);
         mBorderPaint.setStrokeWidth(shapeOptions.getBorderWidth());
 
-        mFrontPaint.setColor(shapeOptions.getFrontgroundColor());
+        mFrontPaint.setColor(shapeOptions.getForegroundColor());
         mFrontPaint.setAntiAlias(true);
         mFrontPaint.setStyle(Paint.Style.FILL);
     }
@@ -106,7 +106,7 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
         //image
         canvas.drawRoundRect(imageBounds, mRadiusX, mRadiusY, mBitmapPaint);
 
-        //frontground
+        //foreground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)
             canvas.drawRoundRect(shapeBounds, mRadiusX, mRadiusY, mFrontPaint);
 

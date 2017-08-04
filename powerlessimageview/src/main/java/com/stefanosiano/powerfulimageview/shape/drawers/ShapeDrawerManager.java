@@ -151,16 +151,15 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                     sizeY = drawable.getIntrinsicHeight();
                 }
 
-                //if i already decoded the bitmap i reuse it
-                if(sizeX > 0 && sizeY > 0 && mLastBitmap != null && mLastDrawable == mDrawable)
-                    return mLastBitmap;
-
-
                 //vector drawables should always display at max resolution
                 if(drawable.getClass().getName().equals("android.graphics.drawable.VectorDrawable")){
                     sizeX = maxWidth;
                     sizeY = maxHeight;
                 }
+
+                //if i already decoded the bitmap i reuse it
+                if(sizeX > 0 && sizeY > 0 && mLastBitmap != null && mLastDrawable == mDrawable)
+                    return mLastBitmap;
 
                 //otherwise I free its memory
                 if(mLastBitmap != null)

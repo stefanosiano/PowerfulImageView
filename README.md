@@ -142,7 +142,7 @@ List of all XML attributes
 |piv_shape_border_overlay|boolean|false|Set whether the border should be paint over the image.|
 |piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
 |piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
-|piv_shape_frontground_color|color|transparent|Set the frontground color of the image, using the shape.|
+|piv_shape_foreground_color|color|transparent|Set the foreground color of the image, using the shape.|
 |piv_shape_border_color|color|transparent|Set the border color of the image.|
   
   
