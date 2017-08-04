@@ -182,7 +182,7 @@
 
 
 
-        <!-- Set the foreground drawable to draw under the image.
+        <!-- Set the background drawable to draw under the image.
          Does not work on rounded shapes! -->
         <attr name="piv_shape_background" format="reference|color" />
 
