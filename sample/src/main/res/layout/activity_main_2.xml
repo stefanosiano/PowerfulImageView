@@ -15,7 +15,7 @@
         android:layout_width="220dp"
         android:layout_height="220dp"
         android:scaleType="center"
-        android:background="#80a0a0a0"
+        app:piv_shape_background="#80a0a0a0"
 
         app:srcCompat="@drawable/ic_3d_rotation_black_24dp"
 

@@ -34,6 +34,12 @@ final class CircleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape foreground */
     private final Paint mFrontPaint;
 
+    /** Background drawable to draw under the shape */
+    private Drawable mBackgroundDrawable;
+
+    /** Foreground drawable to draw over the shape */
+    private Drawable mForegroundDrawable;
+
     /** Matrix used to draw the shape */
     private Matrix mMatrix;
 
@@ -83,6 +89,9 @@ final class CircleShapeDrawer implements ShapeDrawer {
     @Override
     public void setup(ShapeOptions shapeOptions) {
 
+        mForegroundDrawable = shapeOptions.getForegroundDrawable();
+        mBackgroundDrawable = shapeOptions.getBackgroundDrawable();
+
         mCx = shapeOptions.getShapeBounds().centerX();
         mCy = shapeOptions.getShapeBounds().centerY();
         mRadius = shapeOptions.getShapeBounds().width() < shapeOptions.getShapeBounds().height() ? shapeOptions.getShapeBounds().width()/2 : shapeOptions.getShapeBounds().height()/2;
@@ -109,8 +118,18 @@ final class CircleShapeDrawer implements ShapeDrawer {
         if(mBackPaint.getColor() != Color.TRANSPARENT)
             canvas.drawCircle(mCx, mCy, mRadius, mBackPaint);
 
+        if(mBackgroundDrawable != null){
+            mBackgroundDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+            mBackgroundDrawable.draw(canvas);
+        }
+
         //image
         canvas.drawCircle(mCx, mCy, mRadius, mBitmapPaint);
+
+        if(mForegroundDrawable != null){
+            mForegroundDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+            mForegroundDrawable.draw(canvas);
+        }
 
         //foreground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)

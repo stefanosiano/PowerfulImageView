@@ -34,6 +34,12 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape foreground */
     private final Paint mFrontPaint;
 
+    /** Background drawable to draw under the shape */
+    private Drawable mBackgroundDrawable;
+
+    /** Foreground drawable to draw over the shape */
+    private Drawable mForegroundDrawable;
+
     /** Matrix used to draw the shape */
     private Matrix mMatrix;
 
@@ -81,6 +87,8 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
 
         mRadiusX = shapeOptions.getRadiusX();
         mRadiusY = shapeOptions.getRadiusY();
+        mForegroundDrawable = shapeOptions.getForegroundDrawable();
+        mBackgroundDrawable = shapeOptions.getBackgroundDrawable();
 
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
         mBackPaint.setAntiAlias(true);
@@ -103,8 +111,18 @@ final class RoundedRectangleShapeDrawer implements ShapeDrawer {
         if(mBackPaint.getColor() != Color.TRANSPARENT)
             canvas.drawRoundRect(shapeBounds, mRadiusX, mRadiusY, mBackPaint);
 
+        if(mBackgroundDrawable != null){
+            mBackgroundDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+            mBackgroundDrawable.draw(canvas);
+        }
+
         //image
         canvas.drawRoundRect(imageBounds, mRadiusX, mRadiusY, mBitmapPaint);
+
+        if(mForegroundDrawable != null){
+            mForegroundDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+            mForegroundDrawable.draw(canvas);
+        }
 
         //foreground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)

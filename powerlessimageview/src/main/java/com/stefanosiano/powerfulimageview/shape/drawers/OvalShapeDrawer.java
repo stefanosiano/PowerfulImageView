@@ -34,6 +34,12 @@ final class OvalShapeDrawer implements ShapeDrawer {
     /** Paint used to draw the shape foreground */
     private final Paint mFrontPaint;
 
+    /** Background drawable to draw under the shape */
+    private Drawable mBackgroundDrawable;
+
+    /** Foreground drawable to draw over the shape */
+    private Drawable mForegroundDrawable;
+
     /** Matrix used to draw the shape */
     private Matrix mMatrix;
 
@@ -75,6 +81,9 @@ final class OvalShapeDrawer implements ShapeDrawer {
     @Override
     public void setup(ShapeOptions shapeOptions) {
 
+        mForegroundDrawable = shapeOptions.getForegroundDrawable();
+        mBackgroundDrawable = shapeOptions.getBackgroundDrawable();
+
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
         mBackPaint.setAntiAlias(true);
         mBackPaint.setStyle(Paint.Style.FILL);
@@ -96,8 +105,18 @@ final class OvalShapeDrawer implements ShapeDrawer {
         if(mBackPaint.getColor() != Color.TRANSPARENT)
             canvas.drawOval(shapeBounds, mBackPaint);
 
+        if(mBackgroundDrawable != null){
+            mBackgroundDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+            mBackgroundDrawable.draw(canvas);
+        }
+
         //image
         canvas.drawOval(imageBounds, mBitmapPaint);
+
+        if(mForegroundDrawable != null){
+            mForegroundDrawable.setBounds((int) imageBounds.left, (int) imageBounds.top, (int) imageBounds.right, (int) imageBounds.bottom);
+            mForegroundDrawable.draw(canvas);
+        }
 
         //foreground
         if(mFrontPaint.getColor() != Color.TRANSPARENT)

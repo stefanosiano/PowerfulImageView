@@ -183,12 +183,10 @@
 
 
 
-        <!-- Set the background drawable to draw under the image.
-         Does not work on rounded shapes! -->
+        <!-- Set the background drawable to draw under the image. Does not follow rounded shapes! -->
         <attr name="piv_shape_background" format="reference|color" />
 
-        <!-- Set the foreground drawable to draw over the image.
-         Does not work on rounded shapes! -->
+        <!-- Set the foreground drawable to draw over the image. Does not follow rounded shapes! -->
         <attr name="piv_shape_foreground" format="reference|color" />
 
         <!-- Set the background color of the image, using the shape.
