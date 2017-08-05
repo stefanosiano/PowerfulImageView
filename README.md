@@ -143,8 +143,8 @@ List of all XML attributes
 |piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
 |piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
 |piv_shape_foreground_color|color|transparent|Set the foreground color of the image, using the shape.|
-|piv_shape_background|reference-color|null|Set the background drawable to draw under the image. Does not work on rounded shapes!|
-|piv_shape_foreground|reference-color|null|Set the foreground drawable to draw over the image. Does not work on rounded shapes!|
+|piv_shape_background|reference-color|null|Set the background drawable to draw under the image. Does not follow rounded shapes!|
+|piv_shape_foreground|reference-color|null|Set the foreground drawable to draw over the image. Does not follow rounded shapes!|
 |piv_shape_border_color|color|transparent|Set the border color of the image.|
   
   
