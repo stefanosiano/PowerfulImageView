@@ -4,17 +4,16 @@ PowerfulImageView
 Custom Android ImageView with several added features.  
 1) Progress indicator: circular, horizontal, disabled;  
 2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like topCrop and bottomCrop;  
-3) Blur: Blurs the image with gaussian, box or stack blur algorithm. It can use either Renderscript or Java methods, and fallback in case of errors.  
+3) Blur: Blurs the image with gaussian, box or stack algorithm. It can use either Renderscript or Java methods, and fallback in case of errors.  
   
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
   
 Planned features (for now):  
 * Pinch in/out to zoom
 * Panoramas
-* Custom target for Picasso/Glide
   
   
-Full load effect:  
+Progress:  
 ![Full load effect](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/full_load.gif) 
   
 Shapes:  
@@ -32,11 +31,11 @@ This is flexible enough to let you use the progress in other ways, like tracking
   
   
 **Shapes:**  
-Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type may be added (currently topCrop and bottomCrop have been added).  
+Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable, and they provide support for the shapes of background and forground drawables, too. Also, all scale types are supported, and some additional scale type may be added (currently topCrop and bottomCrop have been added).  
 Shapes are divided into 3 types:  
 1) Rectanglular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews;
-2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations (even applied by image loaders like Glide) may cause issues. Mechanisms to prevent out of memory exceptions are in place, but you may have an image with a random alpha value. To avoid this, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate();`
-3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library, and cover background, too, but you won't be able to see what's behind them (solid color shouldn't be transparent). Non-solid shapes don't cover background, but they provide real shapes, allowing users to see anything behind the shape.
+2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations applied by image loaders like Glide may cause issues. To avoid issues, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`. Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
+3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind the shape.
   
   
   
@@ -81,10 +80,14 @@ The library is highly customizable. However, for very basic integration, you may
   
 Via xml:  
 ```
-app:piv_progress_mode="circular"
-app:piv_shape_mode="circle"
-app:piv_blur_mode="gaussian5x5"
-app:piv_blur_radius="1"
+    <com.stefanosiano.powerfulimageview.PowerfulImageView
+        android:id="@+id/piv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:piv_progress_mode="circular"
+        app:piv_shape_mode="circle"
+        app:piv_blur_mode="gaussian5x5"
+        app:piv_blur_radius="1" />
 ```
 Via Java:  
 ```
@@ -167,7 +170,7 @@ List of all XML attributes
 **Java methods**  
   
   
-All progress and shape options are available via  
+All options are available via  
 
 ```
 progressImageView.getProgressOptions().set...
@@ -255,7 +258,12 @@ Then apply it like this:
   
 Roadmap
 -------
-Create code diagram  
+Rename methods from change... to set...  
+Test and fix any issue in current features.  
+Maybe remove some options.  
+Support zoom, with attention to smooth scroll and Pager integration. Will have to care about integration with shapes, too.  
+Support panoramas, caring about integration with shapes.  
+Will probably have to rewrite progress, to allow custom animations and drawables to be used.  
 
 
 
