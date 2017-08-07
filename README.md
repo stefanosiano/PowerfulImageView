@@ -26,7 +26,7 @@ Shapes:
 Focus
 -----
 
-This library focuses on 3 points, in the following order:
+This library focuses on 4 points, in the following order:
 1) Performance,
 2) Customizability,
 3) Reliability,
