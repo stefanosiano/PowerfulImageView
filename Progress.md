@@ -21,6 +21,23 @@ The progress indicator automatically supports rtl (unless disabled by its flag).
   
   
   
+
+  
+Focus
+-----
+  
+**Performance**  
+No drawables or nested Views are used for the progress. Calculations are done to draw arcs or rectangles in order to imitate material design progress bar.  
+**Reliability**  
+Methods to avoid and catch OutOfMemoryExceptions are in place.  
+**Customizability**  
+All aspects can be customized. From the animation speed, to size, padding and color of progress, progress shadow and progress shadow border.  
+**Ease of use**  
+Basic integration needs only `piv_progress_mode` to the xml element.    
+  
+  
+  
+  
 List of all XML attributes
 --------------------------
   
