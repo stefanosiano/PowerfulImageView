@@ -28,8 +28,8 @@ Focus
 
 This library focuses on 4 points, in the following order:
 1) Performance,
-2) Customizability,
-3) Reliability,
+2) Reliability,
+3) Customizability,
 4) Ease of use.
 
 
@@ -49,7 +49,7 @@ Most applications need some kind of shape. All provided shapes are compatible wi
 Shapes are divided into 3 types:  
 1) Rectangular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
 2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
-3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind them.
+3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support any animation and image loader. They completely cover the background, in contrast with rounded shapes, which allow users to see anything behind them.
   
   
   
