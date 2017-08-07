@@ -26,6 +26,7 @@ Focus
 Supports renderscript methods, which is naturally very fast. Also, all Java methods are multithreaded.  
 Renderscript contexts are retained until necessary and shared across all instances of PowerfulImageView. They are released when the image is blurred (when static blurring) or when the View is removed from the activity (when live blurring).  
 The original bitmap is retained when live blurring and released automatically when static blurring.  
+The original bitmap is scaled down prior to blur.  
 **Reliability**  
 In case of error of a Renderscript method, a corresponding Java method will be used. In case of error of a Java method, the original bitmap is returned.  
 **Customizability**  
