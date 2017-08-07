@@ -6,7 +6,8 @@ Custom Android ImageView with several added features.
 2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like topCrop and bottomCrop;  
 3) Blur: Blurs the image with gaussian, box or stack algorithm. It can use either Renderscript or Java methods, and fallback in case of errors.  
   
-Several other features will be added, and all the sections of the readme will be updated accordingly.  
+Several other features will be added, and all the sections of the readme will be updated accordingly.
+All the features can be used together, alone or combined in any way (like using only progress and blur).
   
 Planned features (for now):  
 * Pinch in/out to zoom
@@ -31,21 +32,21 @@ This is flexible enough to let you use the progress in other ways, like tracking
   
   
 **Shapes:**  
-Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes. All shapes are compatible with any kind of drawable, and they provide support for the shapes of background and forground drawables, too. Also, all scale types are supported, and some additional scale type may be added (currently topCrop and bottomCrop have been added).  
+Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes natively to provide indicator over the shapes. All shapes are compatible with any kind of drawable, and they provide support for shaping background and foreground drawables, too. Also, all scale types are supported, and some additional scale type were added, like topCrop and bottomCrop.
 Shapes are divided into 3 types:  
-1) Rectanglular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews;
-2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations applied by image loaders like Glide may cause issues. To avoid issues, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`. Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
-3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind the shape.
+1) Rectangular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
+2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations applied by image loaders like Glide or Picasso may cause issues. To avoid issues, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`. Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
+3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind them.
   
   
   
 **Blur:**  
-Some applications may need to blur an image. While blurring an image sounds easy at first, there are a lot of things to care about, like renderscript contexts, downscaling image, performance optimizations to not lock the UI thread. This library provides a very easy way to blur the image (as easy as adding blur_mode and blur_radius to the xml element). Also, it's designed to be as efficient and reliable as possible. This means that renderscript context are created and destroied only when necessary, and they are shared through all instances of the PowerfulImageView, improving performances in lists.  
+Some applications may need to blur an image. While blurring an image sounds easy at first, there are a lot of things to care about, like renderscript contexts, downscaling image, performance optimizations to not lock the UI thread. This library provides a very easy way to blur the image (as easy as adding `piv_blur_mode` and `piv_blur_radius` to the xml element). Also, it's designed to be as efficient and reliable as possible. This means that renderscript contexts are created and destroyed only when necessary, and they are shared through all instances of the PowerfulImageView, improving performances in lists.
 Blur algorithms are divided into 2 categories:  
-1) Renderscript algorithms: they use renderscript under the hood (support version in PowerfulImageView and normal version in PowerlessImageView). In case of error the corresponding Java algorithm will be used automatically (if enabled by its option);  
-2) Java algorithms: they use java and, while being less performant, they support any version and any device. In case of error the original bitmap will be returned. All Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).  
+1) Renderscript algorithms: they use renderscript under the hood (support version in PowerfulImageView and normal version in PowerlessImageView). In case of error the corresponding Java algorithm will be used automatically, if enabled by its option, otherwise the original bitmap is returned;
+2) Java algorithms: they use java and, while being slower, they support any version and any device. In case of error the original bitmap will be returned. All Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).
   
-  
+
   
   
 Gradle
@@ -60,13 +61,13 @@ repositories {
 To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.3.2'
+    compile 'com.stefanosiano:powerfulimageview:0.3.2' // Put this line into module's build.gradle
 }
 ```
 To use **Powerless**ImageView, which extends ImageView, doesn't depend on AppCompat library and uses normal Renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.3.2'
+    compile 'com.stefanosiano:powerlessimageview:0.3.2' // Put this line into module's build.gradle
 }
 ```
   
@@ -89,86 +90,22 @@ Via xml:
         app:piv_blur_mode="gaussian5x5"
         app:piv_blur_radius="1" />
 ```
+
 Via Java:  
 ```
-powerfulImageView.changeProgressMode(PivProgressMode.CIRCULAR);
-powerfulImageView.changeShapeMode(PivShapeMode.CIRCLE);
-powerfulImageView.changeBlurMode(PivBlurMode.GAUSSIAN5X5, 1);
+powerfulImageView.setProgressMode(PivProgressMode.CIRCULAR);
+powerfulImageView.setShapeMode(PivShapeMode.CIRCLE);
+powerfulImageView.setBlurMode(PivBlurMode.GAUSSIAN5X5, 1);
 ```
   
-  
-  
-  
-  
-List of all XML attributes
---------------------------
-  
-**Progress options**  
-  
-| Name | Type | Default | Description |
-|:----:|:----:|:-------:|:-----------:|
-|piv_progress_gravity|enum|center|Set the gravity of the indicator. It will follow the rtl layout (on api 17+), if not disabled. Values are: center, start, end, top, top_start, top_end, bottom, bottom_start, bottom_end|
-|piv_progress_mode|enum|disabled|Progress mode of the indicator. Values are: disabled, circular, horizontal|
-|piv_progress_indeterminate|boolean|true|Set whether the view should show an indeterminate progress indicator.|
-|piv_progress_value|float|0|Percentage value of the progress indicator, used by determinate progress. If the percentage is higher than 100, it is treated as (value % 100). If the percentage is lower than 0, it is treated as 0. If the progress is indeterminate it's ignored.|
-|piv_progress_size|dimension-fraction|40%|Size of the progress indicator, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
-|piv_progress_padding|dimension|2dp|Set the padding of the progress indicator.|
-|piv_progress_border_width|dimension-fraction|10%|Width of the progress indicator border, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100)|
-|piv_progress_shadow_border_width|dimension|1dp|Set the width of the shadow border.|
-|piv_progress_shadow_padding|dimension-fraction|10%|Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100)|
-|piv_progress_shadow_enabled|boolean|true|Set whether to show a progress shadow, used by drawers. If true, the shadow is drawn.|
-|piv_progress_determinate_animation_enabled|boolean|true|Set whether the progress should update with an animation. If the progress is indeterminate it's ignored. If true it updates its progress with an animation, otherwise it will update instantly|
-|piv_progress_rtl_disabled|boolean|language-based|Set whether the view should use right to left layout. If true, start will always be treated as left and end as right. If false, on api 17+, gravity will be treated accordingly to rtl rules.|
-|piv_progress_draw_wedge|boolean|false|Set whether to show a wedge or a circle, used by circular progress. If the progress is not circular it's ignored. If true, a wedge is drawn, otherwise a circle will be drawn.|
-|piv_progress_reversed|boolean|false|Set whether the progress should be reversed.|
-|piv_progress_removed_on_change|boolean|true|Set whether the progress should be reset when the drawable changes.|
-|piv_progress_front_color|color|#00A000|Set the front color of the indicator. If the drawer is indeterminate it's ignored.|
-|piv_progress_back_color|color|#CCCCCC|Set the back color of the indicator. If the drawer is indeterminate it's ignored.|
-|piv_progress_indeterminate_color|color|#A0A0A0|Set the indeterminate color of the progress indicator.|
-|piv_progress_shadow_color|color|#FFFFFF|Set the shadow color of the indicator.|
-|piv_progress_shadow_border_color|color|#000000|Set the color of the progress indicator shadow border.|
 
+
+You can find more information about the ![Progress](https://github.com/stefanosiano/PowerfulImageView/blob/master/Progress.md), ![Shapes](https://github.com/stefanosiano/PowerfulImageView/blob/master/Shapes.md)
+and ![Blur](https://github.com/stefanosiano/PowerfulImageView/blob/master/Blur.md) features on their pages.
 
   
   
-**Shape options**  
-  
-| Name | Type | Default | Description |
-|:----:|:----:|:-------:|:-----------:|
-|piv_shape_mode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
-|piv_shape_scaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop, bottomCrop|
-|piv_shape_inner_padding|dimension-fraction|0|Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
-|piv_shape_border_width|dimension|0dp|Set the border width of the image.|
-|piv_shape_ratio|float|based on view size|Set the ratio of the image. Doing so, width is calculated as height * ratio|
-|piv_shape_radius_x|float|1|Set the x radius of the image. Used in rounded rectangles|
-|piv_shape_radius_y|float|1|Set the y radius of the image. Used in rounded rectangles|
-|piv_shape_border_overlay|boolean|false|Set whether the border should be paint over the image.|
-|piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
-|piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
-|piv_shape_foreground_color|color|transparent|Set the foreground color of the image, using the shape.|
-|piv_shape_background|reference-color|null|Set the background drawable to draw under the image. Does not follow rounded shapes!|
-|piv_shape_foreground|reference-color|null|Set the foreground drawable to draw over the image. Does not follow rounded shapes!|
-|piv_shape_border_color|color|transparent|Set the border color of the image.|
-  
-  
-  
-  
-**Blur options**  
-  
-| Name | Type | Default | Description |
-|:----:|:----:|:-------:|:-----------:|
-|piv_blur_mode|enum|disabled|Set the mode of the blur to use. Values are: disabled, gaussian5x5, gaussian5x5_rs, gaussian3x3, gaussian3x3_rs, gaussian, gaussian_rs, box3x3, box3x3_rs, box5x5, box5x5_rs, stack, stack_rs|
-|piv_blur_radius|int|0|Set the blur radius used (indicates clur strength)|
-|piv_blur_down_sampling_rate|int|4|Rate to downSample the image width and height, based on the view size. The bitmap is downsampled to be no more than the view size divided by this rate.|
-|piv_blur_static|boolean|false|Whether the original bitmap should be blurred only once. If so, several optimizations occur|
-|piv_blur_use_rs_fallback|boolean|true|Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs|
-|piv_blur_num_threads|int|0|Number of threads to use to blur the image (no more than available). If it's less than 1, all available cores are used|
-  
-  
-  
-  
-**Java methods**  
-  
+**Java methods**
   
 All options are available via  
 
@@ -182,15 +119,15 @@ Convenience methods are provided for:
   
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
-|changeProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
-|changeProgressValue|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
-|changeProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
+|setProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
+|setProgressValue|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
+|setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
 |getProgressMode| |Get the current progress mode selected.|
-|changeShapeMode|PivShapeMode|Changes the shape of the image.|
-|changeScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
+|setShapeMode|PivShapeMode|Changes the shape of the image.|
+|setScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
 |getShapeMode| |Get the current shape mode selected. It can then be used to check whether the shape is rectangular, rounded or solid through its methods.|
-|changeBlurMode|PivBlurMode, int|Changes the blur mode and the radius to blur the image.|
-|changeBlurRadius|int|Changes the blur radius to blur the image.|
+|setBlurMode|PivBlurMode, int|Changes the blur mode and the radius to blur the image.|
+|setBlurRadius|int|Changes the blur radius to blur the image.|
 |getBlurMode| |Get the selected shape mode|
 |getBlurRadius| |Get the selected radius used for blurring|
 |getBlurBlurredBitmap| |Get the last blurred bitmap. If the bitmap was never blurred, or blur options, mode or radius changed since the last blur, the bitmap will be blurred again (if static option is disabled). If any problem occurs, the original bitmap (nullable) will be returned. Don't use this method if you didn't enable blur!|
@@ -212,56 +149,17 @@ No steps are required, since configuration is already included.
 Notes
 -----
   
-1) PowerfulImageView requires a minimum API level of 14 (same as AppCompatLibrary). PowerlessImageView requires a minimum API level of 12 (18 to use renderscript).  
-2) Animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library, to reduce battery consumption.
-3) The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.
-4) Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false). Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
-  
-  
-  
-  
-  
-  
-  
-  
-Tips
-----
-  
-Options (especially progress options) may be overwheilming. Also, you should have a consistent UI. So, you should define a custom style, configuring all the aspects of the PowerfulImageView progress, and then use your own style anywhere you need. This is good for theming, too!  
-You can then apply custom styles for shapes, if you want. To do so, you just need to add your configuration in your styles.xml file like this:  
-  
-```
-    <style name="MyPivStyle">
-        <item name="piv_progress_indeterminate_color">@color/colorAccent</item>
-        <item name="piv_progress_front_color">@color/colorPrimary</item>
-        <item name="piv_progress_back_color">@color/colorAccent</item>
-        <item name="piv_progress_indeterminate">false</item>
-        <item name="piv_progress_mode">circular</item>
-        ...
-    </style>
-```
-  
-Then apply it like this:  
-  
-```
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
-        android:id="@+id/piv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/MyPivStyle"/>  
-```
-  
-  
-  
-  
-  
-  
+PowerfulImageView requires a minimum API level of 14 (same as AppCompatLibrary). PowerlessImageView requires a minimum API level of 12 (18 to use renderscript).
+
+
+
+
+
+
 Roadmap
 -------
-Rename methods from change... to set...  
-Test and fix any issue in current features.  
-Maybe remove some options.  
-Support zoom, with attention to smooth scroll and Pager integration. Will have to care about integration with shapes, too.  
+Test and fix any issue in current features.
+Support zoom, with attention to smooth scroll and Pager integration. Will have to care about integration with shapes, too.
 Support panoramas, caring about integration with shapes.  
 Will probably have to rewrite progress, to allow custom animations and drawables to be used.  
 

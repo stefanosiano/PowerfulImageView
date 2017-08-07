@@ -178,9 +178,9 @@ public class PowerlessImageView extends ImageViewWrapper {
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
         this.mBlurManager = new BlurManager(this, blurOptions);
 
-        changeProgressMode(progressMode);
-        changeShapeMode(shapeMode);
-        changeBlurMode(blurMode, blurRadius);
+        setProgressMode(progressMode);
+        setShapeMode(shapeMode);
+        setBlurMode(blurMode, blurRadius);
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
@@ -256,7 +256,7 @@ public class PowerlessImageView extends ImageViewWrapper {
      *
      * @param scaleType The desired scaling mode.
      */
-    public final void changeShapeScaleType(PivShapeScaleType scaleType) {
+    public final void setShapeScaleType(PivShapeScaleType scaleType) {
         super.setScaleType(ScaleType.MATRIX);
         if(mShapeDrawerManager != null)
             mShapeDrawerManager.setScaleType(scaleType);
@@ -287,7 +287,7 @@ public class PowerlessImageView extends ImageViewWrapper {
      *
      * @param progressMode mode to change the progress indicator into
      */
-    public final void changeProgressMode(PivProgressMode progressMode){
+    public final void setProgressMode(PivProgressMode progressMode){
         mProgressDrawerManager.changeProgressMode(progressMode, false);
     }
 
@@ -297,7 +297,7 @@ public class PowerlessImageView extends ImageViewWrapper {
      *
      * @param shapeMode shape to change the image into
      */
-    public final void changeShapeMode(PivShapeMode shapeMode){
+    public final void setShapeMode(PivShapeMode shapeMode){
         mShapeDrawerManager.changeShapeMode(shapeMode);
     }
 
@@ -308,7 +308,7 @@ public class PowerlessImageView extends ImageViewWrapper {
      * @param blurMode mode to use to blur the image
      * @param radius radius to use when blurring the image: the higher the radius, the more the blurring.
      */
-    public final void changeBlurMode(PivBlurMode blurMode, int radius){
+    public final void setBlurMode(PivBlurMode blurMode, int radius){
         mCheckBlur = blurMode != PivBlurMode.DISABLED;
         if(mBlurManager == null)
             return;
@@ -323,7 +323,7 @@ public class PowerlessImageView extends ImageViewWrapper {
      *
      * @param radius radius to use when blurring the image: the higher the radius, the more but slower the blurring.
      */
-    public final void changeBlurRadius(int radius){
+    public final void setBlurRadius(int radius){
         if(mBlurManager == null)
             return;
 
@@ -366,7 +366,7 @@ public class PowerlessImageView extends ImageViewWrapper {
     /**
      * @param isIndeterminate whether the progress indicator is indeterminate or not
      */
-    public final void changeProgressIndeterminate(boolean isIndeterminate){
+    public final void setProgressIndeterminate(boolean isIndeterminate){
         mProgressDrawerManager.getProgressOptions().setIndeterminate(isIndeterminate);
     }
 
@@ -451,7 +451,7 @@ public class PowerlessImageView extends ImageViewWrapper {
      *
      * @param progress Percentage value of the progress
      */
-    public final void changeProgressValue(float progress){
+    public final void setProgressValue(float progress){
         getProgressOptions().setValue(progress);
     }
 
