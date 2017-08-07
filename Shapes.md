@@ -13,6 +13,7 @@ Shapes are divided into 3 types:
 
 
 
+Vector drawables are supported, too, and they are scaled up to max resolution before applying the shape.
 Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false).
 Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).
 

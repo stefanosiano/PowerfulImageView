@@ -26,16 +26,16 @@ Background
 ----------
   
 **Progress:**  
-Most applications use images loaded from the internet. There are a lot of great libraries to handle these cases, like [Picasso](https://github.com/square/picasso) or [Glide](https://github.com/bumptech/glide). These libraries allows you to show placeholders in your imageViews while downloading/processing the image, too.  
-While this helps a lot, the placeholder doesn't provide any feedback or information to the user. So I created this library to show a progress indicator directly into the Image View, imitating the Android material circular progress bar, to show the current download (or an indeterminate progress bar when the image is downloaded, but processing).  
+Shows a progress indicator over the image. It can be used to show the download or processing status of the image.
+Default progress mode imitates the Android material circular progress bar.
 This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.
   
   
 **Shapes:**  
-Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes natively to provide indicator over the shapes. All shapes are compatible with any kind of drawable, and they provide support for shaping background and foreground drawables, too. Also, all scale types are supported, and some additional scale type were added, like topCrop and bottomCrop.
+Most applications need some kind of shape. All provided shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type were added, too.
 Shapes are divided into 3 types:  
 1) Rectangular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
-2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations applied by image loaders like Glide or Picasso may cause issues. To avoid issues, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`. Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
+2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
 3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind them.
   
   
@@ -43,12 +43,20 @@ Shapes are divided into 3 types:
 **Blur:**  
 Some applications may need to blur an image. While blurring an image sounds easy at first, there are a lot of things to care about, like renderscript contexts, downscaling image, performance optimizations to not lock the UI thread. This library provides a very easy way to blur the image (as easy as adding `piv_blur_mode` and `piv_blur_radius` to the xml element). Also, it's designed to be as efficient and reliable as possible. This means that renderscript contexts are created and destroyed only when necessary, and they are shared through all instances of the PowerfulImageView, improving performances in lists.
 Blur algorithms are divided into 2 categories:  
-1) Renderscript algorithms: they use renderscript under the hood (support version in PowerfulImageView and normal version in PowerlessImageView). In case of error the corresponding Java algorithm will be used automatically, if enabled by its option, otherwise the original bitmap is returned;
-2) Java algorithms: they use java and, while being slower, they support any version and any device. In case of error the original bitmap will be returned. All Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).
-  
+1) Renderscript algorithms: they use renderscript under the hood, falling back to the corresponding Java algorithm in case of error, if enabled by its option;
+2) Java algorithms: they use java and are slower, even if all Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).
 
-  
-  
+
+
+This library focuses on 3 points, in the following order:
+1) Performance,
+2) Customizability,
+3) Reliability,
+4) Ease of use.
+
+
+
+
 Gradle
 ------
   
@@ -100,8 +108,8 @@ powerfulImageView.setBlurMode(PivBlurMode.GAUSSIAN5X5, 1);
   
 
 
-You can find more information about the ![Progress](https://github.com/stefanosiano/PowerfulImageView/blob/master/Progress.md), ![Shapes](https://github.com/stefanosiano/PowerfulImageView/blob/master/Shapes.md)
-and ![Blur](https://github.com/stefanosiano/PowerfulImageView/blob/master/Blur.md) features on their pages.
+You can find more information about the [Progress](https://github.com/stefanosiano/PowerfulImageView/blob/master/Progress.md), [Shapes](https://github.com/stefanosiano/PowerfulImageView/blob/master/Shapes.md)
+and [Blur](https://github.com/stefanosiano/PowerfulImageView/blob/master/Blur.md) features on their pages.
 
   
   
@@ -119,19 +127,19 @@ Convenience methods are provided for:
   
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
-|setProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
-|setProgressValue|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
-|setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
+|setProgressMode|PivProgressMode|Changes the progress mode.|
+|setProgressValue|float|Sets the progress of the current indicator. It will change its mode to determinate, if necessary.|
+|setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate.|
 |getProgressMode| |Get the current progress mode selected.|
 |setShapeMode|PivShapeMode|Changes the shape of the image.|
-|setScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
-|getShapeMode| |Get the current shape mode selected. It can then be used to check whether the shape is rectangular, rounded or solid through its methods.|
+|setScaleType|PivShapeScaleType|Set the scale type to use for the image (some additional custom scale types were added).|
+|getShapeMode| |Get the current shape mode selected.|
 |setBlurMode|PivBlurMode, int|Changes the blur mode and the radius to blur the image.|
 |setBlurRadius|int|Changes the blur radius to blur the image.|
 |getBlurMode| |Get the selected shape mode|
 |getBlurRadius| |Get the selected radius used for blurring|
-|getBlurBlurredBitmap| |Get the last blurred bitmap. If the bitmap was never blurred, or blur options, mode or radius changed since the last blur, the bitmap will be blurred again (if static option is disabled). If any problem occurs, the original bitmap (nullable) will be returned. Don't use this method if you didn't enable blur!|
-|getBlurOriginalBitmap| |Returns the original bitmap used to blur. If static blur option is enabled, this will be the same as the blurred one, since the original bitmap has been released. Don't use this method if you didn't enable blur!|
+|getBlurBlurredBitmap| |Get the last blurred bitmap. It will blur the image, if necessary. Don't use this method if you didn't enable blur!|
+|getBlurOriginalBitmap| |Returns the original bitmap used to blur. Don't use this method if you didn't enable blur!|
   
   
   
@@ -149,7 +157,8 @@ No steps are required, since configuration is already included.
 Notes
 -----
   
-PowerfulImageView requires a minimum API level of 14 (same as AppCompatLibrary). PowerlessImageView requires a minimum API level of 12 (18 to use renderscript).
+PowerfulImageView requires a minimum API level of 14 (same as AppCompatLibrary).
+PowerlessImageView requires a minimum API level of 12 (18 to use renderscript).
 
 
 
