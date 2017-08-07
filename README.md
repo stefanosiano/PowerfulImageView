@@ -20,21 +20,22 @@ Progress:
 Shapes:  
 ![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
   
-
-
-
+  
+  
+  
 Focus
 -----
-
+  
 This library focuses on 4 points, in the following order:
 1) Performance,
 2) Reliability,
 3) Customizability,
 4) Ease of use.
-
-
-
-
+  
+To know more about these, read feature pages.  
+  
+  
+  
 Background
 ----------
   
@@ -59,13 +60,13 @@ Some applications may need to blur an image. While blurring an image sounds easy
 Blur algorithms are divided into 2 categories:  
 1) Renderscript algorithms: they use renderscript under the hood, falling back to the corresponding Java algorithm in case of error, if enabled by its option;
 2) Java algorithms: they use java and are slower, even if all Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).
-
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
+  
 Gradle
 ------
   
@@ -74,7 +75,7 @@ repositories {
   jcenter() // used as default in Android Studio. Put this line into project's build.gradle file, if not already present.
 }
 ```
-
+  
 To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
 ```
 dependencies {
@@ -107,7 +108,7 @@ Via xml:
         app:piv_blur_mode="gaussian5x5"
         app:piv_blur_radius="1" />
 ```
-
+  
 Via Java:  
 ```
 powerfulImageView.setProgressMode(PivProgressMode.CIRCULAR);
@@ -115,17 +116,17 @@ powerfulImageView.setShapeMode(PivShapeMode.CIRCLE);
 powerfulImageView.setBlurMode(PivBlurMode.GAUSSIAN5X5, 1);
 ```
   
-
-
+  
+  
 You can find more information about the [Progress](https://github.com/stefanosiano/PowerfulImageView/blob/master/Progress.md), [Shapes](https://github.com/stefanosiano/PowerfulImageView/blob/master/Shapes.md)
 and [Blur](https://github.com/stefanosiano/PowerfulImageView/blob/master/Blur.md) features on their pages.
-
+  
   
   
 **Java methods**
   
 All options are available via  
-
+  
 ```
 progressImageView.getProgressOptions().set...
 progressImageView.getShapeOptions().set...
