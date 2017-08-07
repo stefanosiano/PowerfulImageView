@@ -1,26 +1,29 @@
 PowerfulImageView Progress
 ==========================
 
-This page contains all detailed info and tips about progress feature of PowerfulImageView.
-
-
-
-Most applications use images loaded from the internet. There are a lot of great libraries to handle these cases, like [Picasso](https://github.com/square/picasso) or [Glide](https://github.com/bumptech/glide). These libraries allows you to show placeholders in your imageViews while downloading/processing the image, too.
-While this helps a lot, the placeholder doesn't provide any feedback or information to the user. So I created this library to show a progress indicator directly into the Image View, imitating the Android material circular progress bar, to show the current download (or an indeterminate progress bar when the image is downloaded, but processing).
-This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.
-
-
-
-Changing options will automatically invalidate the progress, so that you don't need to do it manually. It work from both the UI and background threads.
-The progress will be displayed above the image, regardless of whatever shape is selected (if any).
-Animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library, to reduce battery consumption.
-The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.
-
-
-
+This page contains all detailed info and tips about progress feature of PowerfulImageView.  
+  
+  
+  
+  
+Most applications use images loaded from the internet. There are a lot of great libraries to handle these cases, like [Picasso](https://github.com/square/picasso) or [Glide](https://github.com/bumptech/glide). These libraries allows you to show placeholders in your imageViews while downloading/processing the image, too.  
+While this helps a lot, the placeholder doesn't provide any feedback or information to the user. So I created this library to show a progress indicator directly into the Image View, imitating the Android material circular progress bar, to show the current download (or an indeterminate progress bar when the image is downloaded, but processing).  
+This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.  
+  
+  
+Notes
+-----
+  
+Changing options will automatically invalidate the progress, so that you don't need to do it manually. It work from both the UI and background threads.  
+The progress will be displayed above the image, regardless of whatever shape is selected (if any).  
+Animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library, to reduce battery consumption.  
+The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.  
+  
+  
+  
 List of all XML attributes
 --------------------------
-
+  
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
 |piv_progress_gravity|enum|center|Set the gravity of the indicator. It will follow the rtl layout (on api 17+), if not disabled. Values are: center, start, end, top, top_start, top_end, bottom, bottom_start, bottom_end|
@@ -43,34 +46,34 @@ List of all XML attributes
 |piv_progress_indeterminate_color|color|#A0A0A0|Set the indeterminate color of the progress indicator.|
 |piv_progress_shadow_color|color|#FFFFFF|Set the shadow color of the indicator.|
 |piv_progress_shadow_border_color|color|#000000|Set the color of the progress indicator shadow border.|
-
-
-
-
+  
+  
+  
+  
 **Java methods**
-
-All options are available via `progressImageView.getProgressOptions().set...`
-
-
-
-Convenience methods are provided for:
-
+  
+All options are available via `progressImageView.getProgressOptions().set...`  
+  
+  
+  
+Convenience methods are provided for:  
+  
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
 |setProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
 |setProgressValue|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
 |setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
 |getProgressMode| |Get the current progress mode selected.|
-
-
-
-
+  
+  
+  
+  
 Tips
 ----
-
-Options allow great customizations, but they may be overwhelming. Also, you should have a consistent UI. To do so, you should define a custom style, configuring all the aspects of the PowerfulImageView progress, and then use your own style anywhere you need. This is good for theming, too!
-You just need to add your configuration in your styles.xml file like this:
-
+  
+Options allow great customizations, but they may be overwhelming. Also, you should have a consistent UI. To do so, you should define a custom style, configuring all the aspects of the PowerfulImageView progress, and then use your own style anywhere you need. This is good for theming, too!  
+You just need to add your configuration in your styles.xml file like this:  
+  
 ```
     <style name="MyPivStyle">
         <item name="piv_progress_indeterminate_color">@color/colorAccent</item>
@@ -81,9 +84,9 @@ You just need to add your configuration in your styles.xml file like this:
         ...
     </style>
 ```
-
-Then apply it like this:
-
+  
+Then apply it like this:  
+  
 ```
     <com.stefanosiano.powerfulimageview.PowerfulImageView
         android:id="@+id/piv"
@@ -91,6 +94,6 @@ Then apply it like this:
         android:layout_height="wrap_content"
         style="@style/MyPivStyle"/>
 ```
-
-
-
+  
+  
+  
