@@ -5,23 +5,30 @@ This page contains all detailed info and tips about the shapes feature of Powerf
 
 
 
-Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes natively to provide indicator over the shapes. All shapes are compatible with any kind of drawable, and they provide support for shaping background and foreground drawables, too. Also, all scale types are supported, and some additional scale type were added, like topCrop and bottomCrop.
+Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes natively to provide indicator over the shapes.  
 Shapes are divided into 3 types:
-1) Rectangular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
-2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations applied by image loaders like Glide or Picasso may cause issues. To avoid issues, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`. Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
-3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind them.
-
-
-
-Vector drawables are supported, too, and they are scaled up to max resolution before applying the shape.
-Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false).
-Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).
-
-
-
+1) **Rectangular** (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
+2) **Rounded** (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Transformation and animations applied by image loaders like Glide or Picasso may cause issues. To avoid issues, you should disable any animation. For Picasso use the `noFade()` option, for Glide use `dontAnimate()`.
+3) **Solid** (solid_circle, solid_oval, solid_rounded_rectangle): These shapes consist in a solid color drawn over them. They are very efficient and support out of the box any animation and image loader library. They completely cover the background, too, in contrast with non-solid shapes, which allow users to see anything behind them.
+  
+  
+  
+  
+Notes
+-----
+  
+All shapes are compatible with any kind of drawable, and they provide support for shaping background and foreground drawables, too, except for rounded shapes.  
+Background and foreground drawables will be resized to be equal to the current drawable, and follow scale type, too. As a consequence, they will be drawn only if there is a drawable set.  
+All scale types are supported, and some additional scale type were added, like topCrop and bottomCrop.  
+Vector drawables are supported, too, and they are scaled up to max resolution before applying the shape.  
+Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false).  
+Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
+  
+  
+  
 List of all XML attributes
 --------------------------
-
+  
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
 |piv_shape_mode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
@@ -38,19 +45,19 @@ List of all XML attributes
 |piv_shape_background|reference-color|null|Set the background drawable to draw under the image. Does not follow rounded shapes!|
 |piv_shape_foreground|reference-color|null|Set the foreground drawable to draw over the image. Does not follow rounded shapes!|
 |piv_shape_border_color|color|transparent|Set the border color of the image.|
-
-
-
-
+  
+  
+  
+  
 **Java methods**
-
+  
 All options are available via `progressImageView.getShapeOptions().set...`
-
-
-
-
+  
+  
+  
+  
 Convenience methods are provided for:
-
+  
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
 |setShapeMode|PivShapeMode|Changes the shape of the image.|
