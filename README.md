@@ -20,8 +20,21 @@ Progress:
 Shapes:  
 ![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
   
-  
-  
+
+
+
+Focus
+-----
+
+This library focuses on 3 points, in the following order:
+1) Performance,
+2) Customizability,
+3) Reliability,
+4) Ease of use.
+
+
+
+
 Background
 ----------
   
@@ -41,18 +54,13 @@ Shapes are divided into 3 types:
   
   
 **Blur:**  
-Some applications may need to blur an image. While blurring an image sounds easy at first, there are a lot of things to care about, like renderscript contexts, downscaling image, performance optimizations to not lock the UI thread. This library provides a very easy way to blur the image (as easy as adding `piv_blur_mode` and `piv_blur_radius` to the xml element). Also, it's designed to be as efficient and reliable as possible. This means that renderscript contexts are created and destroyed only when necessary, and they are shared through all instances of the PowerfulImageView, improving performances in lists.
+Some applications may need to blur an image. While blurring an image sounds easy at first, it's much harder then it should be.
 Blur algorithms are divided into 2 categories:  
 1) Renderscript algorithms: they use renderscript under the hood, falling back to the corresponding Java algorithm in case of error, if enabled by its option;
 2) Java algorithms: they use java and are slower, even if all Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).
 
 
 
-This library focuses on 3 points, in the following order:
-1) Performance,
-2) Customizability,
-3) Reliability,
-4) Ease of use.
 
 
 
