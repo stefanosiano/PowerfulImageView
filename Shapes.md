@@ -26,6 +26,23 @@ Also, solid rounded rectangle suffers of the same problem when using a border (w
   
   
   
+
+  
+Focus
+-----
+  
+**Performance**  
+To create rounded shapes, BitmapShader is used. In all other cases, the drawable will be drawn directly as in a normal ImageView.  
+**Reliability**  
+Methods to avoid and catch OutOfMemoryExceptions are in place.  
+**Customizability**  
+All aspects can be customized. From the image inner padding to background and foreground drawables and color to the border size and color.  
+**Ease of use**  
+Basic integration needs only `piv_shape_mode` to the xml element.  
+  
+  
+  
+  
 List of all XML attributes
 --------------------------
   
