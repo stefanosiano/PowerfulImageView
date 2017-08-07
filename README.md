@@ -38,22 +38,23 @@ This library focuses on 4 points, in the following order:
 Background
 ----------
   
-**Progress:**  
+**[Progress](https://github.com/stefanosiano/PowerfulImageView/blob/master/Progress.md):**  
 Shows a progress indicator over the image. It can be used to show the download or processing status of the image.
 Default progress mode imitates the Android material circular progress bar.
 This is flexible enough to let you use the progress in other ways, like tracking time passing, current achievements or whatever you want.
   
   
-**Shapes:**  
+  
+**[Shapes](https://github.com/stefanosiano/PowerfulImageView/blob/master/Shapes.md):**  
 Most applications need some kind of shape. All provided shapes are compatible with any kind of drawable. Also, all scale types are supported, and some additional scale type were added, too.
 Shapes are divided into 3 types:  
 1) Rectangular (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
-2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Background and foreground drawables will be resized, but rounded shape will not be applied to them, as it happens for other shapes.
-3) Solid shapes are simple shapes with a solid color drawn over them. They are very efficient and support any animation and image loader. They completely cover the background, in contrast with rounded shapes, which allow users to see anything behind them.
+2) Rounded (circle, oval, rounded rectangle): These shapes are  achieved following techniques [recommended by Romain Guy](http://www.curious-creature.org/2012/12/11/android-recipe-1-image-with-rounded-corners/). Background and foreground drawables will be resized, but rounded shape will not be applied to them.
+3) Solid shapes consist in a solid color drawn over them. They are very efficient and support any animation and image loader. They completely cover the background, in contrast with rounded shapes, which allow users to see anything behind them.
   
   
   
-**Blur:**  
+**[Blur](https://github.com/stefanosiano/PowerfulImageView/blob/master/Blur.md):**  
 Some applications may need to blur an image. While blurring an image sounds easy at first, it's much harder then it should be.
 Blur algorithms are divided into 2 categories:  
 1) Renderscript algorithms: they use renderscript under the hood, falling back to the corresponding Java algorithm in case of error, if enabled by its option;
