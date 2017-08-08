@@ -32,7 +32,7 @@ This library focuses on 4 points, in the following order:
 3) Customizability,
 4) Ease of use.
   
-To know more about these, read feature pages.  
+To know more about these, read each feature page (links below).  
   
   
   
@@ -79,13 +79,13 @@ repositories {
 To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.3.2' // Put this line into module's build.gradle
+    compile 'com.stefanosiano:powerfulimageview:0.3.3' // Put this line into module's build.gradle
 }
 ```
 To use **Powerless**ImageView, which extends ImageView, doesn't depend on AppCompat library and uses normal Renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.3.2' // Put this line into module's build.gradle
+    compile 'com.stefanosiano:powerlessimageview:0.3.3' // Put this line into module's build.gradle
 }
 ```
   
@@ -168,7 +168,7 @@ Notes
 -----
   
 PowerfulImageView requires a minimum API level of 14 (same as AppCompatLibrary).
-PowerlessImageView requires a minimum API level of 12 (18 to use renderscript).
+PowerlessImageView requires a minimum API level of 12 (18 to use renderscript for blur).
   
   
   
