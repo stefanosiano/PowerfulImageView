@@ -27,7 +27,7 @@
             app:piv_blur_radius="1"
             app:piv_shape_mode="circle"
 
-            app:piv_progress_removed_on_change="false"
+            app:piv_progress_removed_on_change="true"
             app:piv_progress_indeterminate="false"
             app:piv_progress_size="50%"
             app:piv_progress_front_color="@color/colorAccent"

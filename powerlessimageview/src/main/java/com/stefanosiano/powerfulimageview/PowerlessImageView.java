@@ -84,6 +84,9 @@ public class PowerlessImageView extends ImageViewWrapper {
     /** Flag used to control if blurring bitmap should be checked */
     private boolean mCheckBlur = false;
 
+    /** Flag used to control if I should try to remove the progress on drawable changed (used in constructor and on size change) */
+    private boolean mShouldCheckRemoveProgress = true;
+
 
     public PowerlessImageView(Context context) {
         this(context, null);
@@ -178,6 +181,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
         this.mBlurManager = new BlurManager(this, blurOptions);
         mShapeDrawerManager.setScaleType(scaleType);
+        mShouldCheckRemoveProgress = false;
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
@@ -186,6 +190,8 @@ public class PowerlessImageView extends ImageViewWrapper {
         setProgressMode(progressMode);
         setShapeMode(shapeMode);
         setBlurMode(blurMode, blurRadius);
+
+        mShouldCheckRemoveProgress = true;
     }
 
     @Override
@@ -197,7 +203,10 @@ public class PowerlessImageView extends ImageViewWrapper {
         mShapeDrawerManager.onSizeChanged(w, h, getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
 
         mBlurManager.onSizeChanged(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight(), getDrawable() != null ? getDrawable().getCurrent() : getDrawable());
+
+        mShouldCheckRemoveProgress = false;
         blurBitmap(false);
+        mShouldCheckRemoveProgress = true;
     }
 
     @Override
@@ -232,7 +241,7 @@ public class PowerlessImageView extends ImageViewWrapper {
         }
 
         //when initializing (in constructor) it gets called, but it is still null
-        if (mProgressDrawerManager != null && getDrawable() != null)
+        if (mShouldCheckRemoveProgress && mProgressDrawerManager != null && getDrawable() != null)
             mProgressDrawerManager.changeDrawable(getDrawable().getCurrent());
 
         //when initializing (in constructor) it gets called, but it is still null
