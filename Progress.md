@@ -18,6 +18,7 @@ Changing options will automatically invalidate the progress, so that you don't n
 The progress will be displayed above the image, regardless of whatever shape is selected (if any).  
 Animations automatically stop when power saving mode is enabled. This is by design in Android with ObjectAnimator, used for animations in this library, to reduce battery consumption.  
 The progress indicator automatically supports rtl (unless disabled by its flag). This means that progress gravity follows the start/end behaviour, and that the progress is reversed with rtl languages.  
+Blurring the image is detected as a change, so the progress will be removed if piv_progress_removed_on_change is true.  
   
   
   
