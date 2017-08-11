@@ -177,15 +177,15 @@ public class PowerfulImageView extends ImageViewWrapper {
         this.mProgressDrawerManager = new ProgressDrawerManager(this, progressOptions);
         this.mShapeDrawerManager = new ShapeDrawerManager(this, shapeOptions);
         this.mBlurManager = new BlurManager(this, blurOptions);
-
-        setProgressMode(progressMode);
-        setShapeMode(shapeMode);
-        setBlurMode(blurMode, blurRadius);
+        mShapeDrawerManager.setScaleType(scaleType);
 
         //the first time it was called, mShapeDrawerManager is null, so it's skipped.
         //So i call it here, after everything else is instantiated.
         onDrawableChanged();
-        mShapeDrawerManager.setScaleType(scaleType);
+
+        setProgressMode(progressMode);
+        setShapeMode(shapeMode);
+        setBlurMode(blurMode, blurRadius);
     }
 
     @Override

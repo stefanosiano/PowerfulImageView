@@ -16,13 +16,23 @@
         android:orientation="horizontal">
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
             android:background="#eaeaea"
             android:layout_margin="8dp"
             android:src="@drawable/sf1"
-            app:piv_shape_mode="square"/>
+            android:scaleType="centerCrop"
+
+            app:piv_blur_mode="box5x5"
+            app:piv_blur_radius="1"
+            app:piv_shape_mode="circle"
+
+            app:piv_progress_removed_on_change="false"
+            app:piv_progress_indeterminate="false"
+            app:piv_progress_size="50%"
+            app:piv_progress_front_color="@color/colorAccent"
+            app:piv_progress_border_width="2dp"
+            app:piv_progress_mode="circular" />
 
         <com.stefanosiano.powerfulimageview.PowerfulImageView
             android:layout_width="150dp"
@@ -31,9 +41,7 @@
             android:background="#eaeaea"
             android:layout_margin="8dp"
             android:src="@drawable/sf1"
-            app:piv_shape_mode="solid_circle"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="@android:color/black"/>
+            app:piv_progress_mode="circular"/>
 
     </LinearLayout>
 
