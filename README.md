@@ -79,13 +79,13 @@ repositories {
 To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.3.3' // Put this line into module's build.gradle
+    compile 'com.stefanosiano:powerfulimageview:0.3.4' // Put this line into module's build.gradle
 }
 ```
 To use **Powerless**ImageView, which extends ImageView, doesn't depend on AppCompat library and uses normal Renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.3.3' // Put this line into module's build.gradle
+    compile 'com.stefanosiano:powerlessimageview:0.3.4' // Put this line into module's build.gradle
 }
 ```
   
