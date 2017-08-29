@@ -88,7 +88,11 @@ final class SolidRoundedRectangleShapeDrawer implements ShapeDrawer {
         mRadiusY = shapeOptions.getRadiusY();
 
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
+        mBackPaint.setAntiAlias(true);
+        mBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mFrontPaint.setColor(shapeOptions.getForegroundColor());
+        mFrontPaint.setAntiAlias(true);
+        mFrontPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mForegroundDrawable = shapeOptions.getForegroundDrawable();
         mBackgroundDrawable = shapeOptions.getBackgroundDrawable();
 

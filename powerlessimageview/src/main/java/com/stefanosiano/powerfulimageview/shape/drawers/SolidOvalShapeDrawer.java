@@ -82,7 +82,11 @@ final class SolidOvalShapeDrawer implements ShapeDrawer {
     public void setup(ShapeOptions shapeOptions) {
 
         mBackPaint.setColor(shapeOptions.getBackgroundColor());
+        mBackPaint.setAntiAlias(true);
+        mBackPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mFrontPaint.setColor(shapeOptions.getForegroundColor());
+        mFrontPaint.setAntiAlias(true);
+        mFrontPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mForegroundDrawable = shapeOptions.getForegroundDrawable();
         mBackgroundDrawable = shapeOptions.getBackgroundDrawable();
 
