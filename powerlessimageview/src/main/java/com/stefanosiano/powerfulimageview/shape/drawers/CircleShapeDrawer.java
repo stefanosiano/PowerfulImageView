@@ -51,8 +51,10 @@ final class CircleShapeDrawer implements ShapeDrawer {
      * ShapeDrawer that draws a circle as shape.
      */
     CircleShapeDrawer(Bitmap bitmap) {
-        this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        mBitmapShader.setLocalMatrix(mMatrix);
+        if(bitmap != null) {
+            this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            mBitmapShader.setLocalMatrix(mMatrix);
+        }
         mBitmapPaint = new Paint();
         mBackPaint = new Paint();
         mBorderPaint = new Paint();
@@ -71,9 +73,11 @@ final class CircleShapeDrawer implements ShapeDrawer {
 
     @Override
     public void changeBitmap(Bitmap bitmap) {
-
-        this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        mBitmapShader.setLocalMatrix(mMatrix);
+        this.mBitmapShader = null;
+        if(bitmap != null) {
+            this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            mBitmapShader.setLocalMatrix(mMatrix);
+        }
 
         mBitmapPaint.setShader(mBitmapShader);
         mBitmapPaint.setAntiAlias(true);
@@ -83,7 +87,8 @@ final class CircleShapeDrawer implements ShapeDrawer {
     @Override
     public void setMatrix(PivShapeScaleType scaleType, Matrix matrix) {
         this.mMatrix = matrix;
-        mBitmapShader.setLocalMatrix(matrix);
+        if(mBitmapShader != null)
+            mBitmapShader.setLocalMatrix(matrix);
     }
 
     @Override
