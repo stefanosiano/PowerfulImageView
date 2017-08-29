@@ -137,7 +137,7 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
                 bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             } else {
                 //bitmap size should not be bigger than the view size
-                float ratio = drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
+                float ratio = (float) drawable.getIntrinsicWidth() / (float) drawable.getIntrinsicHeight();
                 int sizeX;
                 int sizeY;
                 int maxWidth = (int) Math.max(mMeasuredWidth, mMeasuredHeight * ratio);
@@ -174,9 +174,14 @@ public class ShapeDrawerManager implements ShapeOptions.ShapeOptionsListener {
             drawable.draw(canvas);
 
             return bitmap;
+
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            Bitmap bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
         }
     }
 
