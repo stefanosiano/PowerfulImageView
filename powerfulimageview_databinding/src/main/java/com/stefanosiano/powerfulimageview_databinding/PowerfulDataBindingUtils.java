@@ -2,7 +2,6 @@ package com.stefanosiano.powerfulimageview_databinding;
 
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 import com.stefanosiano.powerfulimageview.PowerfulImageView;
 import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
