@@ -21,7 +21,6 @@ version = libVersion //version
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.2"
 
     defaultConfig {
         minSdkVersion 14
@@ -34,13 +33,11 @@ android {
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
 
-//        dataBinding { enabled = true }
-        buildToolsVersion "28.0.2"
-
     }
 }
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
+    implementation 'com.android.support:support-core-utils:28.0.0-rc01'
 }
 
 

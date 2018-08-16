@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
 import android.widget.ImageView;
@@ -16,7 +17,6 @@ import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
 
 import java.lang.ref.WeakReference;
 
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 /**
  * Manager class for blurring. Used to manage and blur the image.
