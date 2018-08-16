@@ -5,8 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.stefanosiano.powerfulimageview.PowerfulImageView;
+import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
 import com.stefanosiano.powerfulimageview.progress.PivProgressGravity;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
+import com.stefanosiano.powerfulimageview.shape.PivShapeMode;
+import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
 
 public class PowerfulDataBindingUtils {
 
@@ -29,112 +32,122 @@ public class PowerfulDataBindingUtils {
     public void setProgressSize (PowerfulImageView piv, float progressSize) { piv.getProgressOptions().setSize(progressSize); }
 
     @BindingAdapter("piv_progress_padding")
-    public void set (PowerfulImageView piv, int progressPadding) { piv.getProgressOptions().setPadding(progressPadding); }
+    public void setProgressPadding (PowerfulImageView piv, int progressPadding) { piv.getProgressOptions().setPadding(progressPadding); }
 
     @BindingAdapter("piv_progress_border_width")
-    public void set (PowerfulImageView piv, int borderWidth) { piv.getProgressOptions().setBorderWidth(borderWidth); }
+    public void setProgressBorderWidth (PowerfulImageView piv, int progressBorderWidth) { piv.getProgressOptions().setBorderWidth(progressBorderWidth); }
 
     @BindingAdapter("piv_progress_border_width")
-    public void set (PowerfulImageView piv, float borderWidth) { piv.getProgressOptions().setBorderWidth(borderWidth); }
+    public void setProgressBorderWidth (PowerfulImageView piv, float progressBorderWidth) { piv.getProgressOptions().setBorderWidth(progressBorderWidth); }
 
     @BindingAdapter("piv_progress_shadow_border_width")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressShadowBorderWidth (PowerfulImageView piv, float progressShadowBorderWidth) { piv.getProgressOptions().setShadowBorderWidth(progressShadowBorderWidth); }
 
     @BindingAdapter("piv_progress_shadow_padding")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressShadowPadding (PowerfulImageView piv, int progressShadowPadding) { piv.getProgressOptions().setShadowPadding(progressShadowPadding); }
+
+    @BindingAdapter("piv_progress_shadow_padding")
+    public void setProgressShadowPadding (PowerfulImageView piv, float progressShadowPadding) { piv.getProgressOptions().setShadowPadding(progressShadowPadding); }
 
     @BindingAdapter("piv_progress_shadow_enabled")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressShadowEnabled (PowerfulImageView piv, boolean progressShadowEnabled) { piv.getProgressOptions().setShadowEnabled(progressShadowEnabled); }
 
     @BindingAdapter("piv_progress_determinate_animation_enabled")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressDeterminateAnimationEnabled (PowerfulImageView piv, boolean progressDeterminateAnimationEnabled) { piv.getProgressOptions().setDeterminateAnimationEnabled(progressDeterminateAnimationEnabled); }
 
     @BindingAdapter("piv_progress_rtl_disabled")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressRtlDisabled (PowerfulImageView piv, boolean progressRtlDisabled) { piv.getProgressOptions().setRtlDisabled(progressRtlDisabled); }
 
     @BindingAdapter("piv_progress_draw_wedge")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressDrawWedge (PowerfulImageView piv, boolean progressDrawWedge) { piv.getProgressOptions().setDrawWedge(progressDrawWedge); }
 
     @BindingAdapter("piv_progress_reversed")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressReversed (PowerfulImageView piv, boolean progressReversed) { piv.getProgressOptions().setProgressReversed(progressReversed); }
 
     @BindingAdapter("piv_progress_removed_on_change")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressRemovedOnChange (PowerfulImageView piv, boolean progressRemovedOnChange) { piv.getProgressOptions().setRemovedOnChange(progressRemovedOnChange); }
 
     @BindingAdapter("piv_progress_front_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressFrontColor (PowerfulImageView piv, int progressFrontColor) { piv.getProgressOptions().setFrontColor(progressFrontColor); }
 
     @BindingAdapter("piv_progress_back_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressBackColor (PowerfulImageView piv, int progressBackColor) { piv.getProgressOptions().setBackColor(progressBackColor); }
 
     @BindingAdapter("piv_progress_indeterminate_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressIndeterminateColor (PowerfulImageView piv, int progressIndeterminateColor) { piv.getProgressOptions().setIndeterminateColor(progressIndeterminateColor); }
 
     @BindingAdapter("piv_progress_shadow_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressShadowColor (PowerfulImageView piv, int progressShadowColor) { piv.getProgressOptions().setShadowColor(progressShadowColor); }
 
     @BindingAdapter("piv_progress_shadow_border_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setProgressShadowBorderColor (PowerfulImageView piv, int progressShadowBorderColor) { piv.getProgressOptions().setShadowBorderColor(progressShadowBorderColor); }
+
+
 
     @BindingAdapter("piv_shape_mode")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeMode (PowerfulImageView piv, PivShapeMode shapeMode) { piv.setShapeMode(shapeMode); }
 
     @BindingAdapter("piv_shape_scaleType")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeScaleType (PowerfulImageView piv, PivShapeScaleType shapeScaleType) { piv.setShapeScaleType(shapeScaleType); }
 
     @BindingAdapter("piv_shape_inner_padding")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeInnerPadding (PowerfulImageView piv, int shapeInnerPadding) { piv.getShapeOptions().setInnerPadding(shapeInnerPadding); }
+
+    @BindingAdapter("piv_shape_inner_padding")
+    public void setShapeInnerPadding (PowerfulImageView piv, float shapeInnerPadding) { piv.getShapeOptions().setInnerPadding(shapeInnerPadding); }
 
     @BindingAdapter("piv_shape_border_width")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeBorderWidth (PowerfulImageView piv, int shapeBorderWidth) { piv.getShapeOptions().setBorderWidth(shapeBorderWidth); }
 
     @BindingAdapter("piv_shape_ratio")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeRatio (PowerfulImageView piv, float shapeRatio) { piv.getShapeOptions().setRatio(shapeRatio); }
 
     @BindingAdapter("piv_shape_radius_x")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeRadiusX (PowerfulImageView piv, float shapeRadiusX) { piv.getShapeOptions().setRadiusX(shapeRadiusX); }
 
     @BindingAdapter("piv_shape_radius_y")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeRadiusY (PowerfulImageView piv, float shapeRadiusY) { piv.getShapeOptions().setRadiusY(shapeRadiusY); }
 
     @BindingAdapter("piv_shape_border_overlay")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeBorderOverlay (PowerfulImageView piv, boolean shapeBorderOverlay) { piv.getShapeOptions().setBorderOverlay(shapeBorderOverlay); }
 
     @BindingAdapter("piv_shape_solid_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeSolidColor (PowerfulImageView piv, int shapeSolidColor) { piv.getShapeOptions().setSolidColor(shapeSolidColor); }
 
     @BindingAdapter("piv_shape_background_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeBackgroundColor (PowerfulImageView piv, int shapeBackgroundColor) { piv.getShapeOptions().setBackgroundColor(shapeBackgroundColor); }
 
     @BindingAdapter("piv_shape_foreground_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeForegroundColor (PowerfulImageView piv, int shapeForegroundColor) { piv.getShapeOptions().setForegroundColor(shapeForegroundColor); }
 
     @BindingAdapter("piv_shape_background")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeBackground (PowerfulImageView piv, Drawable shapeBackground) { piv.getShapeOptions().setBackgroundDrawable(shapeBackground); }
 
     @BindingAdapter("piv_shape_foreground")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeForeground (PowerfulImageView piv, Drawable shapeForeground) { piv.getShapeOptions().setForegroundDrawable(shapeForeground); }
 
     @BindingAdapter("piv_shape_border_color")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setShapeBorderColor (PowerfulImageView piv, int shapeBorderColor) { piv.getShapeOptions().setBorderColor(shapeBorderColor); }
+
+
 
     @BindingAdapter("piv_blur_mode")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setPivBlurMode (PowerfulImageView piv, PivBlurMode blurMode) { piv.setBlurMode(blurMode, piv.getBlurRadius()); }
 
     @BindingAdapter("piv_blur_radius")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setBlurRadius (PowerfulImageView piv, int blurRadius) { piv.setBlurRadius(blurRadius); }
 
     @BindingAdapter("piv_blur_down_sampling_rate")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setBlurDownSamplingRate (PowerfulImageView piv, int blurDownSamplingRate) { piv.getBlurOptions().setDownSamplingRate(blurDownSamplingRate); }
 
     @BindingAdapter("piv_blur_static")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setBlurStatic (PowerfulImageView piv, boolean blurStatic) { piv.getBlurOptions().setStaticBlur(blurStatic); }
 
     @BindingAdapter("piv_blur_use_rs_fallback")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setBlurUseRsFallback (PowerfulImageView piv, boolean blurUseRsFallback) { piv.getBlurOptions().setUseRsFallback(blurUseRsFallback); }
 
     @BindingAdapter("piv_blur_num_threads")
-    public void set (PowerfulImageView piv, ) { piv.getProgressOptions().set(); }
+    public void setBlurNumThreads (PowerfulImageView piv, int blurNumThreads) { piv.getBlurOptions().setNumThreads(blurNumThreads); }
 
 
 }
