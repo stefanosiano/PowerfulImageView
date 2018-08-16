@@ -12,8 +12,8 @@ def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // 
 def libDescription = 'Custom Android ImageView with several added features.' // Library description
 
 //data to change on updates
-def libVersion = "0.3.8"// This is the library version used when deploying the artifact
-def gitTag = '0.3.8'
+def libVersion = "0.3.7"// This is the library version used when deploying the artifact
+def gitTag = '0.3.7'
 
 group = libGroupId //bintray org/group name
 version = libVersion //version
@@ -38,8 +38,7 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':powerfulimageview')
-    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
+    implementation "com.stefanosiano:powerfulimageview:$libVersion"
 }
 
 
