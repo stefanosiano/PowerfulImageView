@@ -36,3 +36,6 @@
 
 -keep class com.stefanosiano.powerfulimageview.shape.PivBlurMode { *; }
 -keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.BlurOptions { *; }
+
+-dontwarn android.databinding.**
+-keep class android.databinding.** { *; }

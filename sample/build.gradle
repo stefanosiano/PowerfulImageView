@@ -1,20 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.0"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.2"
 
     defaultConfig {
         applicationId "com.stefanosiano.powerfulimageviewsample"
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
 
         renderscriptTargetApi 14
         renderscriptSupportModeEnabled true
-        buildToolsVersion "27.0.0"
+        buildToolsVersion "28.0.2"
+
     }
     buildTypes {
         debug {
@@ -31,7 +32,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(path: ':powerfulimageview')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':powerfulimageview')
 //    compile project(path: ':powerlessimageview')
 }
