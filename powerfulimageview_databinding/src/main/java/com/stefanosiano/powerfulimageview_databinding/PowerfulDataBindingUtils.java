@@ -1,6 +1,5 @@
 package com.stefanosiano.powerfulimageview_databinding;
 
-import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 
 import com.stefanosiano.powerfulimageview.PowerfulImageView;
@@ -9,6 +8,8 @@ import com.stefanosiano.powerfulimageview.progress.PivProgressGravity;
 import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
 import com.stefanosiano.powerfulimageview.shape.PivShapeMode;
 import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
+
+import androidx.databinding.BindingAdapter;
 
 public class PowerfulDataBindingUtils {
 

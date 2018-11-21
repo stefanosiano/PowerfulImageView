@@ -1,0 +1,85 @@
+package com.stefanosiano.powerfulimageview.blur.algorithms
+
+
+import android.graphics.Bitmap
+
+import com.stefanosiano.powerfulimageview.ScriptC_stackblur
+import com.stefanosiano.powerfulimageview.blur.BlurOptions
+
+import java.lang.ref.WeakReference
+
+import androidx.renderscript.Allocation
+import androidx.renderscript.Element
+import androidx.renderscript.RenderScript
+
+/**
+ * by kikoso
+ * from https://github.com/kikoso/android-stackblur/blob/master/StackBlur/src/blur.rs
+ */
+class StackRenderscriptBlurAlgorithm: BlurAlgorithm {
+
+    private var renderscript: WeakReference<RenderScript?>? = null
+
+    override fun setRenderscript(renderscript: RenderScript?) { this.renderscript = WeakReference(renderscript) }
+
+
+    @Throws(RenderscriptException::class)
+    override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap {
+
+        val rs = renderscript?.get() ?: throw RenderscriptException("Renderscript is null!")
+
+        val width = original.width
+        val height = original.height
+
+        val blurScript = ScriptC_stackblur(rs)
+        val inAllocation = Allocation.createFromBitmap(rs, original)
+
+        blurScript._gIn = inAllocation
+        blurScript._width = width.toLong()
+        blurScript._height = height.toLong()
+        blurScript._radius = radius.toLong()
+
+        var row_indices = intArrayOf(height)
+        for (i in 0 until height) { row_indices[i] = i }
+
+        val rows = Allocation.createSized(rs, Element.U32(rs), height, Allocation.USAGE_SCRIPT)
+        rows.copyFrom(row_indices)
+
+        row_indices = IntArray(width)
+        for (i in 0 until width) { row_indices[i] = i }
+
+        val columns = Allocation.createSized(rs, Element.U32(rs), width, Allocation.USAGE_SCRIPT)
+        columns.copyFrom(row_indices)
+
+        blurScript.forEach_blur_h(rows)
+        blurScript.forEach_blur_v(columns)
+
+
+        if (!options.isStaticBlur) {
+            val bitmap = Bitmap.createBitmap(original.width, original.height, Bitmap.Config.ARGB_8888)
+            inAllocation.copyTo(bitmap)
+            inAllocation.destroy()
+            rows.destroy()
+            columns.destroy()
+            return bitmap
+        } else {
+            return if (original.isMutable) {
+                inAllocation.copyTo(original)
+                inAllocation.destroy()
+                rows.destroy()
+                columns.destroy()
+                original
+            } else {
+                val bitmap = Bitmap.createBitmap(original.width, original.height, Bitmap.Config.ARGB_8888)
+                original.recycle()
+                inAllocation.copyTo(bitmap)
+                inAllocation.destroy()
+                rows.destroy()
+                columns.destroy()
+                bitmap
+            }
+        }
+
+
+    }
+}

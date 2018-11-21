@@ -9,7 +9,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.view.View;
 
 import com.stefanosiano.powerfulimageview.shape.PivShapeMode;
@@ -17,6 +16,8 @@ import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
 import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
 
 import java.lang.ref.WeakReference;
+
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 
 /**
