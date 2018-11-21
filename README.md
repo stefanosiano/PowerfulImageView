@@ -79,13 +79,20 @@ repositories {
 To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerfulimageview:0.3.7' // Put this line into module's build.gradle
+    implementation 'com.stefanosiano:powerfulimageview:0.3.8'
 }
 ```
 To use **Powerless**ImageView, which extends ImageView, doesn't depend on AppCompat library and uses normal Renderscript:  
 ```
 dependencies {
-    compile 'com.stefanosiano:powerlessimageview:0.3.7' // Put this line into module's build.gradle
+    implementation 'com.stefanosiano:powerlessimageview:0.3.8'
+}
+```
+To use **Powerful**ImageView and have all of its methods available for Android **dataBinding**:  
+```
+dependencies {
+    implementation 'com.stefanosiano:powerfulimageview:0.3.8'
+    implementation 'com.stefanosiano:powerfulimageview_databinding:0.3.8'
 }
 ```
   
@@ -177,8 +184,6 @@ PowerlessImageView requires a minimum API level of 12 (18 to use renderscript fo
   
 Roadmap
 -------
-Add example effects to readme.  
-Test and fix any issue in current features.  
 Support zoom, with attention to smooth scroll and Pager integration. Will have to care about integration with shapes, too.  
 Support panoramas, caring about integration with shapes.  
 Will probably have to rewrite progress, to allow custom animations and drawables to be used.  
