@@ -1,25 +1,25 @@
-package com.stefanosiano.powerfulimageview.shape.drawers;
+package com.stefanosiano.powerfulimageview.shape.drawers
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.RectF
+import android.graphics.drawable.Drawable
+import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType
+import com.stefanosiano.powerfulimageview.shape.ShapeOptions
 
-import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
-import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
 
 /**
  * Interface that handles options, drawing and updating of the image shapes on the View.
  */
-interface ShapeDrawer {
+internal interface ShapeDrawer {
 
     /**
      * Method that updates the drawable to show
      *
      * @param drawable drawable to show on normal, square and rectangle shapes
      */
-    void changeDrawable(Drawable drawable);
+    fun changeDrawable(drawable: Drawable)
 
 
     /**
@@ -27,14 +27,14 @@ interface ShapeDrawer {
      *
      * @return Whether this drawer requires the changeBitmap() method
      */
-    boolean requireBitmap();
+    fun requireBitmap(): Boolean
 
     /**
      * Method that updates the bitmap to show
      *
      * @param bitmap bitmap to show on rounded, circle and oval shapes
      */
-    void changeBitmap(Bitmap bitmap);
+    fun changeBitmap(bitmap: Bitmap)
 
     /**
      * Sets the matrix to be used in the shape, and the current scale type
@@ -42,14 +42,14 @@ interface ShapeDrawer {
      * @param scaleType ScaleType selected for the shape
      * @param matrix Matrix to be applied for the shape
      */
-    void setMatrix(PivShapeScaleType scaleType, Matrix matrix);
+    fun setMatrix(scaleType: PivShapeScaleType, matrix: Matrix)
 
     /**
      * Initialize or updates all the variables needed to work.
      *
      * @param shapeOptions Options to take values from
      */
-    void setup(ShapeOptions shapeOptions);
+    fun setup(shapeOptions: ShapeOptions)
 
     /**
      * Draws the progress indicator.
@@ -60,5 +60,5 @@ interface ShapeDrawer {
      * @param shapeBounds Bounds of the shape
      * @param imageBounds Bounds of the image (drawable)
      */
-    void draw(Canvas canvas, RectF borderBounds, RectF shapeBounds, RectF imageBounds);
+    fun draw(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF)
 }

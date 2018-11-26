@@ -139,9 +139,7 @@ class BlurManager
      *
      * @param radius strength of the image
      */
-    fun changeRadius(radius: Int) {
-        changeMode(mMode, radius)
-    }
+    fun changeRadius(radius: Int) = changeMode(mMode, radius)
 
 
     /**
@@ -160,8 +158,7 @@ class BlurManager
         //if I already blurred the image with this radius, I don't do anything
         if (mLastRadius == radius && mBlurredBitmap != null) return
 
-
-        if (mIsAlreadyBlurred && mBlurOptions.isStaticBlur) return
+        if (mIsAlreadyBlurred && mBlurOptions.isStaticBlur()) return
 
         this.mLastRadius = radius
 
@@ -180,7 +177,7 @@ class BlurManager
             //Something wrong occurred with renderscript: fallback to java or nothing, based on option...
 
             //changing mode to fallback one if enabled
-            mMode = if (mBlurOptions.isUseRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED
+            mMode = if (mBlurOptions.isUseRsFallback()) mMode.fallbackMode ?: PivBlurMode.DISABLED else PivBlurMode.DISABLED
 
             Log.w(BlurManager::class.java.simpleName, e.localizedMessage + "\nFalling back to another blurring method: " + mMode.name)
 
@@ -195,7 +192,7 @@ class BlurManager
         }
 
         removeContext(false)
-        if (mBlurOptions.isStaticBlur)
+        if (mBlurOptions.isStaticBlur())
             mOriginalBitmap = bitmap ?: origBitmap
 
         mBlurredBitmap = bitmap ?: mBlurredBitmap
@@ -217,16 +214,16 @@ class BlurManager
      *
      * @param blurMode Algorithm to use
      */
-    private fun updateAlgorithms(blurMode: PivBlurMode) {
+    private fun updateAlgorithms(blurMode: PivBlurMode?) {
         val renderScript = SharedBlurManager.getRenderScriptContext()
-        mMode = blurMode
+        mMode = blurMode ?: PivBlurMode.DISABLED
 
         //if renderscript is null and the mode uses it, there was a problem getting it: let's use java or dummy
-        if(mMode.isUsesRenderscript) renderScript ?: return updateAlgorithms(if (mBlurOptions.isUseRsFallback) blurMode.fallbackMode else PivBlurMode.DISABLED)
+        if(mMode.usesRenderscript) renderScript ?: return updateAlgorithms(if (mBlurOptions.isUseRsFallback()) mMode.fallbackMode else PivBlurMode.DISABLED)
 
         addContext(false)
 
-        mBlurAlgorithm = when (blurMode) {
+        mBlurAlgorithm = when (mMode) {
             PivBlurMode.STACK_RS -> mStackRenderscriptBlurAlgorithm ?: StackRenderscriptBlurAlgorithm()
             PivBlurMode.STACK -> mStackBlurAlgorithm ?: StackBlurAlgorithm()
             PivBlurMode.GAUSSIAN5X5_RS -> mGaussian5x5RenderscriptBlurAlgorithm ?: Gaussian5x5RenderscriptBlurAlgorithm()
@@ -269,8 +266,8 @@ class BlurManager
         val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
         var sizeX: Int
         var sizeY: Int
-        val maxWidth = (Math.max(mWidth.toFloat(), mHeight * ratio) / mBlurOptions.downSamplingRate).toInt()
-        val maxHeight = (Math.max(mHeight.toFloat(), mWidth / ratio) / mBlurOptions.downSamplingRate).toInt()
+        val maxWidth = (Math.max(mWidth.toFloat(), mHeight * ratio) / mBlurOptions.getDownSamplingRate()).toInt()
+        val maxHeight = (Math.max(mHeight.toFloat(), mWidth / ratio) / mBlurOptions.getDownSamplingRate()).toInt()
 
         if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
             sizeX = maxWidth
@@ -328,8 +325,8 @@ class BlurManager
             return
 
         val context = mView.get()?.context?.applicationContext ?: return
-        if (mBlurOptions.isStaticBlur != fromView) {
-            if (mMode.isUsesRenderscript) {
+        if (mBlurOptions.isStaticBlur() != fromView) {
+            if (mMode.usesRenderscript) {
                 mIsRenderscriptManaged = true
                 SharedBlurManager.addRenderscriptContext(context.applicationContext)
             }
@@ -347,8 +344,8 @@ class BlurManager
         if (!mIsRenderscriptManaged)
             return
 
-        if (mBlurOptions.isStaticBlur != fromView) {
-            if(mMode.isUsesRenderscript) {
+        if (mBlurOptions.isStaticBlur() != fromView) {
+            if(mMode.usesRenderscript) {
                 mIsRenderscriptManaged = false
                 SharedBlurManager.removeRenderscriptContext()
                 updateAlgorithms(mMode)
@@ -358,7 +355,7 @@ class BlurManager
 
     override fun onStaticBlurChanged() {
         //If staticBlur is true, i release original bitmap and swap it with the blurred one, if it exists
-        if (mBlurOptions.isStaticBlur) {
+        if (mBlurOptions.isStaticBlur()) {
             if (mBlurredBitmap != null && mBlurredBitmap != mOriginalBitmap) {
                 mOriginalBitmap?.recycle()
                 mOriginalBitmap = mBlurredBitmap
@@ -377,25 +374,19 @@ class BlurManager
         if (mView.get() != null) {
             val bitmap = getLastBlurredBitmap()
             if (bitmap != null)
-                mView.get()!!.setImageBitmap(getLastBlurredBitmap())
+                mView.get()?.setImageBitmap(getLastBlurredBitmap())
         }
     }
 
 
     /** Returns the selected mode used for blurring  */
-    fun getBlurMode(): PivBlurMode {
-        return mMode
-    }
+    fun getBlurMode(): PivBlurMode = mMode
 
     /** Returns the options used for blurring  */
-    fun getBlurOptions(): BlurOptions {
-        return mBlurOptions
-    }
+    fun getBlurOptions(): BlurOptions = mBlurOptions
 
     /** Returns the selected radius used for blurring  */
-    fun getRadius(): Int {
-        return mRadius
-    }
+    fun getRadius(): Int = mRadius
 
     /**
      * @return The original bitmap used to blur. If static blur option is enabled, this will be the

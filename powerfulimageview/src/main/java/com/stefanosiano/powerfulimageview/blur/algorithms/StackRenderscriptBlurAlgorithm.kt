@@ -55,7 +55,7 @@ class StackRenderscriptBlurAlgorithm: BlurAlgorithm {
         blurScript.forEach_blur_v(columns)
 
 
-        if (!options.isStaticBlur) {
+        if (!options.isStaticBlur()) {
             val bitmap = Bitmap.createBitmap(original.width, original.height, Bitmap.Config.ARGB_8888)
             inAllocation.copyTo(bitmap)
             inAllocation.destroy()

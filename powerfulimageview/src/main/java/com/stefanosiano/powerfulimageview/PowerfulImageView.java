@@ -173,7 +173,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
         int blurRadius = a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_RADIUS);
         int blurModeValue = a.getInteger(R.styleable.PowerfulImageView_piv_blur_mode, DEFAULT_BLUR_MODE);
-        PivBlurMode blurMode = PivBlurMode.fromValue(blurModeValue);
+        PivBlurMode blurMode = PivBlurMode.Companion.fromValue(blurModeValue);
 
         a.recycle();
 
@@ -336,7 +336,7 @@ public class PowerfulImageView extends ImageViewWrapper {
         if(mBlurManager == null)
             return;
 
-        mCheckBlur = mBlurManager.getBlurMode() != PivBlurMode.DISABLED;
+        mCheckBlur = mBlurManager.blurMode1 != PivBlurMode.DISABLED;
 
         mBlurManager.changeRadius(radius);
         blurBitmap(false);

@@ -33,7 +33,7 @@ internal abstract class BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {
 
 
 
-        if (!options.isStaticBlur) {
+        if (!options.isStaticBlur()) {
             val bitmap = Bitmap.createBitmap(original.width, original.height, Bitmap.Config.ARGB_8888)
             output.copyTo(bitmap)
             output.destroy()
