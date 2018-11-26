@@ -19,7 +19,7 @@ internal interface ShapeDrawer {
      *
      * @param drawable drawable to show on normal, square and rectangle shapes
      */
-    fun changeDrawable(drawable: Drawable)
+    fun changeDrawable(drawable: Drawable?)
 
 
     /**
@@ -34,7 +34,7 @@ internal interface ShapeDrawer {
      *
      * @param bitmap bitmap to show on rounded, circle and oval shapes
      */
-    fun changeBitmap(bitmap: Bitmap)
+    fun changeBitmap(bitmap: Bitmap?)
 
     /**
      * Sets the matrix to be used in the shape, and the current scale type

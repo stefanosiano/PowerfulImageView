@@ -10,9 +10,9 @@ import com.stefanosiano.powerfulimageview.shape.ShapeOptions
 /**
  * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
-class SolidRoundedRectangleShapeDrawer
+internal class SolidRoundedRectangleShapeDrawer
 /** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it */
-(drawable: Drawable) : BaseNormalShapeDrawer(drawable) {
+(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     /** Paint used to draw the solid color  */
     private val mSolidPaint = Paint()
@@ -68,9 +68,9 @@ class SolidRoundedRectangleShapeDrawer
 /**
  * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
-class SolidOvalShapeDrawer
+internal class SolidOvalShapeDrawer
 /** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it */
-(drawable: Drawable) : BaseNormalShapeDrawer(drawable) {
+(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     /** Paint used to draw the solid color  */
     private val mSolidPaint = Paint()
@@ -115,9 +115,9 @@ class SolidOvalShapeDrawer
 /**
  * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
-class SolidCircleShapeDrawer
+internal class SolidCircleShapeDrawer
 /** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it */
-(drawable: Drawable) : BaseNormalShapeDrawer(drawable) {
+(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     /** Paint used to draw the solid color  */
     private val mSolidPaint = Paint()

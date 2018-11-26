@@ -6,7 +6,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import com.stefanosiano.powerfulimageview.shape.ShapeOptions
 
-class RoundedRectangleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
+internal class RoundedRectangleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
 
     /** Variables used to draw the rounded rectangle  */
     private var mRadiusX: Float = 0f
@@ -25,7 +25,7 @@ class RoundedRectangleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
 }
 
 
-class CircleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
+internal class CircleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
 
     /* Variables used to draw the circle  */
     private var mCx: Float = 0f
@@ -48,7 +48,7 @@ class CircleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
 }
 
 
-class OvalShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
+internal class OvalShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {
     override fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint) = canvas.drawOval(bounds, paint)
     override fun drawBorder(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint) = canvas.drawOval(borderBounds, borderPaint)
 }

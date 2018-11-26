@@ -25,7 +25,7 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
  * Manager class for blurring. Used to manage and blur the image.
  */
 
-class BlurManager
+internal class BlurManager
 /**
  * Manager class for blur. Used to initialize and blur the image with the right algorithm.
  *
@@ -224,21 +224,21 @@ class BlurManager
         addContext(false)
 
         mBlurAlgorithm = when (mMode) {
-            PivBlurMode.STACK_RS -> mStackRenderscriptBlurAlgorithm ?: StackRenderscriptBlurAlgorithm()
-            PivBlurMode.STACK -> mStackBlurAlgorithm ?: StackBlurAlgorithm()
-            PivBlurMode.GAUSSIAN5X5_RS -> mGaussian5x5RenderscriptBlurAlgorithm ?: Gaussian5x5RenderscriptBlurAlgorithm()
-            PivBlurMode.GAUSSIAN5X5 -> mGaussian5x5BlurAlgorithm ?: Gaussian5x5BlurAlgorithm()
-            PivBlurMode.GAUSSIAN3X3_RS -> mGaussian3x3RenderscriptBlurAlgorithm ?: Gaussian3x3RenderscriptBlurAlgorithm()
-            PivBlurMode.GAUSSIAN3X3 -> mGaussian3x3BlurAlgorithm ?: Gaussian3x3BlurAlgorithm()
-            PivBlurMode.BOX5X5_RS -> mBox5x5RenderscriptBlurAlgorithm ?: Box5x5RenderscriptBlurAlgorithm()
-            PivBlurMode.BOX5X5 -> mBox5x5BlurAlgorithm ?: Box5x5BlurAlgorithm()
-            PivBlurMode.BOX3X3_RS -> mBox3x3RenderscriptBlurAlgorithm ?: Box3x3RenderscriptBlurAlgorithm()
-            PivBlurMode.BOX3X3 -> mBox3x3BlurAlgorithm ?: Box3x3BlurAlgorithm()
-            PivBlurMode.GAUSSIAN_RS -> mGaussianRenderscriptBlurAlgorithm ?: GaussianRenderscriptBlurAlgorithm()
-            PivBlurMode.GAUSSIAN -> mGaussianBlurAlgorithm ?: GaussianBlurAlgorithm()
-            PivBlurMode.DISABLED -> mDummyBlurAlgorithm ?: DummyBlurAlgorithm()
-            else -> mDummyBlurAlgorithm ?: DummyBlurAlgorithm()
-        }
+            PivBlurMode.STACK_RS -> { mStackRenderscriptBlurAlgorithm = mStackRenderscriptBlurAlgorithm ?: StackRenderscriptBlurAlgorithm(); mStackRenderscriptBlurAlgorithm }
+            PivBlurMode.STACK -> { mStackBlurAlgorithm = mStackBlurAlgorithm ?: StackBlurAlgorithm(); mStackBlurAlgorithm }
+            PivBlurMode.GAUSSIAN5X5_RS -> { mGaussian5x5RenderscriptBlurAlgorithm = mGaussian5x5RenderscriptBlurAlgorithm ?: Gaussian5x5RenderscriptBlurAlgorithm(); mGaussian5x5RenderscriptBlurAlgorithm }
+            PivBlurMode.GAUSSIAN5X5 -> { mGaussian5x5BlurAlgorithm = mGaussian5x5BlurAlgorithm ?: Gaussian5x5BlurAlgorithm(); mGaussian5x5BlurAlgorithm }
+            PivBlurMode.GAUSSIAN3X3_RS -> { mGaussian3x3RenderscriptBlurAlgorithm = mGaussian3x3RenderscriptBlurAlgorithm ?: Gaussian3x3RenderscriptBlurAlgorithm(); mGaussian3x3RenderscriptBlurAlgorithm }
+            PivBlurMode.GAUSSIAN3X3 -> { mGaussian3x3BlurAlgorithm = mGaussian3x3BlurAlgorithm ?: Gaussian3x3BlurAlgorithm(); mGaussian3x3BlurAlgorithm }
+            PivBlurMode.BOX5X5_RS -> { mBox5x5RenderscriptBlurAlgorithm = mBox5x5RenderscriptBlurAlgorithm ?: Box5x5RenderscriptBlurAlgorithm(); mBox5x5RenderscriptBlurAlgorithm }
+            PivBlurMode.BOX5X5 -> { mBox5x5BlurAlgorithm = mBox5x5BlurAlgorithm ?: Box5x5BlurAlgorithm(); mBox5x5BlurAlgorithm }
+            PivBlurMode.BOX3X3_RS -> { mBox3x3RenderscriptBlurAlgorithm = mBox3x3RenderscriptBlurAlgorithm ?: Box3x3RenderscriptBlurAlgorithm(); mBox3x3RenderscriptBlurAlgorithm }
+            PivBlurMode.BOX3X3 -> { mBox3x3BlurAlgorithm = mBox3x3BlurAlgorithm ?: Box3x3BlurAlgorithm(); mBox3x3BlurAlgorithm }
+            PivBlurMode.GAUSSIAN_RS -> { mGaussianRenderscriptBlurAlgorithm = mGaussianRenderscriptBlurAlgorithm ?: GaussianRenderscriptBlurAlgorithm(); mGaussianRenderscriptBlurAlgorithm }
+            PivBlurMode.GAUSSIAN -> { mGaussianBlurAlgorithm = mGaussianBlurAlgorithm ?: GaussianBlurAlgorithm(); mGaussianBlurAlgorithm }
+            PivBlurMode.DISABLED -> { mDummyBlurAlgorithm = mDummyBlurAlgorithm ?: DummyBlurAlgorithm(); mDummyBlurAlgorithm }
+            else -> { mDummyBlurAlgorithm = mDummyBlurAlgorithm ?: DummyBlurAlgorithm(); mDummyBlurAlgorithm }
+        }!!
         mBlurAlgorithm.setRenderscript(renderScript)
     }
 

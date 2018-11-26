@@ -5,8 +5,8 @@ import android.graphics.drawable.Drawable
 import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType
 import com.stefanosiano.powerfulimageview.shape.ShapeOptions
 
-abstract class BaseNormalShapeDrawer
-(drawable: Drawable) : ShapeDrawer {
+internal abstract class BaseNormalShapeDrawer
+(drawable: Drawable?) : ShapeDrawer {
 
     /** Paint used to draw the shape background  */
     protected val mBackPaint = Paint()
@@ -33,11 +33,11 @@ abstract class BaseNormalShapeDrawer
     private var mScaleType: PivShapeScaleType? = null
 
 
-    override fun changeDrawable(drawable: Drawable) { this.mDrawable = drawable }
+    override fun changeDrawable(drawable: Drawable?) { this.mDrawable = drawable }
 
     override fun requireBitmap() = false
 
-    override fun changeBitmap(bitmap: Bitmap) {}
+    override fun changeBitmap(bitmap: Bitmap?) {}
 
     override fun setMatrix(scaleType: PivShapeScaleType, matrix: Matrix) {
         this.mScaleType = scaleType
@@ -106,9 +106,9 @@ abstract class BaseNormalShapeDrawer
 /**
  * ShapeDrawer that draws the drawable directly into the shape.
  */
-class NormalShapeDrawer
+internal class NormalShapeDrawer
 /** ShapeDrawer that draws the drawable directly into the shape */
-(drawable: Drawable) : BaseNormalShapeDrawer(drawable) {
+(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     override fun drawPaint(canvas: Canvas, shapeBounds: RectF, paint: Paint) = canvas.drawRect(shapeBounds, paint)
 

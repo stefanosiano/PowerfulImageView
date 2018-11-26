@@ -16,7 +16,7 @@ import androidx.renderscript.RenderScript
  * by kikoso
  * from https://github.com/kikoso/android-stackblur/blob/master/StackBlur/src/blur.rs
  */
-class StackRenderscriptBlurAlgorithm: BlurAlgorithm {
+internal class StackRenderscriptBlurAlgorithm: BlurAlgorithm {
 
     private var renderscript: WeakReference<RenderScript?>? = null
 

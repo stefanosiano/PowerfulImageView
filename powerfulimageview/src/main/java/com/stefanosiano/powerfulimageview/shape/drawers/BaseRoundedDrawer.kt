@@ -6,7 +6,7 @@ import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType
 import com.stefanosiano.powerfulimageview.shape.ShapeOptions
 
 
-abstract class BaseRoundedDrawer
+internal abstract class BaseRoundedDrawer
 /** ShapeDrawer that draws an oval as shape. */
 (bitmap: Bitmap?) : ShapeDrawer {
 
@@ -42,11 +42,11 @@ abstract class BaseRoundedDrawer
         }
     }
 
-    override fun changeDrawable(drawable: Drawable) {}
+    override fun changeDrawable(drawable: Drawable?) {}
 
     override fun requireBitmap(): Boolean = true
 
-    override fun changeBitmap(bitmap: Bitmap) {
+    override fun changeBitmap(bitmap: Bitmap?) {
         this.mBitmapShader = null
         if (bitmap != null) {
             this.mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
