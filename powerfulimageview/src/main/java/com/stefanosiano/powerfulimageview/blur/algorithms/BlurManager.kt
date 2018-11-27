@@ -158,7 +158,7 @@ internal class BlurManager
         //if I already blurred the image with this radius, I don't do anything
         if (mLastRadius == radius && mBlurredBitmap != null) return
 
-        if (mIsAlreadyBlurred && mBlurOptions.isStaticBlur()) return
+        if (mIsAlreadyBlurred && mBlurOptions.isStaticBlur) return
 
         this.mLastRadius = radius
 
@@ -177,7 +177,7 @@ internal class BlurManager
             //Something wrong occurred with renderscript: fallback to java or nothing, based on option...
 
             //changing mode to fallback one if enabled
-            mMode = if (mBlurOptions.isUseRsFallback()) mMode.fallbackMode ?: PivBlurMode.DISABLED else PivBlurMode.DISABLED
+            mMode = if (mBlurOptions.useRsFallback) mMode.fallbackMode ?: PivBlurMode.DISABLED else PivBlurMode.DISABLED
 
             Log.w(BlurManager::class.java.simpleName, e.localizedMessage + "\nFalling back to another blurring method: " + mMode.name)
 
@@ -192,7 +192,7 @@ internal class BlurManager
         }
 
         removeContext(false)
-        if (mBlurOptions.isStaticBlur())
+        if (mBlurOptions.isStaticBlur)
             mOriginalBitmap = bitmap ?: origBitmap
 
         mBlurredBitmap = bitmap ?: mBlurredBitmap
@@ -219,7 +219,7 @@ internal class BlurManager
         mMode = blurMode ?: PivBlurMode.DISABLED
 
         //if renderscript is null and the mode uses it, there was a problem getting it: let's use java or dummy
-        if(mMode.usesRenderscript) renderScript ?: return updateAlgorithms(if (mBlurOptions.isUseRsFallback()) mMode.fallbackMode else PivBlurMode.DISABLED)
+        if(mMode.usesRenderscript) renderScript ?: return updateAlgorithms(if (mBlurOptions.useRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED)
 
         addContext(false)
 
@@ -266,8 +266,8 @@ internal class BlurManager
         val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
         var sizeX: Int
         var sizeY: Int
-        val maxWidth = (Math.max(mWidth.toFloat(), mHeight * ratio) / mBlurOptions.getDownSamplingRate()).toInt()
-        val maxHeight = (Math.max(mHeight.toFloat(), mWidth / ratio) / mBlurOptions.getDownSamplingRate()).toInt()
+        val maxWidth = (Math.max(mWidth.toFloat(), mHeight * ratio) / mBlurOptions.downSamplingRate).toInt()
+        val maxHeight = (Math.max(mHeight.toFloat(), mWidth / ratio) / mBlurOptions.downSamplingRate).toInt()
 
         if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
             sizeX = maxWidth
@@ -325,7 +325,7 @@ internal class BlurManager
             return
 
         val context = mView.get()?.context?.applicationContext ?: return
-        if (mBlurOptions.isStaticBlur() != fromView) {
+        if (mBlurOptions.isStaticBlur != fromView) {
             if (mMode.usesRenderscript) {
                 mIsRenderscriptManaged = true
                 SharedBlurManager.addRenderscriptContext(context.applicationContext)
@@ -344,7 +344,7 @@ internal class BlurManager
         if (!mIsRenderscriptManaged)
             return
 
-        if (mBlurOptions.isStaticBlur() != fromView) {
+        if (mBlurOptions.isStaticBlur != fromView) {
             if(mMode.usesRenderscript) {
                 mIsRenderscriptManaged = false
                 SharedBlurManager.removeRenderscriptContext()
@@ -355,7 +355,7 @@ internal class BlurManager
 
     override fun onStaticBlurChanged() {
         //If staticBlur is true, i release original bitmap and swap it with the blurred one, if it exists
-        if (mBlurOptions.isStaticBlur()) {
+        if (mBlurOptions.isStaticBlur) {
             if (mBlurredBitmap != null && mBlurredBitmap != mOriginalBitmap) {
                 mOriginalBitmap?.recycle()
                 mOriginalBitmap = mBlurredBitmap

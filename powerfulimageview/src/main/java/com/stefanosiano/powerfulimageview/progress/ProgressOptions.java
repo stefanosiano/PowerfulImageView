@@ -20,6 +20,9 @@ public final class ProgressOptions implements Parcelable {
     /** Width of the progress indicator */
     private int mBorderWidth;
 
+    /** Progress animation duration (in milliseconds) */
+    private long animationDuration;
+
     /** Width of the progress indicator as percentage of the progress indicator size */
     private float mBorderWidthPercent;
 
@@ -154,10 +157,11 @@ public final class ProgressOptions implements Parcelable {
      * @param shadowBorderColor Color of the progress indicator shadow border
      * @param isProgressReversed Whether the progress should be reversed
      */
-    public ProgressOptions(boolean determinateAnimationEnabled, int borderWidth, float borderWidthPercent, int size, float sizePercent, int padding, float valuePercent,
+    public ProgressOptions(boolean determinateAnimationEnabled, long animationDuration, int borderWidth, float borderWidthPercent, int size, float sizePercent, int padding, float valuePercent,
                            int frontColor, int backColor, int indeterminateColor, int gravity, boolean rtl, boolean disableRtlSupport, boolean isIndeterminate, boolean drawWedge,
                            boolean shadowEnabled, int shadowColor, int shadowPadding, float shadowPaddingPercent, float shadowBorderWidth, int shadowBorderColor, boolean isProgressReversed, boolean isRemovedOnChange) {
         this.mDeterminateAnimationEnabled = determinateAnimationEnabled;
+        this.animationDuration = animationDuration;
         this.mBorderWidth = borderWidth;
         this.mBorderWidthPercent = borderWidthPercent;
         if(this.mBorderWidthPercent > 100)
@@ -552,6 +556,16 @@ public final class ProgressOptions implements Parcelable {
             listener.get().onOptionsUpdated(this);
     }
 
+    public long getAnimationDuration() {
+        return animationDuration;
+    }
+
+    /** Set the progress animation duration, in milliseconds */
+    public void setAnimationDuration(long animationDuration) {
+        this.animationDuration = animationDuration;
+        if(listener.get() != null)
+            listener.get().onOptionsUpdated(this);
+    }
 
     /**
      * Set the padding of the progress indicator.
@@ -983,6 +997,7 @@ public final class ProgressOptions implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeByte((byte) (mDeterminateAnimationEnabled ? 1 : 0));
+        dest.writeLong(animationDuration);
         dest.writeInt(mBorderWidth);
         dest.writeFloat(mBorderWidthPercent);
         dest.writeFloat(mValuePercent);
@@ -1016,6 +1031,7 @@ public final class ProgressOptions implements Parcelable {
 
     protected ProgressOptions(Parcel in) {
         mDeterminateAnimationEnabled = in.readByte() != 0;
+        animationDuration = in.readLong();
         mBorderWidth = in.readInt();
         mBorderWidthPercent = in.readFloat();
         mValuePercent = in.readFloat();

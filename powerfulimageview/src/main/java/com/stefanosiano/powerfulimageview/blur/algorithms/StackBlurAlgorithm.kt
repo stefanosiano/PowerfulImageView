@@ -56,7 +56,7 @@ internal class StackBlurAlgorithm : BlurAlgorithm {
         val pix = IntArray(w * h)
         original.getPixels(pix, 0, w, 0, 0, w, h)
 
-        val cores = options.getNumThreads().coerceAtLeast(Runtime.getRuntime().availableProcessors())
+        val cores = options.numThreads.coerceAtLeast(Runtime.getRuntime().availableProcessors())
 
         val horizontal = ArrayList<BlurTask>(cores)
         val vertical = ArrayList<BlurTask>(cores)
@@ -68,7 +68,7 @@ internal class StackBlurAlgorithm : BlurAlgorithm {
         tryOrNull { SharedBlurManager.executorService.invokeAll(horizontal) } ?: return null
         tryOrNull { SharedBlurManager.executorService.invokeAll(vertical) } ?: return null
 
-        return if (!options.isStaticBlur()) {
+        return if (!options.isStaticBlur) {
             Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888)
         } else {
             if (original.isMutable) {

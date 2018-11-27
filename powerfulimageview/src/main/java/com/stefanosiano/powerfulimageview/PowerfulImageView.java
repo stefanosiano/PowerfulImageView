@@ -36,6 +36,7 @@ public class PowerfulImageView extends ImageViewWrapper {
 
     //Progress initialization constants
     private static final boolean DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true;
+    private static final long DEFAULT_PROGRESS_ANIMATION_DURATION = 100;
     private static final int DEFAULT_PROGRESS_WIDTH = -1;
     private static final float DEFAULT_PROGRESS_WIDTH_PERCENT = 10;
     private static final int DEFAULT_PROGRESS_SIZE = -1;
@@ -112,6 +113,7 @@ public class PowerfulImageView extends ImageViewWrapper {
         //get all the options from xml or default constants and initialize ProgressOptions object
         ProgressOptions progressOptions = new ProgressOptions(
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
+                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_animation_duration, DEFAULT_PROGRESS_ANIMATION_DURATION),
                 tvBorderWidth.type == TypedValue.TYPE_DIMENSION ? (int) tvBorderWidth.getDimension(getResources().getDisplayMetrics()) : DEFAULT_PROGRESS_WIDTH,
                 tvBorderWidth.type == TypedValue.TYPE_FRACTION ? tvBorderWidth.getFraction(100, 100) : DEFAULT_PROGRESS_WIDTH_PERCENT,
                 tvSize.type == TypedValue.TYPE_DIMENSION ? (int) tvSize.getDimension(getResources().getDisplayMetrics()) : DEFAULT_PROGRESS_SIZE,

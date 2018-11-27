@@ -72,6 +72,9 @@
              If true it updates its progress with an animation, otherwise it will update instantly -->
         <attr name="piv_progress_determinate_animation_enabled" format="boolean" />
 
+        <!-- Set the default animation duration for progress. Defaults to 100 -->
+        <attr name="piv_progress_animation_duration" format="integer" />
+
         <!-- Set whether the view should use right to left layout (used for gravity option)
              If true, start will always be treated as left and end as right.
              If false, on api 17+, gravity will be treated accordingly to rtl rules. -->

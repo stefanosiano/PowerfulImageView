@@ -371,10 +371,10 @@ internal class ShapeDrawerManager
 
         if (mView.get() != null) {
             padding.set(
-                    mView.get()!!.paddingLeft,
-                    mView.get()!!.paddingBottom,
-                    mView.get()!!.paddingRight,
-                    mView.get()!!.paddingTop)
+                    mView.get()?.paddingLeft ?: padding.left,
+                    mView.get()?.paddingBottom ?: padding.right,
+                    mView.get()?.paddingRight ?: padding.bottom,
+                    mView.get()?.paddingTop ?: padding.top)
         }
 
         val scale: Float
