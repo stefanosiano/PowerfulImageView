@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference
  * Class that helps managing the options that will be used by the shape drawers.
  */
 
-class ShapeOptions : Parcelable {
+class ShapeOptions() : Parcelable {
 
     //Options used directly by drawers
 
@@ -111,7 +111,7 @@ class ShapeOptions : Parcelable {
      * @param ratio Ratio of the shape. Width will be equal to (height * ratio). It's ignored in square and circle shapes
      */
     constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float, borderOverlay: Boolean,
-                     borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable, foregroundDrawable: Drawable) {
+                     borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable, foregroundDrawable: Drawable): this() {
         this.backgroundColor = backgroundColor
         this.foregroundColor = foregroundColor
         this.mInnerPadding = innerPadding
@@ -431,7 +431,7 @@ class ShapeOptions : Parcelable {
     }
 
 
-    private constructor(`in`: Parcel) {
+    private constructor(`in`: Parcel): this() {
         backgroundColor = `in`.readInt()
         foregroundColor = `in`.readInt()
         mInnerPadding = `in`.readInt()

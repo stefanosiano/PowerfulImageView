@@ -114,8 +114,8 @@ class CircularProgressDrawer : ProgressDrawer {
 
     override fun setup(progressOptions: ProgressOptions) {
 
-        mUseProgressAnimation = progressOptions.isDeterminateAnimationEnabled
-        drawWedge = progressOptions.isDrawWedge
+        mUseProgressAnimation = progressOptions.determinateAnimationEnabled
+        drawWedge = progressOptions.drawWedge
 
         mProgressFrontPaint.color = progressOptions.frontColor
         mProgressFrontPaint.strokeWidth = progressOptions.calculatedBorderWidth.toFloat()

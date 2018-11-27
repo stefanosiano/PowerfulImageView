@@ -238,7 +238,7 @@ internal class BlurManager
             PivBlurMode.GAUSSIAN -> { mGaussianBlurAlgorithm = mGaussianBlurAlgorithm ?: GaussianBlurAlgorithm(); mGaussianBlurAlgorithm }
             PivBlurMode.DISABLED -> { mDummyBlurAlgorithm = mDummyBlurAlgorithm ?: DummyBlurAlgorithm(); mDummyBlurAlgorithm }
             else -> { mDummyBlurAlgorithm = mDummyBlurAlgorithm ?: DummyBlurAlgorithm(); mDummyBlurAlgorithm }
-        }!!
+        } ?: DummyBlurAlgorithm()
         mBlurAlgorithm.setRenderscript(renderScript)
     }
 
