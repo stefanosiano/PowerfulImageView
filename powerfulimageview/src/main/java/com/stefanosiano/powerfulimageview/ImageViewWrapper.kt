@@ -19,13 +19,11 @@ import androidx.core.content.ContextCompat
  * ImageView Wrapper that enables to catch all the methods where the image or a size changes and react accordingly.
  */
 
-internal abstract class ImageViewWrapper : AppCompatImageView {
+abstract class ImageViewWrapper : AppCompatImageView {
 
-    constructor(context: Context) : super(context) {}
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
 
     /**

@@ -26,7 +26,7 @@ class ProgressOptions() : Parcelable {
         set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Progress animation duration (in milliseconds)  */
-    var animationDuration: Long = 0
+    var animationDuration: Int = 0
         set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
     /** Width of the progress indicator as percentage of the progress indicator size. If you want the real progress border width, check [calculatedBorderWidth] */
@@ -204,7 +204,7 @@ class ProgressOptions() : Parcelable {
      * @param shadowBorderColor Color of the progress indicator shadow border
      * @param isProgressReversed Whether the progress should be reversed
      */
-    constructor(determinateAnimationEnabled: Boolean, animationDuration: Long, borderWidth: Int, borderWidthPercent: Float, size: Int, sizePercent: Float, padding: Int, valuePercent: Float,
+    constructor(determinateAnimationEnabled: Boolean, animationDuration: Int, borderWidth: Int, borderWidthPercent: Float, size: Int, sizePercent: Float, padding: Int, valuePercent: Float,
                 frontColor: Int, backColor: Int, indeterminateColor: Int, gravity: Int, rtl: Boolean, disableRtlSupport: Boolean, isIndeterminate: Boolean, drawWedge: Boolean,
                 shadowEnabled: Boolean, shadowColor: Int, shadowPadding: Int, shadowPaddingPercent: Float, shadowBorderWidth: Float, shadowBorderColor: Int, isProgressReversed: Boolean, isRemovedOnChange: Boolean): this() {
         this.determinateAnimationEnabled = determinateAnimationEnabled
@@ -553,7 +553,7 @@ class ProgressOptions() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeByte(if (determinateAnimationEnabled) 1 else 0)
         parcel.writeInt(borderWidth)
-        parcel.writeLong(animationDuration)
+        parcel.writeInt(animationDuration)
         parcel.writeFloat(borderWidthPercent)
         parcel.writeFloat(valuePercent)
         parcel.writeInt(frontColor)
@@ -588,7 +588,7 @@ class ProgressOptions() : Parcelable {
     constructor(parcel: Parcel) : this() {
         determinateAnimationEnabled = parcel.readByte() != 0.toByte()
         borderWidth = parcel.readInt()
-        animationDuration = parcel.readLong()
+        animationDuration = parcel.readInt()
         borderWidthPercent = parcel.readFloat()
         valuePercent = parcel.readFloat()
         frontColor = parcel.readInt()

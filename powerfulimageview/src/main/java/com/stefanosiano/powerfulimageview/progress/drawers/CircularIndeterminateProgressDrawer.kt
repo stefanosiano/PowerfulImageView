@@ -61,6 +61,7 @@ class CircularIndeterminateProgressDrawer : ProgressDrawer {
         mOffsetAnimator.duration = 3000
         mOffsetAnimator.interpolator = LinearInterpolator()
         mOffsetAnimator.repeatCount = ValueAnimator.INFINITE
+        animator should not use duration, if indeterminate!!!
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mOffsetAnimator.addUpdateListener { mOffset = (360 * it.animatedFraction).toInt() }
 
@@ -84,7 +85,7 @@ class CircularIndeterminateProgressDrawer : ProgressDrawer {
         mProgressPaint.isAntiAlias = true
         mProgressPaint.style = Paint.Style.STROKE
 
-        mProgressAnimationDuration = progressOptions.animationDuration
+        mProgressAnimationDuration = progressOptions.animationDuration.toLong()
         mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
         if (mProgressAnimator.isRunning) {
             mProgressAnimator.cancel()

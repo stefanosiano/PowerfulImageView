@@ -121,6 +121,13 @@ class HorizontalProgressDrawer : ProgressDrawer {
         mIsProgressReversed = progressOptions.isProgressReversed
 
         setProgressPercent(progressOptions.valuePercent)
+
+        mProgressAnimationDuration = progressOptions.animationDuration.toLong()
+        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
+        if (mProgressAnimator.isRunning) {
+            mProgressAnimator.cancel()
+            mProgressAnimator.start()
+        }
     }
 
     override fun startIndeterminateAnimation() {}

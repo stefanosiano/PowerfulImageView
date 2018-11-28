@@ -111,7 +111,7 @@ class ShapeOptions() : Parcelable {
      * @param ratio Ratio of the shape. Width will be equal to (height * ratio). It's ignored in square and circle shapes
      */
     constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float, borderOverlay: Boolean,
-                     borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable, foregroundDrawable: Drawable): this() {
+                     borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable?, foregroundDrawable: Drawable?): this() {
         this.backgroundColor = backgroundColor
         this.foregroundColor = foregroundColor
         this.mInnerPadding = innerPadding

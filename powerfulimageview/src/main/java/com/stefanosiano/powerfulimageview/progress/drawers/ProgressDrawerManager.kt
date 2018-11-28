@@ -199,7 +199,7 @@ class ProgressDrawerManager
     fun getProgressOptions(): ProgressOptions = mProgressOptions
 
     /** @return The selected progress mode */
-    fun getProgressMode(): PivProgressMode? = mProgressMode
+    fun getProgressMode(): PivProgressMode = mProgressMode ?: PivProgressMode.NONE
 
     interface ProgressDrawerListener {
         /** Request to invalidate the progress indicator bounds  */
