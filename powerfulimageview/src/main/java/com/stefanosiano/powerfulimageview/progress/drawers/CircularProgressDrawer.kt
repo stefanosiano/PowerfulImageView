@@ -100,11 +100,13 @@ class CircularProgressDrawer : ProgressDrawer {
     }
 
     override fun setAnimationDuration(millis: Long) {
-        this.mProgressAnimationDuration = millis
-        mProgressAnimator.duration = millis
-        if (mProgressAnimator.isRunning) {
-            mProgressAnimator.cancel()
-            mProgressAnimator.start()
+        mProgressAnimationDuration = if (millis < 0) DEFAULT_ANIMATION_DURATION else millis
+        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+            mProgressAnimator.duration = mProgressAnimationDuration
+            if (mProgressAnimator.isRunning) {
+                mProgressAnimator.cancel()
+                mProgressAnimator.start()
+            }
         }
     }
 
@@ -129,11 +131,13 @@ class CircularProgressDrawer : ProgressDrawer {
 
         mIsProgressReversed = progressOptions.isProgressReversed
 
-        mProgressAnimationDuration = progressOptions.animationDuration.toLong()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
-        if (mProgressAnimator.isRunning) {
-            mProgressAnimator.cancel()
-            mProgressAnimator.start()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+            mProgressAnimator.duration = mProgressAnimationDuration
+            if (mProgressAnimator.isRunning) {
+                mProgressAnimator.cancel()
+                mProgressAnimator.start()
+            }
         }
 
         setProgressPercent(progressOptions.valuePercent)

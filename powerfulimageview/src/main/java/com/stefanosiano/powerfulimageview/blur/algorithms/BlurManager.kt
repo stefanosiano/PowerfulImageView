@@ -100,6 +100,10 @@ internal class BlurManager
      * @param drawable drawable to show
      */
     fun changeDrawable(drawable: Drawable?) {
+        if(drawable == mDrawable) return
+
+        if(!shouldBlur(drawable, true)) return
+
         val mLastDrawable = mDrawable
         val lastOriginalBitmap = mOriginalBitmap
         this.mDrawable = drawable
@@ -247,7 +251,7 @@ internal class BlurManager
      *
      * @return True if the bitmap should be blurred, false otherwise
      */
-    fun shouldBlur(drawable: Drawable, checkDrawable: Boolean): Boolean = mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || checkDrawable && mDrawable != drawable)
+    fun shouldBlur(drawable: Drawable?, checkDrawable: Boolean): Boolean = mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
 
     /** @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned. */
     fun getLastBlurredBitmap(): Bitmap? {

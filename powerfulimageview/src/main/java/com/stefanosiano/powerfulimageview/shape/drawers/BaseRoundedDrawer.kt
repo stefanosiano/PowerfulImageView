@@ -91,7 +91,7 @@ internal abstract class BaseRoundedDrawer
         mBackgroundDrawable?.draw(canvas)
 
         //image
-        drawPaint(canvas, imageBounds, mBackPaint)
+        drawPaint(canvas, imageBounds, mBitmapPaint)
 
         mForegroundDrawable?.setBounds(imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
         mForegroundDrawable?.draw(canvas)

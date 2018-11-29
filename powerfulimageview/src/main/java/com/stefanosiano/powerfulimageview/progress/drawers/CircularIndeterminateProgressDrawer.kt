@@ -61,7 +61,7 @@ class CircularIndeterminateProgressDrawer : ProgressDrawer {
         mOffsetAnimator.duration = 3000
         mOffsetAnimator.interpolator = LinearInterpolator()
         mOffsetAnimator.repeatCount = ValueAnimator.INFINITE
-        animator should not use duration, if indeterminate!!!
+
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mOffsetAnimator.addUpdateListener { mOffset = (360 * it.animatedFraction).toInt() }
 
@@ -85,11 +85,13 @@ class CircularIndeterminateProgressDrawer : ProgressDrawer {
         mProgressPaint.isAntiAlias = true
         mProgressPaint.style = Paint.Style.STROKE
 
-        mProgressAnimationDuration = progressOptions.animationDuration.toLong()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
-        if (mProgressAnimator.isRunning) {
-            mProgressAnimator.cancel()
-            mProgressAnimator.start()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+            mProgressAnimator.duration = mProgressAnimationDuration
+            if (mProgressAnimator.isRunning) {
+                mProgressAnimator.cancel()
+                mProgressAnimator.start()
+            }
         }
         mIsProgressReversed = progressOptions.isProgressReversed
 
@@ -150,11 +152,13 @@ class CircularIndeterminateProgressDrawer : ProgressDrawer {
     override fun setAnimationEnabled(enabled: Boolean) {}
 
     override fun setAnimationDuration(millis: Long) {
-        this.mProgressAnimationDuration = millis
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
-        if (mProgressAnimator.isRunning) {
-            mProgressAnimator.cancel()
-            mProgressAnimator.start()
+        mProgressAnimationDuration = if (millis < 0) DEFAULT_ANIMATION_DURATION else millis
+        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+            mProgressAnimator.duration = mProgressAnimationDuration
+            if (mProgressAnimator.isRunning) {
+                mProgressAnimator.cancel()
+                mProgressAnimator.start()
+            }
         }
     }
 

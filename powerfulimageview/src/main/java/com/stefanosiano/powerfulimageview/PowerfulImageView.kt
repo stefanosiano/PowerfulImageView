@@ -40,6 +40,7 @@ open class PowerfulImageView : ImageViewWrapper {
     //Progress initialization constants
     private val DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION = true
     private val DEFAULT_PROGRESS_ANIMATION_DURATION: Int = 100
+    private val DEFAULT_PROGRESS_INDETEMINATE_ANIMATION_DURATION: Int = 600
     private val DEFAULT_PROGRESS_WIDTH = -1
     private val DEFAULT_PROGRESS_WIDTH_PERCENT = 10f
     private val DEFAULT_PROGRESS_SIZE = -1
@@ -111,10 +112,14 @@ open class PowerfulImageView : ImageViewWrapper {
         a.getValue(R.styleable.PowerfulImageView_piv_progress_border_width, tvBorderWidth)
         a.getValue(R.styleable.PowerfulImageView_piv_progress_shadow_padding, tvShadowPadding)
 
+
+        val progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE))
+        val useIndeterminateAnimation = a.getBoolean(R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION)
+
         //get all the options from xml or default constants and initialize ProgressOptions object
         val progressOptions = ProgressOptions(
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION),
-                a.getInt(R.styleable.PowerfulImageView_piv_progress_animation_duration, DEFAULT_PROGRESS_ANIMATION_DURATION),
+                useIndeterminateAnimation,
+                a.getInt(R.styleable.PowerfulImageView_piv_progress_animation_duration, if(useIndeterminateAnimation) DEFAULT_PROGRESS_INDETEMINATE_ANIMATION_DURATION else DEFAULT_PROGRESS_ANIMATION_DURATION),
                 if (tvBorderWidth.type == TypedValue.TYPE_DIMENSION) tvBorderWidth.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_WIDTH,
                 if (tvBorderWidth.type == TypedValue.TYPE_FRACTION) tvBorderWidth.getFraction(100f, 100f) else DEFAULT_PROGRESS_WIDTH_PERCENT,
                 if (tvSize.type == TypedValue.TYPE_DIMENSION) tvSize.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_SIZE,
@@ -138,8 +143,6 @@ open class PowerfulImageView : ImageViewWrapper {
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_reversed, DEFAULT_PROGRESS_REVERSED),
                 a.getBoolean(R.styleable.PowerfulImageView_piv_progress_removed_on_change, DEFAULT_PROGRESS_REMOVED_ON_CHANGE)
         )
-
-        val progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE))
 
 
         val tvShapeInnerPadding = TypedValue()
@@ -201,7 +204,10 @@ open class PowerfulImageView : ImageViewWrapper {
         super.onSizeChanged(w, h, oldw, oldh)
 
         //if it's called in super constructor, I don't have the objects instantiated
-        if(!initialized) return
+        if(!initialized) return;
+
+        //if size didn't change, i don't update anything!
+        if(w == oldw && h == oldh) return
 
         //updates progress bounds
         mProgressDrawerManager.onSizeChanged(w, h)
@@ -243,20 +249,18 @@ open class PowerfulImageView : ImageViewWrapper {
     override fun onDrawableChanged() {
 
         //if it's called in super constructor, I don't have the objects instantiated
-        if(!initialized) return
+        if(!initialized) return;
 
         //if the image comes from super methods and i need to blur it, I blur it
-        if (blurBitmap(true)) {
-            return
-        }
+        if (blurBitmap(true)) return
 
         //when initializing (in constructor) it gets called, but it is still null
         if (mShouldCheckRemoveProgress && drawable != null)
-            mProgressDrawerManager.changeDrawable(drawable.current)
+            mProgressDrawerManager.changeDrawable(drawable.current ?: drawable)
 
         //when initializing (in constructor) it gets called, but it is still null
         if (drawable != null)
-            mShapeDrawerManager.changeDrawable(drawable.current)
+            mShapeDrawerManager.changeDrawable(drawable.current ?: drawable)
 
     }
 
@@ -264,7 +268,7 @@ open class PowerfulImageView : ImageViewWrapper {
         super.setScaleType(scaleType)
 
         //if it's called in super constructor, I don't have the objects instantiated
-        if(!initialized) return
+        if(!initialized) return;
 
         mShapeDrawerManager.setScaleType(PivShapeScaleType.getFromScaleType(scaleType))
     }
@@ -290,7 +294,7 @@ open class PowerfulImageView : ImageViewWrapper {
     }
 
     override fun onDraw(canvas: Canvas) {
-        if(!initialized) return onDraw(canvas)
+        if(!initialized) return super.onDraw(canvas)
         //draw image shape
         mShapeDrawerManager.onDraw(canvas)
 
@@ -432,13 +436,13 @@ open class PowerfulImageView : ImageViewWrapper {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        if(!initialized) return
+        if(!initialized) return;
         mBlurManager.addContext(true)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if(!initialized) return
+        if(!initialized) return;
         mBlurManager.removeContext(true)
     }
 

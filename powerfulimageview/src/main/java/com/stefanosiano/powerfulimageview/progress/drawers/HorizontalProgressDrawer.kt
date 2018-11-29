@@ -97,11 +97,13 @@ class HorizontalProgressDrawer : ProgressDrawer {
     override fun setAnimationEnabled(enabled: Boolean) { this.mUseProgressAnimation = enabled }
 
     override fun setAnimationDuration(millis: Long) {
-        this.mProgressAnimationDuration = millis
-        mProgressAnimator.duration = millis
-        if (mProgressAnimator.isRunning) {
-            mProgressAnimator.cancel()
-            mProgressAnimator.start()
+        mProgressAnimationDuration = if (millis < 0) DEFAULT_ANIMATION_DURATION else millis
+        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+            mProgressAnimator.duration = mProgressAnimationDuration
+            if (mProgressAnimator.isRunning) {
+                mProgressAnimator.cancel()
+                mProgressAnimator.start()
+            }
         }
     }
 
@@ -122,11 +124,13 @@ class HorizontalProgressDrawer : ProgressDrawer {
 
         setProgressPercent(progressOptions.valuePercent)
 
-        mProgressAnimationDuration = progressOptions.animationDuration.toLong()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
-        if (mProgressAnimator.isRunning) {
-            mProgressAnimator.cancel()
-            mProgressAnimator.start()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+            mProgressAnimator.duration = mProgressAnimationDuration
+            if (mProgressAnimator.isRunning) {
+                mProgressAnimator.cancel()
+                mProgressAnimator.start()
+            }
         }
     }
 
