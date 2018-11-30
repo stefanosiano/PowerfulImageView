@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.shape;
+package com.stefanosiano.powerfullibraries.imageview.shape;
 
 /** Mode of the shape of the image */
 public enum PivShapeMode {

@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 /**
  * Custom exception when something goes wrong with renderscript

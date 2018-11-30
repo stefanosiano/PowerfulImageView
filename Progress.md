@@ -106,7 +106,7 @@ You just need to add your configuration in your styles.xml file like this:
 Then apply it like this:  
   
 ```
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
+    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
         android:id="@+id/piv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

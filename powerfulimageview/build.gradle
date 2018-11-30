@@ -5,17 +5,17 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 //fixed data
-def pkgName = 'powerfulimageview'
-def libGroupId = "com.stefanosiano"                                          // Maven Group ID for the artifact
-def libArtifactId = "powerfulimageview"                                      // Maven Artifact ID for the artifact
+def pkgName = 'imageview'
+def libGroupId = "com.stefanosiano.powerfullibraries"                        // Maven Group ID for the artifact
+def libArtifactId = "imageview"                                              // Maven Artifact ID for the artifact
 def libName = "Powerful Image View"                                          // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
 def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // Git repository URL
 def libDescription = 'Custom Android ImageView with several added features.' // Library description
 
 //data to change on updates
-def libVersion = "0.3.8"// This is the library version used when deploying the artifact
-def gitTag = '0.3.8'
+def libVersion = "0.3.9"// This is the library version used when deploying the artifact
+def gitTag = '0.3.9'
 
 group = libGroupId //bintray org/group name
 version = libVersion //version
@@ -94,6 +94,7 @@ task generateSourcesJar(type: Jar) {
 }
 
 task generateJavadocs(type: Javadoc) {
+    excludes = ['**/*.kt'] // < ---- Exclude all kotlin files from javadoc file.
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }

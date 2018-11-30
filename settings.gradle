@@ -1,3 +1,1 @@
-include ':sample', ':powerfulimageview_databinding',
-        ':powerlessimageview',
-        ':powerfulimageview'
+include ':sample', ':powerfulimageview_databinding', ':powerfulimageview'

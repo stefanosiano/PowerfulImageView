@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.shape.drawers;
+package com.stefanosiano.powerfullibraries.imageview.shape.drawers;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,8 +8,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
-import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
+import com.stefanosiano.powerfullibraries.imageview.shape.PivShapeScaleType;
+import com.stefanosiano.powerfullibraries.imageview.shape.ShapeOptions;
 
 /**
  * ShapeDrawer that draws the drawable directly into the shape.

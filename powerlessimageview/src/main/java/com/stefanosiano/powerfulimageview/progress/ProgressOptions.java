@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.progress;
+package com.stefanosiano.powerfullibraries.imageview.progress;
 
 import android.graphics.RectF;
 import android.os.Parcel;

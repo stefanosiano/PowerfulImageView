@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur;
+package com.stefanosiano.powerfullibraries.imageview.blur;
 
 import android.os.Parcel;
 import android.os.Parcelable;

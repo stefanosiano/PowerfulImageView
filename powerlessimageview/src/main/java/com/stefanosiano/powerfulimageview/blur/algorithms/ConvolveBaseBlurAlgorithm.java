@@ -1,10 +1,10 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.renderscript.RenderScript;
 
-import com.stefanosiano.powerfulimageview.blur.BlurOptions;
+import com.stefanosiano.powerfullibraries.imageview.blur.BlurOptions;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;

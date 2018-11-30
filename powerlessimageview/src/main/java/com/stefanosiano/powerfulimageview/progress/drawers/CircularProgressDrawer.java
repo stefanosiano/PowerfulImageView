@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.progress.drawers;
+package com.stefanosiano.powerfullibraries.imageview.progress.drawers;
 
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.animation.LinearInterpolator;
 
-import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
+import com.stefanosiano.powerfullibraries.imageview.progress.ProgressOptions;
 
 
 /**

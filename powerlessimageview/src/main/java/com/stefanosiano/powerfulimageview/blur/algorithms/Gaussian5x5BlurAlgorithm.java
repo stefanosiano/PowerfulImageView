@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 /**
  * Class that performs the gaussian blur with 5x5 coefficient matrix.

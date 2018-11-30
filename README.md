@@ -106,7 +106,7 @@ The library is highly customizable. However, for very basic integration, you may
   
 Via xml:  
 ```
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
+    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
         android:id="@+id/piv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

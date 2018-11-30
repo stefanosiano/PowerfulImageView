@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur;
+package com.stefanosiano.powerfullibraries.imageview.blur;
 
 /** Mode of the blur that will be used to blur the image */
 

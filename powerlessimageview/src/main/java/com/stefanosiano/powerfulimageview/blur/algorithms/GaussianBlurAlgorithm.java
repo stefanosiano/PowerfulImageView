@@ -1,8 +1,8 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 import android.graphics.Bitmap;
 
-import com.stefanosiano.powerfulimageview.blur.BlurOptions;
+import com.stefanosiano.powerfullibraries.imageview.blur.BlurOptions;
 
 /**
  * Class that performs the gaussian blur with any kind of radius.

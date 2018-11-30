@@ -1,6 +1,6 @@
 //Taken from https://github.com/patrickfav/Dali/blob/master/dali/src/main/rs/stackblur.rs
 #pragma version(1)
-#pragma rs java_package_name(com.stefanosiano.powerfulimageview)
+#pragma rs java_package_name(com.stefanosiano.powerfullibraries.imageview)
 #pragma rs_fp_inprecise
 
 static unsigned short const stackblur_mul[255] =

@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 import android.content.Context;
 import android.os.Build;

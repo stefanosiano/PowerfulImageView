@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#b0b0b0b0"
-    tools:context="com.stefanosiano.powerfulimageviewsample.MainActivity">
+    tools:context="com.stefanosiano.powerfullibraries.imageviewsample.MainActivity">
 
 
     <LinearLayout
@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
-            android:layout_width="wrap_content"
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="#eaeaea"
             android:layout_margin="8dp"
@@ -25,6 +25,7 @@
 
             app:piv_blur_mode="box5x5"
             app:piv_blur_radius="1"
+
             app:piv_shape_mode="circle"
 
             app:piv_progress_removed_on_change="true"
@@ -34,7 +35,7 @@
             app:piv_progress_border_width="2dp"
             app:piv_progress_mode="circular" />
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
@@ -50,7 +51,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
@@ -64,7 +65,7 @@
             app:piv_shape_border_color="@android:color/black"
             android:src="@drawable/sf1" />
 
-        <com.stefanosiano.powerfulimageview.PowerfulImageView
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"

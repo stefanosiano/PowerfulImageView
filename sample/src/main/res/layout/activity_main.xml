@@ -9,7 +9,7 @@
 
 
 
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
+    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
         android:layout_width="280dp"
         android:layout_height="250dp"
         android:layout_margin="8dp"
@@ -31,7 +31,7 @@
 
         app:srcCompat="@drawable/ic_3d_rotation_black_24dp" />
 
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
+    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
         android:layout_width="280dp"
         android:layout_height="250dp"
         android:layout_margin="8dp"
@@ -80,11 +80,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context="com.stefanosiano.PowerfulImageViewsample.MainActivity">
+        tools:context="com.stefanosiano.powerfullibraries.imageviewsample.MainActivity">
 
         <TableRow>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="10dp"
                 android:layout_height="35dp"
                 android:scaleType="center"
@@ -96,7 +96,7 @@
                 app:piv_progress_indeterminate_color="#2040f0"
                 app:piv_progress_mode="circular"/>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="fitEnd"
@@ -111,7 +111,7 @@
                 app:piv_progress_mode="circular"
                 />
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"
@@ -134,7 +134,7 @@
 
         <TableRow>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"
@@ -145,7 +145,7 @@
                 app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"
@@ -156,7 +156,7 @@
                 app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"
@@ -171,7 +171,7 @@
 
         <TableRow>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"
@@ -182,7 +182,7 @@
                 app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"
@@ -193,7 +193,7 @@
                 app:piv_progress_value="30"
                 app:piv_progress_mode="circular"/>
 
-            <com.stefanosiano.powerfulimageview.PowerfulImageView
+            <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:scaleType="center"

@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.shape;
+package com.stefanosiano.powerfullibraries.imageview.shape;
 
 import android.graphics.Matrix;
 import android.widget.ImageView;

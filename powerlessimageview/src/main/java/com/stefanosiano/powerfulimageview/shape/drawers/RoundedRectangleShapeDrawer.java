@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.shape.drawers;
+package com.stefanosiano.powerfullibraries.imageview.shape.drawers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -10,8 +10,8 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
-import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
-import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
+import com.stefanosiano.powerfullibraries.imageview.shape.PivShapeScaleType;
+import com.stefanosiano.powerfullibraries.imageview.shape.ShapeOptions;
 
 /**
  * ShapeDrawer that draws a rounded rectangle as shape.

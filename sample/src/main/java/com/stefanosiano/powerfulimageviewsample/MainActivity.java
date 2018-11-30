@@ -1,11 +1,11 @@
-package com.stefanosiano.powerfulimageviewsample;
+package com.stefanosiano.powerfullibraries.imageviewsample;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.SeekBar;
 
-import com.stefanosiano.powerfulimageview.PowerfulImageView;
-import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
+import com.stefanosiano.powerfullibraries.imageview.PowerfulImageView;
+import com.stefanosiano.powerfullibraries.imageview.progress.PivProgressMode;
 
 
 public class MainActivity extends Activity {

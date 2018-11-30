@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 /**
  * Class that performs the box blur with 3x3 coefficient matrix.

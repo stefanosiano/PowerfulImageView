@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview;
+package com.stefanosiano.powerfullibraries.imageview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,17 +11,17 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import com.stefanosiano.powerfulimageview.blur.BlurOptions;
-import com.stefanosiano.powerfulimageview.blur.PivBlurMode;
-import com.stefanosiano.powerfulimageview.blur.algorithms.BlurManager;
-import com.stefanosiano.powerfulimageview.progress.PivProgressGravity;
-import com.stefanosiano.powerfulimageview.progress.PivProgressMode;
-import com.stefanosiano.powerfulimageview.progress.ProgressOptions;
-import com.stefanosiano.powerfulimageview.progress.drawers.ProgressDrawerManager;
-import com.stefanosiano.powerfulimageview.shape.PivShapeMode;
-import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
-import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
-import com.stefanosiano.powerfulimageview.shape.drawers.ShapeDrawerManager;
+import com.stefanosiano.powerfullibraries.imageview.blur.BlurOptions;
+import com.stefanosiano.powerfullibraries.imageview.blur.PivBlurMode;
+import com.stefanosiano.powerfullibraries.imageview.blur.algorithms.BlurManager;
+import com.stefanosiano.powerfullibraries.imageview.progress.PivProgressGravity;
+import com.stefanosiano.powerfullibraries.imageview.progress.PivProgressMode;
+import com.stefanosiano.powerfullibraries.imageview.progress.ProgressOptions;
+import com.stefanosiano.powerfullibraries.imageview.progress.drawers.ProgressDrawerManager;
+import com.stefanosiano.powerfullibraries.imageview.shape.PivShapeMode;
+import com.stefanosiano.powerfullibraries.imageview.shape.PivShapeScaleType;
+import com.stefanosiano.powerfullibraries.imageview.shape.ShapeOptions;
+import com.stefanosiano.powerfullibraries.imageview.shape.drawers.ShapeDrawerManager;
 
 /**
  * Powerful ImageView with several added features (highly customizable):

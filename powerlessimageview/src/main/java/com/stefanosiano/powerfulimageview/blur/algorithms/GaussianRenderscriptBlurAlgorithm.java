@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.blur.algorithms;
+package com.stefanosiano.powerfullibraries.imageview.blur.algorithms;
 
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
@@ -6,7 +6,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-import com.stefanosiano.powerfulimageview.blur.BlurOptions;
+import com.stefanosiano.powerfullibraries.imageview.blur.BlurOptions;
 
 import java.lang.ref.WeakReference;
 

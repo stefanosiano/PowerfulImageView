@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview;
+package com.stefanosiano.powerfullibraries.imageview;
 
 import android.annotation.TargetApi;
 import android.content.Context;

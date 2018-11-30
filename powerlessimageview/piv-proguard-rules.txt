@@ -24,15 +24,15 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.stefanosiano.powerfulimageview.PowerlessImageView { *; }
+-keep class com.stefanosiano.powerfullibraries.imageview.PowerlessImageView { *; }
 
--keep class com.stefanosiano.powerfulimageview.progress.PivProgressGravity { *; }
--keep class com.stefanosiano.powerfulimageview.progress.PivProgressMode { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.progress.ProgressOptions { *; }
+-keep class com.stefanosiano.powerfullibraries.imageview.progress.PivProgressGravity { *; }
+-keep class com.stefanosiano.powerfullibraries.imageview.progress.PivProgressMode { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfullibraries.imageview.progress.ProgressOptions { *; }
 
 -keep class powerfulimageview.shape.PivShapeMode { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.PivShapeScaleType { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.ShapeOptions { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfullibraries.imageview.shape.PivShapeScaleType { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfullibraries.imageview.shape.ShapeOptions { *; }
 
--keep class com.stefanosiano.powerfulimageview.shape.PivBlurMode { *; }
--keep,includedescriptorclasses class com.stefanosiano.powerfulimageview.shape.BlurOptions { *; }
+-keep class com.stefanosiano.powerfullibraries.imageview.shape.PivBlurMode { *; }
+-keep,includedescriptorclasses class com.stefanosiano.powerfullibraries.imageview.shape.BlurOptions { *; }

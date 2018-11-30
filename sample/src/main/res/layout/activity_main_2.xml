@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
+    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
         android:id="@+id/piv"
         android:layout_width="220dp"
         android:layout_height="220dp"
@@ -29,7 +29,7 @@
         app:piv_shape_mode="solid_circle"/>
 
 
-    <com.stefanosiano.powerfulimageview.PowerfulImageView
+    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
         android:id="@+id/piv2"
         android:layout_width="match_parent"
         android:layout_height="220dp"

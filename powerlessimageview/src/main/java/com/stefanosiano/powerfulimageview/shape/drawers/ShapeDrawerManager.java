@@ -1,4 +1,4 @@
-package com.stefanosiano.powerfulimageview.shape.drawers;
+package com.stefanosiano.powerfullibraries.imageview.shape.drawers;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,9 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
-import com.stefanosiano.powerfulimageview.shape.PivShapeMode;
-import com.stefanosiano.powerfulimageview.shape.PivShapeScaleType;
-import com.stefanosiano.powerfulimageview.shape.ShapeOptions;
+import com.stefanosiano.powerfullibraries.imageview.shape.PivShapeMode;
+import com.stefanosiano.powerfullibraries.imageview.shape.PivShapeScaleType;
+import com.stefanosiano.powerfullibraries.imageview.shape.ShapeOptions;
 
 import java.lang.ref.WeakReference;
 
