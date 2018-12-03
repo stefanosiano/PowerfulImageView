@@ -237,8 +237,11 @@ class ShapeOptions() : Parcelable {
                 shapeBounds.right - paddingRight,
                 shapeBounds.bottom - paddingBottom)
 
-        //Border cannot be bigger than the shape!
-        borderWidth = borderWidth.coerceAtMost((shapeBounds.width() / 2).toInt())
+        //Border cannot be bigger than the shape! ("if" needed to avoid infinite recursion)
+        if(borderWidth != borderWidth.coerceAtMost((shapeBounds.width() / 2).toInt())) {
+            borderWidth = borderWidth.coerceAtMost((shapeBounds.width() / 2).toInt())
+            return
+        }
 
         borderBounds.set(shapeBounds)
         borderBounds.inset((borderWidth / 2).toFloat(), (borderWidth / 2).toFloat())
