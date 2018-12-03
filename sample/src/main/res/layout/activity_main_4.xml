@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#b0b0b0b0"
-    tools:context="com.stefanosiano.powerfullibraries.imageviewsample.MainActivity">
+    android:background="#b0b0b0b0">
 
 
     <LinearLayout

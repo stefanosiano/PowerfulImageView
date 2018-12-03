@@ -3,7 +3,6 @@ package com.stefanosiano.powerfullibraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
 
-import com.stefanosiano.powerfullibraries.imageview.ScriptC_stackblur
 import com.stefanosiano.powerfullibraries.imageview.blur.BlurOptions
 
 import java.lang.ref.WeakReference
@@ -39,14 +38,12 @@ internal class StackRenderscriptBlurAlgorithm: BlurAlgorithm {
         blurScript._height = height.toLong()
         blurScript._radius = radius.toLong()
 
-        var row_indices = intArrayOf(height)
-        for (i in 0 until height) { row_indices[i] = i }
+        var row_indices = IntArray(height) { i -> i }
 
         val rows = Allocation.createSized(rs, Element.U32(rs), height, Allocation.USAGE_SCRIPT)
         rows.copyFrom(row_indices)
 
-        row_indices = IntArray(width)
-        for (i in 0 until width) { row_indices[i] = i }
+        row_indices = IntArray(width) { i -> i }
 
         val columns = Allocation.createSized(rs, Element.U32(rs), width, Allocation.USAGE_SCRIPT)
         columns.copyFrom(row_indices)

@@ -2,10 +2,6 @@ package com.stefanosiano.powerfullibraries.imageviewsample;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.SeekBar;
-
-import com.stefanosiano.powerfullibraries.imageview.PowerfulImageView;
-import com.stefanosiano.powerfullibraries.imageview.progress.PivProgressMode;
 
 
 public class MainActivity extends Activity {
@@ -15,7 +11,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_4);
+        setContentView(R.layout.activity_main_3);
 /*
         final PowerfulImageView piw = (PowerfulImageView) findViewById(R.id.piv);
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);

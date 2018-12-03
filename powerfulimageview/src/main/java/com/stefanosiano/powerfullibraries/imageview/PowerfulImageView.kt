@@ -225,7 +225,7 @@ open class PowerfulImageView : ImageViewWrapper {
 
         //if it's called in super constructor, I don't have the objects instantiated
         //I go further only if there is a custom shape selected
-        if (!initialized || mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
+        if (!initialized)// || mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
             return super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
