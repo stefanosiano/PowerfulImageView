@@ -5,76 +5,128 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#b0b0b0b0">
+    android:layout_column="2"
+    android:orientation="vertical">
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
+        android:text="Stack (java)"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:background="#eaeaea"
-            android:layout_margin="8dp"
-            android:src="@drawable/sf1"
-            android:scaleType="centerCrop"
-
-            app:piv_blur_mode="box5x5"
-            app:piv_blur_radius="1"
-
-            app:piv_shape_mode="circle"
-
-            app:piv_progress_removed_on_change="true"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_progress_front_color="@color/colorPrimary"
+            app:piv_progress_back_color="@color/colorAccent"
+            app:piv_progress_mode="horizontal"
             app:piv_progress_indeterminate="false"
-            app:piv_progress_size="50%"
-            app:piv_progress_front_color="@color/colorAccent"
-            app:piv_progress_border_width="2dp"
-            app:piv_progress_mode="circular" />
+            app:piv_progress_value="25"
+            app:piv_progress_determinate_animation_enabled="false"
+            app:srcCompat="@drawable/sf1" />
+
 
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:background="#eaeaea"
-            android:layout_margin="8dp"
-            android:src="@drawable/sf1"
-            app:piv_progress_mode="circular"/>
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_progress_mode="horizontal"
+            app:piv_progress_indeterminate="false"
+            app:piv_progress_value="75"
+            app:piv_progress_size="100%"
+            app:piv_progress_padding="4dp"
+            app:piv_progress_border_width="4dp"
+            app:piv_progress_shadow_border_width="1dp"
+            app:piv_progress_gravity="bottom"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_progress_mode="horizontal"
+            app:piv_progress_indeterminate="true"
+            app:piv_progress_size="100%"
+            app:piv_progress_border_width="6dp"
+            app:srcCompat="@drawable/sf1" />
+
 
     </LinearLayout>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
+        android:text="Stack (java)"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:layout_margin="8dp"
-            app:piv_shape_ratio="1.6"
-            app:piv_shape_mode="solid_rounded_rectangle"
-            app:piv_shape_radius_x="100"
-            app:piv_shape_radius_y="100"
-            app:piv_shape_border_width="0dp"
-            android:padding="0dp"
-            app:piv_shape_border_color="@android:color/black"
-            android:src="@drawable/sf1" />
 
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:background="#eaeaea"
-            android:layout_margin="8dp"
-            app:piv_shape_ratio="1.6"
-            app:piv_shape_mode="solid_oval"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="@android:color/black"
-            android:src="@drawable/sf1" />
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_progress_mode="circular"
+            app:piv_progress_indeterminate="false"
+            app:piv_progress_value="25"
+            app:piv_progress_size="25%"
+            app:piv_progress_draw_wedge="true"
+            app:piv_progress_shadow_padding="0dp"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_progress_mode="circular"
+            app:piv_progress_indeterminate="false"
+            app:piv_progress_value="75"
+            app:piv_progress_size="25%"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_progress_mode="circular"
+            app:piv_progress_indeterminate="true"
+            app:piv_progress_size="25%"
+            app:piv_progress_gravity="bottom_end"
+            app:srcCompat="@drawable/sf1" />
+
 
     </LinearLayout>
 

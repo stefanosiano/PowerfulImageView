@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_column="2"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
+        android:text="Gaussian 5x5 (java), downsample=0"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_shape_mode="square"
+
+            app:piv_blur_mode="gaussian5x5"
+            app:piv_blur_down_sampling_rate="1"
+            app:piv_blur_radius="0"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv1plus"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv1"
+            android:layout_toEndOf="@id/piv1"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv1less"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv1"
+            android:layout_toEndOf="@id/piv1"
+            android:layout_below="@id/piv1plus"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_remove_black_24dp" />
+
+        <TextView
+            android:id="@+id/piv1txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@+id/piv1plus"
+            android:layout_toEndOf="@+id/piv1plus"
+            android:text="Radius 0, 0 ms"/>
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
+        android:text="Gaussian 5x5 (renderscript), downsample=0"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_shape_mode="square"
+
+            app:piv_blur_mode="gaussian5x5_rs"
+            app:piv_blur_down_sampling_rate="1"
+            app:piv_blur_radius="0"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv2plus"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv2"
+            android:layout_toEndOf="@id/piv2"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv2less"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv2"
+            android:layout_toEndOf="@id/piv2"
+            android:layout_below="@id/piv2plus"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_remove_black_24dp" />
+
+        <TextView
+            android:id="@+id/piv2txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@+id/piv2plus"
+            android:layout_toEndOf="@+id/piv2plus"
+            android:text="Radius 0, 0 ms"/>
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
+        android:text="Gaussian 5x5 (java), downsample=4"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv3"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_shape_mode="square"
+
+            app:piv_blur_mode="gaussian5x5"
+            app:piv_blur_down_sampling_rate="4"
+            app:piv_blur_radius="0"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv3plus"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv3"
+            android:layout_toEndOf="@id/piv3"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv3less"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv3"
+            android:layout_toEndOf="@id/piv3"
+            android:layout_below="@id/piv3plus"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_remove_black_24dp" />
+
+        <TextView
+            android:id="@+id/piv3txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@+id/piv3plus"
+            android:layout_toEndOf="@+id/piv3plus"
+            android:text="Radius 0, 0 ms"/>
+
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
+        android:text="Gaussian 5x5 (renderscript), downsample=4"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv4"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            app:piv_shape_scaleType="centerCrop"
+            app:piv_shape_mode="square"
+
+            app:piv_blur_mode="gaussian5x5_rs"
+            app:piv_blur_down_sampling_rate="4"
+            app:piv_blur_radius="0"
+            app:srcCompat="@drawable/sf1" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv4plus"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv4"
+            android:layout_toEndOf="@id/piv4"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+
+        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+            android:id="@+id/piv4less"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@id/piv4"
+            android:layout_toEndOf="@id/piv4"
+            android:layout_below="@id/piv4plus"
+            app:piv_shape_mode="circle"
+            app:piv_shape_background_color="#D0D0D0"
+            app:srcCompat="@drawable/ic_remove_black_24dp" />
+
+        <TextView
+            android:id="@+id/piv4txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:layout_margin="8dp"
+            android:layout_toRightOf="@+id/piv4plus"
+            android:layout_toEndOf="@+id/piv4plus"
+            android:text="Radius 0, 0 ms"/>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -56,7 +56,7 @@ open class PowerfulImageView : ImageViewWrapper {
     private val DEFAULT_PROGRESS_REMOVED_ON_CHANGE = true
     private val DEFAULT_PROGRESS_MODE = PivProgressMode.NONE.value
     private val DEFAULT_PROGRESS_SHADOW_PADDING = -1
-    private val DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 10f
+    private val DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT = 0f
     private val DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH = 1
 
     //Shape initialization constants
@@ -114,12 +114,13 @@ open class PowerfulImageView : ImageViewWrapper {
 
 
         val progressMode = PivProgressMode.fromValue(a.getInteger(com.stefanosiano.powerfullibraries.imageview.R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE))
-        val useIndeterminateAnimation = a.getBoolean(com.stefanosiano.powerfullibraries.imageview.R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION)
+        val useDeterminateAnimation = a.getBoolean(com.stefanosiano.powerfullibraries.imageview.R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION)
 
         //get all the options from xml or default constants and initialize ProgressOptions object
         val progressOptions = ProgressOptions(
-                useIndeterminateAnimation,
-                a.getInt(com.stefanosiano.powerfullibraries.imageview.R.styleable.PowerfulImageView_piv_progress_animation_duration, if(useIndeterminateAnimation) DEFAULT_PROGRESS_INDETEMINATE_ANIMATION_DURATION else DEFAULT_PROGRESS_ANIMATION_DURATION),
+                //Using animations will cause the progress not to be drawn immediately in layout editor
+                if(isInEditMode) false else useDeterminateAnimation,
+                a.getInt(com.stefanosiano.powerfullibraries.imageview.R.styleable.PowerfulImageView_piv_progress_animation_duration, if(useDeterminateAnimation) DEFAULT_PROGRESS_INDETEMINATE_ANIMATION_DURATION else DEFAULT_PROGRESS_ANIMATION_DURATION),
                 if (tvBorderWidth.type == TypedValue.TYPE_DIMENSION) tvBorderWidth.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_WIDTH,
                 if (tvBorderWidth.type == TypedValue.TYPE_FRACTION) tvBorderWidth.getFraction(100f, 100f) else DEFAULT_PROGRESS_WIDTH_PERCENT,
                 if (tvSize.type == TypedValue.TYPE_DIMENSION) tvSize.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_SIZE,
