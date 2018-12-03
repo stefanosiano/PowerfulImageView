@@ -15,59 +15,79 @@ class ShapeOptions() : Parcelable {
 
     //Options used directly by drawers
 
-    /** Background color of the shape  */
-    internal var backgroundColor: Int = 0
+    /** Background color of the shape.
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
+     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    var backgroundColor: Int = 0
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
-    /** Foreground color of the shape  */
-    internal var foregroundColor: Int = 0
+    /** Foreground color of the shape.
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
+     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    var foregroundColor: Int = 0
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
     /** Inner padding of the image relative to the shape  */
-    internal var mInnerPadding: Int = 0
+    var mInnerPadding: Int = 0
 
     /** Inner padding of the image relative to the shape, as a percentage  */
-    internal var mInnerPaddingPercent: Float = 0f
+    var mInnerPaddingPercent: Float = 0f
 
-    /** Whether the border should be drawn over the image or not  */
-    internal var borderOverlay: Boolean = false
+    /** Whether the border should be drawn over the image or the shape should be shrinked */
+    var borderOverlay: Boolean = false
+        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
 
-    /** Color of the shape border  */
-    internal var borderColor: Int = 0
+    /** Color of the shape border
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
+     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    var borderColor: Int = 0
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
-    /** Width of the shape border  */
-    internal var borderWidth: Int = 0
+    /** Width of the shape border
+     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
+    var borderWidth: Int = 0
+        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
     
-    /** Ratio of the shape  */
-    internal var ratio: Float = 0f
+    /** Ratio of the shape. It's ignored in Circle and Square shapes. Width will be calculated as height * ratio */
+    var ratio: Float = 0f
+        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
 
     /** X radius of the rounded rectangles  */
-    internal var radiusX: Float = 0f
+    var radiusX: Float = 0f
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
     /** Y radius of the rounded rectangles  */
-    internal var radiusY: Float = 0f
+    var radiusY: Float = 0f
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
-    /** Color used by solid shapes  */
-    internal var solidColor: Int = 0
+    /** Color used by solid shapes
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
+     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    var solidColor: Int = 0
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
-    /** Foreground drawable used by shapes  */
-    internal var foregroundDrawable: Drawable? = null
+    /** Foreground drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
+    var foregroundDrawable: Drawable? = null
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
-    /** Background drawable used by shapes  */
-    internal var backgroundDrawable: Drawable? = null
+    /** Background drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
+    var backgroundDrawable: Drawable? = null
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
     // ************** Calculated fields *****************
 
     //bounds of the shape
     /** Bounds of the shape, calculated using [calculateBounds]. DON'T edit its values directly! */
-    internal var shapeBounds = RectF(0f, 0f, 0f, 0f)
+    var shapeBounds = RectF(0f, 0f, 0f, 0f)
 
     /** Bounds of the image, calculated using [calculateBounds]. DON'T edit its values directly! */
-    internal var imageBounds = RectF(0f, 0f, 0f, 0f)
+    var imageBounds = RectF(0f, 0f, 0f, 0f)
 
     /** Bounds of the border, calculated using [calculateBounds]. DON'T edit its values directly! */
-    internal var borderBounds = RectF(0f, 0f, 0f, 0f)
+    var borderBounds = RectF(0f, 0f, 0f, 0f)
 
     /** Bounds of the view, without padding, calculated using [calculateBounds]. DON'T edit its values directly! */
-    internal var viewBounds = RectF(0f, 0f, 0f, 0f)
+    var viewBounds = RectF(0f, 0f, 0f, 0f)
 
     /** Calculated padding of the indicator shadow  */
     private var mCalculatedInnerPadding: Float = 0f
@@ -235,6 +255,8 @@ class ShapeOptions() : Parcelable {
 
         imageBounds.set(shapeBounds)
         imageBounds.inset(mCalculatedInnerPadding, mCalculatedInnerPadding)
+
+        listener.get()?.onSizeUpdated(this)
     }
 
     /**
@@ -246,37 +268,7 @@ class ShapeOptions() : Parcelable {
      */
     fun setListener(listener: ShapeOptionsListener) { this.listener = WeakReference(listener) }
 
-    /** Set the background color of the image, using the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details.  */
-    fun setBackgroundColor(backgroundColor: Int) {
-        this.backgroundColor = backgroundColor
-        listener.get()?.onOptionsUpdated(this)
-    }
 
-    /** Set the background color of the image, using the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details.  */
-    fun setForegroundColor(foregroundColor: Int) {
-        this.foregroundColor = foregroundColor
-        listener.get()?.onOptionsUpdated(this)
-    }
-
-    /** Set the foreground drawable to be drawn over the image, using the shape.
-     * Note: Does not work on rounded shapes!  */
-    fun setForegroundDrawable(foregroundDrawable: Drawable) {
-        this.foregroundDrawable = foregroundDrawable
-        listener.get()?.onOptionsUpdated(this)
-    }
-
-    /** Set the background drawable to be drawn under the image, using the shape.
-     * Note: Does not work on rounded shapes!  */
-    fun setBackgroundDrawable(backgroundDrawable: Drawable) {
-        this.backgroundDrawable = backgroundDrawable
-        listener.get()?.onOptionsUpdated(this)
-    }
 
     /**
      * Returns the inner padding of the image, relative to the shape
@@ -293,15 +285,6 @@ class ShapeOptions() : Parcelable {
      * @return Inner padding of the image, relative to the shape, as a percentage value.
      */
     fun getInnerPaddingPercent(): Float = mInnerPaddingPercent
-
-    /** Set the border color of the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details.  */
-    fun setBorderColor(borderColor: Int) {
-        this.borderColor = borderColor
-        listener.get()?.onOptionsUpdated(this)
-    }
 
     /**
      * Inner padding of the image relative to the shape, after calculations.
@@ -320,7 +303,6 @@ class ShapeOptions() : Parcelable {
     fun setInnerPadding(innerPadding: Int) {
         this.mInnerPadding = innerPadding
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
-        listener.get()?.onSizeUpdated(this)
     }
 
     /**
@@ -333,64 +315,6 @@ class ShapeOptions() : Parcelable {
         this.mInnerPadding = -1
         this.mInnerPaddingPercent = innerPaddingPercent
         calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
-        listener.get()?.onSizeUpdated(this)
-    }
-
-    /**
-     * Set whether border should be drawn over the shape or not.
-     *
-     * @param borderOverlay If true, the border is drawn over the shape, otherwise the shape is shrinked
-     */
-    fun setBorderOverlay(borderOverlay: Boolean) {
-        this.borderOverlay = borderOverlay
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
-        listener.get()?.onSizeUpdated(this)
-    }
-
-    /**
-     * Set the width of the shape border
-     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
-     *
-     * @param borderWidth Width of the shape border.
-     */
-    fun setBorderWidth(borderWidth: Int) {
-        this.borderWidth = borderWidth
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
-        listener.get()?.onSizeUpdated(this)
-    }
-
-    /**
-     * Set the ratio of the shape
-     * It's ignored in Circle and Square shapes.
-     * Width will be calculated as height * ratio
-     *
-     * @param ratio Ratio of the shape
-     */
-    fun setRatio(ratio: Float) {
-        this.ratio = ratio
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
-        listener.get()?.onRequestMeasure(this)
-    }
-
-    /** Set the x radius of the shape. Used by rounded rectangles  */
-    fun setRadiusX(radiusX: Float) {
-        this.radiusX = radiusX
-        listener.get()?.onOptionsUpdated(this)
-    }
-
-    /** Set the y radius of the shape. Used by rounded rectangles  */
-    fun setRadiusY(radiusY: Float) {
-        this.radiusY = radiusY
-        listener.get()?.onOptionsUpdated(this)
-    }
-
-    /** Set the solid color of the solid shapes.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details.  */
-    fun setSolidColor(solidColor: Int) {
-        this.solidColor = solidColor
-        listener.get()?.onOptionsUpdated(this)
     }
 
 

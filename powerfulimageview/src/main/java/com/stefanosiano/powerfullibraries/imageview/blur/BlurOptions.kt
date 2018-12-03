@@ -11,20 +11,23 @@ import java.lang.ref.WeakReference
 
 class BlurOptions() : Parcelable {
 
-    /** Rate to downSample the image width and height, so that bitmap is no more than the view size divided by this rate */
-    internal var downSamplingRate: Float = 0f
+    /** Rate to downSample the image width and height, so that bitmap is no more than the view size divided by this rate.
+     * If a value less than 1 is passed, downSampling rate 1 is used. */
+    var downSamplingRate: Float = 0f
+        set(value) { field = value.coerceAtLeast(1f); this.listener?.get()?.onDownsamplingRateChanged() }
 
     /** Whether the original bitmap should be blurred only once. If true, optimizations occur. If false, trying to blur a second time won't have effect  */
-    internal var isStaticBlur: Boolean = false
+    var isStaticBlur: Boolean = false
+        set(value) { field = value; listener?.get()?.onStaticBlurChanged() }
 
-    /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs  */
-    internal var useRsFallback: Boolean = false
+    /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs. Used only if a renderscript mode is selected */
+    var useRsFallback: Boolean = false
 
-    /** Number of threads to use to blur the image (no more than available)  */
-    internal var numThreads: Int = 0
+    /** Number of threads to use to blur the image (no more than available). If 0 or negative, available cores number will be used  */
+    var numThreads: Int = 0
 
     /** Listener that will update the blur manager on changes, with a weak reference to be sure to not leak memory  */
-    internal var listener: WeakReference<BlurOptionsListener>? = null
+    private var listener: WeakReference<BlurOptionsListener>? = null
 
 
     /**
@@ -54,42 +57,7 @@ class BlurOptions() : Parcelable {
         fun onDownsamplingRateChanged()
     }
 
-
-    fun setListener(listener: BlurOptionsListener) { this.listener = WeakReference(listener) }
-
-
-    /**
-     * Sets the rate to downSample the image width and height, based on the view size.
-     * If a value less than 1 is passed, downSampling rate 1 is used.
-     * Bitmap is downsampled to be no more than the view size divided by this rate.
-     */
-    fun setDownSamplingRate(downSamplingRate: Float) {
-        this.downSamplingRate = downSamplingRate.coerceAtLeast(1f)
-        this.listener?.get()?.onDownsamplingRateChanged()
-    }
-
-    /**
-     * @param isStaticBlur If the original bitmap should be blurred only once. If the image is already blurred
-     * and false is passed to this function, original bitmap memory will be released.
-     */
-    fun setStaticBlur(isStaticBlur: Boolean) {
-        this.isStaticBlur = isStaticBlur
-        this.listener?.get()?.onStaticBlurChanged()
-    }
-
-    /**
-     * @param useRsFallback Whether the image should be blurred with the Java equivalent function
-     * of renderscript one used. Used only if a renderscript mode is selected.
-     */
-    fun setUseRsFallback(useRsFallback: Boolean) { this.useRsFallback = useRsFallback }
-
-
-    /**
-     * Number of threads to use for blurring
-     * @param numThreads if it's 0 or negative, available cores number will be used
-     */
-    fun setNumThreads(numThreads: Int) { this.numThreads = numThreads }
-
+    internal fun setListener(listener: BlurOptionsListener) { this.listener = WeakReference(listener) }
 
 
     constructor(parcel: Parcel) : this() {
