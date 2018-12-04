@@ -89,7 +89,7 @@
 
             app:piv_blur_mode="gaussian5x5"
             app:piv_blur_down_sampling_rate="1"
-            app:piv_blur_radius="2"
+            app:piv_blur_radius="12"
             app:srcCompat="@drawable/sf1" />
 
 

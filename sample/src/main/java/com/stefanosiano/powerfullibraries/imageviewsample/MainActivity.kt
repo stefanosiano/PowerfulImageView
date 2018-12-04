@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         val time = System.currentTimeMillis()
         piv.setBlurRadius(piv.getBlurRadius() + 1)
         val time2 = System.currentTimeMillis()
-        pivtxt.text = "${pivtxt.text}\nRadius $lastRadius -> ${piv.getBlurRadius()}, ${time2-time} ms"
+        pivtxt.text = "${pivtxt.text}\nRadius $lastRadius -> ${piv.getBlurRadius()}. Time: ${time2-time} ms"
     }
 
     private fun onMinus(piv: PowerfulImageView, pivtxt: TextView) {
@@ -38,6 +38,6 @@ class MainActivity : AppCompatActivity() {
         val time = System.currentTimeMillis()
         piv.setBlurRadius(piv.getBlurRadius() - 1)
         val time2 = System.currentTimeMillis()
-        pivtxt.text = "${pivtxt.text}\nRadius $lastRadius -> ${piv.getBlurRadius()}, ${time2-time} ms"
+        pivtxt.text = "${pivtxt.text}\nRadius $lastRadius -> ${piv.getBlurRadius()}. Time: ${time2-time} ms"
     }
 }

@@ -28,7 +28,7 @@
 
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:id="@+id/piv1"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             app:piv_shape_scaleType="centerCrop"
@@ -70,10 +70,10 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:layout_margin="8dp"
+            android:layout_margin="0dp"
             android:layout_toRightOf="@+id/piv1plus"
             android:layout_toEndOf="@+id/piv1plus"
-            android:text="Radius 0, 0 ms"/>
+            android:text="Radius 0. Time: 0 ms"/>
 
 
     </RelativeLayout>
@@ -98,7 +98,7 @@
 
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:id="@+id/piv2"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             app:piv_shape_scaleType="centerCrop"
@@ -140,10 +140,10 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:layout_margin="8dp"
+            android:layout_margin="0dp"
             android:layout_toRightOf="@+id/piv2plus"
             android:layout_toEndOf="@+id/piv2plus"
-            android:text="Radius 0, 0 ms"/>
+            android:text="Radius 0. Time: 0 ms"/>
 
 
     </RelativeLayout>
@@ -168,7 +168,7 @@
 
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:id="@+id/piv3"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             app:piv_shape_scaleType="centerCrop"
@@ -210,10 +210,10 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:layout_margin="8dp"
+            android:layout_margin="0dp"
             android:layout_toRightOf="@+id/piv3plus"
             android:layout_toEndOf="@+id/piv3plus"
-            android:text="Radius 0, 0 ms"/>
+            android:text="Radius 0. Time: 0 ms"/>
 
 
     </RelativeLayout>
@@ -238,7 +238,7 @@
 
         <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
             android:id="@+id/piv4"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             app:piv_shape_scaleType="centerCrop"
@@ -280,10 +280,10 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:layout_margin="8dp"
+            android:layout_margin="0dp"
             android:layout_toRightOf="@+id/piv4plus"
             android:layout_toEndOf="@+id/piv4plus"
-            android:text="Radius 0, 0 ms"/>
+            android:text="Radius 0. Time: 0 ms"/>
 
 
     </RelativeLayout>
