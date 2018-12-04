@@ -5,20 +5,23 @@ Custom Android ImageView with several added features.
 1) Progress indicator: circular, horizontal, disabled;  
 2) Shapes: normal, rectangle, square, circle, solid_circle, oval, solid_oval, rounded_rectangle, solid_rounded_rectangle. It supports all scale types, plus additional custom scale types, like topCrop and bottomCrop;  
 3) Blur: Blurs the image with gaussian, box or stack algorithm. It can use either Renderscript or Java methods, and fallback in case of errors.  
+It extends AppcompatImageView, so it supports vector drawables and uses support version of renderscript
   
 Several other features will be added, and all the sections of the readme will be updated accordingly.
 All the features can be used together, alone or combined in any way (like using only progress and blur).
   
-Planned features (for now):  
-* Pinch in/out to zoom
-* Panoramas
   
   
-Progress:  
+**Progress:**  
+![Progress styles](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/progress.png) 
 ![Full load effect](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/full_load.gif) 
   
-Shapes:  
+**Shapes:**  
 ![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
+  
+**Blur:**  
+![Blur1](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/blur1.png) 
+![Blur2](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/blur2.png) 
   
   
   
@@ -76,23 +79,11 @@ repositories {
 }
 ```
   
-To use **Powerful**ImageView, which extends AppcompatImageView, supports vector drawables and uses support version of renderscript:  
+To use PowerfulImageView:  
 ```
 dependencies {
-    implementation 'com.stefanosiano:powerfulimageview:0.3.8'
-}
-```
-To use **Powerless**ImageView, which extends ImageView, doesn't depend on AppCompat library and uses normal Renderscript:  
-```
-dependencies {
-    implementation 'com.stefanosiano:powerlessimageview:0.3.8'
-}
-```
-To use **Powerful**ImageView and have all of its methods available for Android **dataBinding**:  
-```
-dependencies {
-    implementation 'com.stefanosiano:powerfulimageview:0.3.8'
-    implementation 'com.stefanosiano:powerfulimageview_databinding:0.3.8'
+    implementation 'com.stefanosiano.powerfullibraries:imageview:0.3.13'
+    implementation 'com.stefanosiano.powerfullibraries:imageview_databinding:0.3.9' //To have support for Android data binding
 }
 ```
   
@@ -175,7 +166,6 @@ Notes
 -----
   
 PowerfulImageView requires a minimum API level of 14 (same as AppCompatLibrary).
-PowerlessImageView requires a minimum API level of 12 (18 to use renderscript for blur).
   
   
   
