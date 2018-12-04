@@ -3,6 +3,8 @@ PowerfulImageView Progress
 
 This page contains all detailed info and tips about progress feature of PowerfulImageView.  
   
+![Progress styles](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/progress.png) 
+![Full load effect](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/full_load.gif) 
   
   
   
