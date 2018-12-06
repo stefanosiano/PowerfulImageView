@@ -3,6 +3,8 @@ PowerfulImageView Progress
 
 This page contains all detailed info and tips about progress feature of PowerfulImageView.  
   
+![Progress styles](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/progress.png) 
+![Full load effect](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/full_load.gif) 
   
   
   
@@ -52,9 +54,10 @@ List of all XML attributes
 |piv_progress_padding|dimension|2dp|Set the padding of the progress indicator.|
 |piv_progress_border_width|dimension-fraction|10%|Width of the progress indicator border, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100)|
 |piv_progress_shadow_border_width|dimension|1dp|Set the width of the shadow border.|
-|piv_progress_shadow_padding|dimension-fraction|10%|Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100)|
+|piv_progress_shadow_padding|dimension-fraction|0%|Set the padding of the progress indicator relative to its shadow., in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100)|
 |piv_progress_shadow_enabled|boolean|true|Set whether to show a progress shadow, used by drawers. If true, the shadow is drawn.|
 |piv_progress_determinate_animation_enabled|boolean|true|Set whether the progress should update with an animation. If the progress is indeterminate it's ignored. If true it updates its progress with an animation, otherwise it will update instantly|
+|piv_progress_animation_duration|integer|100|Default progress animation duration|
 |piv_progress_rtl_disabled|boolean|language-based|Set whether the view should use right to left layout. If true, start will always be treated as left and end as right. If false, on api 17+, gravity will be treated accordingly to rtl rules.|
 |piv_progress_draw_wedge|boolean|false|Set whether to show a wedge or a circle, used by circular progress. If the progress is not circular it's ignored. If true, a wedge is drawn, otherwise a circle will be drawn.|
 |piv_progress_reversed|boolean|false|Set whether the progress should be reversed.|

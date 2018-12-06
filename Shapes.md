@@ -3,6 +3,7 @@ PowerfulImageView Shapes
 
 This page contains all detailed info and tips about the shapes feature of PowerfulImageView.
 
+![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
 
 
 Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes natively to provide indicator over the shapes.  

@@ -3,12 +3,15 @@ PowerfulImageView Blur
 
 This page contains all detailed info and tips about the blur feature of PowerfulImageView.  
   
+![Blur1](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/blur1.png) 
+![Blur2](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/blur2.png) 
+  
   
 Some applications may need to blur an image. While blurring an image sounds easy at first, there are a lot of things to care about, like renderscript contexts, downscaling image, performance optimizations to not lock the UI thread.  
   
   
 Blur algorithms are divided into 2 categories:  
-1) **Renderscript** algorithms: they use renderscript under the hood (support version in PowerfulImageView and normal version in PowerlessImageView);
+1) **Renderscript** algorithms: they use renderscript under the hood (support version). To enable it, add ```renderscriptSupportModeEnabled true``` and ```renderscriptTargetApi 18``` to default config block in module's gradle file;
 2) **Java** algorithms: they use java and, while being slower, they support any version and any device. In case of error the original bitmap will be returned.
   
   
