@@ -215,9 +215,9 @@ class ShapeOptions() : Parcelable {
             PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> {
                 //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
                 //In this case I center the shape into the view
-                val smallX = Math.min(w.toFloat(), h * usedRatio).toInt().toFloat()
-                val smallY = Math.min(h.toFloat(), w / usedRatio).toInt().toFloat()
-                smallSize = Math.min(smallX, smallY).toInt().toFloat()
+                val smallX = Math.min(w.toFloat(), h * usedRatio)
+                val smallY = Math.min(h.toFloat(), w / usedRatio)
+                smallSize = Math.min(smallX, smallY)
                 shapeBounds.set((w - smallX) / 2, (h - smallY) / 2, (w + smallX) / 2, (h + smallY) / 2)
             }
 

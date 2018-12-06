@@ -12,8 +12,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_5)
-
+        setContentView(R.layout.activity_main_test)
+/*
         piv1less.setOnClickListener { onMinus(piv1, piv1txt) }
         piv2less.setOnClickListener { onMinus(piv2, piv2txt) }
         piv3less.setOnClickListener { onMinus(piv3, piv3txt) }
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         piv1plus.setOnClickListener { onPlus(piv1, piv1txt) }
         piv2plus.setOnClickListener { onPlus(piv2, piv2txt) }
         piv3plus.setOnClickListener { onPlus(piv3, piv3txt) }
-        piv4plus.setOnClickListener { onPlus(piv4, piv4txt) }
+        piv4plus.setOnClickListener { onPlus(piv4, piv4txt) }*/
     }
 
     private fun onPlus(piv: PowerfulImageView, pivtxt: TextView) {

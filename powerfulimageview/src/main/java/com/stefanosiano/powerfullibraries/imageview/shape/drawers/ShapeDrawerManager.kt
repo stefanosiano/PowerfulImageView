@@ -208,8 +208,6 @@ internal class ShapeDrawerManager
      * Measure the view and its content to determine the measured width and the measured height
      */
     fun onMeasure(w: Float, h: Float, wMode: Int, hMode: Int, view: View) {
-        var w = w
-        var h = h
 
         // EXACTLY: size value was set to a specific value. This can also get triggered when match_parent
         // is used, to set the size exactly to the parent view (this is layout dependent).
@@ -223,18 +221,18 @@ internal class ShapeDrawerManager
 
         //Drawable width and height calculated if a mDrawable has been set. Used in calculations
         val drawableWidth = mDrawable?.intrinsicWidth?.plus(view.paddingLeft)?.plus(view.paddingRight)?.toFloat()
-                ?: 0f
         val drawableHeight = mDrawable?.intrinsicHeight?.plus(view.paddingTop)?.plus(view.paddingBottom)?.toFloat()
-                ?: 0f
 
-        val usedRatio: Float
-        usedRatio = when (mShapeMode) {
+        val usedRatio: Float = when (mShapeMode) {
             PivShapeMode.CIRCLE, PivShapeMode.SQUARE, PivShapeMode.SOLID_CIRCLE -> 1f
-            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> if (mShapeOptions.ratio <= 0) w / h else mShapeOptions.ratio
-            else -> if (mShapeOptions.ratio <= 0) w / h else mShapeOptions.ratio
+            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
+            else -> if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
         }
 
 
+        //if both are wrap_content (MeasureSpec.AT_MOST), size should be mDrawable size, but not bigger than view size
+        val w2 = drawableWidth?.coerceAtMost(w) ?: w
+        val h2 = drawableHeight?.coerceAtMost(h) ?: h
         when (wMode) {
 
             //Must be this size
@@ -261,50 +259,21 @@ internal class ShapeDrawerManager
                 }
 
                 if (hMode == View.MeasureSpec.AT_MOST) {
-                    //if both are wrap_content, size should be mDrawable size
-                    w = if (drawableWidth > 0) Math.min(drawableWidth, w) else w
-                    h = if (drawableHeight > 0) Math.min(drawableHeight, h) else h
-                    mMeasuredWidth = Math.min(h * usedRatio, w)
-                    mMeasuredHeight = Math.min(h, w / usedRatio)
+                    mMeasuredWidth = Math.min(h2 * usedRatio, w2)
+                    mMeasuredHeight = Math.min(h2, w2 / usedRatio)
                 }
 
                 if (hMode == View.MeasureSpec.UNSPECIFIED) {
-                    w = if (drawableWidth > 0) Math.min(drawableWidth, w) else w
-                    mMeasuredWidth = w
-                    mMeasuredHeight = w / usedRatio
-                }
-            }
-
-            View.MeasureSpec.UNSPECIFIED -> {
-                w = if (drawableWidth > 0) drawableWidth else w
-                mMeasuredWidth = w
-                mMeasuredHeight = w / usedRatio
-
-                when (hMode) {
-                    View.MeasureSpec.EXACTLY -> {
-                        mMeasuredWidth = h * usedRatio
-                        mMeasuredHeight = h
-                    }
-
-                    View.MeasureSpec.AT_MOST -> {
-                        h = if (drawableHeight > 0) Math.min(drawableHeight, h) else h
-                        mMeasuredWidth = h * usedRatio
-                        mMeasuredHeight = h
-                    }
-
-                    View.MeasureSpec.UNSPECIFIED -> {
-                        w = if (drawableWidth > 0) drawableWidth else w
-                        mMeasuredWidth = w
-                        mMeasuredHeight = w / usedRatio
-                    }
+                    mMeasuredWidth = w2
+                    mMeasuredHeight = w2 / usedRatio
                 }
             }
 
             //Be whatever you want
+//            View.MeasureSpec.UNSPECIFIED -> same as else
             else -> {
-                w = if (drawableWidth > 0) drawableWidth else w
-                mMeasuredWidth = w
-                mMeasuredHeight = w / usedRatio
+                mMeasuredWidth = w2
+                mMeasuredHeight = w2 / usedRatio
 
                 when (hMode) {
                     View.MeasureSpec.EXACTLY -> {
@@ -313,15 +282,13 @@ internal class ShapeDrawerManager
                     }
 
                     View.MeasureSpec.AT_MOST -> {
-                        h = if (drawableHeight > 0) Math.min(drawableHeight, h) else h
-                        mMeasuredWidth = h * usedRatio
-                        mMeasuredHeight = h
+                        mMeasuredWidth = h2 * usedRatio
+                        mMeasuredHeight = h2
                     }
 
                     View.MeasureSpec.UNSPECIFIED -> {
-                        w = if (drawableWidth > 0) drawableWidth else w
-                        mMeasuredWidth = w
-                        mMeasuredHeight = w / usedRatio
+                        mMeasuredWidth = w2
+                        mMeasuredHeight = w2 / usedRatio
                     }
                 }
             }
