@@ -377,6 +377,9 @@ open class PowerfulImageView : ImageViewWrapper {
     /** @return The options of the progress indicator */
     fun getProgressOptions(): ProgressOptions = mProgressDrawerManager.getProgressOptions()
 
+    /** @return The progress, expressed as a percentage, from 0 to 100 */
+    fun getProgress(): Float = mProgressDrawerManager.getProgressOptions().valuePercent
+
     /** @return The selected progress mode */
     fun getProgressMode(): PivProgressMode = mProgressDrawerManager.getProgressMode()
 
