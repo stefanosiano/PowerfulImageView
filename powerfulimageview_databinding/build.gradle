@@ -12,8 +12,8 @@ def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // 
 def libDescription = 'Adds Data Binding support to PowerfulImageView.'       // Library description
 
 //data to change on updates
-def libVersion = "0.3.10"// This is the library version used when deploying the artifact
-def gitTag = '0.3.10'
+def libVersion = "1.0.0"// This is the library version used when deploying the artifact
+def gitTag = '1.0.0'
 
 group = libGroupId //bintray org/group name
 version = libVersion //version
@@ -29,11 +29,9 @@ android {
         versionName libVersion
 
         dataBinding { enabled = true }
-    }
-}
-repositories {
-    maven {
-        url  "https://dl.bintray.com/stefanosiano/maven-repo"
+
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
     }
 }
 dependencies {

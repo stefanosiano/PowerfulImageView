@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -13,7 +14,7 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
 
-        renderscriptTargetApi 14
+        renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
         dataBinding { enabled = true }
 
@@ -37,6 +38,6 @@ dependencies {
 //    implementation project(path: ':powerfulimageview_databinding')
     implementation project(path: ':powerfulimageview')
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.11"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
 }
