@@ -57,7 +57,7 @@
         android:orientation="horizontal">
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -86,7 +86,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -162,7 +162,7 @@
         android:orientation="horizontal">
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -177,7 +177,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -193,7 +193,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -269,7 +269,7 @@
         android:orientation="horizontal">
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -283,7 +283,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -297,7 +297,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

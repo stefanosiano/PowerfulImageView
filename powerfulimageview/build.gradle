@@ -14,8 +14,8 @@ def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // 
 def libDescription = 'Android library with a powerful ImageView with several added features. It currently provides a progress indicator, several shapes and blur support.' // Library description
 
 //data to change on updates
-def libVersion = "1.0.0"// This is the library version used when deploying the artifact
-def gitTag = '1.0.0'
+def libVersion = "1.0.1"// This is the library version used when deploying the artifact
+def gitTag = '1.0.1'
 
 group = libGroupId //bintray org/group name
 version = libVersion //version

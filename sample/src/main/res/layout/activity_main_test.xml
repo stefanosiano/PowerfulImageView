@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
 
-    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+    <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -24,7 +24,7 @@
 
 
 
-    <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+    <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_margin="2dp"

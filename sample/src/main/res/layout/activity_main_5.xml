@@ -26,7 +26,7 @@
 
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv1"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv1plus"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv1less"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
 
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv2"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv2plus"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv2less"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
 
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv3"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv3plus"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv3less"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
 
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv4"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv4plus"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
@@ -262,7 +262,7 @@
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
-        <com.stefanosiano.powerfullibraries.imageview.PowerfulImageView
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:id="@+id/piv4less"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
