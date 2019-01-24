@@ -4,7 +4,7 @@ apply plugin: 'com.jfrog.bintray'
 
 //fixed data
 def pkgName = 'imageview_databinding'
-def libGroupId = "com.stefanosiano.powerfullibraries"                        // Maven Group ID for the artifact
+def libGroupId = "com.stefanosiano.powerful_libraries"                       // Maven Group ID for the artifact
 def libArtifactId = "imageview_databinding"                                  // Maven Artifact ID for the artifact
 def libName = "Powerful Image View"                                          // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
@@ -34,8 +34,9 @@ android {
         renderscriptSupportModeEnabled true
     }
 }
+
 dependencies {
-    implementation "com.stefanosiano.powerfullibraries:imageview:0.3.15"
+    implementation "com.stefanosiano.powerful_libraries:imageview:1.0.0"
 }
 
 
@@ -113,7 +114,7 @@ bintray {
 
     // Package info for BinTray
     pkg {
-        repo = 'maven-repo'
+        repo = 'powerful_libraries'
         // it is the name that appears in bintray when logged
         name = pkgName
         desc = libDescription

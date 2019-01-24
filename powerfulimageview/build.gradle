@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 //fixed data
 def pkgName = 'imageview'
-def libGroupId = "com.stefanosiano.powerfullibraries"                        // Maven Group ID for the artifact
+def libGroupId = "com.stefanosiano.powerful_libraries"                       // Maven Group ID for the artifact
 def libArtifactId = "imageview"                                              // Maven Artifact ID for the artifact
 def libName = "Powerful Image View"                                          // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
@@ -123,7 +123,7 @@ bintray {
 
     // Package info for BinTray
     pkg {
-        repo = 'maven-repo'
+        repo = 'powerful_libraries'
         // it is the name that appears in bintray when logged
         name = pkgName
         desc = libDescription
