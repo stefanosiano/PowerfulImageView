@@ -98,7 +98,7 @@ internal abstract class BaseRoundedDrawer
         mBackgroundDrawable?.draw(canvas)
 
         //image
-        if(mOrigBitmap?.get()?.isRecycled ==false)
+        if(mOrigBitmap?.get()?.isRecycled != true)
             drawPaint(canvas, imageBounds, mBitmapPaint)
 
         mForegroundDrawable?.setBounds(imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())

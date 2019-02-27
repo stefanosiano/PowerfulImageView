@@ -145,17 +145,10 @@ internal class ShapeDrawerManager
                         sizeY = maxHeight
                     }
 
-
-                    //if the bitmap is already recycled i skip recycling
-                    if(mLastBitmap?.isRecycled != true) {
-                        //if i already decoded the bitmap i reuse it
-                        mLastBitmap?.also {
-                            if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable)
-                                return if (it.isRecycled) null else it
-                        }
-
-                        //otherwise I free its memory
-                        mLastBitmap?.recycle()
+                    //if i already decoded the bitmap i reuse it
+                    mLastBitmap?.also {
+                        if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable)
+                            return if (it.isRecycled) null else it
                     }
 
                     Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
