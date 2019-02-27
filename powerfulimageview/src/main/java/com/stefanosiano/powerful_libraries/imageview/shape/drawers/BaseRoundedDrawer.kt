@@ -36,7 +36,7 @@ internal abstract class BaseRoundedDrawer
 
 
     init {
-        if (bitmap != null) {
+        if (bitmap != null && !bitmap.isRecycled) {
             this.mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
             mBitmapShader?.setLocalMatrix(mMatrix)
         }
@@ -48,7 +48,7 @@ internal abstract class BaseRoundedDrawer
 
     override fun changeBitmap(bitmap: Bitmap?) {
         this.mBitmapShader = null
-        if (bitmap != null) {
+        if (bitmap != null && !bitmap.isRecycled) {
             this.mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
             mBitmapShader?.setLocalMatrix(mMatrix)
         }
