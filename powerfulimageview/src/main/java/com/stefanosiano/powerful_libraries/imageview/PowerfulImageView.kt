@@ -366,7 +366,7 @@ open class PowerfulImageView : ImageViewWrapper {
             }
         }
 
-        return shouldBlur && blurredBitmap != null
+        return shouldBlur && blurredBitmap != null && !blurredBitmap.isRecycled
     }
 
 

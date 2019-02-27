@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import com.stefanosiano.powerful_libraries.imageview.safeHeight
+import com.stefanosiano.powerful_libraries.imageview.safeWidth
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeMode
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
@@ -144,8 +146,8 @@ internal class ShapeDrawerManager
                     }
 
 
-                    //if the bitmap is already recycled i spik recycling
-                    if(mLastBitmap?.isRecycled == false) {
+                    //if the bitmap is already recycled i skip recycling
+                    if(mLastBitmap?.isRecycled != true) {
                         //if i already decoded the bitmap i reuse it
                         mLastBitmap?.also {
                             if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable)
@@ -159,6 +161,8 @@ internal class ShapeDrawerManager
                     Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
                 }
             }
+
+            if(bitmap.isRecycled) return null
 
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, canvas.width, canvas.height)
@@ -419,7 +423,6 @@ internal class ShapeDrawerManager
 
             PivShapeScaleType.FIT_CENTER -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.CENTER)
 
-
             PivShapeScaleType.FIT_END -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.END)
 
             PivShapeScaleType.FIT_START -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.START)
@@ -450,9 +453,6 @@ internal class ShapeDrawerManager
 
         mShapeDrawer.setMatrix(scaleType, mShaderMatrix)
     }
-
-    internal fun Bitmap.safeWidth(): Int? = if(isRecycled) null else width
-    internal fun Bitmap.safeHeight(): Int? = if(isRecycled) null else height
 
     /**
      * Changes the shape mode of the image.
