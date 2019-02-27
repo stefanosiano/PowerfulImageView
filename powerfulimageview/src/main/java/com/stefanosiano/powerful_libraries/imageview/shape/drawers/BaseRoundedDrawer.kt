@@ -4,6 +4,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
+import java.lang.ref.WeakReference
 
 
 internal abstract class BaseRoundedDrawer
@@ -34,9 +35,13 @@ internal abstract class BaseRoundedDrawer
     /** Matrix used to draw the shape  */
     private var mMatrix: Matrix? = null
 
+    /** Matrix used to draw the shape  */
+    private var mOrigBitmap: WeakReference<Bitmap>? = null
+
 
     init {
         if (bitmap != null && !bitmap.isRecycled) {
+            mOrigBitmap = WeakReference(bitmap)
             this.mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
             mBitmapShader?.setLocalMatrix(mMatrix)
         }
@@ -48,7 +53,9 @@ internal abstract class BaseRoundedDrawer
 
     override fun changeBitmap(bitmap: Bitmap?) {
         this.mBitmapShader = null
+        mOrigBitmap?.clear()
         if (bitmap != null && !bitmap.isRecycled) {
+            mOrigBitmap = WeakReference(bitmap)
             this.mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
             mBitmapShader?.setLocalMatrix(mMatrix)
         }
@@ -91,7 +98,8 @@ internal abstract class BaseRoundedDrawer
         mBackgroundDrawable?.draw(canvas)
 
         //image
-        drawPaint(canvas, imageBounds, mBitmapPaint)
+        if(mOrigBitmap?.get()?.isRecycled ==false)
+            drawPaint(canvas, imageBounds, mBitmapPaint)
 
         mForegroundDrawable?.setBounds(imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
         mForegroundDrawable?.draw(canvas)
