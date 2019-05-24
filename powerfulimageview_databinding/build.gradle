@@ -36,7 +36,8 @@ android {
 }
 
 dependencies {
-    implementation "com.stefanosiano.powerful_libraries:imageview:1.0.1"
+    implementation "com.stefanosiano.powerful_libraries:imageview:1.0.10"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 }
 
 

@@ -4,6 +4,7 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.os.Parcel
 import android.os.Parcelable
+import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import java.lang.ref.WeakReference
 
 
@@ -43,6 +44,11 @@ class ShapeOptions() : Parcelable {
     var borderColor: Int = 0
         set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
+    /**
+     * Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled */
+    var cutGravity: PivShapeCutGravity = PivShapeCutGravity.BOTTOM
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+
     /** Width of the shape border
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
     var borderWidth: Int = 0
@@ -58,6 +64,22 @@ class ShapeOptions() : Parcelable {
 
     /** Y radius of the rounded rectangles  */
     var radiusY: Float = 0f
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+
+    /** Cut radius 1 of the cut shapes */
+    var cutRadius1: Int = 0
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+
+    /** Cut radius 1 of the cut shapes, as a percentage */
+    var cutRadius1Percent: Float = 0f
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+
+    /** Cut radius 2 of the cut shapes */
+    var cutRadius2: Int = 0
+        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+
+    /** Cut radius 2 of the cut shapes, as a percentage */
+    var cutRadius2Percent: Float = 0f
         set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
 
     /** Color used by solid shapes
@@ -129,19 +151,34 @@ class ShapeOptions() : Parcelable {
      * @param borderColor Color of the shape border
      * @param borderWidth Width of the shape border
      * @param ratio Ratio of the shape. Width will be equal to (height * ratio). It's ignored in square and circle shapes
+     * @param radiusX X radius of the image. Used in rounded rectangles
+     * @param radiusY Y radius of the image. Used in rounded rectangles
+     * @param solidColor Solid color used by solid shapes
+     * @param backgroundDrawable Background drawable to draw under the image. Does not follow rounded shapes
+     * @param foregroundDrawable Fackground drawable to draw under the image. Does not follow rounded shapes
+     * @param cutRadius1 Cut radius 1. Used in cut shapes. If it's 0 or more, it applies and overrides "cutRadius1Percent" parameter
+     * @param cutRadius1Percent Cut radius 1 in percentage. Used in cut shapes
+     * @param cutRadius2 Cut radius 2. Used in cut shapes. If it's 0 or more, it applies and overrides "cutRadius2Percent" parameter
+     * @param cutRadius2Percent Cut radius 2 in percentage. Used in cut shapes
      */
-    constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float, borderOverlay: Boolean,
-                     borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable?, foregroundDrawable: Drawable?): this() {
+    constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float, borderOverlay: Boolean, cutGravity: Int,
+                borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable?,
+                foregroundDrawable: Drawable?, cutRadius1: Int, cutRadius1Percent: Float, cutRadius2: Int, cutRadius2Percent: Float): this() {
         this.backgroundColor = backgroundColor
         this.foregroundColor = foregroundColor
         this.mInnerPadding = innerPadding
         this.mInnerPaddingPercent = innerPaddingPercent
         this.borderOverlay = borderOverlay
         this.borderColor = borderColor
+        this.cutGravity = PivShapeCutGravity.fromValue(cutGravity)
         this.borderWidth = borderWidth
         this.ratio = ratio
         this.radiusX = radiusX
         this.radiusY = radiusY
+        this.cutRadius1 = cutRadius1
+        this.cutRadius1Percent = if (cutRadius1Percent > 100) cutRadius1Percent % 100 else cutRadius1Percent
+        this.cutRadius2 = cutRadius2
+        this.cutRadius2Percent = if (cutRadius2Percent > 100) cutRadius2Percent % 100 else cutRadius2Percent
         this.solidColor = solidColor
         this.backgroundDrawable = backgroundDrawable
         this.foregroundDrawable = foregroundDrawable
@@ -156,11 +193,16 @@ class ShapeOptions() : Parcelable {
         this.mInnerPadding = other.mInnerPadding
         this.mInnerPaddingPercent = other.mInnerPaddingPercent
         this.borderOverlay = other.borderOverlay
+        this.cutGravity = other.cutGravity
         this.borderColor = other.borderColor
         this.borderWidth = other.borderWidth
         this.ratio = other.ratio
         this.radiusX = other.radiusX
         this.radiusY = other.radiusY
+        this.cutRadius1 = other.cutRadius1
+        this.cutRadius1Percent = other.cutRadius1Percent
+        this.cutRadius2 = other.cutRadius2
+        this.cutRadius2Percent = other.cutRadius2Percent
         this.solidColor = other.solidColor
         this.shapeBounds.set(other.shapeBounds)
         this.imageBounds.set(other.imageBounds)
@@ -212,23 +254,19 @@ class ShapeOptions() : Parcelable {
                 shapeBounds.set((w - smallSize) / 2, (h - smallSize) / 2, (w + smallSize) / 2, (h + smallSize) / 2)
             }
 
-            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> {
+            PivShapeMode.NORMAL -> {
+                shapeBounds.set(0f, 0f, w.toFloat(), h.toFloat())
+                smallSize = Math.min(w, h).toFloat()
+            }
+
+//            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL, cut modes -> {
+            else -> {
                 //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
                 //In this case I center the shape into the view
                 val smallX = Math.min(w.toFloat(), h * usedRatio)
                 val smallY = Math.min(h.toFloat(), w / usedRatio)
                 smallSize = Math.min(smallX, smallY)
                 shapeBounds.set((w - smallX) / 2, (h - smallY) / 2, (w + smallX) / 2, (h + smallY) / 2)
-            }
-
-            PivShapeMode.NORMAL -> {
-                shapeBounds.set(0f, 0f, w.toFloat(), h.toFloat())
-                smallSize = Math.min(w, h).toFloat()
-            }
-
-            else -> {
-                shapeBounds.set(0f, 0f, w.toFloat(), h.toFloat())
-                smallSize = Math.min(w, h).toFloat()
             }
         }
 
@@ -338,11 +376,16 @@ class ShapeOptions() : Parcelable {
         dest.writeInt(mInnerPadding)
         dest.writeFloat(mInnerPaddingPercent)
         dest.writeByte((if (borderOverlay) 1 else 0).toByte())
+        dest.writeInt(cutGravity.value)
         dest.writeInt(borderColor)
         dest.writeInt(borderWidth)
         dest.writeFloat(ratio)
         dest.writeFloat(radiusX)
         dest.writeFloat(radiusY)
+        dest.writeInt(cutRadius1)
+        dest.writeFloat(cutRadius1Percent)
+        dest.writeInt(cutRadius2)
+        dest.writeFloat(cutRadius2Percent)
         dest.writeInt(solidColor)
         dest.writeParcelable(shapeBounds, flags)
         dest.writeParcelable(imageBounds, flags)
@@ -365,10 +408,15 @@ class ShapeOptions() : Parcelable {
         mInnerPaddingPercent = `in`.readFloat()
         borderOverlay = `in`.readByte().toInt() != 0
         borderColor = `in`.readInt()
+        cutGravity = PivShapeCutGravity.fromValue(`in`.readInt())
         borderWidth = `in`.readInt()
         ratio = `in`.readFloat()
         radiusX = `in`.readFloat()
         radiusY = `in`.readFloat()
+        cutRadius1 = `in`.readInt()
+        cutRadius1Percent = `in`.readFloat()
+        cutRadius2 = `in`.readInt()
+        cutRadius2Percent = `in`.readFloat()
         solidColor = `in`.readInt()
         shapeBounds = `in`.readParcelable(RectF::class.java.classLoader) ?: RectF(0f, 0f, 0f, 0f)
         imageBounds = `in`.readParcelable(RectF::class.java.classLoader) ?: RectF(0f, 0f, 0f, 0f)

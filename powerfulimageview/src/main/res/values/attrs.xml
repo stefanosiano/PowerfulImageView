@@ -141,6 +141,14 @@
             <enum name="solid_circle" value="6"/>
             <enum name="solid_oval" value="7"/>
             <enum name="solid_rounded_rectangle" value="8"/>
+            <enum name="diagonal" value="9"/>
+            <enum name="solid_diagonal" value="10"/>
+            <enum name="arc" value="11"/>
+            <enum name="solid_arc" value="12"/>
+            <enum name="corner" value="13"/>
+            <enum name="solid_corner" value="14"/>
+            <enum name="rounded_corner" value="15"/>
+            <enum name="solid_rounded_corner" value="16"/>
         </attr>
 
         <!-- Custom scale type of the indicator -->
@@ -155,6 +163,19 @@
             <enum name="centerInside" value="7"/>
             <enum name="topCrop" value="8"/>
             <enum name="bottomCrop" value="9"/>
+        </attr>
+
+        <!-- Set the gravity of the cut.
+             It will follow the right to left layout (on api 17+), if not disabled. -->
+        <attr name="piv_shape_cut_gravity" format="enum" >
+            <enum name="start" value="1"/>
+            <enum name="end" value="2"/>
+            <enum name="top" value="3"/>
+            <enum name="top_start" value="4"/>
+            <enum name="top_end" value="5"/>
+            <enum name="bottom" value="6"/>
+            <enum name="bottom_start" value="7"/>
+            <enum name="bottom_end" value="8"/>
         </attr>
 
 
@@ -174,6 +195,16 @@
 
         <!-- Set the y radius of the image. Used in rounded rectangles -->
         <attr name="piv_shape_radius_y" format="float" />
+
+        <!-- Set the cut radius 1, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100). Used in cut shapes -->
+        <attr name="piv_shape_cut_radius_1" format="dimension|fraction" />
+
+        <!-- Set the cut radius 2, in a specific dimension or in percentage (20dp or 30%).
+             If the specific dimension is less than 0, it is ignored.
+             If the percentage is higher than 100, it is treated as (value % 100). Used in cut shapes -->
+        <attr name="piv_shape_cut_radius_2" format="dimension|fraction" />
 
         <!-- Set the solid color used by solid shapes -->
         <attr name="piv_shape_solid_color" format="color" />

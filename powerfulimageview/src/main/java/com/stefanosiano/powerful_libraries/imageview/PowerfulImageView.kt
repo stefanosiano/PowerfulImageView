@@ -18,6 +18,7 @@ import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 import com.stefanosiano.powerful_libraries.imageview.blur.PivBlurMode
 import com.stefanosiano.powerful_libraries.imageview.progress.PivProgressGravity
 import com.stefanosiano.powerful_libraries.imageview.progress.PivProgressMode
+import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 import com.stefanosiano.powerful_libraries.imageview.progress.drawers.ProgressDrawerManager
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeMode
@@ -60,6 +61,7 @@ open class PowerfulImageView : ImageViewWrapper {
 
     //Shape initialization constants
     private val DEFAULT_SHAPE_MODE = PivShapeMode.NORMAL.value
+    private val DEFAULT_SHAPE_CUT_GRAVITY = PivShapeCutGravity.BOTTOM.value
     private val DEFAULT_SHAPE_INNER_PADDING = -1
     private val DEFAULT_SHAPE_INNER_PADDING_PERCENT = 0f
     private val DEFAULT_SHAPE_BORDER_OVERLAY = false
@@ -67,6 +69,10 @@ open class PowerfulImageView : ImageViewWrapper {
     private val DEFAULT_SHAPE_RATIO = 0f
     private val DEFAULT_SHAPE_RADIUS_X = 1f
     private val DEFAULT_SHAPE_RADIUS_Y = 1f
+    private val DEFAULT_SHAPE_CUT_RADIUS_1 = 0
+    private val DEFAULT_SHAPE_CUT_RADIUS_1_PERCENT = 25f
+    private val DEFAULT_SHAPE_CUT_RADIUS_2 = 0
+    private val DEFAULT_SHAPE_CUT_RADIUS_2_PERCENT = 100f
 
     //Blur initialization constants
     private val DEFAULT_BLUR_RADIUS = 0
@@ -107,9 +113,13 @@ open class PowerfulImageView : ImageViewWrapper {
         val tvSize = TypedValue()
         val tvBorderWidth = TypedValue()
         val tvShadowPadding = TypedValue()
+        val tvCutRadius1 = TypedValue()
+        val tvCutRadius2 = TypedValue()
         a.getValue(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_progress_size, tvSize)
         a.getValue(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_progress_border_width, tvBorderWidth)
         a.getValue(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_progress_shadow_padding, tvShadowPadding)
+        a.getValue(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_cut_radius_1, tvCutRadius1)
+        a.getValue(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_cut_radius_2, tvCutRadius2)
 
 
         val progressMode = PivProgressMode.fromValue(a.getInteger(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE))
@@ -154,6 +164,7 @@ open class PowerfulImageView : ImageViewWrapper {
                 if (tvShapeInnerPadding.type == TypedValue.TYPE_DIMENSION) tvShapeInnerPadding.getDimension(resources.displayMetrics).toInt() else DEFAULT_SHAPE_INNER_PADDING,
                 if (tvShapeInnerPadding.type == TypedValue.TYPE_FRACTION) tvShapeInnerPadding.getFraction(100f, 100f) else DEFAULT_SHAPE_INNER_PADDING_PERCENT,
                 a.getBoolean(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_border_overlay, DEFAULT_SHAPE_BORDER_OVERLAY),
+                a.getInteger(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_cut_gravity, DEFAULT_SHAPE_CUT_GRAVITY),
                 getColor(a, com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_border_color, android.R.color.transparent),
                 a.getDimensionPixelSize(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_border_width, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_BORDER_WIDTH.toFloat(), resources.displayMetrics).toInt()),
                 a.getFloat(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_ratio, DEFAULT_SHAPE_RATIO),
@@ -161,7 +172,11 @@ open class PowerfulImageView : ImageViewWrapper {
                 a.getFloat(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_radius_y, DEFAULT_SHAPE_RADIUS_Y),
                 getColor(a, com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_solid_color, com.stefanosiano.powerful_libraries.imageview.R.color.piv_default_shape_solid_color),
                 a.getDrawable(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_background),
-                a.getDrawable(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_foreground)
+                a.getDrawable(com.stefanosiano.powerful_libraries.imageview.R.styleable.PowerfulImageView_piv_shape_foreground),
+                if (tvCutRadius1.type == TypedValue.TYPE_DIMENSION) tvCutRadius1.getDimension(resources.displayMetrics).toInt() else DEFAULT_SHAPE_CUT_RADIUS_1,
+                if (tvCutRadius1.type == TypedValue.TYPE_FRACTION) tvCutRadius1.getFraction(100f, 100f) else DEFAULT_SHAPE_CUT_RADIUS_1_PERCENT,
+                if (tvCutRadius2.type == TypedValue.TYPE_DIMENSION) tvCutRadius2.getDimension(resources.displayMetrics).toInt() else DEFAULT_SHAPE_CUT_RADIUS_2,
+                if (tvCutRadius2.type == TypedValue.TYPE_FRACTION) tvCutRadius2.getFraction(100f, 100f) else DEFAULT_SHAPE_CUT_RADIUS_2_PERCENT
         )
 
 

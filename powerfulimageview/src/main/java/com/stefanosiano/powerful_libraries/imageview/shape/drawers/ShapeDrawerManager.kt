@@ -67,6 +67,8 @@ internal class ShapeDrawerManager
     private val mNormalShapeDrawer by lazy { NormalShapeDrawer(mDrawable) }
     private val mOvalShapeDrawer by lazy { OvalShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidCircleShapeDrawer by lazy { SolidCircleShapeDrawer(mDrawable) }
+//    private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
+//    private val mSolidDiagonalShapeDrawer by lazy { SolidDiagonalShapeDrawer(mDrawable) }
     private val mRoundedRectangleShapeDrawer by lazy { RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidOvalShapeDrawer by lazy { SolidOvalShapeDrawer(mDrawable) }
     private val mSolidRoundedRectangleShapeDrawer by lazy { SolidRoundedRectangleShapeDrawer(mDrawable) }
@@ -146,12 +148,10 @@ internal class ShapeDrawerManager
                     }
 
                     //if i already decoded the bitmap i reuse it
-                    mLastBitmap?.also {
-                        if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable)
-                            return if (it.isRecycled) null else it
-                    }
-
-                    Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
+                    if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable && mLastBitmap != null)
+                        mLastBitmap?.let { if (it.isRecycled) null else it } ?: Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
+                    else
+                        Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
                 }
             }
 

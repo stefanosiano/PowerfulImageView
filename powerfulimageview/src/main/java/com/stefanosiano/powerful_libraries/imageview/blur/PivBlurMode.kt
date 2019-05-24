@@ -20,30 +20,26 @@ enum class PivBlurMode constructor(
     BOX3X3_RS(8, BOX3X3, true),
     BOX5X5(9, DISABLED, false),
     BOX5X5_RS(10, BOX5X5, true),
-    STACK(11, DISABLED, false),
-    STACK_RS(12, STACK, true);
+    STACK(11, DISABLED, false);
 
 
     internal companion object {
 
         /** Returns the mode associated to the passed value, or disabled if the value is invalid  */
-        fun fromValue(value: Int): PivBlurMode {
-            when (value) {
-                12 -> return STACK_RS
-                11 -> return STACK
-                10 -> return BOX5X5_RS
-                9 -> return BOX5X5
-                8 -> return BOX3X3_RS
-                7 -> return BOX3X3
-                6 -> return GAUSSIAN_RS
-                5 -> return GAUSSIAN
-                4 -> return GAUSSIAN3X3_RS
-                3 -> return GAUSSIAN3X3
-                2 -> return GAUSSIAN5X5_RS
-                1 -> return GAUSSIAN5X5
-                0 -> return DISABLED
-                else -> return DISABLED
-            }
+        fun fromValue(value: Int): PivBlurMode = when (value) {
+            11 -> STACK
+            10 -> BOX5X5_RS
+            9 -> BOX5X5
+            8 -> BOX3X3_RS
+            7 -> BOX3X3
+            6 -> GAUSSIAN_RS
+            5 -> GAUSSIAN
+            4 -> GAUSSIAN3X3_RS
+            3 -> GAUSSIAN3X3
+            2 -> GAUSSIAN5X5_RS
+            1 -> GAUSSIAN5X5
+            0 -> DISABLED
+            else -> DISABLED
         }
     }
 }

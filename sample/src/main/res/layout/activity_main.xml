@@ -170,9 +170,12 @@
             app:piv_shape_scaleType="centerCrop"
 
             app:piv_shape_mode="solid_circle"
-            app:piv_shape_solid_color="#CFCFCF"
+            app:piv_shape_solid_color="#0AFAFA"
             app:piv_shape_border_width="1dp"
             app:piv_shape_border_color="#90000000"
+            app:piv_shape_cut_gravity="start"
+            app:piv_shape_cut_radius_1="30%"
+            app:piv_shape_cut_radius_2="50%"
 
             app:srcCompat="@drawable/sf1" />
 

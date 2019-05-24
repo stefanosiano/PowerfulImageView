@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val lastRadius = piv.getBlurRadius()
         val time = System.currentTimeMillis()
         piv.setBlurRadius(piv.getBlurRadius() + 1)
+        piv.getShapeOptions().backgroundColor
         val time2 = System.currentTimeMillis()
         pivtxt.text = "${pivtxt.text}\nRadius $lastRadius -> ${piv.getBlurRadius()}. Time: ${time2-time} ms"
     }

@@ -85,7 +85,6 @@ internal class BlurManager
     private val mGaussianBlurAlgorithm by lazy { GaussianBlurAlgorithm() }
     private val mGaussianRenderscriptBlurAlgorithm by lazy { GaussianRenderscriptBlurAlgorithm() }
     private val mStackBlurAlgorithm by lazy { StackBlurAlgorithm() }
-    private val mStackRenderscriptBlurAlgorithm by lazy { StackRenderscriptBlurAlgorithm() }
     private val mDummyBlurAlgorithm by lazy { DummyBlurAlgorithm() }
 
     /** Selected algorithm to blur the image  */
@@ -226,7 +225,6 @@ internal class BlurManager
         addContext(false)
 
         mBlurAlgorithm = when (mMode) {
-            PivBlurMode.STACK_RS -> mStackRenderscriptBlurAlgorithm
             PivBlurMode.STACK -> mStackBlurAlgorithm
             PivBlurMode.GAUSSIAN5X5_RS -> mGaussian5x5RenderscriptBlurAlgorithm
             PivBlurMode.GAUSSIAN5X5 -> mGaussian5x5BlurAlgorithm
