@@ -7,14 +7,14 @@ apply plugin: 'kotlin-android-extensions'
 //fixed data
 def pkgName = 'imageview'
 def libGroupId = "com.stefanosiano.powerful_libraries"                       // Maven Group ID for the artifact
-def libArtifactId = "imageview"                                              // Maven Artifact ID for the artifact
+def libArtifactId = "imageview"                                           // Maven Artifact ID for the artifact
 def libName = "Powerful Image View"                                          // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
 def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // Git repository URL
 def libDescription = 'Android library with a powerful ImageView with several added features. It currently provides a progress indicator, several shapes and blur support.' // Library description
 
 //data to change on updates
-def libVersion = "1.0.12"// This is the library version used when deploying the artifact
+def libVersion = "1.0.13"// This is the library version used when deploying the artifact
 def gitTag = "$libVersion"
 
 group = libGroupId //bintray org/group name
@@ -31,9 +31,6 @@ android {
         versionName libVersion
         consumerProguardFiles 'piv-proguard-rules.txt'
         vectorDrawables.useSupportLibrary = true
-
-        renderscriptTargetApi 18
-        renderscriptSupportModeEnabled true
 
     }
 }

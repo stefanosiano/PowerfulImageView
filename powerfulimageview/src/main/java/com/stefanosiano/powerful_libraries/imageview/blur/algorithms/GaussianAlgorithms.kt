@@ -1,7 +1,7 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
-import androidx.renderscript.*
+
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 
 
@@ -19,54 +19,6 @@ internal class Gaussian3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
  */
 internal class Gaussian5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
     override fun getFilter() = floatArrayOf(0.0545f, 0.2442f, 0.4026f, 0.2442f, 0.0545f)
-}
-
-/**
- * Class that performs the gaussian blur with 3x3 coefficient matrix using renderscript.
- * Changing radius will repeat the process radius times.
- */
-internal class Gaussian3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
-
-    private val coefficientMatrix = floatArrayOf(0.0387f, 0.1194f, 0.0387f, 0.1194f, 0.3676f, 0.1194f, 0.0387f, 0.1194f, 0.0387f)
-
-    override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
-        var input = Allocation.createFromBitmap(rs, original)
-        val output = Allocation.createTyped(rs, input.type)
-        val script = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs))
-        script.setCoefficients(coefficientMatrix)
-        for (i in 0 until radius) {
-            script.setInput(input)
-            script.forEach(output)
-            if (input !== output) input.destroy()
-            input = output
-        }
-        return output
-    }
-}
-
-/**
- * Class that performs the gaussian blur with 5x5 coefficient matrix using renderscript.
- * Changing radius will repeat the process radius times.
- */
-internal class Gaussian5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
-
-    private val coefficientMatrix = floatArrayOf(0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0219f, 0.0983f, 0.1621f, 0.0983f, 0.0219f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f)
-
-    override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
-        var input = Allocation.createFromBitmap(rs, original)
-        val output = Allocation.createTyped(rs, input.type)
-        val script = ScriptIntrinsicConvolve5x5.create(rs, Element.U8_4(rs))
-        script.setCoefficients(coefficientMatrix)
-        for (i in 0 until radius) {
-            script.setInput(input)
-            script.forEach(output)
-            if (input !== output)
-                input.destroy()
-            input = output
-        }
-        return output
-    }
-
 }
 
 
@@ -114,21 +66,3 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
 }
 
 
-
-/**
- * Class that performs the gaussian blur with any kind of radius using renderscript.
- * Increasing radius will change the coefficients used and increase the radius of the blur,
- * resulting in the image more blurry, but slower.
- */
-internal class GaussianRenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
-
-    override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
-        val input = Allocation.createFromBitmap(rs, original)
-        val output = Allocation.createTyped(rs, input.type)
-        val script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs))
-        script.setRadius(radius.toFloat())
-        script.setInput(input)
-        script.forEach(output)
-        return output
-    }
-}

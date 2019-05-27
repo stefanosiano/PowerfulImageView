@@ -2,7 +2,7 @@ package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.content.Context
 import android.util.Log
-
+import androidx.renderscript.RenderScript
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
@@ -33,19 +33,19 @@ internal object SharedBlurManager {
         val count = count.decrementAndGet()
         if (count == 0) {
             c.applicationContext = null
-            
+            c.renderScript?.destroy()
             c.renderScript = null
         }
     }
 }
 
 internal class C {
-    internal var renderScript: Any? = null
+    internal var renderScript: RenderScript? = null
     internal var applicationContext: Context? = null
 
-    fun buildRenderscript(): Any? {
+    fun buildRenderscript(): RenderScript? {
         applicationContext ?: return null
-        try { renderScript = null }
+        try { renderScript = RenderScript.create(applicationContext) }
         catch (e: Exception) { Log.e(BlurManager::class.java.simpleName, e.localizedMessage) }
         return renderScript
     }

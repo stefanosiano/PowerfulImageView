@@ -1,19 +1,21 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 //fixed data
-def pkgName = 'imageview_databinding'
+def pkgName = 'imageview_rs'
 def libGroupId = "com.stefanosiano.powerful_libraries"                       // Maven Group ID for the artifact
-def libArtifactId = "imageview_databinding"                                  // Maven Artifact ID for the artifact
+def libArtifactId = "imageview_rs"                                           // Maven Artifact ID for the artifact
 def libName = "Powerful Image View"                                          // Library name
 def siteUrl = 'https://github.com/stefanosiano/PowerfulImageView'            // Homepage URL of the library
 def gitUrl = 'https://github.com/stefanosiano/PowerfulImageView.git'         // Git repository URL
-def libDescription = 'Adds Data Binding support to PowerfulImageView.'       // Library description
+def libDescription = 'Android library with a powerful ImageView with several added features. It currently provides a progress indicator, several shapes and blur support.' // Library description
 
 //data to change on updates
-def libVersion = "1.0.2"// This is the library version used when deploying the artifact
-def gitTag = '1.0.2'
+def libVersion = "1.0.13"// This is the library version used when deploying the artifact
+def gitTag = "$libVersion"
 
 group = libGroupId //bintray org/group name
 version = libVersion //version
@@ -27,15 +29,22 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName libVersion
+        consumerProguardFiles 'piv-proguard-rules.txt'
+        vectorDrawables.useSupportLibrary = true
 
-        dataBinding { enabled = true }
+        renderscriptSupportModeEnabled true
+
     }
 }
-
 dependencies {
-    implementation "com.stefanosiano.powerful_libraries:imageview:1.0.13"
     implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.31"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
 }
+
+
+
+
 
 
 install {
@@ -84,6 +93,7 @@ task generateSourcesJar(type: Jar) {
 }
 
 task generateJavadocs(type: Javadoc) {
+    excludes = ['**/*.kt'] // < ---- Exclude all kotlin files from javadoc file.
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }

@@ -75,15 +75,15 @@ internal class BlurManager
 
     //Algorithms
     private val mBox3x3BlurAlgorithm by lazy { Box3x3BlurAlgorithm() }
-    private val mBox3x3RenderscriptBlurAlgorithm by lazy { Box3x3BlurAlgorithm() }
+    private val mBox3x3RenderscriptBlurAlgorithm by lazy { Box3x3RenderscriptBlurAlgorithm() }
     private val mBox5x5BlurAlgorithm by lazy { Box5x5BlurAlgorithm() }
-    private val mBox5x5RenderscriptBlurAlgorithm by lazy { Box5x5BlurAlgorithm() }
+    private val mBox5x5RenderscriptBlurAlgorithm by lazy { Box5x5RenderscriptBlurAlgorithm() }
     private val mGaussian5x5BlurAlgorithm by lazy { Gaussian5x5BlurAlgorithm() }
-    private val mGaussian5x5RenderscriptBlurAlgorithm by lazy { Gaussian5x5BlurAlgorithm() }
+    private val mGaussian5x5RenderscriptBlurAlgorithm by lazy { Gaussian5x5RenderscriptBlurAlgorithm() }
     private val mGaussian3x3BlurAlgorithm by lazy { Gaussian3x3BlurAlgorithm() }
-    private val mGaussian3x3RenderscriptBlurAlgorithm by lazy { Gaussian3x3BlurAlgorithm() }
+    private val mGaussian3x3RenderscriptBlurAlgorithm by lazy { Gaussian3x3RenderscriptBlurAlgorithm() }
     private val mGaussianBlurAlgorithm by lazy { GaussianBlurAlgorithm() }
-    private val mGaussianRenderscriptBlurAlgorithm by lazy { GaussianBlurAlgorithm() }
+    private val mGaussianRenderscriptBlurAlgorithm by lazy { GaussianRenderscriptBlurAlgorithm() }
     private val mStackBlurAlgorithm by lazy { StackBlurAlgorithm() }
     private val mDummyBlurAlgorithm by lazy { DummyBlurAlgorithm() }
 

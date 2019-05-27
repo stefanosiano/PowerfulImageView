@@ -1,7 +1,7 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
-
+import androidx.renderscript.RenderScript
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 
 
@@ -13,7 +13,7 @@ internal interface BlurAlgorithm {
 
 
     /** Sets the renderscript context to this algorithm. Pass it before blurring!  */
-    fun setRenderscript(renderscript: Any?): BlurAlgorithm { return this }
+    fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm { return this }
 
 
     /**
