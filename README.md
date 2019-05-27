@@ -7,8 +7,10 @@ Custom Android ImageView with several added features.
 3) Blur: Blurs the image with gaussian, box or stack algorithm. It can use either Renderscript or Java methods, and fallback in case of errors.  
 It extends AppcompatImageView, so it supports vector drawables and uses support version of renderscript
   
+  
 Several other features will be added, and all the sections of the readme will be updated accordingly.
 All the features can be used together, alone or combined in any way (like using only progress and blur).
+Renderscript is not included in the main module, but it's included in imageview_rs. In this way you can use imageview if you don't need Renderscript to not have any native code included in your app. If you want to use Rendercript for blurring, you should use imageview_rs instead.  
   
   
   
@@ -64,7 +66,7 @@ Blur algorithms are divided into 2 categories:
 1) Renderscript algorithms: they use renderscript under the hood, falling back to the corresponding Java algorithm in case of error, if enabled by its option;
 2) Java algorithms: they use java and are slower, even if all Java algorithms are multi-threaded to increase the performance (an option can limit the threads to use).
   
-  
+Note: To use Renderscript for blurring (recommended, but optional) you should imageview_rs instead of imageview.  
   
   
   
@@ -82,8 +84,9 @@ repositories {
 To use PowerfulImageView:  
 ```
 dependencies {
-    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.12'
-    implementation 'com.stefanosiano.powerful_libraries:imageview_databinding:1.0.1' //To have support for Android data binding
+    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.13'
+    implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.13' //Use this if you need renderscript
+    implementation 'com.stefanosiano.powerful_libraries:imageview_databinding:1.0.2' //To have support for Android data binding
 }
 ```
   
