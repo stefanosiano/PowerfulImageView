@@ -8,8 +8,9 @@ Custom Android ImageView with several added features.
 It extends AppcompatImageView, so it supports vector drawables and uses support version of renderscript
   
   
-Several other features will be added, and all the sections of the readme will be updated accordingly.
-All the features can be used together, alone or combined in any way (like using only progress and blur).
+Several other features will be added, and all the sections of the readme will be updated accordingly.  
+All the features can be used together, alone or combined in any way (like using only progress and blur).  
+  
 Renderscript is not included in the main module, but it's included in imageview_rs. In this way you can use imageview if you don't need Renderscript to not have any native code included in your app. If you want to use Rendercript for blurring, you should use imageview_rs instead.  
   
   
@@ -84,7 +85,7 @@ repositories {
 To use PowerfulImageView:  
 ```
 dependencies {
-    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.13'
+    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.13' //Use this if you don't need renderscript
     implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.13' //Use this if you need renderscript
     implementation 'com.stefanosiano.powerful_libraries:imageview_databinding:1.0.2' //To have support for Android data binding
 }
