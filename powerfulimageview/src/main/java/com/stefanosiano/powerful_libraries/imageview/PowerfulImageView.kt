@@ -452,7 +452,7 @@ open class PowerfulImageView : ImageViewWrapper {
         if(!initialized) return
         mBlurManager.removeContext(true)
     }
-
+/*
     /** Save the state of the view.  */
     override fun onSaveInstanceState(): Parcelable? {
         val bundle = Bundle()
@@ -476,6 +476,6 @@ open class PowerfulImageView : ImageViewWrapper {
         }
         super.onRestoreInstanceState(state)
         blurBitmap(true)
-    }
+    }*/
 }
 
