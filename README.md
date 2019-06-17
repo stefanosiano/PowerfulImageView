@@ -85,8 +85,8 @@ repositories {
 To use PowerfulImageView:  
 ```
 dependencies {
-    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.13' //Use this if you don't need renderscript
-    implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.13' //Use this if you need renderscript
+    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.14' //Use this if you don't need renderscript
+    implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.14' //Use this if you need renderscript
     implementation 'com.stefanosiano.powerful_libraries:imageview_databinding:1.0.2' //To have support for Android data binding
 }
 ```
