@@ -447,6 +447,8 @@ internal class ShapeDrawerManager
         mShapeDrawer.setMatrix(scaleType, mShaderMatrix)
     }
 
+    fun getScaleType(): PivShapeScaleType? = mScaleType
+
     /**
      * Changes the shape mode of the image.
      *
