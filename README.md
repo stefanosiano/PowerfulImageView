@@ -11,8 +11,8 @@ It extends AppcompatImageView, so it supports vector drawables and uses support 
 Several other features will be added, and all the sections of the readme will be updated accordingly.  
 All the features can be used together, alone or combined in any way (like using only progress and blur).  
   
-Renderscript is not included in the main module, but it's included in imageview_rs. In this way you can use imageview if you don't need Renderscript to not have any native code included in your app. If you want to use Rendercript for blurring, you should use imageview_rs instead.To have support for Android data binding
-It supports Android data binding, too
+Renderscript is not included in the main module, but it's included in imageview_rs. In this way you can use imageview if you don't need Renderscript to not have any native code included in your app. If you want to use Rendercript for blurring, you should use imageview_rs instead.
+  It supports Android data binding, too.
   
   
   
