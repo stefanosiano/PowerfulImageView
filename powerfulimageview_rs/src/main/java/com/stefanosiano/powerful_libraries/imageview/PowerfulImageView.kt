@@ -7,8 +7,6 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Bundle
-import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -116,64 +114,64 @@ open class PowerfulImageView : ImageViewWrapper {
         val tvShadowPadding = TypedValue()
         val tvCutRadius1 = TypedValue()
         val tvCutRadius2 = TypedValue()
-        a.getValue(R.styleable.PowerfulImageView_piv_progress_size, tvSize)
-        a.getValue(R.styleable.PowerfulImageView_piv_progress_border_width, tvBorderWidth)
-        a.getValue(R.styleable.PowerfulImageView_piv_progress_shadow_padding, tvShadowPadding)
-        a.getValue(R.styleable.PowerfulImageView_piv_shape_cut_radius_1, tvCutRadius1)
-        a.getValue(R.styleable.PowerfulImageView_piv_shape_cut_radius_2, tvCutRadius2)
+        a.getValue(R.styleable.PowerfulImageView_pivProgressSize, tvSize)
+        a.getValue(R.styleable.PowerfulImageView_pivProgressBorderWidth, tvBorderWidth)
+        a.getValue(R.styleable.PowerfulImageView_pivProgressShadowPadding, tvShadowPadding)
+        a.getValue(R.styleable.PowerfulImageView_pivShapeCutRadius1, tvCutRadius1)
+        a.getValue(R.styleable.PowerfulImageView_pivShapeCutRadius2, tvCutRadius2)
 
 
-        val progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_progress_mode, DEFAULT_PROGRESS_MODE))
-        val useDeterminateAnimation = a.getBoolean(R.styleable.PowerfulImageView_piv_progress_determinate_animation_enabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION)
+        val progressMode = PivProgressMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_pivProgressMode, DEFAULT_PROGRESS_MODE))
+        val useDeterminateAnimation = a.getBoolean(R.styleable.PowerfulImageView_pivProgressDeterminateAnimationEnabled, DEFAULT_PROGRESS_USE_DETERMINATE_ANIMATION)
 
         //get all the options from xml or default constants and initialize ProgressOptions object
         val progressOptions = ProgressOptions(
                 //Using animations will cause the progress not to be drawn immediately in layout editor
                 if(isInEditMode) false else useDeterminateAnimation,
-                a.getInt(R.styleable.PowerfulImageView_piv_progress_animation_duration, if(useDeterminateAnimation) DEFAULT_PROGRESS_INDETEMINATE_ANIMATION_DURATION else DEFAULT_PROGRESS_ANIMATION_DURATION),
+                a.getInt(R.styleable.PowerfulImageView_pivProgressAnimationDuration, if(useDeterminateAnimation) DEFAULT_PROGRESS_INDETEMINATE_ANIMATION_DURATION else DEFAULT_PROGRESS_ANIMATION_DURATION),
                 if (tvBorderWidth.type == TypedValue.TYPE_DIMENSION) tvBorderWidth.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_WIDTH,
                 if (tvBorderWidth.type == TypedValue.TYPE_FRACTION) tvBorderWidth.getFraction(100f, 100f) else DEFAULT_PROGRESS_WIDTH_PERCENT,
                 if (tvSize.type == TypedValue.TYPE_DIMENSION) tvSize.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_SIZE,
                 if (tvSize.type == TypedValue.TYPE_FRACTION) tvSize.getFraction(100f, 100f) else DEFAULT_PROGRESS_SIZE_PERCENT,
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_padding, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING.toFloat(), resources.displayMetrics).toInt()),
-                a.getFloat(R.styleable.PowerfulImageView_piv_progress_value, DEFAULT_PROGRESS_VALUE.toFloat()),
-                getColor(a, R.styleable.PowerfulImageView_piv_progress_front_color, R.color.piv_default_progress_front_color),
-                getColor(a, R.styleable.PowerfulImageView_piv_progress_back_color, R.color.piv_default_progress_back_color),
-                getColor(a, R.styleable.PowerfulImageView_piv_progress_indeterminate_color, R.color.piv_default_progress_indeterminate_color),
-                a.getInteger(R.styleable.PowerfulImageView_piv_progress_gravity, DEFAULT_PROGRESS_GRAVITY),
+                a.getDimensionPixelSize(R.styleable.PowerfulImageView_pivProgressPadding, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_PADDING.toFloat(), resources.displayMetrics).toInt()),
+                a.getFloat(R.styleable.PowerfulImageView_pivProgressValue, DEFAULT_PROGRESS_VALUE.toFloat()),
+                getColor(a, R.styleable.PowerfulImageView_pivProgressFrontColor, R.color.piv_default_progress_front_color),
+                getColor(a, R.styleable.PowerfulImageView_pivProgressBackColor, R.color.piv_default_progress_back_color),
+                getColor(a, R.styleable.PowerfulImageView_pivProgressIndeterminateColor, R.color.piv_default_progress_indeterminate_color),
+                a.getInteger(R.styleable.PowerfulImageView_pivProgressGravity, DEFAULT_PROGRESS_GRAVITY),
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && layoutDirection == View.LAYOUT_DIRECTION_RTL,
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_rtl_disabled, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_indeterminate, DEFAULT_PROGRESS_INDETERMINATE),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_draw_wedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_shadow_enabled, DEFAULT_PROGRESS_SHADOW_ENABLED),
-                getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_color, R.color.piv_default_progress_shadow_color),
+                a.getBoolean(R.styleable.PowerfulImageView_pivProgressRtlDisabled, DEFAULT_PROGRESS_DISABLE_RTL_SUPPORT),
+                a.getBoolean(R.styleable.PowerfulImageView_pivProgressIndeterminate, DEFAULT_PROGRESS_INDETERMINATE),
+                a.getBoolean(R.styleable.PowerfulImageView_pivProgressDrawWedge, DEFAULT_PROGRESS_DETERMINATE_DRAW_WEDGE),
+                a.getBoolean(R.styleable.PowerfulImageView_pivProgressShadowEnabled, DEFAULT_PROGRESS_SHADOW_ENABLED),
+                getColor(a, R.styleable.PowerfulImageView_pivProgressShadowColor, R.color.piv_default_progress_shadow_color),
                 if (tvShadowPadding.type == TypedValue.TYPE_DIMENSION) tvShadowPadding.getDimension(resources.displayMetrics).toInt() else DEFAULT_PROGRESS_SHADOW_PADDING,
                 if (tvShadowPadding.type == TypedValue.TYPE_FRACTION) tvShadowPadding.getFraction(100f, 100f) else DEFAULT_PROGRESS_SHADOW_PADDING_PERCENT,
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_progress_shadow_border_width, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH.toFloat(), resources.displayMetrics).toInt()).toFloat(),
-                getColor(a, R.styleable.PowerfulImageView_piv_progress_shadow_border_color, R.color.piv_default_progress_shadow_border_color),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_reversed, DEFAULT_PROGRESS_REVERSED),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_progress_removed_on_change, DEFAULT_PROGRESS_REMOVED_ON_CHANGE)
+                a.getDimensionPixelSize(R.styleable.PowerfulImageView_pivProgressShadowBorderWidth, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PROGRESS_SHADOW_BORDER_WIDTH.toFloat(), resources.displayMetrics).toInt()).toFloat(),
+                getColor(a, R.styleable.PowerfulImageView_pivProgressShadowBorderColor, R.color.piv_default_progress_shadow_border_color),
+                a.getBoolean(R.styleable.PowerfulImageView_pivProgressReversed, DEFAULT_PROGRESS_REVERSED),
+                a.getBoolean(R.styleable.PowerfulImageView_pivProgressRemovedOnChange, DEFAULT_PROGRESS_REMOVED_ON_CHANGE)
         )
 
 
         val tvShapeInnerPadding = TypedValue()
-        a.getValue(R.styleable.PowerfulImageView_piv_shape_inner_padding, tvShapeInnerPadding)
+        a.getValue(R.styleable.PowerfulImageView_pivShapeInnerPadding, tvShapeInnerPadding)
 
         val shapeOptions = ShapeOptions(
-                getColor(a, R.styleable.PowerfulImageView_piv_shape_background_color, android.R.color.transparent),
-                getColor(a, R.styleable.PowerfulImageView_piv_shape_foreground_color, android.R.color.transparent),
+                getColor(a, R.styleable.PowerfulImageView_pivShapeBackgroundColor, android.R.color.transparent),
+                getColor(a, R.styleable.PowerfulImageView_pivShapeForegroundColor, android.R.color.transparent),
                 if (tvShapeInnerPadding.type == TypedValue.TYPE_DIMENSION) tvShapeInnerPadding.getDimension(resources.displayMetrics).toInt() else DEFAULT_SHAPE_INNER_PADDING,
                 if (tvShapeInnerPadding.type == TypedValue.TYPE_FRACTION) tvShapeInnerPadding.getFraction(100f, 100f) else DEFAULT_SHAPE_INNER_PADDING_PERCENT,
-                a.getBoolean(R.styleable.PowerfulImageView_piv_shape_border_overlay, DEFAULT_SHAPE_BORDER_OVERLAY),
-                a.getInteger(R.styleable.PowerfulImageView_piv_shape_cut_gravity, DEFAULT_SHAPE_CUT_GRAVITY),
-                getColor(a, R.styleable.PowerfulImageView_piv_shape_border_color, android.R.color.transparent),
-                a.getDimensionPixelSize(R.styleable.PowerfulImageView_piv_shape_border_width, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_BORDER_WIDTH.toFloat(), resources.displayMetrics).toInt()),
-                a.getFloat(R.styleable.PowerfulImageView_piv_shape_ratio, DEFAULT_SHAPE_RATIO),
-                a.getFloat(R.styleable.PowerfulImageView_piv_shape_radius_x, DEFAULT_SHAPE_RADIUS_X),
-                a.getFloat(R.styleable.PowerfulImageView_piv_shape_radius_y, DEFAULT_SHAPE_RADIUS_Y),
-                getColor(a, R.styleable.PowerfulImageView_piv_shape_solid_color, R.color.piv_default_shape_solid_color),
-                a.getDrawable(R.styleable.PowerfulImageView_piv_shape_background),
-                a.getDrawable(R.styleable.PowerfulImageView_piv_shape_foreground),
+                a.getBoolean(R.styleable.PowerfulImageView_pivShapeBorderOverlay, DEFAULT_SHAPE_BORDER_OVERLAY),
+                a.getInteger(R.styleable.PowerfulImageView_pivShapeCutGravity, DEFAULT_SHAPE_CUT_GRAVITY),
+                getColor(a, R.styleable.PowerfulImageView_pivShapeBorderColor, android.R.color.transparent),
+                a.getDimensionPixelSize(R.styleable.PowerfulImageView_pivShapeBorderWidth, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_SHAPE_BORDER_WIDTH.toFloat(), resources.displayMetrics).toInt()),
+                a.getFloat(R.styleable.PowerfulImageView_pivShapeRatio, DEFAULT_SHAPE_RATIO),
+                a.getFloat(R.styleable.PowerfulImageView_pivShapeRadiusX, DEFAULT_SHAPE_RADIUS_X),
+                a.getFloat(R.styleable.PowerfulImageView_pivShapeRadiusY, DEFAULT_SHAPE_RADIUS_Y),
+                getColor(a, R.styleable.PowerfulImageView_pivShapeSolidColor, R.color.piv_default_shape_solid_color),
+                a.getDrawable(R.styleable.PowerfulImageView_pivShapeBackground),
+                a.getDrawable(R.styleable.PowerfulImageView_pivShapeForeground),
                 if (tvCutRadius1.type == TypedValue.TYPE_DIMENSION) tvCutRadius1.getDimension(resources.displayMetrics).toInt() else DEFAULT_SHAPE_CUT_RADIUS_1,
                 if (tvCutRadius1.type == TypedValue.TYPE_FRACTION) tvCutRadius1.getFraction(100f, 100f) else DEFAULT_SHAPE_CUT_RADIUS_1_PERCENT,
                 if (tvCutRadius2.type == TypedValue.TYPE_DIMENSION) tvCutRadius2.getDimension(resources.displayMetrics).toInt() else DEFAULT_SHAPE_CUT_RADIUS_2,
@@ -181,20 +179,20 @@ open class PowerfulImageView : ImageViewWrapper {
         )
 
 
-        val shapeMode = PivShapeMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_shape_mode, DEFAULT_SHAPE_MODE))
+        val shapeMode = PivShapeMode.fromValue(a.getInteger(R.styleable.PowerfulImageView_pivShapeMode, DEFAULT_SHAPE_MODE))
         //I use the android scale type used as default. If a PivShapeScaleType type is passed, it overrides Android scaleType
-        val scaleType = PivShapeScaleType.fromValue(a.getInteger(R.styleable.PowerfulImageView_piv_shape_scaleType, PivShapeScaleType.getFromScaleType(scaleType).value))
+        val scaleType = PivShapeScaleType.fromValue(a.getInteger(R.styleable.PowerfulImageView_pivShapeScaleType, PivShapeScaleType.getFromScaleType(scaleType).value))
 
 
         val blurOptions = BlurOptions(
-                a.getFloat(R.styleable.PowerfulImageView_piv_blur_down_sampling_rate, DEFAULT_BLUR_DOWNSAMPLING_RATE),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_static, DEFAULT_BLUR_STATIC),
-                a.getBoolean(R.styleable.PowerfulImageView_piv_blur_use_rs_fallback, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK),
-                a.getInteger(R.styleable.PowerfulImageView_piv_blur_num_threads, DEFAULT_BLUR_NUM_THREADS)
+                a.getFloat(R.styleable.PowerfulImageView_pivBlurDownSamplingRate, DEFAULT_BLUR_DOWNSAMPLING_RATE),
+                a.getBoolean(R.styleable.PowerfulImageView_pivBlurStatic, DEFAULT_BLUR_STATIC),
+                a.getBoolean(R.styleable.PowerfulImageView_pivBlurUseRsFallback, DEFAULT_BLUR_USE_RENDERSCRIPT_FALLBACK),
+                a.getInteger(R.styleable.PowerfulImageView_pivBlurNumThreads, DEFAULT_BLUR_NUM_THREADS)
         )
 
-        val blurRadius = a.getInteger(R.styleable.PowerfulImageView_piv_blur_radius, DEFAULT_BLUR_RADIUS)
-        val blurModeValue = a.getInteger(R.styleable.PowerfulImageView_piv_blur_mode, DEFAULT_BLUR_MODE)
+        val blurRadius = a.getInteger(R.styleable.PowerfulImageView_pivBlurRadius, DEFAULT_BLUR_RADIUS)
+        val blurModeValue = a.getInteger(R.styleable.PowerfulImageView_pivBlurMode, DEFAULT_BLUR_MODE)
         val blurMode = PivBlurMode.fromValue(blurModeValue)
 
         a.recycle()
@@ -471,16 +469,12 @@ open class PowerfulImageView : ImageViewWrapper {
 
 
     fun setPivProgressGravity (progressGravity: PivProgressGravity) { getProgressOptions().gravity = progressGravity }
-    fun getPivProgressGravity () = getProgressOptions().gravity
 
     fun setPivProgressMode (progressMode: PivProgressMode) { setProgressMode(progressMode) }
-    fun getPivProgressMode () = getProgressMode()
 
     fun setPivProgressIndeterminate (progressIndeterminate: Boolean) { getProgressOptions().setIsIndeterminate(progressIndeterminate) }
-    fun getPivProgressIndeterminate () = getProgressOptions().isIndeterminate
 
     fun setPivProgressAnimationDuration (duration: Int) { getProgressOptions().animationDuration = duration }
-    fun getPivProgressAnimationDuration () = getProgressOptions().animationDuration
 
     fun setPivProgressValue (progressValue: Float) {
         if(getProgress() == 100F && progressValue != 100F && getProgressOptions().determinateAnimationEnabled){
@@ -490,131 +484,90 @@ open class PowerfulImageView : ImageViewWrapper {
         }
         setProgressValue(progressValue)
     }
-    fun getPivProgressValue () = getProgress()
 
     fun setPivProgressSize (progressSize: Int) { getProgressOptions().setSize(progressSize) }
-    fun getPivProgressSize () = getProgressOptions().mSize
 
     fun setPivProgressSizePercent (progressSize: Float) { getProgressOptions().setSize(progressSize) }
-    fun getPivProgressSizePercent () = getProgressOptions().sizePercent
 
     fun setPivProgressPadding (progressPadding: Int) { getProgressOptions().padding = progressPadding }
-    fun getPivProgressPadding () = getProgressOptions().padding
 
     fun setPivProgressBorderWidth (progressBorderWidth: Int) { getProgressOptions().borderWidth = progressBorderWidth }
-    fun getPivProgressBorderWidth () = getProgressOptions().borderWidth
 
     fun setPivProgressBorderWidthPercent (progressBorderWidth: Float) { getProgressOptions().setBorderWidth(progressBorderWidth) }
-    fun getPivProgressBorderWidthPercent () = getProgressOptions().borderWidthPercent
 
     fun setPivProgressShadowBorderWidth (progressShadowBorderWidth: Float) { getProgressOptions().shadowBorderWidth = progressShadowBorderWidth }
-    fun getPivProgressShadowBorderWidth () = getProgressOptions().shadowBorderWidth
 
     fun setPivProgressShadowPadding (progressShadowPadding: Int) { getProgressOptions().shadowPadding = progressShadowPadding }
-    fun getPivProgressShadowPadding () = getProgressOptions().shadowPadding
 
     fun setPivProgressShadowPaddingPercent (progressShadowPadding: Float) { getProgressOptions().setShadowPadding(progressShadowPadding) }
-    fun getPivProgressShadowPaddingPercent () = getProgressOptions().shadowPadding
 
     fun setPivProgressShadowEnabled (progressShadowEnabled: Boolean) { getProgressOptions().shadowEnabled = progressShadowEnabled }
-    fun getPivProgressShadowEnabled () = getProgressOptions().shadowEnabled
 
     fun setPivProgressDeterminateAnimationEnabled (progressDeterminateAnimationEnabled: Boolean) { getProgressOptions().determinateAnimationEnabled = progressDeterminateAnimationEnabled }
-    fun getPivProgressDeterminateAnimationEnabled () = getProgressOptions().determinateAnimationEnabled
 
     fun setPivProgressRtlDisabled (progressRtlDisabled: Boolean) { getProgressOptions().isRtlDisabled = progressRtlDisabled }
-    fun getPivProgressRtlDisabled () = getProgressOptions().isRtlDisabled
 
     fun setPivProgressDrawWedge (progressDrawWedge: Boolean) { getProgressOptions().drawWedge = progressDrawWedge }
-    fun getPivProgressDrawWedge () = getProgressOptions().drawWedge
 
     fun setPivProgressReversed (progressReversed: Boolean) { getProgressOptions().isProgressReversed = progressReversed }
-    fun getPivProgressReversed () = getProgressOptions().isProgressReversed
 
     fun setPivProgressRemovedOnChange (progressRemovedOnChange: Boolean) { getProgressOptions().isRemovedOnChange = progressRemovedOnChange }
-    fun getPivProgressRemovedOnChange () = getProgressOptions().isRemovedOnChange
 
     fun setPivProgressFrontColor (progressFrontColor: Int) { getProgressOptions().frontColor = progressFrontColor }
-    fun getPivProgressFrontColor () = getProgressOptions().frontColor
 
     fun setPivProgressBackColor (progressBackColor: Int) { getProgressOptions().backColor = progressBackColor }
-    fun getPivProgressBackColor () = getProgressOptions().backColor
 
     fun setPivProgressIndeterminateColor (progressIndeterminateColor: Int) { getProgressOptions().indeterminateColor = progressIndeterminateColor }
-    fun getPivProgressIndeterminateColor () = getProgressOptions().indeterminateColor
 
     fun setPivProgressShadowColor (progressShadowColor: Int) { getProgressOptions().shadowColor = progressShadowColor }
-    fun getPivProgressShadowColor () = getProgressOptions().shadowColor
 
     fun setPivProgressShadowBorderColor (progressShadowBorderColor: Int) { getProgressOptions().shadowBorderColor = progressShadowBorderColor }
-    fun getPivProgressShadowBorderColor () = getProgressOptions().shadowBorderColor
 
 
 
     fun setPivShapeMode (shapeMode: PivShapeMode) { setShapeMode(shapeMode) }
-    fun getPivShapeMode () = getShapeMode()
 
     fun setPivShapeScaleType (shapeScaleType: PivShapeScaleType) { setShapeScaleType(shapeScaleType) }
-    fun getPivShapeScaleType () = mShapeDrawerManager.getScaleType()
 
     fun setPivShapeInnerPadding (shapeInnerPadding: Int) { getShapeOptions().setInnerPadding(shapeInnerPadding) }
-    fun getPivShapeInnerPadding () = getShapeOptions().mInnerPadding
 
     fun setPivShapeInnerPaddingPercent (shapeInnerPadding: Float) { getShapeOptions().setInnerPadding(shapeInnerPadding) }
-    fun getPivShapeInnerPaddingPercent () = getShapeOptions().mInnerPaddingPercent
 
     fun setPivShapeBorderWidth (shapeBorderWidth: Int) { getShapeOptions().borderWidth = shapeBorderWidth }
-    fun getPivShapeBorderWidth () = getShapeOptions().borderWidth
 
     fun setPivShapeRatio (shapeRatio: Float) { getShapeOptions().ratio = shapeRatio }
-    fun getPivShapeRatio () = getShapeOptions().ratio
 
     fun setPivShapeRadiusX (shapeRadiusX: Float) { getShapeOptions().radiusX = shapeRadiusX }
-    fun getPivShapeRadiusX () = getShapeOptions().radiusX
 
     fun setPivShapeRadiusY (shapeRadiusY: Float) { getShapeOptions().radiusY = shapeRadiusY }
-    fun getPivShapeRadiusY () = getShapeOptions().radiusY
 
     fun setPivShapeBorderOverlay (shapeBorderOverlay: Boolean) { getShapeOptions().borderOverlay = shapeBorderOverlay }
-    fun getPivShapeBorderOverlay () = getShapeOptions().borderOverlay
 
     fun setPivShapeSolidColor (shapeSolidColor: Int) { getShapeOptions().solidColor = shapeSolidColor }
-    fun getPivShapeSolidColor () = getShapeOptions().solidColor
 
     fun setPivShapeBackgroundColor (shapeBackgroundColor: Int) { getShapeOptions().backgroundColor = shapeBackgroundColor }
-    fun getPivShapeBackgroundColor () = getShapeOptions().backgroundColor
 
     fun setPivShapeForegroundColor (shapeForegroundColor: Int) { getShapeOptions().foregroundColor = shapeForegroundColor }
-    fun getPivShapeForegroundColor () = getShapeOptions().foregroundColor
 
     fun setPivShapeBackground (shapeBackground: Drawable) { getShapeOptions().backgroundDrawable = shapeBackground }
-    fun getPivShapeBackground () = getShapeOptions().backgroundDrawable
 
     fun setPivShapeForeground (shapeForeground: Drawable) { getShapeOptions().foregroundDrawable = shapeForeground }
-    fun getPivShapeForeground () = getShapeOptions().foregroundDrawable
 
     fun setPivShapeBorderColor (shapeBorderColor: Int) { getShapeOptions().borderColor = shapeBorderColor }
-    fun getPivShapeBorderColor () = getShapeOptions().borderColor
 
 
 
     fun setPivBlurMode (blurMode: PivBlurMode) { setBlurMode(blurMode, getBlurRadius()) }
-    fun getPivBlurMode () = getBlurMode()
 
     fun setPivBlurRadius (blurRadius: Int) { setBlurRadius(blurRadius) }
-    fun getPivBlurRadius () = getBlurRadius()
 
     fun setPivBlurDownSamplingRate (blurDownSamplingRate: Int) { getBlurOptions().downSamplingRate = blurDownSamplingRate.toFloat() }
-    fun getPivBlurDownSamplingRate () = getBlurOptions().downSamplingRate.toInt()
 
     fun setPivBlurStatic (blurStatic: Boolean) { getBlurOptions().isStaticBlur = blurStatic }
-    fun getPivBlurStatic () = getBlurOptions().isStaticBlur
 
     fun setPivBlurUseRsFallback (blurUseRsFallback: Boolean) { getBlurOptions().useRsFallback = blurUseRsFallback }
-    fun getPivBlurUseRsFallback () = getBlurOptions().useRsFallback
 
     fun setPivBlurNumThreads (blurNumThreads: Int) { getBlurOptions().numThreads = blurNumThreads }
-    fun getPivBlurNumThreads () = getBlurOptions().numThreads
 
 }
 

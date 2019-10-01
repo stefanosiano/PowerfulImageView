@@ -35,7 +35,7 @@ In case of error of a Renderscript method, a corresponding Java method will be u
 **Customizability**  
 All aspects can be customized. Even the number of threads to use.  
 **Ease of use**  
-Basic integration needs only `piv_blur_mode` and `piv_blur_radius` to the xml element.  
+Basic integration needs only `pivBlurMode` and `pivBlurRadius` to the xml element.  
   
   
   
@@ -45,12 +45,12 @@ List of all XML attributes
   
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
-|piv_blur_mode|enum|disabled|Set the mode of the blur to use. Values are: disabled, gaussian5x5, gaussian5x5_rs, gaussian3x3, gaussian3x3_rs, gaussian, gaussian_rs, box3x3, box3x3_rs, box5x5, box5x5_rs, stack, stack_rs|
-|piv_blur_radius|int|0|Set the blur radius used (indicates clur strength)|
-|piv_blur_down_sampling_rate|int|4|Rate to downSample the image width and height, based on the view size. The bitmap is downsampled to be no more than the view size divided by this rate.|
-|piv_blur_static|boolean|false|Whether the original bitmap should be blurred only once. If so, several optimizations occur|
-|piv_blur_use_rs_fallback|boolean|true|Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs|
-|piv_blur_num_threads|int|0|Number of threads to use to blur the image (no more than available). If it's less than 1, all available cores are used|
+|pivBlurMode|enum|disabled|Set the mode of the blur to use. Values are: disabled, gaussian5x5, gaussian5x5_rs, gaussian3x3, gaussian3x3_rs, gaussian, gaussian_rs, box3x3, box3x3_rs, box5x5, box5x5_rs, stack, stack_rs|
+|pivBlurRadius|int|0|Set the blur radius used (indicates clur strength)|
+|pivBlurDownSamplingRate|int|4|Rate to downSample the image width and height, based on the view size. The bitmap is downsampled to be no more than the view size divided by this rate.|
+|pivBlurStatic|boolean|false|Whether the original bitmap should be blurred only once. If so, several optimizations occur|
+|pivBlurUseRsFallback|boolean|true|Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs|
+|pivBlurNumThreads|int|0|Number of threads to use to blur the image (no more than available). If it's less than 1, all available cores are used|
   
   
   

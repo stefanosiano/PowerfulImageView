@@ -144,6 +144,7 @@ internal class ProgressDrawerManager
         mProgressDrawer.stopIndeterminateAnimation()
 
         mProgressMode = progressMode ?: mProgressMode
+        mProgressOptions.recalculateBounds(mProgressMode)
         updateDrawers(mProgressMode)
         mProgressDrawer.setup(mProgressOptions)
         mShadowDrawer.setup(mProgressOptions)

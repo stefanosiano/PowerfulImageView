@@ -22,7 +22,7 @@ All shapes are compatible with any kind of drawable, and they provide support fo
 Background and foreground drawables will be resized to be equal to the current drawable, and follow scale type, too. As a consequence, they will be drawn only if there is a drawable set.  
 All scale types are supported, and some additional scale type were added, like topCrop and bottomCrop.  
 Vector drawables are supported, too, and they are scaled up to max resolution before applying the shape.  
-Due to how rounded rectangles are drawn, they will show some space between the image and the border (if piv_shape_border_overlay=false).  
+Due to how rounded rectangles are drawn, they will show some space between the image and the border (if pivShapeBorderOverlay=false).  
 Also, solid rounded rectangle suffers of the same problem when using a border (with or without overlay).  
   
   
@@ -39,7 +39,7 @@ Methods to avoid and catch OutOfMemoryExceptions are in place.
 **Customizability**  
 All aspects can be customized. From the image inner padding to background and foreground drawables and color to the border size and color.  
 **Ease of use**  
-Basic integration needs only `piv_shape_mode` to the xml element.  
+Basic integration needs only `pivShapeMode` to the xml element.  
   
   
   
@@ -49,20 +49,20 @@ List of all XML attributes
   
 | Name | Type | Default | Description |
 |:----:|:----:|:-------:|:-----------:|
-|piv_shape_mode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
-|piv_shape_scaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop, bottomCrop|
-|piv_shape_inner_padding|dimension-fraction|0|Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
-|piv_shape_border_width|dimension|0dp|Set the border width of the image.|
-|piv_shape_ratio|float|based on view size|Set the ratio of the image. Doing so, width is calculated as height * ratio|
-|piv_shape_radius_x|float|1|Set the x radius of the image. Used in rounded rectangles|
-|piv_shape_radius_y|float|1|Set the y radius of the image. Used in rounded rectangles|
-|piv_shape_border_overlay|boolean|false|Set whether the border should be paint over the image.|
-|piv_shape_solid_color|color|#FFFFFF|Set the solid color used by solid shapes|
-|piv_shape_background_color|color|transparent|Set the background color of the image, using the shape.|
-|piv_shape_foreground_color|color|transparent|Set the foreground color of the image, using the shape.|
-|piv_shape_background|reference-color|null|Set the background drawable to draw under the image. Does not follow rounded shapes!|
-|piv_shape_foreground|reference-color|null|Set the foreground drawable to draw over the image. Does not follow rounded shapes!|
-|piv_shape_border_color|color|transparent|Set the border color of the image.|
+|pivShapeMode|enum|normal|Progress mode of the indicator. Values are: normal, circle, square, rectangle, oval, rounded_rectangle, solid_circle, solid_oval, solid_rounded_rectangle.|
+|pivShapeScaleType|enum|default view scale type|Custom scale type of the indicator. It overrides scaleType. Values are: matrix, fitXY, fitStart, fitCenter, fitEnd, center, centerCrop, centerInside, topCrop, bottomCrop|
+|pivShapeInnerPadding|dimension-fraction|0|Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%). If the specific dimension is less than 0, it is ignored. If the percentage is higher than 100, it is treated as (value % 100).|
+|pivShapeBorderWidth|dimension|0dp|Set the border width of the image.|
+|pivShapeRatio|float|based on view size|Set the ratio of the image. Doing so, width is calculated as height * ratio|
+|pivShapeRadiusX|float|1|Set the x radius of the image. Used in rounded rectangles|
+|pivShapeRadiusY|float|1|Set the y radius of the image. Used in rounded rectangles|
+|pivShapeBorderOverlay|boolean|false|Set whether the border should be paint over the image.|
+|pivShapeSolidColor|color|#FFFFFF|Set the solid color used by solid shapes|
+|pivShapeBackgroundColor|color|transparent|Set the background color of the image, using the shape.|
+|pivShapeForegroundColor|color|transparent|Set the foreground color of the image, using the shape.|
+|pivShapeBackground|reference-color|null|Set the background drawable to draw under the image. Does not follow rounded shapes!|
+|pivShapeForeground|reference-color|null|Set the foreground drawable to draw over the image. Does not follow rounded shapes!|
+|pivShapeBorderColor|color|transparent|Set the border color of the image.|
   
   
   

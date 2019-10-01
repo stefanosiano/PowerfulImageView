@@ -105,10 +105,10 @@ Via xml:
         android:id="@+id/piv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:piv_progress_mode="circular"
-        app:piv_shape_mode="circle"
-        app:piv_blur_mode="gaussian5x5"
-        app:piv_blur_radius="1" />
+        app:pivProgressMode="circular"
+        app:pivShapeMode="circle"
+        app:pivBlurMode="gaussian5x5"
+        app:pivBlurRadius="1" />
 ```
   
 Via Java:  

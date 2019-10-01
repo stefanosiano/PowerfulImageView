@@ -274,6 +274,17 @@ class ProgressOptions() : Parcelable {
 
 
     /**
+     * Forces recalculation of the bounds of the progress indicator, based on progress options and mode.
+     * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     *
+     * @param mode Mode of the progress indicator
+     */
+    fun recalculateBounds(mode: PivProgressMode) {
+        calculateBounds(mCalculatedLastW, mCalculatedLastH, mode)
+    }
+
+
+    /**
      * Calculates the bounds of the progress indicator, based on progress options and mode.
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
      *
