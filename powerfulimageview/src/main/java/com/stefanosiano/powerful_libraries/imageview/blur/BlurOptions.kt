@@ -14,11 +14,11 @@ class BlurOptions() : Parcelable {
     /** Rate to downSample the image width and height, so that bitmap is no more than the view size divided by this rate.
      * If a value less than 1 is passed, downSampling rate 1 is used. */
     var downSamplingRate: Float = 0f
-        set(value) { field = value.coerceAtLeast(1f); this.listener?.get()?.onDownsamplingRateChanged() }
+        set(value) { field = value.coerceAtLeast(1f); if(isInitialized) this.listener?.get()?.onDownsamplingRateChanged() }
 
     /** Whether the original bitmap should be blurred only once. If true, optimizations occur. If false, trying to blur a second time won't have effect  */
     var isStaticBlur: Boolean = false
-        set(value) { field = value; listener?.get()?.onStaticBlurChanged() }
+        set(value) { field = value; if(isInitialized) listener?.get()?.onStaticBlurChanged() }
 
     /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs. Used only if a renderscript mode is selected */
     var useRsFallback: Boolean = false
@@ -28,6 +28,9 @@ class BlurOptions() : Parcelable {
 
     /** Listener that will update the blur manager on changes, with a weak reference to be sure to not leak memory  */
     private var listener: WeakReference<BlurOptionsListener>? = null
+
+    /** Flag to check if the object's constructor was called */
+    private var isInitialized = false
 
 
     /**
@@ -42,6 +45,7 @@ class BlurOptions() : Parcelable {
         this.isStaticBlur = isStaticBlur
         this.useRsFallback = useRsFallback
         this.numThreads = numThreads
+        this.isInitialized = true
     }
 
     fun setOptions(other: BlurOptions) {
@@ -50,6 +54,7 @@ class BlurOptions() : Parcelable {
         this.useRsFallback = other.useRsFallback
         this.numThreads = other.numThreads
         this.listener = other.listener
+        this.isInitialized = true
     }
 
     interface BlurOptionsListener {
@@ -65,6 +70,7 @@ class BlurOptions() : Parcelable {
         isStaticBlur = parcel.readByte() != 0.toByte()
         useRsFallback = parcel.readByte() != 0.toByte()
         numThreads = parcel.readInt()
+        isInitialized = true
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

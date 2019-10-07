@@ -20,13 +20,13 @@ class ShapeOptions() : Parcelable {
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
      * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var backgroundColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Foreground color of the shape.
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
      * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var foregroundColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Inner padding of the image relative to the shape  */
     var mInnerPadding: Int = 0
@@ -36,65 +36,65 @@ class ShapeOptions() : Parcelable {
 
     /** Whether the border should be drawn over the image or the shape should be shrinked */
     var borderOverlay: Boolean = false
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
 
     /** Color of the shape border
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
      * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var borderColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /**
      * Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled */
     var cutGravity: PivShapeCutGravity = PivShapeCutGravity.BOTTOM
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Width of the shape border
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
     var borderWidth: Int = 0
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
     
     /** Ratio of the shape. It's ignored in Circle and Square shapes. Width will be calculated as height * ratio */
     var ratio: Float = 0f
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
 
     /** X radius of the rounded rectangles  */
     var radiusX: Float = 0f
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Y radius of the rounded rectangles  */
     var radiusY: Float = 0f
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 1 of the cut shapes */
     var cutRadius1: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 1 of the cut shapes, as a percentage */
     var cutRadius1Percent: Float = 0f
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 2 of the cut shapes */
     var cutRadius2: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 2 of the cut shapes, as a percentage */
     var cutRadius2Percent: Float = 0f
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Color used by solid shapes
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
      * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var solidColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Foreground drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
     var foregroundDrawable: Drawable? = null
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Background drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
     var backgroundDrawable: Drawable? = null
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     // ************** Calculated fields *****************
 
@@ -139,6 +139,8 @@ class ShapeOptions() : Parcelable {
     /** Listener that will update the shape drawers on changes, with a weak reference to be sure to not leak memory  */
     private var listener = WeakReference<ShapeOptionsListener>(null)
 
+    /** Flag to check if the object's constructor was called */
+    private var isInitialized = false
 
     /**
      * Creates the object that will be used by shape drawers:
@@ -182,6 +184,7 @@ class ShapeOptions() : Parcelable {
         this.solidColor = solidColor
         this.backgroundDrawable = backgroundDrawable
         this.foregroundDrawable = foregroundDrawable
+        this.isInitialized = true
     }
 
     /** Updates the values of the current options, copying the passed values  */
@@ -217,6 +220,7 @@ class ShapeOptions() : Parcelable {
         this.mCalculatedLastPaddingRight = other.mCalculatedLastPaddingRight
         this.mCalculatedLastPaddingBottom = other.mCalculatedLastPaddingBottom
         this.listener = other.listener
+        this.isInitialized = true
     }
 
     /**
@@ -429,6 +433,7 @@ class ShapeOptions() : Parcelable {
         mCalculatedLastPaddingBottom = `in`.readInt()
         mCalculatedLastW = `in`.readInt()
         mCalculatedLastH = `in`.readInt()
+        isInitialized = true
     }
     
     companion object CREATOR : Parcelable.Creator<ShapeOptions> {

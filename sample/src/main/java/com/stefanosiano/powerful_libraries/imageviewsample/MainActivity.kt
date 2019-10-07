@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_test)
+        setContentView(R.layout.activity_main)
 /*
         piv1less.setOnClickListener { onMinus(piv1, piv1txt) }
         piv2less.setOnClickListener { onMinus(piv2, piv2txt) }

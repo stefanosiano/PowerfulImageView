@@ -62,15 +62,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="circle"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeMode="circle"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#F0F"
 
             app:srcCompat="@drawable/sf1" />
 
-
+<!--
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
             android:layout_margin="2dp"
             app:piv_shape_scaleType="centerCrop"
 
-            app:piv_shape_mode="solid_circle"
+            app:pivShapeMode="solid_circle"
             app:piv_shape_solid_color="#0AFAFA"
             app:piv_shape_border_width="1dp"
             app:piv_shape_border_color="#90000000"
@@ -315,7 +315,7 @@
             app:srcCompat="@drawable/sf1" />
 
 
-
+-->
     </LinearLayout>
 
 

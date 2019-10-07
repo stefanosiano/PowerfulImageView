@@ -17,17 +17,17 @@ class ProgressOptions() : Parcelable {
     /** If the determinate drawer should update its progress with an animation.
      * If the drawer is not determinate or horizontal_determinate it's ignored. */
     var determinateAnimationEnabled: Boolean = false
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Width of the progress indicator. If it's lower than 0, it is ignored.
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
      * If you want the real progress border width, check [calculatedBorderWidth] */
     var borderWidth: Int = 0
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Progress animation duration (in milliseconds)  */
     var animationDuration: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Width of the progress indicator as percentage of the progress indicator size. If you want the real progress border width, check [calculatedBorderWidth] */
     var borderWidthPercent: Float = 0f
@@ -42,7 +42,7 @@ class ProgressOptions() : Parcelable {
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details.  */
     var frontColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Back color of the progress indicator, used by determinate drawers.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
@@ -51,7 +51,7 @@ class ProgressOptions() : Parcelable {
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details.  */
     var backColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this)}
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this)}
 
     /** Color of the progress indicator, used by indeterminate drawers.
      * If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
@@ -60,27 +60,27 @@ class ProgressOptions() : Parcelable {
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details.  */
     var indeterminateColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this)}
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this)}
 
     /** If should show a wedge, used by circular determinate drawer. If the drawer is not determinate it's ignored.  */
     var drawWedge: Boolean = false
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** If should show a shadow  */
     var shadowEnabled: Boolean = false
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Shadow color of the progress indicator.
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details. */
     var shadowColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Padding of the progress indicator relative to its shadow. If it's lower than 0, it is ignored.
      * If you want the real shadow padding, check [calculatedShadowPadding] */
     var shadowPadding: Int = 0
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Padding of the progress indicator relative to its shadow, as a percentage of the whole shadow. If you want the real shadow padding, check [calculatedShadowPadding] */
     var shadowPaddingPercent: Float = 0f
@@ -89,7 +89,7 @@ class ProgressOptions() : Parcelable {
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics())
      * If you want the real shadow border width, check [calculatedShadowBorderWidth] */
     var shadowBorderWidth: Float = 0f
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Width of the progress indicator shadow border after calculations  */
     var calculatedShadowBorderWidth: Float = 0f
@@ -99,7 +99,7 @@ class ProgressOptions() : Parcelable {
      * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
      * See the Color class for more details.  */
     var shadowBorderColor: Int = 0
-        set(value) { field = value; listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
 
     //variables used to calculate bounds
@@ -111,7 +111,7 @@ class ProgressOptions() : Parcelable {
      * Padding of the progress indicator.
      * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
     var padding: Int = 0
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Size of the progress indicator, as a percentage of the whole View. If you want the real progress indicator size, check [calculatedSize] */
     var sizePercent: Float = 0f
@@ -119,7 +119,7 @@ class ProgressOptions() : Parcelable {
     /**
      * Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled */
     var gravity: PivProgressGravity? = null
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Whether the view should use right to left layout (used for gravity option) */
     var isProgressReversed: Boolean = false
@@ -134,7 +134,7 @@ class ProgressOptions() : Parcelable {
 
     /** Whether the view should use or ignore right to left layout (used for gravity option and progress direction)  */
     var isRtlDisabled: Boolean = false
-        set(value) { field = value; calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
+        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode) }
 
     /** Whether the progress indicator is indeterminate or not  */
     var isIndeterminate: Boolean = false
@@ -176,6 +176,9 @@ class ProgressOptions() : Parcelable {
 
     /** Listener that will update the progress drawers on changes, with a weak reference to be sure to not leak memory  */
     private var listener = WeakReference<ProgressOptionsListener>(null)
+
+    /** Flag to check if the object's constructor was called */
+    private var isInitialized = false
 
 
     /**
@@ -233,6 +236,7 @@ class ProgressOptions() : Parcelable {
         this.shadowBorderColor = shadowBorderColor
         this.isProgressReversed = isProgressReversed
         this.isRemovedOnChange = isRemovedOnChange
+        this.isInitialized = true
     }
 
     /** Updates the values of the current options, copying the passed values  */
@@ -270,6 +274,7 @@ class ProgressOptions() : Parcelable {
         this.mCalculatedLastMode = other.mCalculatedLastMode
         this.isProgressReversed = other.isProgressReversed
         this.listener = other.listener
+        this.isInitialized = true
     }
 
 
@@ -631,6 +636,7 @@ class ProgressOptions() : Parcelable {
         shadowBorderRect = parcel.readParcelable(RectF::class.java.classLoader) ?: RectF()
         mCalculatedLastW = parcel.readInt()
         mCalculatedLastH = parcel.readInt()
+        isInitialized = true
     }
 
     override fun describeContents(): Int = 0

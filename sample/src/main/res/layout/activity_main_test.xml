@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
+<!--
     <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,5 +38,5 @@
 
 
 
-
+-->
 </LinearLayout>
