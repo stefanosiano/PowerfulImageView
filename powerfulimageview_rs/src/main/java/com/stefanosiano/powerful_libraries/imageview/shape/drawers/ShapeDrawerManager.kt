@@ -326,8 +326,9 @@ internal class ShapeDrawerManager
         //scale used for vector drawable fix (other bitmaps have dwidth = bitmap width)
         var scaleX = 1f
         var scaleY = 1f
-        val dWidth = mDrawable?.intrinsicWidth ?: 0
-        val dHeight = mDrawable?.intrinsicHeight ?: 0
+        //if drawable is ColorDrawable, dWidth and dHeight is -1 -> let's convert it to 1
+        val dWidth = mDrawable?.intrinsicWidth?.let { if(it == -1) 1 else it } ?: 0
+        val dHeight = mDrawable?.intrinsicHeight?.let { if(it == -1) 1 else it } ?: 0
 
         if (mLastBitmap?.isRecycled == false) {
             scaleX = dWidth.toFloat() / (mLastBitmap?.safeWidth() ?: dWidth).toFloat()

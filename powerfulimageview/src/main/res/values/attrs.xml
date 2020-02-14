@@ -141,6 +141,7 @@
             <enum name="solid_circle" value="6"/>
             <enum name="solid_oval" value="7"/>
             <enum name="solid_rounded_rectangle" value="8"/>
+<!--
             <enum name="diagonal" value="9"/>
             <enum name="solid_diagonal" value="10"/>
             <enum name="arc" value="11"/>
@@ -149,6 +150,7 @@
             <enum name="solid_corner" value="14"/>
             <enum name="rounded_corner" value="15"/>
             <enum name="solid_rounded_corner" value="16"/>
+-->
         </attr>
 
         <!-- Custom scale type of the indicator -->
