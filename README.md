@@ -86,8 +86,8 @@ repositories {
 To use PowerfulImageView:  
 ```
 dependencies {
-    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.15' //Use this if you don't need renderscript
-    implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.15' //Use this if you need renderscript
+    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.20' //Use this if you don't need renderscript
+    implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.20' //Use this if you need renderscript
 }
 ```
   

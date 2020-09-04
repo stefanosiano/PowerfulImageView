@@ -462,6 +462,7 @@ internal class ShapeDrawerManager
         mShapeMode = shapeMode
         updateDrawers(mShapeMode)
         mShapeDrawer.setup(mShapeOptions)
+        setScaleType(mScaleType)
         mView.get()?.postInvalidate()
     }
 
