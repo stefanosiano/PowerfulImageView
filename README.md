@@ -78,16 +78,9 @@ Gradle
 ------
   
 ```
-repositories {
-  jcenter() // used as default in Android Studio. Put this line into project's build.gradle file, if not already present.
-}
-```
-  
-To use PowerfulImageView:  
-```
 dependencies {
-    implementation 'com.stefanosiano.powerful_libraries:imageview:1.0.20' //Use this if you don't need renderscript
-    implementation 'com.stefanosiano.powerful_libraries:imageview_rs:1.0.20' //Use this if you need renderscript
+    implementation 'io.github.stefanosiano.powerful_libraries:imageview:1.0.22' //Use this if you don't need renderscript
+    implementation 'io.github.stefanosiano.powerful_libraries:imageview_rs:1.0.22' //Use this if you need renderscript
 }
 ```
   

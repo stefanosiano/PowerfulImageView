@@ -1,0 +1,155 @@
+//example: https://github.com/GetStream/stream-chat-android/blob/main/scripts/publish-mavencentral.gradle
+//worked with https://dev.to/kengotoda/deploying-to-ossrh-with-gradle-in-2020-1lhi
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+def libVersion = LIB_VERSION // This is the library version used when deploying the artifact
+def enableDeploy = ENABLE_DEPLOY //Flag whether the ci/cd workflow should deploy to sonatype or not
+
+def libGroupId = LIB_GROUP_ID // Maven Group ID for the artifact
+def libArtifactId = LIB_ARTIFACT_ID // Maven Artifact ID for the artifact
+def libName = LIB_NAME // Library name
+def siteUrl = SITE_URL // Homepage URL of the library
+def gitUrl = GIT_URL // Git repository URL
+def libDescription = LIB_DESCRIPTION // Library description
+
+group = libGroupId
+version = libVersion
+
+//retrieve variables from system environmental variables
+def sonatypeUser = enableDeploy ? System.getenv('SONATYPE_USER') : ''
+def sonatypePwd = enableDeploy ? System.getenv('SONATYPE_PWD') : ''
+def sonatypeGpgKey = enableDeploy ? System.getenv('SONATYPE_GPG_KEY') : ''
+def sonatypeGpgPwd = enableDeploy ? System.getenv('SONATYPE_GPG_PWD') : ''
+def sonatypeGpgPath = enableDeploy ? System.getenv('SONATYPE_GPG_PATH') : ''
+
+//signing plugin config
+ext["signing.keyId"] = sonatypeGpgKey
+ext["signing.password"] = sonatypeGpgPwd
+ext["signing.secretKeyRingFile"] = sonatypeGpgPath
+
+task androidJavadocs(type: Javadoc) {
+    excludes = ['**/*.kt'] // < ---- Exclude all kotlin files from javadoc file.
+    if (project.plugins.findPlugin("com.android.library")) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+    else {
+        source = sourceSets.main.java.srcDirs
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: androidJavadocs) {
+    archiveClassifier.set('javadoc')
+    if (project.plugins.findPlugin("com.android.library"))
+        from androidJavadocs.destinationDir
+    else
+        from javadoc.destinationDir
+}
+
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+        from sourceSets.main.kotlin.srcDirs
+    }
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+
+//publish plugin config
+publishing {
+    repositories {
+        //add sonatype repo as mavenCentral (used in gradle task names later)
+        maven {
+            name = "mavenCentral"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.toString().endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+
+            credentials {
+                username = sonatypeUser
+                password = sonatypePwd
+            }
+        }
+    }
+    publications {
+        // Creates a Maven publication called "release"
+        release(MavenPublication) {
+            if(!enableDeploy) return true //if ci/cd still build the project, will only upload a pom file
+
+            // Publication config
+            groupId = libGroupId
+            artifactId = libArtifactId
+            version = libVersion
+
+            // Add aar/jar to artifacts to upload
+            if (project.plugins.findPlugin("com.android.library")) {
+                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            } else {
+                artifact("$buildDir/libs/${project.getName()}-${version}.jar")
+            }
+            artifact(javadocJar) //add javadoc artifact
+            artifact(sourcesJar) //add sources artifact
+
+            //pom file config
+            pom {
+                name = libName
+                description = libDescription
+                url = siteUrl
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'stefanosiano'
+                        name = 'Stefano Siano'
+                        email = 'stefano.siano91@gmail.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:$gitUrl"
+                    developerConnection = "scm:git:$gitUrl"
+                    url = siteUrl
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    project.configurations.implementation.allDependencies.each {
+                        if(it.group == "" || it.name == "" || it.name == "unspecified" || it.version == "") return
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+
+                    project.configurations.compile.allDependencies.each {
+                        if(it.group == "" || it.name == "" || it.name == "unspecified" || it.version == "") return
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    if(!enableDeploy) return true //don't sign anything if not allowed
+    sign publishing.publications.release
+}
+
+
