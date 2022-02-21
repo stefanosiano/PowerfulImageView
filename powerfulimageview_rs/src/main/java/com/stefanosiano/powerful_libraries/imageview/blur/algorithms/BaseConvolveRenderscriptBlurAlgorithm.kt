@@ -3,6 +3,7 @@ package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 import android.graphics.Bitmap
 import androidx.renderscript.*
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
+import com.stefanosiano.powerful_libraries.imageview.tryOrPrint
 import java.lang.ref.WeakReference
 
 
@@ -24,14 +25,8 @@ internal abstract class BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {
 
         val rs = renderscript?.get() ?: throw RenderscriptException("Renderscript is null!")
 
-        val output: Allocation
-        try { output = runScript(radius, rs, original) }
-        catch (e: Exception) {
-            e.printStackTrace()
-            throw RenderscriptException("Renderscript error while blurring! \n" + e.localizedMessage)
-        }
-
-
+        val output: Allocation = tryOrPrint { runScript(radius, rs, original) }
+            ?: throw RenderscriptException("Renderscript error while blurring!")
 
         if (!options.isStaticBlur) {
             val bitmap = Bitmap.createBitmap(original.width, original.height, Bitmap.Config.ARGB_8888)

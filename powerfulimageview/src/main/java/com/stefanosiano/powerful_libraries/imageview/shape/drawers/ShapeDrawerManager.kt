@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.stefanosiano.powerful_libraries.imageview.safeHeight
@@ -130,8 +131,8 @@ internal class ShapeDrawerManager
                     val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
                     var sizeX: Int
                     var sizeY: Int
-                    val maxWidth = Math.max(mImageBounds.width(), mImageBounds.height() * ratio).toInt()
-                    val maxHeight = Math.max(mImageBounds.height(), mImageBounds.width() / ratio).toInt()
+                    val maxWidth = mImageBounds.width().coerceAtLeast(mImageBounds.height() * ratio).toInt()
+                    val maxHeight = mImageBounds.height().coerceAtLeast(mImageBounds.width() / ratio).toInt()
 
                     if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
                         sizeX = maxWidth
@@ -163,8 +164,8 @@ internal class ShapeDrawerManager
 
             return if(bitmap.isRecycled) null else bitmap
 
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: IllegalArgumentException) {
+            Log.e(ShapeDrawerManager::class.java.simpleName, e.message ?: "")
             return null
         }
 

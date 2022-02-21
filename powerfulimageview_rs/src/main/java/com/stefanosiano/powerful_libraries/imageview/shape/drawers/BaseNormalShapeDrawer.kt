@@ -5,8 +5,7 @@ import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 
-internal abstract class BaseNormalShapeDrawer
-(drawable: Drawable?) : ShapeDrawer {
+internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer {
 
     /** Paint used to draw the shape background  */
     protected val mBackPaint = Paint()

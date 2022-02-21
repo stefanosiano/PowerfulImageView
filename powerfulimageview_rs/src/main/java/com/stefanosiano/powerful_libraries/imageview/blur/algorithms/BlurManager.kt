@@ -180,7 +180,7 @@ internal class BlurManager
             //changing mode to fallback one if enabled
             mMode = if (mBlurOptions.useRsFallback) mMode.fallbackMode ?: PivBlurMode.DISABLED else PivBlurMode.DISABLED
 
-            Log.w(BlurManager::class.java.simpleName, e.localizedMessage + "\nFalling back to another blurring method: " + mMode.name)
+            Log.w(BlurManager::class.java.simpleName, "${e.message}\nFalling back to another blurring method: ${mMode.name}")
 
             updateAlgorithms(mMode)
 
@@ -188,7 +188,12 @@ internal class BlurManager
                 bitmap = mBlurAlgorithm.blur(origBitmap, mRadius, mBlurOptions)
                 mIsAlreadyBlurred = true
             }
-            catch (e1: RenderscriptException) { bitmap = null }
+            catch (e1: RenderscriptException) {
+                // The second blur try failed: we now return a null bitmap as it will be reverted to
+                // the original one
+                e1.printStackTrace()
+                bitmap = null
+            }
 
         }
 
@@ -305,8 +310,8 @@ internal class BlurManager
             drawable.draw(canvas)
             return bitmap
 
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: IllegalArgumentException) {
+            Log.e(BlurManager::class.java.simpleName, e.message ?: "")
             return mOriginalBitmap
         }
 

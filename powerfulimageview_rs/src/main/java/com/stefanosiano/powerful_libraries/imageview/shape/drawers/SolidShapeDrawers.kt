@@ -240,36 +240,30 @@ internal class SolidArcShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(d
         mSolidPaint.style = if (h > 0) Paint.Style.STROKE else Paint.Style.FILL
         val sW = if (h > 0) mSolidPaint.strokeWidth/2f else h
 
+        mSolidBounds.left = if (h > 0) (b.left + b.width() / 2f - sW - w) else b.left + b.width() / 2f - w
+        mSolidBounds.right = if (h > 0) (b.right - b.width() / 2f + sW + w) else b.left + b.width() / 2f + w
         when  {
             shapeOptions.cutGravity.isGravityBottom() -> {
                 mStartAngle = if (h > 0) 0f else 180f
-                mSolidBounds.left = if (h > 0) (b.left + b.width() / 2f - sW - w) else b.left + b.width() / 2f - w
                 mSolidBounds.top = if (h > 0) (b.bottom - sW - h) else b.bottom + h / 2
-                mSolidBounds.right = if (h > 0) (b.right - b.width() / 2f + sW + w) else b.left + b.width() / 2f + w
                 mSolidBounds.bottom = if (h > 0) (b.bottom + sW) else b.bottom - h
             }
 
             shapeOptions.cutGravity.isGravityTop() -> {
                 mStartAngle = if (h > 0) 180f else 0f
-                mSolidBounds.left = if (h > 0) (b.left + b.width() / 2f - sW - w) else b.left + b.width() / 2f - w
                 mSolidBounds.top = if (h > 0) (b.top - sW) else b.top + h
-                mSolidBounds.right = if (h > 0) (b.right - b.width() / 2f + sW + w) else b.left + b.width() / 2f + w
                 mSolidBounds.bottom = if (h > 0) (b.top + sW + h) else b.top - h / 2
             }
 
             shapeOptions.cutGravity == PivShapeCutGravity.START -> {
                 mStartAngle = if (h > 0) 90f else 270f
-                mSolidBounds.left = if (h > 0) (b.left + b.width() / 2f - sW - w) else b.left + b.width() / 2f - w
                 mSolidBounds.top = if (h > 0) (b.bottom - sW - h) else b.bottom + h / 2
-                mSolidBounds.right = if (h > 0) (b.right - b.width() / 2f + sW + w) else b.left + b.width() / 2f + w
                 mSolidBounds.bottom = if (h > 0) (b.bottom + sW) else b.bottom - h
             }
 
             shapeOptions.cutGravity == PivShapeCutGravity.END -> {
                 mStartAngle = if (h > 0) 270f else 90f
-                mSolidBounds.left = if (h > 0) (b.left + b.width() / 2f - sW - w) else b.left + b.width() / 2f - w
                 mSolidBounds.top = if (h > 0) (b.bottom - sW - h) else b.bottom + h / 2
-                mSolidBounds.right = if (h > 0) (b.right - b.width() / 2f + sW + w) else b.left + b.width() / 2f + w
                 mSolidBounds.bottom = if (h > 0) (b.bottom + sW) else b.bottom - h
             }
 

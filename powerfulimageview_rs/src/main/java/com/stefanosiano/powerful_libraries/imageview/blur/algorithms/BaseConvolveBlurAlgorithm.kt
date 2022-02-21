@@ -198,11 +198,11 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
     }
 
 
-    private inner class BlurTask internal constructor(private val _src: IntArray, private val _w: Int, private val _h: Int, private val _radius: Int, private val _totalCores: Int, private val _coreIndex: Int, private val _round: Int) : Callable<Void> {
+    private inner class BlurTask internal constructor(private val src: IntArray, private val w: Int, private val h: Int, private val radius: Int, private val totalCores: Int, private val coreIndex: Int, private val round: Int) : Callable<Void> {
 
         @Throws(Exception::class)
         override fun call(): Void? {
-            apply(_src, _w, _h, _radius, _totalCores, _coreIndex, _round)
+            apply(src, w, h, radius, totalCores, coreIndex, round)
             return null
         }
 

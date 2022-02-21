@@ -7,9 +7,8 @@ import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import java.lang.ref.WeakReference
 
 
-internal abstract class BaseRoundedDrawer
 /** ShapeDrawer that draws an oval as shape. */
-(bitmap: Bitmap?) : ShapeDrawer {
+internal abstract class BaseRoundedDrawer (bitmap: Bitmap?) : ShapeDrawer {
 
     /** Shader to efficiently draw the shape  */
     private var mBitmapShader: BitmapShader? = null

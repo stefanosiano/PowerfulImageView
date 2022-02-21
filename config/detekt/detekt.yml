@@ -1,0 +1,33 @@
+complexity:
+  TooManyFunctions:
+    active: false
+    ignorePrivate: true
+  LongParameterList:
+    active: false
+  ComplexMethod:
+    active: false
+  LongMethod:
+    active: false
+  NestedBlockDepth:
+    active: false
+  ComplexCondition:
+    active: false
+
+style:
+  # Numbers are used for enums and blur algorithms matrices
+  MagicNumber:
+    active: false
+  WildcardImport:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+  MaxLineLength:
+    active: false
+  ReturnCount:
+    active: false
+  UnusedPrivateMember:
+    active: false
+
+naming:
+  PackageNaming:
+    packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9_]*)*'

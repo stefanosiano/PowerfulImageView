@@ -4,13 +4,17 @@ import android.graphics.Bitmap
 import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
+import android.util.Log
 import java.lang.Exception
 
 class Extensions
 
-internal fun tryOrPrint(function: () -> Unit) = try { function.invoke() } catch (e: Exception) { e.printStackTrace() }
-internal fun <T> tryOr(value: T, function: () -> T): T = try { function.invoke() } catch (e: Exception) { value }
-internal fun <T> tryOrNull(function: () -> T): T? = try { function.invoke() } catch (e: Exception) { null }
+@Suppress("TooGenericExceptionCaught") internal fun <T> tryOrPrint(function: () -> T) = try { function.invoke() } catch (e: Exception) {
+    Log.e(function::class.java.name, e.message ?: "")
+    null
+}
+@Suppress("SwallowedException", "TooGenericExceptionCaught") internal fun <T> tryOr(value: T, function: () -> T): T = try { function.invoke() } catch (e: Exception) { value }
+@Suppress("SwallowedException", "TooGenericExceptionCaught") internal fun <T> tryOrNull(function: () -> T): T? = try { function.invoke() } catch (e: Exception) { null }
 
 internal fun Bitmap.safeWidth(): Int? = if(isRecycled) null else width
 internal fun Bitmap.safeHeight(): Int? = if(isRecycled) null else height

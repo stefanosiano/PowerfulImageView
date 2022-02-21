@@ -1,8 +1,8 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.content.Context
-import android.util.Log
 import androidx.renderscript.RenderScript
+import com.stefanosiano.powerful_libraries.imageview.tryOrPrint
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
@@ -45,8 +45,7 @@ internal class C {
 
     fun buildRenderscript(): RenderScript? {
         applicationContext ?: return null
-        try { renderScript = RenderScript.create(applicationContext) }
-        catch (e: Exception) { Log.e(BlurManager::class.java.simpleName, e.localizedMessage) }
+        renderScript = tryOrPrint { RenderScript.create(applicationContext) }
         return renderScript
     }
 }
