@@ -10,13 +10,10 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.widget.ImageView
-
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 import com.stefanosiano.powerful_libraries.imageview.blur.PivBlurMode
-
 import java.lang.ref.WeakReference
-
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 
 
 /**
@@ -154,12 +151,11 @@ internal class BlurManager
 
         val origBitmap = mOriginalBitmap ?: return
 
-        if (origBitmap.isRecycled) return
-
-        //if I already blurred the image with this radius, I don't do anything
-        if (mLastRadius == radius && mBlurredBitmap != null) return
-
-        if (mIsAlreadyBlurred && mBlurOptions.isStaticBlur) return
+        if (origBitmap.isRecycled ||
+            // if I already blurred the image with this radius, I don't do anything
+            (mLastRadius == radius && mBlurredBitmap != null) ||
+            // if I already blurred the image and it's a static blur, I don't have to blur anymore
+            (mIsAlreadyBlurred && mBlurOptions.isStaticBlur)) return
 
         this.mLastRadius = radius
 
@@ -242,7 +238,6 @@ internal class BlurManager
             PivBlurMode.GAUSSIAN_RS -> mGaussianRenderscriptBlurAlgorithm
             PivBlurMode.GAUSSIAN -> mGaussianBlurAlgorithm
             PivBlurMode.DISABLED -> mDummyBlurAlgorithm
-            else -> mDummyBlurAlgorithm
         }
         mBlurAlgorithm.setRenderscript(renderScript)
     }
@@ -262,8 +257,6 @@ internal class BlurManager
 
     /** @return Returns the bitmap of the drawable, downsampled if needed */
     private fun getOriginalBitmapFromDrawable(mLastDrawable: Drawable?, drawable: Drawable?): Bitmap? {
-        val bitmap: Bitmap
-
         if (drawable == null || mWidth <= 0 || mHeight <= 0)
             return null
 
@@ -289,16 +282,14 @@ internal class BlurManager
         }
 
         //if i already decoded the bitmap i reuse it
-        if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && mOriginalBitmap?.isRecycled == false && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable === drawable)
-            return mOriginalBitmap
+        return if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && mOriginalBitmap?.isRecycled == false && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable === drawable)
+            mOriginalBitmap
+        else try {
 
-        mLastSizeX = sizeX
-        mLastSizeY = sizeY
+            mLastSizeX = sizeX
+            mLastSizeY = sizeY
 
-
-        try {
-
-            bitmap = when {
+            val bitmap: Bitmap = when {
                 drawable is BitmapDrawable -> Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
                 drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) // Single color bitmap will be created of 1x1 pixel
                 drawable is ColorDrawable -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
@@ -308,11 +299,11 @@ internal class BlurManager
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, canvas.width, canvas.height)
             drawable.draw(canvas)
-            return bitmap
+            bitmap
 
         } catch (e: IllegalArgumentException) {
             Log.e(BlurManager::class.java.simpleName, e.message ?: "")
-            return mOriginalBitmap
+            mOriginalBitmap
         }
 
     }

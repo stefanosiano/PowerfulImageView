@@ -134,7 +134,7 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
         }
     }
 
-    override fun startIndeterminateAnimation() {}
+    override fun startIndeterminateAnimation() { return }
 
     override fun draw(canvas: Canvas, progressBounds: RectF) {
         if (!mIsProgressReversed) {
@@ -146,7 +146,7 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
         }
     }
 
-    override fun stopIndeterminateAnimation() {}
+    override fun stopIndeterminateAnimation() { return }
 
     /** Returns the last progress shown (used as start in animation)  */
     private fun getOldProgress(): Float = mOldProgress

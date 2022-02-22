@@ -52,9 +52,9 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
         mProgressAnimator.interpolator = AccelerateDecelerateInterpolator()
         mProgressAnimator.repeatCount = ValueAnimator.INFINITE
         mProgressAnimator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {}
-            override fun onAnimationEnd(animation: Animator) {}
-            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) { return }
+            override fun onAnimationEnd(animation: Animator) { return }
+            override fun onAnimationCancel(animation: Animator) { return }
             override fun onAnimationRepeat(animation: Animator) { isShrinking = !isShrinking }
         })
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
@@ -62,9 +62,9 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
     }
 
 
-    override fun setProgressPercent(progressPercent: Float) {}
+    override fun setProgressPercent(progressPercent: Float) { return }
 
-    override fun setAnimationEnabled(enabled: Boolean) {}
+    override fun setAnimationEnabled(enabled: Boolean) { return }
 
     override fun setup(progressOptions: ProgressOptions) {
 

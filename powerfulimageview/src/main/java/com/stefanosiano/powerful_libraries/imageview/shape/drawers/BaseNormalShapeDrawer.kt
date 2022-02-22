@@ -1,6 +1,12 @@
 package com.stefanosiano.powerful_libraries.imageview.shape.drawers
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
@@ -36,7 +42,7 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
 
     override fun requireBitmap() = false
 
-    override fun changeBitmap(bitmap: Bitmap?) {}
+    override fun changeBitmap(bitmap: Bitmap?) { return }
 
     override fun setMatrix(scaleType: PivShapeScaleType, matrix: Matrix) {
         this.mScaleType = scaleType
@@ -113,6 +119,6 @@ internal class NormalShapeDrawer
 
     override fun drawBorder(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint) = canvas.drawRect(borderBounds, borderPaint)
 
-    override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {}
+    override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) { return }
 
 }

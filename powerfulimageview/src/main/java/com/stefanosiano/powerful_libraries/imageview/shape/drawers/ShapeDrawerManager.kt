@@ -1,6 +1,10 @@
 package com.stefanosiano.powerful_libraries.imageview.shape.drawers
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -68,7 +72,7 @@ internal class ShapeDrawerManager
     private val mNormalShapeDrawer by lazy { NormalShapeDrawer(mDrawable) }
     private val mOvalShapeDrawer by lazy { OvalShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidCircleShapeDrawer by lazy { SolidCircleShapeDrawer(mDrawable) }
-//    private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
+    //    private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
 //    private val mSolidDiagonalShapeDrawer by lazy { SolidDiagonalShapeDrawer(mDrawable) }
     private val mRoundedRectangleShapeDrawer by lazy { RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidOvalShapeDrawer by lazy { SolidOvalShapeDrawer(mDrawable) }
@@ -110,29 +114,33 @@ internal class ShapeDrawerManager
     /**
      * @return Returns the bitmap of the drawable
      */
-    private fun getBitmapFromDrawable(mLastDrawable: Drawable?, drawable: Drawable?): Bitmap? {
-        if (drawable == null || mMeasuredWidth <= 0 || mMeasuredHeight <= 0)
-            return null
-
-
-        if (drawable is BitmapDrawable)
-            return if(drawable.bitmap.isRecycled) null else drawable.bitmap
-
-
-        try {
+    private fun getBitmapFromDrawable(mLastDrawable: Drawable?, drawable: Drawable?): Bitmap? = when {
+        drawable == null || mMeasuredWidth <= 0 || mMeasuredHeight <= 0 -> null
+        drawable is BitmapDrawable && drawable.bitmap.isRecycled -> null
+        drawable is BitmapDrawable -> drawable.bitmap
+        else -> try {
             val bitmap: Bitmap = when {
 
-                drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) // Single color bitmap will be created of 1x1 pixel
+                drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 -> Bitmap.createBitmap(
+                    1,
+                    1,
+                    Bitmap.Config.ARGB_8888
+                ) // Single color bitmap will be created of 1x1 pixel
 
                 drawable is ColorDrawable -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
 
                 else -> {
                     //bitmap size should not be bigger than the view size
-                    val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
+                    val ratio =
+                        drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
                     var sizeX: Int
                     var sizeY: Int
-                    val maxWidth = mImageBounds.width().coerceAtLeast(mImageBounds.height() * ratio).toInt()
-                    val maxHeight = mImageBounds.height().coerceAtLeast(mImageBounds.width() / ratio).toInt()
+                    val maxWidth =
+                        mImageBounds.width().coerceAtLeast(mImageBounds.height() * ratio)
+                            .toInt()
+                    val maxHeight =
+                        mImageBounds.height().coerceAtLeast(mImageBounds.width() / ratio)
+                            .toInt()
 
                     if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
                         sizeX = maxWidth
@@ -150,26 +158,30 @@ internal class ShapeDrawerManager
 
                     //if i already decoded the bitmap i reuse it
                     if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable && mLastBitmap != null)
-                        mLastBitmap?.let { if (it.isRecycled) null else it } ?: Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
+                        mLastBitmap?.let { if (it.isRecycled) null else it }
+                            ?: Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
                     else
                         Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
                 }
             }
 
-            if(bitmap.isRecycled) return null
+            if (bitmap.isRecycled) null
+            else {
 
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
+                val canvas = Canvas(bitmap)
+                drawable.setBounds(0, 0, canvas.width, canvas.height)
+                drawable.draw(canvas)
 
-            return if(bitmap.isRecycled) null else bitmap
+                if (bitmap.isRecycled) null
+                else bitmap
+            }
 
         } catch (e: IllegalArgumentException) {
             Log.e(ShapeDrawerManager::class.java.simpleName, e.message ?: "")
-            return null
+            null
         }
-
     }
+
 
 
     /**
@@ -191,7 +203,6 @@ internal class ShapeDrawerManager
             PivShapeMode.SOLID_OVAL -> mSolidOvalShapeDrawer
             PivShapeMode.SOLID_ROUNDED_RECTANGLE -> mSolidRoundedRectangleShapeDrawer
             PivShapeMode.NORMAL -> mNormalShapeDrawer
-            else -> mNormalShapeDrawer
         }
     }
 
@@ -342,10 +353,10 @@ internal class ShapeDrawerManager
 
         if (mView.get() != null) {
             padding.set(
-                    mView.get()?.paddingLeft ?: padding.left,
-                    mView.get()?.paddingBottom ?: padding.right,
-                    mView.get()?.paddingRight ?: padding.bottom,
-                    mView.get()?.paddingTop ?: padding.top)
+                mView.get()?.paddingLeft ?: padding.left,
+                mView.get()?.paddingBottom ?: padding.right,
+                mView.get()?.paddingRight ?: padding.bottom,
+                mView.get()?.paddingTop ?: padding.top)
         }
 
         val scale: Float
@@ -436,13 +447,8 @@ internal class ShapeDrawerManager
             PivShapeScaleType.CENTER -> {
                 mShaderMatrix.setScale(scaleX, scaleY)
                 mShaderMatrix.postTranslate(
-                        (vWidth - dWidth) * 0.5f + mImageBounds.left,
-                        (vHeight - dHeight) * 0.5f + mImageBounds.top)
-            }
-
-            else -> {
-                mShaderMatrix.setScale(scaleX, scaleY)
-                mShaderMatrix.postTranslate((vWidth - dWidth) * 0.5f + mImageBounds.left, (vHeight - dHeight) * 0.5f + mImageBounds.top)
+                    (vWidth - dWidth) * 0.5f + mImageBounds.left,
+                    (vHeight - dHeight) * 0.5f + mImageBounds.top)
             }
         }
 

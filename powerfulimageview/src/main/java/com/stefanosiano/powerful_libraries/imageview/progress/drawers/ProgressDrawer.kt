@@ -71,12 +71,12 @@ internal interface ProgressDrawer {
  * Used when progress is disabled, so functions can be called without checks with no problem.
  */
 internal class DummyProgressDrawer : ProgressDrawer {
-    override fun setup(progressOptions: ProgressOptions) {}
-    override fun draw(canvas: Canvas, progressBounds: RectF) {}
-    override fun startIndeterminateAnimation() {}
-    override fun stopIndeterminateAnimation() {}
-    override fun setProgressPercent(progressPercent: Float) {}
-    override fun setAnimationEnabled(enabled: Boolean) {}
-    override fun setAnimationDuration(millis: Long) {}
-    override fun setListener(listener: ProgressDrawerManager.ProgressDrawerListener) {}
+    override fun setup(progressOptions: ProgressOptions) { return }
+    override fun draw(canvas: Canvas, progressBounds: RectF) { return }
+    override fun startIndeterminateAnimation() { return }
+    override fun stopIndeterminateAnimation() { return }
+    override fun setProgressPercent(progressPercent: Float) { return }
+    override fun setAnimationEnabled(enabled: Boolean) { return }
+    override fun setAnimationDuration(millis: Long) { return }
+    override fun setListener(listener: ProgressDrawerManager.ProgressDrawerListener) { return }
 }

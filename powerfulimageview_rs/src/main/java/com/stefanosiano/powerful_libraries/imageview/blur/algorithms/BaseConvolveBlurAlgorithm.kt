@@ -95,7 +95,7 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
         if (step == 1) {
 
             //repeating radius times
-            for (iteration in 0 until radius) {
+            (0 until radius).forEach { _ ->
 
                 val minY = core * h / cores
                 val maxY = (core + 1) * h / cores
@@ -148,7 +148,7 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
         if (step == 2) {
 
             //repeating radius times
-            for (iteration in 0 until radius) {
+            (0 until radius).forEach { _ ->
 
                 val minX = core * w / cores
                 val maxX = (core + 1) * w / cores
@@ -198,7 +198,7 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
     }
 
 
-    private inner class BlurTask internal constructor(private val src: IntArray, private val w: Int, private val h: Int, private val radius: Int, private val totalCores: Int, private val coreIndex: Int, private val round: Int) : Callable<Void> {
+    private inner class BlurTask constructor(private val src: IntArray, private val w: Int, private val h: Int, private val radius: Int, private val totalCores: Int, private val coreIndex: Int, private val round: Int) : Callable<Void> {
 
         @Throws(Exception::class)
         override fun call(): Void? {

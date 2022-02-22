@@ -17,15 +17,7 @@ style:
   # Numbers are used for enums and blur algorithms matrices
   MagicNumber:
     active: false
-  WildcardImport:
-    active: false
-  NewLineAtEndOfFile:
-    active: false
   MaxLineLength:
-    active: false
-  ReturnCount:
-    active: false
-  UnusedPrivateMember:
     active: false
 
 naming:

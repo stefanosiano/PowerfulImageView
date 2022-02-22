@@ -1,6 +1,9 @@
 package com.stefanosiano.powerful_libraries.imageview.shape.drawers
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 
 internal class RoundedRectangleShapeDrawer(bitmap: Bitmap?): BaseRoundedDrawer(bitmap) {

@@ -3,6 +3,10 @@ package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 import android.graphics.Bitmap
 
 
+
+
+
+
 /**
  * Class that performs the box blur with 3x3 coefficient matrix.
  * Changing radius will repeat the process radius times.

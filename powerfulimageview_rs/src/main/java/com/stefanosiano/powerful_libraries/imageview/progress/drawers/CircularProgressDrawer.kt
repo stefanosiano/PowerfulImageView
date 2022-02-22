@@ -57,7 +57,7 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
     init {
         mProgressAnimator.interpolator = LinearInterpolator()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) com.stefanosiano.powerful_libraries.imageview.progress.drawers.DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
+        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mProgressAnimator.addUpdateListener { setRealProgressAngle((getOldSweepAngle() + (getSweepAngle() - getOldSweepAngle()) * it.animatedFraction).toInt()) }
     }
@@ -143,7 +143,7 @@ internal class CircularProgressDrawer : ProgressDrawer {
         setProgressPercent(progressOptions.valuePercent)
     }
 
-    override fun startIndeterminateAnimation() {}
+    override fun startIndeterminateAnimation() { return }
 
     override fun draw(canvas: Canvas, progressBounds: RectF) {
         if (!mIsProgressReversed) {
@@ -155,7 +155,7 @@ internal class CircularProgressDrawer : ProgressDrawer {
         }
     }
 
-    override fun stopIndeterminateAnimation() {}
+    override fun stopIndeterminateAnimation() { return }
 
     /** Returns the last angle shown (used as start in animation)  */
     private fun getOldSweepAngle(): Int = mOldProgressFrontSweepAngle

@@ -1,7 +1,12 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
-import androidx.renderscript.*
+import androidx.renderscript.Allocation
+import androidx.renderscript.Element
+import androidx.renderscript.RenderScript
+import androidx.renderscript.ScriptIntrinsicBlur
+import androidx.renderscript.ScriptIntrinsicConvolve3x3
+import androidx.renderscript.ScriptIntrinsicConvolve5x5
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 
 

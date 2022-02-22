@@ -1,6 +1,13 @@
 package com.stefanosiano.powerful_libraries.imageview.shape.drawers
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapShader
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
@@ -46,7 +53,7 @@ internal abstract class BaseRoundedDrawer (bitmap: Bitmap?) : ShapeDrawer {
         }
     }
 
-    override fun changeDrawable(drawable: Drawable?) {}
+    override fun changeDrawable(drawable: Drawable?) { return }
 
     override fun requireBitmap(): Boolean = true
 

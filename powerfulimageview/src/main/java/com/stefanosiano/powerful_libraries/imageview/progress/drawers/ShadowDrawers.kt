@@ -37,8 +37,8 @@ internal interface ShadowDrawer {
  * Used when cancel progress is disabled, so functions can be called without checks with no problem.
  */
 internal class DummyShadowDrawer : ShadowDrawer {
-    override fun setup(progressOptions: ProgressOptions) {}
-    override fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF) {}
+    override fun setup(progressOptions: ProgressOptions) { return }
+    override fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF) { return }
 }
 
 /** ShadowDrawer that shows a circular shadow background */

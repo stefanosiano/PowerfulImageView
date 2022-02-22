@@ -1,6 +1,8 @@
 package com.stefanosiano.powerful_libraries.imageview.shape.drawers
 
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions

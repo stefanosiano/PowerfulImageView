@@ -5,7 +5,7 @@ import android.widget.ImageView
 
 
 /** Custom scale type of the image */
-enum class PivShapeScaleType private constructor(internal val value: Int) {
+enum class PivShapeScaleType constructor(internal val value: Int) {
     /**
      * Scale using the image matrix when drawing. The image matrix can be set using
      * [ImageView.setImageMatrix]. From XML, use this syntax:

@@ -1,7 +1,11 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
-import androidx.renderscript.*
+import androidx.renderscript.Allocation
+import androidx.renderscript.Element
+import androidx.renderscript.RenderScript
+import androidx.renderscript.ScriptIntrinsicConvolve3x3
+import androidx.renderscript.ScriptIntrinsicConvolve5x5
 
 /**
  * Class that performs the box blur with 3x3 coefficient matrix.
@@ -36,7 +40,7 @@ internal class Box3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlg
         val output = Allocation.createTyped(rs, input.type)
         val script = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs))
         script.setCoefficients(coefficientMatrix)
-        for (i in 0 until radius) {
+        (0 until radius).forEach { _ ->
             script.setInput(input)
             script.forEach(output)
             if (input != output) input.destroy()
@@ -60,7 +64,7 @@ internal class Box5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlg
         val output = Allocation.createTyped(rs, input.type)
         val script = ScriptIntrinsicConvolve5x5.create(rs, Element.U8_4(rs))
         script.setCoefficients(coefficientMatrix)
-        for (i in 0 until radius) {
+        (0 until radius).forEach { _ ->
             script.setInput(input)
             script.forEach(output)
             if (input != output) input.destroy()

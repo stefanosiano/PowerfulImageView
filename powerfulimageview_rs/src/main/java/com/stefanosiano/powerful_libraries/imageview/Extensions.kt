@@ -5,7 +5,6 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
 import android.util.Log
-import java.lang.Exception
 
 class Extensions
 

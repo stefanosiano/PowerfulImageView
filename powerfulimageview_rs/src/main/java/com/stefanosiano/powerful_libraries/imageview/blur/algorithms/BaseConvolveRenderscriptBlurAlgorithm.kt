@@ -1,7 +1,8 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
-import androidx.renderscript.*
+import androidx.renderscript.Allocation
+import androidx.renderscript.RenderScript
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 import com.stefanosiano.powerful_libraries.imageview.tryOrPrint
 import java.lang.ref.WeakReference

@@ -2,7 +2,6 @@ package com.stefanosiano.powerful_libraries.imageview.progress.drawers
 
 import android.graphics.Canvas
 import android.graphics.RectF
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
@@ -100,10 +99,6 @@ internal class ProgressDrawerManager
                 mProgressDrawer = mDummyProgressDrawer
                 mShadowDrawer = mDummyShadowDrawer
             }
-            else -> {
-                mProgressDrawer = mDummyProgressDrawer
-                mShadowDrawer = mDummyShadowDrawer
-            }
         }
         mProgressDrawer.setListener(listener)
     }
@@ -121,11 +116,8 @@ internal class ProgressDrawerManager
         onSizeUpdated(mProgressOptions)
     }
 
-    /**
-     * Signals the managed that the drawable changed
-     * @param drawable Drawable to update
-     */
-    fun changeDrawable(drawable: Drawable) {
+    /** Signals the manager that the drawable changed */
+    fun changeDrawable() {
         if (mProgressOptions.isRemovedOnChange)
             changeProgressMode(PivProgressMode.NONE, false)
     }

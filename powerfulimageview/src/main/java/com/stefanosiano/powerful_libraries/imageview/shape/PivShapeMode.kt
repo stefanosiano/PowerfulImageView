@@ -2,7 +2,7 @@ package com.stefanosiano.powerful_libraries.imageview.shape
 
 
 /** Mode of the shape of the image  */
-enum class PivShapeMode private constructor(internal val value: Int) {
+enum class PivShapeMode constructor(internal val value: Int) {
 
     /** Normal (default) shape  */
     NORMAL(0),

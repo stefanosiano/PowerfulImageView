@@ -11,10 +11,9 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
-
-import com.stefanosiano.powerful_libraries.imageview.blur.algorithms.BlurManager
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 import com.stefanosiano.powerful_libraries.imageview.blur.PivBlurMode
+import com.stefanosiano.powerful_libraries.imageview.blur.algorithms.BlurManager
 import com.stefanosiano.powerful_libraries.imageview.progress.PivProgressGravity
 import com.stefanosiano.powerful_libraries.imageview.progress.PivProgressMode
 import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
@@ -242,10 +241,10 @@ open class PowerfulImageView : ImageViewWrapper {
         if (!initialized)// || mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
             return super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
-        val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
-        val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
-        val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
         mShapeDrawerManager.onMeasure(widthSize.toFloat(), heightSize.toFloat(), widthMode, heightMode, this)
 
@@ -264,15 +263,15 @@ open class PowerfulImageView : ImageViewWrapper {
 
         //when initializing (in constructor) it gets called, but it is still null
         if (mShouldCheckRemoveProgress && drawable != null)
-            mProgressDrawerManager.changeDrawable(drawable.current ?: drawable)
+            mProgressDrawerManager.changeDrawable()
 
         //when initializing (in constructor) it gets called, but it is still null
         if (drawable != null)
-            mShapeDrawerManager.changeDrawable(drawable.current ?: drawable)
+            mShapeDrawerManager.changeDrawable(drawable.current)
 
     }
 
-    override fun setScaleType(scaleType: ImageView.ScaleType) {
+    override fun setScaleType(scaleType: ScaleType) {
         super.setScaleType(scaleType)
 
         //if it's called in super constructor, I don't have the objects instantiated
@@ -290,7 +289,7 @@ open class PowerfulImageView : ImageViewWrapper {
      * @param scaleType The desired scaling mode.
      */
     fun setShapeScaleType(scaleType: PivShapeScaleType) {
-        super.setScaleType(ImageView.ScaleType.MATRIX)
+        super.setScaleType(ScaleType.MATRIX)
         mShapeDrawerManager.setScaleType(scaleType)
     }
 

@@ -61,8 +61,10 @@ internal class StackBlurAlgorithm : BlurAlgorithm {
             vertical.add(BlurTask(pix, w, h, radius, cores, i, 2))
         }
 
-        tryOrNull { SharedBlurManager.executorService.invokeAll(horizontal) } ?: return null
-        tryOrNull { SharedBlurManager.executorService.invokeAll(vertical) } ?: return null
+        tryOrNull {
+            SharedBlurManager.executorService.invokeAll(horizontal)
+            SharedBlurManager.executorService.invokeAll(vertical)
+        } ?: return null
 
         return if (!options.isStaticBlur) {
             Bitmap.createBitmap(pix, 0, w, w, h, Bitmap.Config.ARGB_8888)
@@ -340,7 +342,7 @@ internal class StackBlurAlgorithm : BlurAlgorithm {
 
     }
 
-    private inner class BlurTask internal constructor(private val src: IntArray, private val w: Int, private val h: Int, private val radius: Int, private val totalCores: Int, private val coreIndex: Int, private val round: Int) : Callable<Void> {
+    private inner class BlurTask constructor(private val src: IntArray, private val w: Int, private val h: Int, private val radius: Int, private val totalCores: Int, private val coreIndex: Int, private val round: Int) : Callable<Void> {
         @Throws(Exception::class) override fun call(): Void? { blurIteration(src, w, h, radius, totalCores, coreIndex, round); return null }
     }
 }
