@@ -12,6 +12,7 @@ import android.graphics.Bitmap
  * Changing radius will repeat the process radius times.
  */
 internal class Box3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(1 / 3f, 1 / 3f, 1 / 3f)
 }
 
@@ -20,6 +21,7 @@ internal class Box3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
  * Changing radius will repeat the process radius times.
  */
 internal class Box5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.2f, 0.2f, 0.2f, 0.2f, 0.2f)
 }
 

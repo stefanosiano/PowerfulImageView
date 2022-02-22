@@ -76,6 +76,7 @@ abstract class ImageViewWrapper : AppCompatImageView {
     override fun setScaleType(scaleType: ImageView.ScaleType) = super.setScaleType(scaleType)
 
     /** returns selected color (default color if selected color is not available) for any api level */
-    protected fun getColor(a: TypedArray, colorId: Int, defaultColorId: Int): Int = a.getColor(colorId, ContextCompat.getColor(context, defaultColorId))
+    protected fun getColor(a: TypedArray, colorId: Int, defaultColorId: Int): Int =
+        a.getColor(colorId, ContextCompat.getColor(context, defaultColorId))
 
 }

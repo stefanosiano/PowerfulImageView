@@ -87,7 +87,7 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
         val gaussianFilter = getFilter()
         val filterLength = gaussianFilter.size
 
-        //auxiliary array used to store current pixels to blur. Moving this through all the image, i don't use additional memory!
+        // Auxiliary array of current pixels to blur, moving it through the image, so i don't use additional memory
         val tmpPix = IntArray(filterLength)
 
 
@@ -198,7 +198,14 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
     }
 
 
-    private inner class BlurTask constructor(private val src: IntArray, private val w: Int, private val h: Int, private val radius: Int, private val totalCores: Int, private val coreIndex: Int, private val round: Int) : Callable<Void> {
+    private inner class BlurTask constructor(
+        private val src: IntArray,
+        private val w: Int,
+        private val h: Int,
+        private val radius: Int,
+        private val totalCores: Int,
+        private val coreIndex: Int,
+        private val round: Int) : Callable<Void> {
 
         @Throws(Exception::class)
         override fun call(): Void? {

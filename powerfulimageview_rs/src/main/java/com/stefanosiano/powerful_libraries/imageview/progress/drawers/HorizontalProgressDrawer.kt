@@ -56,9 +56,13 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
 
     init {
         mProgressAnimator.interpolator = LinearInterpolator()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
+        mProgressAnimator.duration = if (mProgressAnimationDuration < 0)
+            DEFAULT_ANIMATION_DURATION
+        else mProgressAnimationDuration
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
-        mProgressAnimator.addUpdateListener { setRealProgress(getOldProgress() + (getProgress() - getOldProgress()) * it.animatedFraction) }
+        mProgressAnimator.addUpdateListener {
+            setRealProgress(getOldProgress() + (getProgress() - getOldProgress()) * it.animatedFraction)
+        }
     }
 
     /**
@@ -124,7 +128,9 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
 
         setProgressPercent(progressOptions.valuePercent)
 
-        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0)
+            DEFAULT_ANIMATION_DURATION
+        else progressOptions.animationDuration.toLong()
         if(mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
@@ -138,11 +144,23 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
 
     override fun draw(canvas: Canvas, progressBounds: RectF) {
         if (!mIsProgressReversed) {
-            canvas.drawRect(mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressBackPaint)
-            canvas.drawRect(progressBounds.left, progressBounds.top, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint)
+            canvas.drawRect(
+                mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressBackPaint)
+            canvas.drawRect(
+                progressBounds.left, progressBounds.top, mCurrentFrontX, progressBounds.bottom, mProgressFrontPaint)
         } else {
-            canvas.drawRect(progressBounds.left, progressBounds.top, progressBounds.right - mCurrentFrontX, progressBounds.bottom, mProgressBackPaint)
-            canvas.drawRect(progressBounds.right - mCurrentFrontX, progressBounds.top, progressBounds.right, progressBounds.bottom, mProgressFrontPaint)
+            canvas.drawRect(
+                progressBounds.left,
+                progressBounds.top,
+                progressBounds.right - mCurrentFrontX,
+                progressBounds.bottom,
+                mProgressBackPaint)
+            canvas.drawRect(
+                progressBounds.right - mCurrentFrontX,
+                progressBounds.top,
+                progressBounds.right,
+                progressBounds.bottom,
+                mProgressFrontPaint)
         }
     }
 

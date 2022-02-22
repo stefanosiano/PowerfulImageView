@@ -48,7 +48,9 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
 
 
     init {
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
+        mProgressAnimator.duration = if (mProgressAnimationDuration < 0)
+            DEFAULT_ANIMATION_DURATION
+        else mProgressAnimationDuration
         mProgressAnimator.interpolator = AccelerateDecelerateInterpolator()
         mProgressAnimator.repeatCount = ValueAnimator.INFINITE
         mProgressAnimator.addListener(object : Animator.AnimatorListener {
@@ -77,7 +79,9 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
 
         mIsProgressReversed = progressOptions.isProgressReversed
 
-        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0)
+            DEFAULT_ANIMATION_DURATION
+        else progressOptions.animationDuration.toLong()
         if(mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
@@ -118,7 +122,12 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
         if (!mIsProgressReversed)
             canvas.drawRect(mStartX, progressBounds.top, mEndX, progressBounds.bottom, mProgressPaint)
         else
-            canvas.drawRect(progressBounds.right - mEndX, progressBounds.top, progressBounds.right + progressBounds.left - mStartX, progressBounds.bottom, mProgressPaint)
+            canvas.drawRect(
+                progressBounds.right - mEndX,
+                progressBounds.top,
+                progressBounds.right + progressBounds.left - mStartX,
+                progressBounds.bottom,
+                mProgressPaint)
     }
 
     override fun stopIndeterminateAnimation() {

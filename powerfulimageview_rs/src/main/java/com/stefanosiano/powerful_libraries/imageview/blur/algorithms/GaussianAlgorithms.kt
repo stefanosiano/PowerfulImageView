@@ -15,6 +15,7 @@ import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
  * Changing radius will repeat the process radius times.
  */
 internal class Gaussian3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.1968f, 0.6064f, 0.1968f)
 }
 
@@ -23,6 +24,7 @@ internal class Gaussian3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
  * Changing radius will repeat the process radius times.
  */
 internal class Gaussian5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.0545f, 0.2442f, 0.4026f, 0.2442f, 0.0545f)
 }
 
@@ -79,7 +81,9 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
  */
 internal class Gaussian3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
 
-    private val coefficientMatrix = floatArrayOf(0.0387f, 0.1194f, 0.0387f, 0.1194f, 0.3676f, 0.1194f, 0.0387f, 0.1194f, 0.0387f)
+    @Suppress("MagicNumber")
+    private val coefficientMatrix =
+        floatArrayOf(0.0387f, 0.1194f, 0.0387f, 0.1194f, 0.3676f, 0.1194f, 0.0387f, 0.1194f, 0.0387f)
 
     override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
         var input = Allocation.createFromBitmap(rs, original)
@@ -102,7 +106,9 @@ internal class Gaussian3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBl
  */
 internal class Gaussian5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
 
-    private val coefficientMatrix = floatArrayOf(0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0219f, 0.0983f, 0.1621f, 0.0983f, 0.0219f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f)
+    @Suppress("MagicNumber", "MaxLineLength")
+    private val coefficientMatrix =
+        floatArrayOf(0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0219f, 0.0983f, 0.1621f, 0.0983f, 0.0219f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f)
 
     override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
         var input = Allocation.createFromBitmap(rs, original)

@@ -19,7 +19,10 @@ internal abstract class BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {
 
     private var renderscript: WeakReference<RenderScript?>? = null
 
-    override fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm { this.renderscript = WeakReference(renderscript); return this }
+    override fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm {
+        this.renderscript = WeakReference(renderscript)
+        return this
+    }
 
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap {

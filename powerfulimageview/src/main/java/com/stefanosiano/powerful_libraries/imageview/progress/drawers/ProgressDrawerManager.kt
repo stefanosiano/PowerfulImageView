@@ -41,8 +41,12 @@ internal class ProgressDrawerManager
     private val mDummyProgressDrawer: DummyProgressDrawer by lazy { DummyProgressDrawer() }
     private val mCircularProgressDrawer: CircularProgressDrawer by lazy { CircularProgressDrawer() }
     private val mHorizontalProgressDrawer: HorizontalProgressDrawer by lazy { HorizontalProgressDrawer() }
-    private val mHorizontalIndeterminateProgressDrawer: HorizontalIndeterminateProgressDrawer by lazy { HorizontalIndeterminateProgressDrawer() }
-    private val mCircularIndeterminateProgressDrawer: CircularIndeterminateProgressDrawer by lazy { CircularIndeterminateProgressDrawer() }
+    private val mHorizontalIndeterminateProgressDrawer: HorizontalIndeterminateProgressDrawer by lazy {
+        HorizontalIndeterminateProgressDrawer()
+    }
+    private val mCircularIndeterminateProgressDrawer: CircularIndeterminateProgressDrawer by lazy {
+        CircularIndeterminateProgressDrawer()
+    }
 
     //Shadow Drawers
     private val mDummyShadowDrawer: DummyShadowDrawer by lazy { DummyShadowDrawer() }
@@ -67,9 +71,14 @@ internal class ProgressDrawerManager
     init {
         this.listener = object : ProgressDrawerListener {
             override fun onRequestInvalidate() {
-                //invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to be sure to invalidate the whole progress indicator
-                //It is more efficient then just postInvalidate(): if something is drawn outside the bounds, it will not be calculated again!
-                mView.get()?.postInvalidate(mProgressBounds.left.toInt() - 1, mProgressBounds.top.toInt() - 1, mProgressBounds.right.toInt() + 1, mProgressBounds.bottom.toInt() + 1)
+                // Invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to
+                // be sure to invalidate the whole progress indicator. It is more efficient then just postInvalidate():
+                // if something is drawn outside the bounds, it will not be calculated again!
+                mView.get()?.postInvalidate(
+                    mProgressBounds.left.toInt() - 1,
+                    mProgressBounds.top.toInt() - 1,
+                    mProgressBounds.right.toInt() + 1,
+                    mProgressBounds.bottom.toInt() + 1)
             }
         }
         this.mProgressOptions.setListener(this)
@@ -88,11 +97,17 @@ internal class ProgressDrawerManager
         when (progressMode ?: PivProgressMode.NONE) {
 
             PivProgressMode.CIRCULAR -> {
-                mProgressDrawer = if (mProgressOptions.isIndeterminate) mCircularIndeterminateProgressDrawer else mCircularProgressDrawer
-                mShadowDrawer = if (mProgressOptions.shadowEnabled) mCircularShadowDrawer else mDummyShadowDrawer
+                mProgressDrawer = if (mProgressOptions.isIndeterminate)
+                    mCircularIndeterminateProgressDrawer
+                else mCircularProgressDrawer
+                mShadowDrawer = if (mProgressOptions.shadowEnabled)
+                    mCircularShadowDrawer
+                else mDummyShadowDrawer
             }
             PivProgressMode.HORIZONTAL -> {
-                mProgressDrawer = if (mProgressOptions.isIndeterminate) mHorizontalIndeterminateProgressDrawer else mHorizontalProgressDrawer
+                mProgressDrawer = if (mProgressOptions.isIndeterminate)
+                    mHorizontalIndeterminateProgressDrawer
+                else mHorizontalProgressDrawer
                 mShadowDrawer = if (mProgressOptions.shadowEnabled) mRectangularShadowDrawer else mDummyShadowDrawer
             }
             PivProgressMode.NONE -> {
@@ -127,7 +142,8 @@ internal class ProgressDrawerManager
      * It also starts animation of indeterminate progress indicator.
      *
      * @param progressMode mode to change the progress indicator into
-     * @param forceUpdate if the drawer should be updated, regardless of anything (may occur when changing indeterminate flag)
+     * @param forceUpdate if the drawer should be updated, regardless of anything (may occur when changing indeterminate
+     * flag)
      */
     fun changeProgressMode(progressMode: PivProgressMode?, forceUpdate: Boolean) {
         if (mProgressMode == progressMode ?: mProgressMode && !forceUpdate)

@@ -91,6 +91,11 @@ internal class RectangularShadowDrawer : ShadowDrawer {
 
     override fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF) {
         canvas.drawRect(shadowBounds.left, shadowBounds.top, shadowBounds.right, shadowBounds.bottom, mShadowPaint)
-        canvas.drawRect(shadowBorderBounds.left, shadowBorderBounds.top, shadowBorderBounds.right, shadowBorderBounds.bottom, mShadowBorderPaint)
+        canvas.drawRect(
+            shadowBorderBounds.left,
+            shadowBorderBounds.top,
+            shadowBorderBounds.right,
+            shadowBorderBounds.bottom,
+            mShadowBorderPaint)
     }
 }

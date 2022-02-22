@@ -13,6 +13,7 @@ import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 /** Default animation duration  */
 private const val DEFAULT_ANIMATION_DURATION: Long = 800
 
+@Suppress("MagicNumber")
 /** ProgressDrawer that shows an indeterminate animated circle as progress indicator. */
 internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
 
@@ -65,7 +66,9 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mOffsetAnimator.addUpdateListener { mOffset = (360 * it.animatedFraction).toInt() }
 
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
+        mProgressAnimator.duration = if (mProgressAnimationDuration < 0)
+            DEFAULT_ANIMATION_DURATION
+        else mProgressAnimationDuration
         mProgressAnimator.interpolator = AccelerateDecelerateInterpolator()
         mProgressAnimator.repeatCount = ValueAnimator.INFINITE
         mProgressAnimator.addListener(object : Animator.AnimatorListener {
@@ -75,7 +78,9 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
             override fun onAnimationRepeat(animation: Animator) { isShrinking = !isShrinking }
         })
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
-        mProgressAnimator.addUpdateListener { setProgressAngle((360 * it.animatedFraction).toInt(), (290 * it.animatedFraction).toInt()) }
+        mProgressAnimator.addUpdateListener {
+            setProgressAngle((360 * it.animatedFraction).toInt(), (290 * it.animatedFraction).toInt())
+        }
     }
 
     override fun setup(progressOptions: ProgressOptions) {
@@ -85,7 +90,9 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
         mProgressPaint.isAntiAlias = true
         mProgressPaint.style = Paint.Style.STROKE
 
-        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0)
+            DEFAULT_ANIMATION_DURATION
+        else progressOptions.animationDuration.toLong()
         if(mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
@@ -122,13 +129,16 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
     private fun setProgressAngle(startAngleOffset: Int, sweepAngleOffset: Int) {
         mLastStartAngleOffset = startAngleOffset
         mLastSweepAngleOffset = sweepAngleOffset
-        //mProgressSweepAngle when isShrinking and at the end of animation must be equal to itself when !isShrinking and at the beginning of the animation
+        //mProgressSweepAngle when isShrinking and at the end of animation must be equal to itself when !isShrinking
+        // and at the beginning of the animation
         if (isShrinking) {
+            // when sweepAngleOffset = 1 * 290 => 50. when sweepAngleOffset = 0 * 290 => 340
             this.mProgressStartAngle = -90 + startAngleOffset + mOffset
-            this.mProgressSweepAngle = 340 - sweepAngleOffset//when sweepAngleOffset = 1 * 290 => 50.    when sweepAngleOffset = 0 * 290 => 340
+            this.mProgressSweepAngle = 340 - sweepAngleOffset
         } else {
+            // when sweepAngleOffset = 0 * 290 => 50. when sweepAngleOffset = 1 * 290 => 340
             this.mProgressStartAngle = -90 + mOffset
-            this.mProgressSweepAngle = sweepAngleOffset + 50//when sweepAngleOffset = 0 * 290 => 50.   when sweepAngleOffset = 1 * 290 => 340
+            this.mProgressSweepAngle = sweepAngleOffset + 50
         }
 
         listener?.onRequestInvalidate()
@@ -137,9 +147,19 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
 
     override fun draw(canvas: Canvas, progressBounds: RectF) {
         if (!mIsProgressReversed)
-            canvas.drawArc(progressBounds, mProgressStartAngle.toFloat(), mProgressSweepAngle.toFloat(), false, mProgressPaint)
+            canvas.drawArc(
+                progressBounds,
+                mProgressStartAngle.toFloat(),
+                mProgressSweepAngle.toFloat(),
+                false,
+                mProgressPaint)
         else
-            canvas.drawArc(progressBounds, (-mProgressStartAngle).toFloat(), (-mProgressSweepAngle).toFloat(), false, mProgressPaint)
+            canvas.drawArc(
+                progressBounds,
+                (-mProgressStartAngle).toFloat(),
+                (-mProgressSweepAngle).toFloat(),
+                false,
+                mProgressPaint)
     }
 
     override fun stopIndeterminateAnimation() {

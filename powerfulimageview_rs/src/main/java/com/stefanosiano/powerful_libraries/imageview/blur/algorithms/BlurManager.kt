@@ -176,7 +176,9 @@ internal class BlurManager
             //changing mode to fallback one if enabled
             mMode = if (mBlurOptions.useRsFallback) mMode.fallbackMode ?: PivBlurMode.DISABLED else PivBlurMode.DISABLED
 
-            Log.w(BlurManager::class.java.simpleName, "${e.message}\nFalling back to another blurring method: ${mMode.name}")
+            Log.w(
+                BlurManager::class.java.simpleName,
+                "${e.message}\nFalling back to another blurring method: ${mMode.name}")
 
             updateAlgorithms(mMode)
 
@@ -221,7 +223,8 @@ internal class BlurManager
         mMode = blurMode ?: PivBlurMode.DISABLED
 
         //if renderscript is null and the mode uses it, there was a problem getting it: let's use java or dummy
-        if(mMode.usesRenderscript) renderScript ?: return updateAlgorithms(if (mBlurOptions.useRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED)
+        if(mMode.usesRenderscript) renderScript
+            ?: return updateAlgorithms(if (mBlurOptions.useRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED)
 
         addContext(false)
 
@@ -247,7 +250,8 @@ internal class BlurManager
      *
      * @return True if the bitmap should be blurred, false otherwise
      */
-    fun shouldBlur(drawable: Drawable?, checkDrawable: Boolean): Boolean = mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
+    fun shouldBlur(drawable: Drawable?, checkDrawable: Boolean): Boolean =
+        mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
 
     /** @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned. */
     fun getLastBlurredBitmap(): Bitmap? {
@@ -267,7 +271,8 @@ internal class BlurManager
         val maxWidth = (Math.max(mWidth.toFloat(), mHeight * ratio) / mBlurOptions.downSamplingRate).toInt()
         val maxHeight = (Math.max(mHeight.toFloat(), mWidth / ratio) / mBlurOptions.downSamplingRate).toInt()
 
-        if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
+        if (drawable.intrinsicWidth > maxWidth && maxWidth > 0
+            && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
             sizeX = maxWidth
             sizeY = maxHeight
         } else {
@@ -282,7 +287,8 @@ internal class BlurManager
         }
 
         //if i already decoded the bitmap i reuse it
-        return if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && mOriginalBitmap?.isRecycled == false && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable === drawable)
+        return if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && mOriginalBitmap?.isRecycled == false
+            && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable === drawable)
             mOriginalBitmap
         else try {
 
@@ -291,7 +297,9 @@ internal class BlurManager
 
             val bitmap: Bitmap = when {
                 drawable is BitmapDrawable -> Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
-                drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) // Single color bitmap will be created of 1x1 pixel
+                // Single color bitmap will be created of 1x1 pixel
+                drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 ->
+                    Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                 drawable is ColorDrawable -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                 else -> Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
             }

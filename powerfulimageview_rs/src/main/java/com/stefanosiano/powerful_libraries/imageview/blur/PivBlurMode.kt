@@ -31,7 +31,8 @@ enum class PivBlurMode constructor(
     BOX5X5(9, DISABLED, false),
     /** Box blur with area of 5x5 (Renderscript). Available only on imageview_rs module */
     BOX5X5_RS(10, BOX5X5, true),
-    /** Stack blur. Only Java method is available, but it's the fastest among the java methods. Use it if you don't want to use Renderscript */
+    /** Stack blur. Only Java method is available, but it's the fastest among the java methods.
+     *  Use it if you don't want to use Renderscript */
     STACK(11, DISABLED, false);
 
 

@@ -74,7 +74,11 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
 
             //if scaleType is XY, we should draw the image on the whole view
             if (mScaleType == PivShapeScaleType.FIT_XY) {
-                mDrawable?.setBounds(imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
+                mDrawable?.setBounds(
+                    imageBounds.left.toInt(),
+                    imageBounds.top.toInt(),
+                    imageBounds.right.toInt(),
+                    imageBounds.bottom.toInt())
             } else {
                 canvas.save()
                 canvas.concat(mMatrix)
@@ -96,13 +100,19 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
         if (mFrontPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mFrontPaint)
 
         //border
-        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT) drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
+        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT)
+            drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
 
         drawSolid(canvas, borderBounds, shapeBounds, imageBounds)
     }
 
     protected abstract fun drawPaint(canvas: Canvas, shapeBounds: RectF, paint: Paint)
-    protected abstract fun drawBorder(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint)
+    protected abstract fun drawBorder(
+        canvas: Canvas,
+        borderBounds: RectF,
+        shapeBounds: RectF,
+        imageBounds: RectF,
+        borderPaint: Paint)
     protected abstract fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF)
 
 }
@@ -117,7 +127,13 @@ internal class NormalShapeDrawer
 
     override fun drawPaint(canvas: Canvas, shapeBounds: RectF, paint: Paint) = canvas.drawRect(shapeBounds, paint)
 
-    override fun drawBorder(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint) = canvas.drawRect(borderBounds, borderPaint)
+    override fun drawBorder(
+        canvas: Canvas,
+        borderBounds: RectF,
+        shapeBounds: RectF,
+        imageBounds: RectF,
+        borderPaint: Paint) =
+        canvas.drawRect(borderBounds, borderPaint)
 
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) { return }
 

@@ -57,9 +57,14 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
     init {
         mProgressAnimator.interpolator = LinearInterpolator()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
+        mProgressAnimator.duration = if (mProgressAnimationDuration < 0)
+            DEFAULT_ANIMATION_DURATION
+        else mProgressAnimationDuration
         //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
-        mProgressAnimator.addUpdateListener { setRealProgressAngle((getOldSweepAngle() + (getSweepAngle() - getOldSweepAngle()) * it.animatedFraction).toInt()) }
+        mProgressAnimator.addUpdateListener {
+            setRealProgressAngle(
+                (getOldSweepAngle() + (getSweepAngle() - getOldSweepAngle()) * it.animatedFraction).toInt())
+        }
     }
 
     /**
@@ -131,7 +136,9 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
         mIsProgressReversed = progressOptions.isProgressReversed
 
-        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) DEFAULT_ANIMATION_DURATION else progressOptions.animationDuration.toLong()
+        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0)
+            DEFAULT_ANIMATION_DURATION
+        else progressOptions.animationDuration.toLong()
         if(mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
@@ -147,11 +154,27 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
     override fun draw(canvas: Canvas, progressBounds: RectF) {
         if (!mIsProgressReversed) {
-            canvas.drawArc(progressBounds, mProgressBackStartAngle.toFloat(), mProgressBackSweepAngle.toFloat(), drawWedge, mProgressBackPaint)
-            canvas.drawArc(progressBounds, -90f, mCurrentProgressFrontSweepAngle.toFloat(), drawWedge, mProgressFrontPaint)
+            canvas.drawArc(
+                progressBounds,
+                mProgressBackStartAngle.toFloat(),
+                mProgressBackSweepAngle.toFloat(),
+                drawWedge,
+                mProgressBackPaint)
+            canvas.drawArc(
+                progressBounds,
+                -90f,
+                mCurrentProgressFrontSweepAngle.toFloat(),
+                drawWedge,
+                mProgressFrontPaint)
         } else {
-            canvas.drawArc(progressBounds, -90f, mProgressBackSweepAngle.toFloat(), drawWedge, mProgressBackPaint)
-            canvas.drawArc(progressBounds, -90f, (-mCurrentProgressFrontSweepAngle).toFloat(), drawWedge, mProgressFrontPaint)
+            canvas.drawArc(
+                progressBounds, -90f, mProgressBackSweepAngle.toFloat(), drawWedge, mProgressBackPaint)
+            canvas.drawArc(
+                progressBounds,
+                -90f,
+                (-mCurrentProgressFrontSweepAngle).toFloat(),
+                drawWedge,
+                mProgressFrontPaint)
         }
     }
 

@@ -15,6 +15,7 @@ import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
  * Changing radius will repeat the process radius times.
  */
 internal class Gaussian3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.1968f, 0.6064f, 0.1968f)
 }
 
@@ -23,6 +24,7 @@ internal class Gaussian3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
  * Changing radius will repeat the process radius times.
  */
 internal class Gaussian5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.0545f, 0.2442f, 0.4026f, 0.2442f, 0.0545f)
 }
 

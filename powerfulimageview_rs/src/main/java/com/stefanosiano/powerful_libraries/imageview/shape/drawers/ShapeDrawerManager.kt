@@ -74,7 +74,8 @@ internal class ShapeDrawerManager
     private val mSolidCircleShapeDrawer by lazy { SolidCircleShapeDrawer(mDrawable) }
     //    private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
 //    private val mSolidDiagonalShapeDrawer by lazy { SolidDiagonalShapeDrawer(mDrawable) }
-    private val mRoundedRectangleShapeDrawer by lazy { RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
+    private val mRoundedRectangleShapeDrawer by lazy {
+        RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidOvalShapeDrawer by lazy { SolidOvalShapeDrawer(mDrawable) }
     private val mSolidRoundedRectangleShapeDrawer by lazy { SolidRoundedRectangleShapeDrawer(mDrawable) }
 
@@ -142,7 +143,8 @@ internal class ShapeDrawerManager
                         mImageBounds.height().coerceAtLeast(mImageBounds.width() / ratio)
                             .toInt()
 
-                    if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
+                    if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 &&
+                        drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
                         sizeX = maxWidth
                         sizeY = maxHeight
                     } else {
@@ -151,7 +153,8 @@ internal class ShapeDrawerManager
                     }
 
                     //vector drawables should always display at max resolution
-                    if (drawable.javaClass.name == "android.graphics.drawable.VectorDrawable" || drawable is VectorDrawableCompat) {
+                    if (drawable.javaClass.name == "android.graphics.drawable.VectorDrawable" ||
+                        drawable is VectorDrawableCompat) {
                         sizeX = maxWidth
                         sizeY = maxHeight
                     }
@@ -240,7 +243,9 @@ internal class ShapeDrawerManager
 
         val usedRatio: Float = when (mShapeMode) {
             PivShapeMode.CIRCLE, PivShapeMode.SQUARE, PivShapeMode.SOLID_CIRCLE -> 1f
-            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
+            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE,
+            PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL ->
+                if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
             else -> if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
         }
 
@@ -368,12 +373,12 @@ internal class ShapeDrawerManager
             PivShapeScaleType.CENTER_CROP -> {
                 if (dWidth * vHeight > vWidth * dHeight) {
                     scale = vHeight / dHeight.toFloat()
-                    dx = (vWidth - dWidth * scale) * 0.5f
+                    dx = (vWidth - dWidth * scale) / 2
                     dy = 0f
 
                 } else {
                     scale = vWidth / dWidth.toFloat()
-                    dy = (vHeight - dHeight * scale) * 0.5f
+                    dy = (vHeight - dHeight * scale) / 2
                     dx = 0f
                 }
 
@@ -384,7 +389,7 @@ internal class ShapeDrawerManager
             PivShapeScaleType.TOP_CROP -> {
                 if (dWidth * vHeight > vWidth * dHeight) {
                     scale = vHeight / dHeight.toFloat()
-                    dx = (vWidth - dWidth * scale) * 0.5f
+                    dx = (vWidth - dWidth * scale) / 2
                     dy = 0f
 
                 } else {
@@ -400,7 +405,7 @@ internal class ShapeDrawerManager
             PivShapeScaleType.BOTTOM_CROP -> {
                 if (dWidth * vHeight > vWidth * dHeight) {
                     scale = vHeight / dHeight.toFloat()
-                    dx = (vWidth - dWidth * scale) * 0.5f
+                    dx = (vWidth - dWidth * scale) / 2
                     dy = 0f
 
                 } else {
@@ -420,20 +425,47 @@ internal class ShapeDrawerManager
                     scale = Math.min(vWidth / dWidth.toFloat(), vHeight / dHeight.toFloat())
                 }
 
-                dx = (vWidth - dWidth * scale) * 0.5f
-                dy = (vHeight - dHeight * scale) * 0.5f
+                dx = (vWidth - dWidth * scale) / 2
+                dy = (vHeight - dHeight * scale) / 2
 
                 mShaderMatrix.setScale(scale * scaleX, scale * scaleY)
                 mShaderMatrix.postTranslate(dx + mImageBounds.left, dy + mImageBounds.top)
             }
 
-            PivShapeScaleType.FIT_CENTER -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.CENTER)
+            PivShapeScaleType.FIT_CENTER -> mShaderMatrix.setRectToRect(
+                RectF(
+                    0f,
+                    0f,
+                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
+                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
+                mImageBounds,
+                Matrix.ScaleToFit.CENTER)
 
-            PivShapeScaleType.FIT_END -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.END)
+            PivShapeScaleType.FIT_END -> mShaderMatrix.setRectToRect(
+                RectF(
+                    0f,
+                    0f,
+                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
+                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
+                mImageBounds,
+                Matrix.ScaleToFit.END)
 
-            PivShapeScaleType.FIT_START -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.START)
+            PivShapeScaleType.FIT_START -> mShaderMatrix.setRectToRect(
+                RectF(
+                    0f,
+                    0f,
+                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
+                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
+                mImageBounds,
+                Matrix.ScaleToFit.START)
 
-            PivShapeScaleType.FIT_XY -> mShaderMatrix.setRectToRect(RectF(0f, 0f, (mLastBitmap?.safeWidth() ?: dWidth).toFloat(), (mLastBitmap?.safeHeight() ?: dHeight).toFloat()), mImageBounds, Matrix.ScaleToFit.FILL)
+            PivShapeScaleType.FIT_XY -> mShaderMatrix.setRectToRect(
+                RectF(0f,
+                    0f,
+                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
+                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
+                mImageBounds,
+                Matrix.ScaleToFit.FILL)
 
             PivShapeScaleType.MATRIX -> {
                 mShaderMatrix.preScale(scaleX, scaleY)
@@ -447,8 +479,8 @@ internal class ShapeDrawerManager
             PivShapeScaleType.CENTER -> {
                 mShaderMatrix.setScale(scaleX, scaleY)
                 mShaderMatrix.postTranslate(
-                    (vWidth - dWidth) * 0.5f + mImageBounds.left,
-                    (vHeight - dHeight) * 0.5f + mImageBounds.top)
+                    (vWidth - dWidth) / 2 + mImageBounds.left,
+                    (vHeight - dHeight) / 2 + mImageBounds.top)
             }
         }
 

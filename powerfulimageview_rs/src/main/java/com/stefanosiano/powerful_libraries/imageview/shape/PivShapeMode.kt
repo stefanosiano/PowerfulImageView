@@ -77,9 +77,10 @@ enum class PivShapeMode constructor(internal val value: Int) {
      * with any image loader library, any animation and any drawable. They also cover eventual backgrounds.
      * Note: If you want to show something behind the image, you cannot use these shapes.
      *
-     * @return True if the image is solid_circle, solid_oval, solid_rounded_rectangle, solid_diagonal, solid_arc, solid_corner or solid_rounded_corner, false otherwise
+     * @return True if the image is solid_circle, solid_oval, solid_rounded_rectangle, solid_diagonal, solid_arc,
+     *  solid_corner or solid_rounded_corner, false otherwise
      */
-    fun isSolid(): Boolean = this == SOLID_CIRCLE || this == SOLID_OVAL || this == SOLID_ROUNDED_RECTANGLE //|| this == SOLID_DIAGONAL || this == SOLID_ARC || this == SOLID_CORNER || this == SOLID_ROUNDED_CORNER
+    fun isSolid(): Boolean = this == SOLID_CIRCLE || this == SOLID_OVAL || this == SOLID_ROUNDED_RECTANGLE
 
     /**
      * Only size is changed in these shapes. They should perform as efficiently as normal imageViews

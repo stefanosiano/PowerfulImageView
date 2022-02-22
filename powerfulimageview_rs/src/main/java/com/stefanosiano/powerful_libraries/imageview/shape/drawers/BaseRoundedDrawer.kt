@@ -100,23 +100,27 @@ internal abstract class BaseRoundedDrawer (bitmap: Bitmap?) : ShapeDrawer {
         //background
         if (mBackPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mBackPaint)
 
-        mBackgroundDrawable?.setBounds(imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
+        mBackgroundDrawable?.setBounds(
+            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
         mBackgroundDrawable?.draw(canvas)
 
         //image
         if(mOrigBitmap?.get()?.isRecycled != true)
             drawPaint(canvas, imageBounds, mBitmapPaint)
 
-        mForegroundDrawable?.setBounds(imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
+        mForegroundDrawable?.setBounds(
+            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
         mForegroundDrawable?.draw(canvas)
 
         //foreground
         if (mFrontPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mFrontPaint)
 
         //border
-        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT) drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
+        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT)
+            drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
     }
 
     protected abstract fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint)
-    protected abstract fun drawBorder(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint)
+    protected abstract fun drawBorder(
+        canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint)
 }

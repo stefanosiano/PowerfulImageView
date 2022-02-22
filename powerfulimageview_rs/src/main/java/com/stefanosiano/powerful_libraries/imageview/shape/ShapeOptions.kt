@@ -17,14 +17,14 @@ class ShapeOptions() : Parcelable {
     //Options used directly by drawers
 
     /** Background color of the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
-     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var backgroundColor: Int = 0
         set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Foreground color of the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
-     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var foregroundColor: Int = 0
         set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
@@ -36,11 +36,21 @@ class ShapeOptions() : Parcelable {
 
     /** Whether the border should be drawn over the image or the shape should be shrinked */
     var borderOverlay: Boolean = false
-        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
+        set(value) {
+            field = value
+            if(isInitialized)
+                calculateBounds(mCalculatedLastW,
+                    mCalculatedLastH,
+                    mCalculatedLastPaddingLeft,
+                    mCalculatedLastPaddingTop,
+                    mCalculatedLastPaddingRight,
+                    mCalculatedLastPaddingBottom,
+                    mCalculatedLastMode)
+        }
 
     /** Color of the shape border
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
-     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var borderColor: Int = 0
         set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
@@ -49,14 +59,36 @@ class ShapeOptions() : Parcelable {
     var cutGravity: PivShapeCutGravity = PivShapeCutGravity.BOTTOM
         set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
-    /** Width of the shape border
-     * If you want to use dp, set value using TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
+    /** Width of the shape border. If you want to use dp, set value using
+     *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
     var borderWidth: Int = 0
-        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
+        set(value) {
+            field = value
+            if(isInitialized)
+                calculateBounds(
+                    mCalculatedLastW,
+                    mCalculatedLastH,
+                    mCalculatedLastPaddingLeft,
+                    mCalculatedLastPaddingTop,
+                    mCalculatedLastPaddingRight,
+                    mCalculatedLastPaddingBottom,
+                    mCalculatedLastMode)
+        }
     
     /** Ratio of the shape. It's ignored in Circle and Square shapes. Width will be calculated as height * ratio */
     var ratio: Float = 0f
-        set(value) { field = value; if(isInitialized) calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode) }
+        set(value) {
+            field = value
+            if(isInitialized)
+                calculateBounds(
+                    mCalculatedLastW,
+                    mCalculatedLastH,
+                    mCalculatedLastPaddingLeft,
+                    mCalculatedLastPaddingTop,
+                    mCalculatedLastPaddingRight,
+                    mCalculatedLastPaddingBottom,
+                    mCalculatedLastMode)
+        }
 
     /** X radius of the rounded rectangles  */
     var radiusX: Float = 0f
@@ -83,8 +115,8 @@ class ShapeOptions() : Parcelable {
         set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Color used by solid shapes
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied,
-     * meaning that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var solidColor: Int = 0
         set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
 
@@ -115,25 +147,25 @@ class ShapeOptions() : Parcelable {
     private var mCalculatedInnerPadding: Float = 0f
 
     //last calculated width and height
-    /** Last left padding calculated. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last left padding calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastPaddingLeft: Int = 0
 
-    /** Last top padding calculated. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last top padding calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastPaddingTop: Int = 0
 
-    /** Last right padding calculated. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last right padding calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastPaddingRight: Int = 0
 
-    /** Last bottom padding calculated. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last bottom padding calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastPaddingBottom: Int = 0
 
-    /** Last width calculated. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last width calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastW: Int = 0
 
-    /** Last height calculated. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last height calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastH: Int = 0
 
-    /** Last progress mode used. Used when changing programmatically the options, so bounds can be calculated directly  */
+    /** Last progress mode used. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastMode = PivShapeMode.NORMAL
 
     /** Listener that will update the shape drawers on changes, with a weak reference to be sure to not leak memory  */
@@ -147,25 +179,30 @@ class ShapeOptions() : Parcelable {
      *
      * @param backgroundColor Background color of the shape
      * @param foregroundColor Foreground color of the shape
-     * @param innerPadding Inner padding of the image relative to the shape. If it's 0 or more, it applies and overrides "innerPaddingPercent" parameter
+     * @param innerPadding Inner padding of the image relative to the shape. If it's 0 or more, it applies and overrides
+     *  "innerPaddingPercent" parameter
      * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage
      * @param borderOverlay Whether the border should be drawn over the image or not
      * @param borderColor Color of the shape border
      * @param borderWidth Width of the shape border
-     * @param ratio Ratio of the shape. Width will be equal to (height * ratio). It's ignored in square and circle shapes
+     * @param ratio Ratio of the shape. Width will be equal to (height * ratio). Ignored in square and circle shapes
      * @param radiusX X radius of the image. Used in rounded rectangles
      * @param radiusY Y radius of the image. Used in rounded rectangles
      * @param solidColor Solid color used by solid shapes
      * @param backgroundDrawable Background drawable to draw under the image. Does not follow rounded shapes
      * @param foregroundDrawable Fackground drawable to draw under the image. Does not follow rounded shapes
-     * @param cutRadius1 Cut radius 1. Used in cut shapes. If it's 0 or more, it applies and overrides "cutRadius1Percent" parameter
+     * @param cutRadius1 Cut radius 1. Used in cut shapes. If it's 0 or more, it applies and overrides
+     *  "cutRadius1Percent" parameter
      * @param cutRadius1Percent Cut radius 1 in percentage. Used in cut shapes
-     * @param cutRadius2 Cut radius 2. Used in cut shapes. If it's 0 or more, it applies and overrides "cutRadius2Percent" parameter
+     * @param cutRadius2 Cut radius 2. Used in cut shapes. If it's 0 or more, it applies and overrides
+     *  "cutRadius2Percent" parameter
      * @param cutRadius2Percent Cut radius 2 in percentage. Used in cut shapes
      */
-    constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float, borderOverlay: Boolean, cutGravity: Int,
-                borderColor: Int, borderWidth: Int, ratio: Float, radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable?,
-                foregroundDrawable: Drawable?, cutRadius1: Int, cutRadius1Percent: Float, cutRadius2: Int, cutRadius2Percent: Float): this() {
+    constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float,
+                borderOverlay: Boolean, cutGravity: Int, borderColor: Int, borderWidth: Int, ratio: Float,
+                radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable?,
+                foregroundDrawable: Drawable?, cutRadius1: Int, cutRadius1Percent: Float, cutRadius2: Int,
+                cutRadius2Percent: Float): this() {
         this.backgroundColor = backgroundColor
         this.foregroundColor = foregroundColor
         this.mInnerPadding = innerPadding
@@ -233,7 +270,8 @@ class ShapeOptions() : Parcelable {
      * @param h Height of the View
      * @param mode Mode of the shape
      */
-    fun calculateBounds(w: Int, h: Int, paddingLeft: Int, paddingTop: Int, paddingRight: Int, paddingBottom: Int, mode: PivShapeMode) {
+    fun calculateBounds(w: Int, h: Int, paddingLeft: Int, paddingTop: Int, paddingRight: Int, paddingBottom: Int,
+                        mode: PivShapeMode) {
 
         //saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w
@@ -263,8 +301,8 @@ class ShapeOptions() : Parcelable {
                 smallSize = Math.min(w, h).toFloat()
             }
 
-//            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE, PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL, cut modes -> {
-            else -> {
+            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE,
+            PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> {
                 //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
                 //In this case I center the shape into the view
                 val smallX = Math.min(w.toFloat(), h * usedRatio)
@@ -347,19 +385,34 @@ class ShapeOptions() : Parcelable {
      */
     fun setInnerPadding(innerPadding: Int) {
         this.mInnerPadding = innerPadding
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
+        calculateBounds(
+            mCalculatedLastW,
+            mCalculatedLastH,
+            mCalculatedLastPaddingLeft,
+            mCalculatedLastPaddingTop,
+            mCalculatedLastPaddingRight,
+            mCalculatedLastPaddingBottom,
+            mCalculatedLastMode)
     }
 
     /**
      * Set the inner padding of the image relative to the shape, as a percentage of the shape size.
      * If the percentage is higher than 100, it is treated as (value % 100).
      *
-     * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage of the shape size, as a float from 0 to 100
+     * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage of the shape size,
+     *  as a float from 0 to 100
      */
     fun setInnerPadding(innerPaddingPercent: Float) {
         this.mInnerPadding = -1
         this.mInnerPaddingPercent = innerPaddingPercent
-        calculateBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastPaddingLeft, mCalculatedLastPaddingTop, mCalculatedLastPaddingRight, mCalculatedLastPaddingBottom, mCalculatedLastMode)
+        calculateBounds(
+            mCalculatedLastW,
+            mCalculatedLastH,
+            mCalculatedLastPaddingLeft,
+            mCalculatedLastPaddingTop,
+            mCalculatedLastPaddingRight,
+            mCalculatedLastPaddingBottom,
+            mCalculatedLastMode)
     }
 
 

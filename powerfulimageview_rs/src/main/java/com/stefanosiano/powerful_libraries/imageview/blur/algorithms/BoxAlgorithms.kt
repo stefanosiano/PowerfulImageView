@@ -12,6 +12,7 @@ import androidx.renderscript.ScriptIntrinsicConvolve5x5
  * Changing radius will repeat the process radius times.
  */
 internal class Box3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(1 / 3f, 1 / 3f, 1 / 3f)
 }
 
@@ -20,6 +21,7 @@ internal class Box3x3BlurAlgorithm : BaseConvolveBlurAlgorithm() {
  * Changing radius will repeat the process radius times.
  */
 internal class Box5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
+    @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.2f, 0.2f, 0.2f, 0.2f, 0.2f)
 }
 
@@ -33,6 +35,7 @@ internal class Box5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
 
 internal class Box3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
 
+    @Suppress("MagicNumber")
     private val coefficientMatrix = floatArrayOf(1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f, 1 / 9f)
 
     override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
@@ -57,7 +60,9 @@ internal class Box3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlg
  */
 internal class Box5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
 
-    private val coefficientMatrix = floatArrayOf(0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f)
+    @Suppress("MagicNumber", "MaxLineLength")
+    private val coefficientMatrix =
+        floatArrayOf(0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f, 0.04f)
 
     override fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation {
         var input = Allocation.createFromBitmap(rs, original)

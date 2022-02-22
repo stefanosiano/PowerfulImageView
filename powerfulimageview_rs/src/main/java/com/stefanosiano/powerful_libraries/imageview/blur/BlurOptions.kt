@@ -11,19 +11,29 @@ import java.lang.ref.WeakReference
 
 class BlurOptions() : Parcelable {
 
-    /** Rate to downSample the image width and height, so that bitmap is no more than the view size divided by this rate.
+    /** Rate to downSample the image width and height, so that bitmap is no more than the view size divided by this rate
      * If a value less than 1 is passed, downSampling rate 1 is used. */
     var downSamplingRate: Float = 0f
-        set(value) { field = value.coerceAtLeast(1f); if(isInitialized) this.listener?.get()?.onDownsamplingRateChanged() }
+        set(value) {
+            field = value.coerceAtLeast(1f)
+            if(isInitialized)
+                this.listener?.get()?.onDownsamplingRateChanged()
+        }
 
-    /** Whether the original bitmap should be blurred only once. If true, optimizations occur. If false, trying to blur a second time won't have effect  */
+    /** Whether the original bitmap should be blurred only once. If true, optimizations occur.
+     * If false, trying to blur a second time won't have effect  */
     var isStaticBlur: Boolean = false
-        set(value) { field = value; if(isInitialized) listener?.get()?.onStaticBlurChanged() }
+        set(value) {
+            field = value
+            if(isInitialized)
+                listener?.get()?.onStaticBlurChanged()
+        }
 
-    /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs. Used only if a renderscript mode is selected */
+    /** Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs.
+     * Used only if a renderscript mode is selected */
     var useRsFallback: Boolean = false
 
-    /** Number of threads to use to blur the image (no more than available). If 0 or negative, available cores number will be used  */
+    /** Number of threads to use to blur the image. If 0 or negative, available cores number will be used  */
     var numThreads: Int = 0
 
     /** Listener that will update the blur manager on changes, with a weak reference to be sure to not leak memory  */
@@ -36,9 +46,12 @@ class BlurOptions() : Parcelable {
     /**
      * Creates the object that will manage the blur options
      *
-     * @param downSamplingRate Rate to downSample the image width and height, based on the view size. Cannot be less than 1
-     * @param isStaticBlur Whether the original bitmap should be kept in memory. If false, trying to blur a second time won't have effect
-     * @param useRsFallback Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs
+     * @param downSamplingRate Rate to downSample the image width and height, based on the view size.
+     *  Cannot be lower than 1
+     * @param isStaticBlur Whether the original bitmap should be kept in memory.
+     *  If false, trying to blur a second time won't have effect
+     * @param useRsFallback Whether the image should be blurred with a java equivalent of the renderscript algorithm
+     *  if an error occurs
      */
     constructor(downSamplingRate: Float, isStaticBlur: Boolean, useRsFallback: Boolean, numThreads: Int): this() {
         this.downSamplingRate = downSamplingRate.coerceAtLeast(1f)
