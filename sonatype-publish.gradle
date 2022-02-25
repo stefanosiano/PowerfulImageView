@@ -48,7 +48,6 @@ task javadocJar(type: Jar, dependsOn: androidJavadocs) {
         from javadoc.destinationDir
 }
 
-
 task sourcesJar(type: Jar) {
     archiveClassifier.set('sources')
     if (project.plugins.findPlugin("com.android.library")) {
@@ -63,7 +62,6 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives javadocJar, sourcesJar
 }
-
 
 //publish plugin config
 publishing {
@@ -84,7 +82,7 @@ publishing {
     publications {
         // Creates a Maven publication called "release"
         release(MavenPublication) {
-            if(!enableDeploy) return true //if ci/cd still build the project, will only upload a pom file
+            if (!enableDeploy) return true //if ci/cd still build the project, will only upload a pom file
 
             // Publication config
             groupId = libGroupId
@@ -127,7 +125,7 @@ publishing {
                     def dependenciesNode = asNode().appendNode('dependencies')
 
                     project.configurations.implementation.allDependencies.each {
-                        if(it.group == "" || it.name == "" || it.name == "unspecified" || it.version == "") return
+                        if (it.group == "" || it.name == "" || it.name == "unspecified" || it.version == "") return
                         def dependencyNode = dependenciesNode.appendNode('dependency')
                         dependencyNode.appendNode('groupId', it.group)
                         dependencyNode.appendNode('artifactId', it.name)
@@ -135,7 +133,7 @@ publishing {
                     }
 
                     project.configurations.compile.allDependencies.each {
-                        if(it.group == "" || it.name == "" || it.name == "unspecified" || it.version == "") return
+                        if (it.group == "" || it.name == "" || it.name == "unspecified" || it.version == "") return
                         def dependencyNode = dependenciesNode.appendNode('dependency')
                         dependencyNode.appendNode('groupId', it.group)
                         dependencyNode.appendNode('artifactId', it.name)
@@ -148,8 +146,7 @@ publishing {
 }
 
 signing {
-    if(!enableDeploy) return true //don't sign anything if not allowed
+    if (!enableDeploy) return true //don't sign anything if not allowed
     sign publishing.publications.release
 }
-
 

@@ -5,7 +5,6 @@ This page contains all detailed info and tips about the shapes feature of Powerf
 
 ![Shapes](https://raw.githubusercontent.com/stefanosiano/PowerfulImageView/master/shapes.png) 
 
-
 Most applications need some kind of shape. Since the library wants to show a progress indicator over the image, it makes sense to support many shapes natively to provide indicator over the shapes.  
 Shapes are divided into 3 types:
 1) **Rectangular** (normal, square, rectangle): These shapes should be as efficient as normal ImageViews. Only dimensions are affected;
@@ -81,8 +80,4 @@ Convenience methods are provided for:
 |setShapeMode|PivShapeMode|Changes the shape of the image.|
 |setScaleType|PivShapeScaleType|Controls how the image should be resized or moved to match the size of this ImageView. Added to provide additional custom scale types. Overrides ImageView's setScaleType(ImageView.ScaleType) method.|
 |getShapeMode| |Get the current shape mode selected. It can then be used to check whether the shape is rectangular, rounded or solid through its methods.|
-
-
-
-
 

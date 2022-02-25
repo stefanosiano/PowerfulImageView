@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -37,7 +36,6 @@
             app:piv_progress_value="25"
             app:piv_progress_determinate_animation_enabled="false"
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
@@ -55,7 +53,6 @@
             app:piv_progress_gravity="bottom"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -68,9 +65,7 @@
             app:piv_progress_border_width="6dp"
             app:srcCompat="@drawable/sf1" />
 
-
     </LinearLayout>
-
 
     <TextView
         android:layout_width="match_parent"
@@ -86,7 +81,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -101,7 +95,6 @@
             app:piv_progress_shadow_padding="0dp"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -114,7 +107,6 @@
             app:piv_progress_size="25%"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -126,7 +118,6 @@
             app:piv_progress_size="25%"
             app:piv_progress_gravity="bottom_end"
             app:srcCompat="@drawable/sf1" />
-
 
     </LinearLayout>
 

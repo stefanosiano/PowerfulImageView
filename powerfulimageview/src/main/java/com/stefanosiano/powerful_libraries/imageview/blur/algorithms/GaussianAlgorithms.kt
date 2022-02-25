@@ -1,14 +1,7 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
-
-
-
-
-
-
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
-
 
 /**
  * Class that performs the gaussian blur with 3x3 coefficient matrix.
@@ -27,8 +20,6 @@ internal class Gaussian5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
     @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.0545f, 0.2442f, 0.4026f, 0.2442f, 0.0545f)
 }
-
-
 
 /**
  * Class that performs the gaussian blur with any kind of radius.
@@ -67,9 +58,9 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
 
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap? {
+        if (radius == 0)
+            return original
         this.radius = radius
         return super.blur(original, 1, options)
     }
 }
-
-

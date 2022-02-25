@@ -4,7 +4,6 @@
         For more informations visit https://github.com/stefanosiano/PowerfulImageView -->
     <declare-styleable name="PowerfulImageView">
 
-
         <!-- PROGRESS OPTIONS -->
 
         <!-- Set the gravity of the indicator.
@@ -61,8 +60,6 @@
              If the percentage is higher than 100, it is treated as (value % 100) -->
         <attr name="pivProgressShadowPadding" format="dimension|fraction" />
 
-
-
         <!-- Set whether to show a progress shadow, used by drawers.
              If true, the shadow is drawn -->
         <attr name="pivProgressShadowEnabled" format="boolean" />
@@ -90,8 +87,6 @@
 
         <!-- Set whether the progress should be reset when drawable changed, used by drawers -->
         <attr name="pivProgressRemovedOnChange" format="boolean" />
-
-
 
         <!-- Set the front color of the indicator, used by determinate drawers.
              If the drawer is not determinate or horizontal_determinate it's ignored.
@@ -125,8 +120,6 @@
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
              See the Color class for more details. -->
         <attr name="pivProgressShadowBorderColor" format="color" />
-
-
 
         <!-- SHAPE OPTIONS -->
 
@@ -180,7 +173,6 @@
             <enum name="bottom_end" value="8"/>
         </attr>
 
-
         <!-- Set the inner padding of the image relative to the view, in a specific dimension or in percentage (20dp or 30%).
              If the specific dimension is less than 0, it is ignored.
              If the percentage is higher than 100, it is treated as (value % 100) -->
@@ -211,13 +203,8 @@
         <!-- Set the solid color used by solid shapes -->
         <attr name="pivShapeSolidColor" format="color" />
 
-
-
         <!-- Set whether the border should be paint over the image. -->
         <attr name="pivShapeBorderOverlay" format="boolean" />
-
-
-
 
         <!-- Set the background drawable to draw under the image. Does not follow rounded shapes! -->
         <attr name="pivShapeBackground" format="reference|color" />
@@ -242,8 +229,6 @@
              premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
              See the Color class for more details. -->
         <attr name="pivShapeBorderColor" format="color" />
-
-
 
         <!-- BLUR OPTIONS -->
 

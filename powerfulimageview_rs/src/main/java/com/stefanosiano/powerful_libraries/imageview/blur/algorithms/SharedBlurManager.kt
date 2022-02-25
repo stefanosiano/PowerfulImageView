@@ -2,11 +2,10 @@ package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.content.Context
 import androidx.renderscript.RenderScript
-import com.stefanosiano.powerful_libraries.imageview.tryOrPrint
+import com.stefanosiano.powerful_libraries.imageview.extensions.tryOrPrint
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
-
 
 /**
  * Manager class for content shared through all instances of BlurManager
@@ -21,8 +20,7 @@ internal object SharedBlurManager {
 
     private val c = C()
 
-
-    fun getRenderScriptContext() = if(c.applicationContext != null) c.renderScript ?: c.buildRenderscript() else null
+    fun getRenderScriptContext() = if (c.applicationContext != null) c.renderScript ?: c.buildRenderscript() else null
 
     @Synchronized fun addRenderscriptContext(context: Context) {
         count.addAndGet(1)

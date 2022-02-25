@@ -8,10 +8,8 @@ import android.graphics.RectF
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 
-
 /** Default animation duration  */
 private const val DEFAULT_ANIMATION_DURATION: Long = 1000
-
 
 /** ProgressDrawer that shows an indeterminate animated bar as progress indicator */
 internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
@@ -46,7 +44,6 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
     /** Listener to handle things from the drawer  */
     private var listener: ProgressDrawerManager.ProgressDrawerListener? = null
 
-
     init {
         mProgressAnimator.duration = if (mProgressAnimationDuration < 0)
             DEFAULT_ANIMATION_DURATION
@@ -59,10 +56,9 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
             override fun onAnimationCancel(animation: Animator) { return }
             override fun onAnimationRepeat(animation: Animator) { isShrinking = !isShrinking }
         })
-        //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
+        // Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mProgressAnimator.addUpdateListener { setProgressValues(mLeft + (mRight - mLeft) * it.animatedFraction) }
     }
-
 
     override fun setProgressPercent(progressPercent: Float) { return }
 
@@ -82,7 +78,7 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
         mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0)
             DEFAULT_ANIMATION_DURATION
         else progressOptions.animationDuration.toLong()
-        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+        if (mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
                 mProgressAnimator.cancel()
@@ -90,7 +86,6 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
             }
         }
     }
-
 
     /**
      * Sets the x coordinate of the rectangle that will be drawn
@@ -127,7 +122,8 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
                 progressBounds.top,
                 progressBounds.right + progressBounds.left - mStartX,
                 progressBounds.bottom,
-                mProgressPaint)
+                mProgressPaint
+            )
     }
 
     override fun stopIndeterminateAnimation() {
@@ -136,7 +132,7 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
 
     override fun setAnimationDuration(millis: Long) {
         mProgressAnimationDuration = if (millis < 0) DEFAULT_ANIMATION_DURATION else millis
-        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+        if (mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
                 mProgressAnimator.cancel()
@@ -146,6 +142,4 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
     }
 
     override fun setListener(listener: ProgressDrawerManager.ProgressDrawerListener) { this.listener = listener }
-
 }
-

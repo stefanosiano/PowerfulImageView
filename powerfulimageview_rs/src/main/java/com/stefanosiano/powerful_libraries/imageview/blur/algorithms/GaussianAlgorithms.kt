@@ -9,7 +9,6 @@ import androidx.renderscript.ScriptIntrinsicConvolve3x3
 import androidx.renderscript.ScriptIntrinsicConvolve5x5
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 
-
 /**
  * Class that performs the gaussian blur with 3x3 coefficient matrix.
  * Changing radius will repeat the process radius times.
@@ -27,8 +26,6 @@ internal class Gaussian5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
     @Suppress("MagicNumber")
     override fun getFilter() = floatArrayOf(0.0545f, 0.2442f, 0.4026f, 0.2442f, 0.0545f)
 }
-
-
 
 /**
  * Class that performs the gaussian blur with any kind of radius.
@@ -67,13 +64,13 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
 
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap? {
+        if (radius == 0)
+            return original
         this.radius = radius
         return super.blur(original, 1, options)
     }
 }
-
-
-//RENDERSCRIPT ALGORITHMS
+// RENDERSCRIPT ALGORITHMS
 
 /**
  * Class that performs the gaussian blur with 3x3 coefficient matrix using renderscript.
@@ -106,7 +103,7 @@ internal class Gaussian3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBl
  */
 internal class Gaussian5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
 
-    @Suppress("MagicNumber", "MaxLineLength")
+    @Suppress("MagicNumber", "MaxLineLength", "MaximumLineLength")
     private val coefficientMatrix =
         floatArrayOf(0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0219f, 0.0983f, 0.1621f, 0.0983f, 0.0219f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f)
 
@@ -124,9 +121,7 @@ internal class Gaussian5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBl
         }
         return output
     }
-
 }
-
 
 /**
  * Class that performs the gaussian blur with any kind of radius using renderscript.

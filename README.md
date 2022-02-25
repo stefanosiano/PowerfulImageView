@@ -175,6 +175,3 @@ Support zoom, with attention to smooth scroll and Pager integration. Will have t
 Support panoramas, caring about integration with shapes.  
 Will probably have to rewrite progress, to allow custom animations and drawables to be used.  
 
-
-
-

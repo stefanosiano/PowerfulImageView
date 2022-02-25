@@ -1,6 +1,5 @@
 package com.stefanosiano.powerful_libraries.imageview.shape
 
-
 /** Mode of the shape of the image  */
 enum class PivShapeMode constructor(internal val value: Int) {
 
@@ -89,6 +88,12 @@ enum class PivShapeMode constructor(internal val value: Int) {
      */
     fun isRectangular(): Boolean = this == NORMAL || this == SQUARE || this == RECTANGLE
 
+    /**
+     * These are regular shapes. The width and height are equals
+     *
+     * @return True if the image is square, circle or solid_circle, false otherwise
+     */
+    fun isSquared(): Boolean = this == SQUARE || this == CIRCLE || this == SOLID_CIRCLE
 
     companion object {
 
@@ -104,7 +109,6 @@ enum class PivShapeMode constructor(internal val value: Int) {
             8 -> SOLID_ROUNDED_RECTANGLE
             0 -> NORMAL
             else -> NORMAL
-
         }
     }
 }

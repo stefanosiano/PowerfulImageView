@@ -1,25 +1,20 @@
 package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
-
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.widget.ImageView
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 import com.stefanosiano.powerful_libraries.imageview.blur.PivBlurMode
+import com.stefanosiano.powerful_libraries.imageview.extensions.createBitmap
+import com.stefanosiano.powerful_libraries.imageview.extensions.isVector
 import java.lang.ref.WeakReference
-
 
 /**
  * Manager class for blurring. Used to manage and blur the image.
  */
 
+@Suppress("TooManyFunctions")
 internal class BlurManager
 /**
  * Manager class for blur. Used to initialize and blur the image with the right algorithm.
@@ -67,10 +62,10 @@ internal class BlurManager
     /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius  */
     private var mLastRadius: Int = -1
 
-    //Using a weakRefence to be sure to not leak memory
+    // Using a weakRefence to be sure to not leak memory
     private var mView: WeakReference<ImageView> = WeakReference(view)
 
-    //Algorithms
+    // Algorithms
     private val mBox3x3BlurAlgorithm by lazy { Box3x3BlurAlgorithm() }
     private val mBox3x3RenderscriptBlurAlgorithm by lazy { Box3x3BlurAlgorithm() }
     private val mBox5x5BlurAlgorithm by lazy { Box5x5BlurAlgorithm() }
@@ -87,16 +82,15 @@ internal class BlurManager
     /** Selected algorithm to blur the image  */
     private var mBlurAlgorithm: BlurAlgorithm = mDummyBlurAlgorithm
 
-
     /**
      * Method that updates the drawable and bitmap to show
      *
      * @param drawable drawable to show
      */
     fun changeDrawable(drawable: Drawable?) {
-        if(drawable == mDrawable) return
+        if (drawable == mDrawable) return
 
-        if(!shouldBlur(drawable, true)) return
+        if (!shouldBlur(drawable, true)) return
 
         val mLastDrawable = mDrawable
         val lastOriginalBitmap = mOriginalBitmap
@@ -118,7 +112,7 @@ internal class BlurManager
      */
     fun changeMode(blurMode: PivBlurMode, radius: Int) {
 
-        //If there's no change, I don't do anything
+        // If there's no change, I don't do anything
         if (blurMode == mMode && radius == mRadius)
             return
 
@@ -126,7 +120,7 @@ internal class BlurManager
         mMode = blurMode
         addContext(true)
 
-        //otherwise i need to blur the image again
+        // Otherwise i need to blur the image again
         updateAlgorithms(blurMode)
         mLastRadius = -1
         mRadius = radius
@@ -139,7 +133,6 @@ internal class BlurManager
      */
     fun changeRadius(radius: Int) = changeMode(mMode, radius)
 
-
     /**
      * Blurs the image, if not already blurred.
      * To get the image call getLastBlurredBitmap()!
@@ -151,48 +144,46 @@ internal class BlurManager
 
         val origBitmap = mOriginalBitmap ?: return
 
-        if (origBitmap.isRecycled ||
-            // if I already blurred the image with this radius, I don't do anything
-            (mLastRadius == radius && mBlurredBitmap != null) ||
-            // if I already blurred the image and it's a static blur, I don't have to blur anymore
-            (mIsAlreadyBlurred && mBlurOptions.isStaticBlur)) return
+        // If I already blurred the image with this radius, I won't do anything
+        val blurredWithLastRadius = (mLastRadius == radius && mBlurredBitmap != null)
+        // If I already blurred the image and it's a static blur, I won't have to blur anymore
+        val blurredStatic = (mIsAlreadyBlurred && mBlurOptions.isStaticBlur)
+
+        if (origBitmap.isRecycled || blurredWithLastRadius || blurredStatic)
+            return
 
         this.mLastRadius = radius
 
-        if (mBlurredBitmap != null && origBitmap != mBlurredBitmap)
+        if (origBitmap != mBlurredBitmap)
             mBlurredBitmap?.recycle()
 
         var bitmap: Bitmap?
         addContext(false)
 
         try {
-            bitmap = if (radius == 0) origBitmap
-            else mBlurAlgorithm.blur(origBitmap, mRadius, mBlurOptions)
+            bitmap = mBlurAlgorithm.blur(origBitmap, mRadius, mBlurOptions)
             mIsAlreadyBlurred = true
-
         } catch (e: RenderscriptException) {
-            //Something wrong occurred with renderscript: fallback to java or nothing, based on option...
+            // Something wrong occurred with renderscript: fallback to java or nothing, based on option...
 
-            //changing mode to fallback one if enabled
-            mMode = if (mBlurOptions.useRsFallback) mMode.fallbackMode ?: PivBlurMode.DISABLED else PivBlurMode.DISABLED
+            // Changing mode to fallback one if enabled
+            mMode = if (mBlurOptions.useRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED
 
             Log.w(
                 BlurManager::class.java.simpleName,
-                "${e.message}\nFalling back to another blurring method: ${mMode.name}")
+                "${e.message}\nFalling back to another blurring method: ${mMode.name}"
+            )
 
             updateAlgorithms(mMode)
 
             try {
                 bitmap = mBlurAlgorithm.blur(origBitmap, mRadius, mBlurOptions)
                 mIsAlreadyBlurred = true
-            }
-            catch (e1: RenderscriptException) {
-                // The second blur try failed: we now return a null bitmap as it will be reverted to
-                // the original one
+            } catch (e1: RenderscriptException) {
+                // The second blur failed: we now return a null bitmap as it will be reverted to the original one
                 e1.printStackTrace()
                 bitmap = null
             }
-
         }
 
         removeContext(false)
@@ -200,9 +191,7 @@ internal class BlurManager
             mOriginalBitmap = bitmap ?: origBitmap
 
         mBlurredBitmap = bitmap ?: mBlurredBitmap
-
     }
-
 
     /** Updates the saved width and height, used to calculate the blurred bitmap  */
     fun onSizeChanged(width: Int, height: Int, drawable: Drawable?) {
@@ -211,7 +200,6 @@ internal class BlurManager
         if (drawable != null)
             changeDrawable(drawable)
     }
-
 
     /**
      * Updates the algorithm used to blur the image
@@ -222,27 +210,29 @@ internal class BlurManager
         val renderScript = SharedBlurManager.getRenderScriptContext()
         mMode = blurMode ?: PivBlurMode.DISABLED
 
-        //if renderscript is null and the mode uses it, there was a problem getting it: let's use java or dummy
-        if(mMode.usesRenderscript) renderScript
+        // If renderscript is null and the mode uses it, there was a problem getting it: let's use java or dummy
+        if (mMode.usesRenderscript) renderScript
             ?: return updateAlgorithms(if (mBlurOptions.useRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED)
 
         addContext(false)
 
-        mBlurAlgorithm = when (mMode) {
-            PivBlurMode.STACK -> mStackBlurAlgorithm
-            PivBlurMode.GAUSSIAN5X5_RS -> mGaussian5x5RenderscriptBlurAlgorithm
-            PivBlurMode.GAUSSIAN5X5 -> mGaussian5x5BlurAlgorithm
-            PivBlurMode.GAUSSIAN3X3_RS -> mGaussian3x3RenderscriptBlurAlgorithm
-            PivBlurMode.GAUSSIAN3X3 -> mGaussian3x3BlurAlgorithm
-            PivBlurMode.BOX5X5_RS -> mBox5x5RenderscriptBlurAlgorithm
-            PivBlurMode.BOX5X5 -> mBox5x5BlurAlgorithm
-            PivBlurMode.BOX3X3_RS -> mBox3x3RenderscriptBlurAlgorithm
-            PivBlurMode.BOX3X3 -> mBox3x3BlurAlgorithm
-            PivBlurMode.GAUSSIAN_RS -> mGaussianRenderscriptBlurAlgorithm
-            PivBlurMode.GAUSSIAN -> mGaussianBlurAlgorithm
-            PivBlurMode.DISABLED -> mDummyBlurAlgorithm
-        }
+        mBlurAlgorithm = getBlurAlgorithmFromBlurMode()
         mBlurAlgorithm.setRenderscript(renderScript)
+    }
+
+    private fun getBlurAlgorithmFromBlurMode() = when (mMode) {
+        PivBlurMode.STACK -> mStackBlurAlgorithm
+        PivBlurMode.GAUSSIAN5X5_RS -> mGaussian5x5RenderscriptBlurAlgorithm
+        PivBlurMode.GAUSSIAN5X5 -> mGaussian5x5BlurAlgorithm
+        PivBlurMode.GAUSSIAN3X3_RS -> mGaussian3x3RenderscriptBlurAlgorithm
+        PivBlurMode.GAUSSIAN3X3 -> mGaussian3x3BlurAlgorithm
+        PivBlurMode.BOX5X5_RS -> mBox5x5RenderscriptBlurAlgorithm
+        PivBlurMode.BOX5X5 -> mBox5x5BlurAlgorithm
+        PivBlurMode.BOX3X3_RS -> mBox3x3RenderscriptBlurAlgorithm
+        PivBlurMode.BOX3X3 -> mBox3x3BlurAlgorithm
+        PivBlurMode.GAUSSIAN_RS -> mGaussianRenderscriptBlurAlgorithm
+        PivBlurMode.GAUSSIAN -> mGaussianBlurAlgorithm
+        PivBlurMode.DISABLED -> mDummyBlurAlgorithm
     }
 
     /**
@@ -264,58 +254,38 @@ internal class BlurManager
         if (drawable == null || mWidth <= 0 || mHeight <= 0)
             return null
 
-        //bitmap size should not be bigger than the view size
+        // Bitmap size should not be bigger than the view size
         val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
-        var sizeX: Int
-        var sizeY: Int
-        val maxWidth = (Math.max(mWidth.toFloat(), mHeight * ratio) / mBlurOptions.downSamplingRate).toInt()
-        val maxHeight = (Math.max(mHeight.toFloat(), mWidth / ratio) / mBlurOptions.downSamplingRate).toInt()
+        var sizeX: Int = drawable.intrinsicWidth
+        var sizeY: Int = drawable.intrinsicHeight
+        val maxWidth = (mWidth.toFloat().coerceAtLeast(mHeight * ratio) / mBlurOptions.downSamplingRate).toInt()
+        val maxHeight = (mHeight.toFloat().coerceAtLeast(mWidth / ratio) / mBlurOptions.downSamplingRate).toInt()
 
-        if (drawable.intrinsicWidth > maxWidth && maxWidth > 0
-            && drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
-            sizeX = maxWidth
-            sizeY = maxHeight
-        } else {
-            sizeX = drawable.intrinsicWidth
-            sizeY = drawable.intrinsicHeight
-        }
+        val isTooWide = drawable.intrinsicWidth > maxWidth.coerceAtLeast(1)
+        val isTooHigh = drawable.intrinsicHeight > maxHeight.coerceAtLeast(1)
+        val isTooBig = isTooWide && isTooHigh
 
-        //vector drawables should always display at max resolution
-        if (drawable.javaClass.name == "android.graphics.drawable.VectorDrawable" || drawable is VectorDrawableCompat) {
+        if (isTooBig || drawable.isVector()) {
             sizeX = maxWidth
             sizeY = maxHeight
         }
 
-        //if i already decoded the bitmap i reuse it
-        return if (sizeX > 0 && sizeY > 0 && mOriginalBitmap != null && mOriginalBitmap?.isRecycled == false
-            && mLastSizeX == sizeX && mLastSizeY == sizeY && mLastDrawable === drawable)
+        // CoerceAtLeast(1) let us know if the size is correct (it must be > 0)
+        val sizeChanged = mLastSizeX == sizeX.coerceAtLeast(1) && mLastSizeY == sizeY.coerceAtLeast(1)
+        val originalBitmapValid = mOriginalBitmap?.isRecycled == false && mLastDrawable === drawable
+
+        // If i already decoded the bitmap i reuse it
+        return if (!sizeChanged && originalBitmapValid)
             mOriginalBitmap
         else try {
-
             mLastSizeX = sizeX
             mLastSizeY = sizeY
-
-            val bitmap: Bitmap = when {
-                drawable is BitmapDrawable -> Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
-                // Single color bitmap will be created of 1x1 pixel
-                drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 ->
-                    Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                drawable is ColorDrawable -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                else -> Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
-            }
-
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            bitmap
-
+            drawable.createBitmap(sizeX, sizeY)
         } catch (e: IllegalArgumentException) {
             Log.e(BlurManager::class.java.simpleName, e.message ?: "")
             mOriginalBitmap
         }
-
     }
-
 
     /**
      * Adds the context to the renderscript manager, if needed.
@@ -349,7 +319,7 @@ internal class BlurManager
             return
 
         if (mBlurOptions.isStaticBlur != fromView) {
-            if(mMode.usesRenderscript) {
+            if (mMode.usesRenderscript) {
                 mIsRenderscriptManaged = false
                 SharedBlurManager.removeRenderscriptContext()
                 updateAlgorithms(mMode)
@@ -358,7 +328,7 @@ internal class BlurManager
     }
 
     override fun onStaticBlurChanged() {
-        //If staticBlur is true, i release original bitmap and swap it with the blurred one, if it exists
+        // If staticBlur is true, i release original bitmap and swap it with the blurred one, if it exists
         if (mBlurOptions.isStaticBlur) {
             if (mBlurredBitmap != null && mBlurredBitmap != mOriginalBitmap) {
                 mOriginalBitmap?.recycle()
@@ -372,7 +342,7 @@ internal class BlurManager
     }
 
     override fun onDownsamplingRateChanged() {
-        //if downSampling rate changes, i reload the bitmap and blur it
+        // If downSampling rate changes, i reload the bitmap and blur it
         changeDrawable(mDrawable)
         blur(mRadius)
         if (mView.get() != null) {
@@ -381,7 +351,6 @@ internal class BlurManager
                 mView.get()?.setImageBitmap(getLastBlurredBitmap())
         }
     }
-
 
     /** Returns the selected mode used for blurring  */
     fun getBlurMode(): PivBlurMode = mMode
@@ -397,28 +366,4 @@ internal class BlurManager
      * same as the blurred one, since the original bitmap has been released.
      */
     fun getOriginalBitmap(): Bitmap? = mOriginalBitmap
-
-    /** Saves state into a bundle.  */
-    fun saveInstanceState(): Bundle {
-        val bundle = Bundle()
-        bundle.putParcelable("blur_options", mBlurOptions)
-        bundle.putInt("blur_mode", mMode.value)
-        bundle.putInt("blur_radius", mRadius)
-        return bundle
-    }
-
-    /** Restores state from a bundle.  */
-    fun restoreInstanceState(state: Bundle?) {
-        if (state == null)
-            return
-
-        mBlurOptions.setOptions(state.getParcelable<Parcelable>("blur_options") as BlurOptions)
-        val blurMode = PivBlurMode.fromValue(state.getInt("blur_mode"))
-        mWidth = state.getInt("blur_width")
-        mHeight = state.getInt("blur_height")
-        mRadius = state.getInt("blur_radius")
-        mLastRadius = -1
-        changeMode(blurMode, mRadius)
-    }
-
 }

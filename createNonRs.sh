@@ -12,11 +12,9 @@ get_directory(){
     echo "$dir"
 }
 
-
 #need this to get real directory, not the one i'm calling this script from
 dir=$(get_directory)
 algDir=$dir/powerfulimageview/src/main/java/com/stefanosiano/powerful_libraries/imageview/blur/algorithms
-
 
 rm -Rf $dir/powerfulimageview
 cp -R $dir/powerfulimageview_rs $dir/powerfulimageview
@@ -42,9 +40,4 @@ sed -i 's/import androidx.renderscript.*//' $algDir/SharedBlurManager.kt
 sed -i 's/c.renderScript?.destroy()//' $algDir/SharedBlurManager.kt
 sed -i 's/: RenderScript?/: Any?/g' $algDir/SharedBlurManager.kt
 sed -i 's/RenderScript.create(applicationContext)/null/' $algDir/SharedBlurManager.kt
-
-
-
-
-
 

@@ -21,9 +21,6 @@
 
         android:src="@drawable/sf1" />
 
-
-
-
     <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -35,8 +32,6 @@
         android:padding="0dp"
 
         android:src="@drawable/sf1" />
-
-
 
 -->
 </LinearLayout>

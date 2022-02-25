@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,7 +30,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=0, downsample=0"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -41,7 +39,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=1"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,7 +46,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=2"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -66,7 +62,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -78,7 +73,6 @@
             app:piv_blur_down_sampling_rate="1"
             app:piv_blur_radius="0"
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
@@ -92,7 +86,6 @@
             app:piv_blur_radius="12"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -104,7 +97,6 @@
             app:piv_blur_down_sampling_rate="2"
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
@@ -118,9 +110,7 @@
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
 
-
     </LinearLayout>
-
 
     <TextView
         android:layout_width="match_parent"
@@ -136,7 +126,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,7 +133,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=0, downsample=0"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -154,7 +142,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=1"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -162,7 +149,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=2"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -179,7 +165,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -193,7 +178,6 @@
             app:piv_blur_radius="0"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -206,7 +190,6 @@
             app:piv_blur_use_rs_fallback="false"
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
@@ -221,7 +204,6 @@
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -235,9 +217,7 @@
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
 
-
     </LinearLayout>
-
 
     <TextView
         android:layout_width="match_parent"
@@ -253,7 +233,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -261,7 +240,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=0, downsample=0"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -271,7 +249,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=1"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -279,7 +256,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=2"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -296,7 +272,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -309,7 +284,6 @@
             app:piv_blur_radius="0"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -321,7 +295,6 @@
             app:piv_blur_down_sampling_rate="1"
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
@@ -335,7 +308,6 @@
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -348,9 +320,7 @@
             app:piv_blur_radius="2"
             app:srcCompat="@drawable/sf1" />
 
-
     </LinearLayout>
-
 
     <TextView
         android:layout_width="match_parent"
@@ -366,7 +336,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -374,7 +343,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=0, downsample=0"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -384,7 +352,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=1"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -392,7 +359,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="radius=2, downsample=2"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -409,7 +375,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -423,7 +388,6 @@
             app:piv_blur_use_rs_fallback="false"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -436,7 +400,6 @@
             app:piv_blur_radius="2"
             app:piv_blur_use_rs_fallback="false"
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
@@ -451,7 +414,6 @@
             app:piv_blur_use_rs_fallback="false"
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="80dp"
@@ -465,9 +427,7 @@
             app:piv_blur_use_rs_fallback="false"
             app:srcCompat="@drawable/sf1" />
 
-
     </LinearLayout>
-
 
 -->
 </LinearLayout>

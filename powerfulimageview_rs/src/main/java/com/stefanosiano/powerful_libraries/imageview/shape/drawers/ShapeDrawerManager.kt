@@ -8,23 +8,21 @@ import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.View
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import com.stefanosiano.powerful_libraries.imageview.safeHeight
-import com.stefanosiano.powerful_libraries.imageview.safeWidth
+import com.stefanosiano.powerful_libraries.imageview.extensions.isVector
+import com.stefanosiano.powerful_libraries.imageview.extensions.rectF
+import com.stefanosiano.powerful_libraries.imageview.extensions.safeHeight
+import com.stefanosiano.powerful_libraries.imageview.extensions.safeWidth
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeMode
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import java.lang.ref.WeakReference
 
-
 /**
  * Manager class for shape drawers. Used to initialize use the needed drawers.
  */
-
+@Suppress("TooManyFunctions")
 internal class ShapeDrawerManager
 /**
  * Manager class for shape drawers. Used to initialize and get the instances of the needed drawers.
@@ -33,7 +31,7 @@ internal class ShapeDrawerManager
  * @param shapeOptions Options of the shape
  */(view: View, shapeOptions: ShapeOptions) : ShapeOptions.ShapeOptionsListener {
 
-    //Using a weakRefence to be sure to not leak memory
+    // Using a weakRefence to be sure to not leak memory
     private val mView = WeakReference(view)
 
     /** Bounds of the shape  */
@@ -66,16 +64,16 @@ internal class ShapeDrawerManager
     /** Measured height, based on mode  */
     private var mMeasuredHeight: Float = 0f
 
-
-    //Drawers
+    // Drawers
     private val mCircleShapeDrawer by lazy { CircleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mNormalShapeDrawer by lazy { NormalShapeDrawer(mDrawable) }
     private val mOvalShapeDrawer by lazy { OvalShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidCircleShapeDrawer by lazy { SolidCircleShapeDrawer(mDrawable) }
-    //    private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
-//    private val mSolidDiagonalShapeDrawer by lazy { SolidDiagonalShapeDrawer(mDrawable) }
+    // private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
+    // private val mSolidDiagonalShapeDrawer by lazy { SolidDiagonalShapeDrawer(mDrawable) }
     private val mRoundedRectangleShapeDrawer by lazy {
-        RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
+        RoundedRectangleShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable))
+    }
     private val mSolidOvalShapeDrawer by lazy { SolidOvalShapeDrawer(mDrawable) }
     private val mSolidRoundedRectangleShapeDrawer by lazy { SolidRoundedRectangleShapeDrawer(mDrawable) }
 
@@ -88,12 +86,10 @@ internal class ShapeDrawerManager
     /** Options used by shape drawers  */
     private var mShapeOptions: ShapeOptions = shapeOptions
 
-
     init {
         this.mShapeOptions.setListener(this)
         this.mShaderMatrix.reset()
     }
-
 
     /**
      * Method that updates the drawable and bitmap to show
@@ -120,72 +116,59 @@ internal class ShapeDrawerManager
         drawable is BitmapDrawable && drawable.bitmap.isRecycled -> null
         drawable is BitmapDrawable -> drawable.bitmap
         else -> try {
-            val bitmap: Bitmap = when {
-
-                drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 -> Bitmap.createBitmap(
-                    1,
-                    1,
-                    Bitmap.Config.ARGB_8888
-                ) // Single color bitmap will be created of 1x1 pixel
-
-                drawable is ColorDrawable -> Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-
-                else -> {
-                    //bitmap size should not be bigger than the view size
-                    val ratio =
-                        drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
-                    var sizeX: Int
-                    var sizeY: Int
-                    val maxWidth =
-                        mImageBounds.width().coerceAtLeast(mImageBounds.height() * ratio)
-                            .toInt()
-                    val maxHeight =
-                        mImageBounds.height().coerceAtLeast(mImageBounds.width() / ratio)
-                            .toInt()
-
-                    if (drawable.intrinsicWidth > maxWidth && maxWidth > 0 &&
-                        drawable.intrinsicHeight > maxHeight && maxHeight > 0) {
-                        sizeX = maxWidth
-                        sizeY = maxHeight
-                    } else {
-                        sizeX = drawable.intrinsicWidth
-                        sizeY = drawable.intrinsicHeight
-                    }
-
-                    //vector drawables should always display at max resolution
-                    if (drawable.javaClass.name == "android.graphics.drawable.VectorDrawable" ||
-                        drawable is VectorDrawableCompat) {
-                        sizeX = maxWidth
-                        sizeY = maxHeight
-                    }
-
-                    //if i already decoded the bitmap i reuse it
-                    if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable && mLastBitmap != null)
-                        mLastBitmap?.let { if (it.isRecycled) null else it }
-                            ?: Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
-                    else
-                        Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
-                }
-            }
+            // Single color bitmap will be created of 1x1 pixel
+            val bitmap: Bitmap =
+                if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 || drawable is ColorDrawable)
+                    Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+                else createBitmap(drawable, mLastDrawable)
 
             if (bitmap.isRecycled) null
             else {
-
                 val canvas = Canvas(bitmap)
                 drawable.setBounds(0, 0, canvas.width, canvas.height)
                 drawable.draw(canvas)
 
-                if (bitmap.isRecycled) null
-                else bitmap
+                bitmap.takeIf { !it.isRecycled }
             }
-
         } catch (e: IllegalArgumentException) {
             Log.e(ShapeDrawerManager::class.java.simpleName, e.message ?: "")
             null
         }
     }
 
+    private fun createBitmap(drawable: Drawable, mLastDrawable: Drawable?): Bitmap {
+        // Bitmap size should not be bigger than the view size
+        val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
+        var sizeX: Int
+        var sizeY: Int
+        val maxWidth =
+            mImageBounds.width().coerceAtLeast(mImageBounds.height() * ratio).toInt()
+        val maxHeight =
+            mImageBounds.height().coerceAtLeast(mImageBounds.width() / ratio).toInt()
 
+        val isTooWide = drawable.intrinsicWidth > maxWidth && maxWidth > 0
+        val isTooHigh = drawable.intrinsicHeight > maxHeight && maxHeight > 0
+        if (isTooWide && isTooHigh) {
+            sizeX = maxWidth
+            sizeY = maxHeight
+        } else {
+            sizeX = drawable.intrinsicWidth
+            sizeY = drawable.intrinsicHeight
+        }
+
+        // Vector drawables should always display at max resolution
+        if (drawable.isVector()) {
+            sizeX = maxWidth
+            sizeY = maxHeight
+        }
+
+        // If i already decoded the bitmap i reuse it
+        return if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable)
+            mLastBitmap?.takeIf { !it.isRecycled }
+                ?: Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
+        else
+            Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
+    }
 
     /**
      * Updates the drawers to use and chooses the right one to use based on the mode.
@@ -195,7 +178,7 @@ internal class ShapeDrawerManager
      */
     private fun updateDrawers(shapeMode: PivShapeMode?) {
 
-        //If there's no mode, i set it as normal
+        // If there's no mode, i set it as normal
         mShapeDrawer = when (shapeMode ?: PivShapeMode.NORMAL) {
             PivShapeMode.CIRCLE -> mCircleShapeDrawer
             PivShapeMode.SQUARE -> mNormalShapeDrawer
@@ -209,18 +192,16 @@ internal class ShapeDrawerManager
         }
     }
 
-
     /**
      * It calculates the bounds of the image.
      *
      * @param w Current width of this view.
      * @param h Current height of this view.
      */
-    fun onSizeChanged(w: Int, h: Int, paddingLeft: Int, paddingTop: Int, paddingRight: Int, paddingBottom: Int) {
-        mShapeOptions.calculateBounds(w, h, paddingLeft, paddingTop, paddingRight, paddingBottom, mShapeMode)
+    fun onSizeChanged(w: Int, h: Int, padding: Rect) {
+        mShapeOptions.calculateBounds(w, h, padding, mShapeMode)
         onSizeUpdated(mShapeOptions)
     }
-
 
     /**
      * Measure the view and its content to determine the measured width and the measured height
@@ -237,83 +218,67 @@ internal class ShapeDrawerManager
         // size you would like. Some layouts also use this callback to figure out your desired size
         // before determine what specs to actually pass you again in a second measure request.
 
-        //Drawable width and height calculated if a mDrawable has been set. Used in calculations
+        // Drawable width and height calculated if a mDrawable has been set. Used in calculations
         val drawableWidth = mDrawable?.intrinsicWidth?.plus(view.paddingLeft)?.plus(view.paddingRight)?.toFloat()
         val drawableHeight = mDrawable?.intrinsicHeight?.plus(view.paddingTop)?.plus(view.paddingBottom)?.toFloat()
 
-        val usedRatio: Float = when (mShapeMode) {
-            PivShapeMode.CIRCLE, PivShapeMode.SQUARE, PivShapeMode.SOLID_CIRCLE -> 1f
-            PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE,
-            PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL ->
-                if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
-            else -> if (mShapeOptions.ratio <= 0) (drawableWidth ?: w) / (drawableHeight ?: h) else mShapeOptions.ratio
-        }
-
-
-        //if both are wrap_content (MeasureSpec.AT_MOST), size should be mDrawable size, but not bigger than view size
+        val usedRatio: Float = calculateRatioToUse(drawableWidth ?: w, drawableHeight ?: h)
+        // Iif both are wrap_content (MeasureSpec.AT_MOST), size should be mDrawable size, but not bigger than view size
         val w2 = drawableWidth?.coerceAtMost(w) ?: w
         val h2 = drawableHeight?.coerceAtMost(h) ?: h
+
         when (wMode) {
 
-            //Must be this size
+            // Must be this size
             View.MeasureSpec.EXACTLY -> {
                 mMeasuredWidth = w
                 mMeasuredHeight = w / usedRatio
 
-                when (hMode) {
-                    View.MeasureSpec.EXACTLY -> mMeasuredHeight = h
-                    View.MeasureSpec.AT_MOST -> mMeasuredHeight = Math.min(w / usedRatio, h)
-                    View.MeasureSpec.UNSPECIFIED -> w / usedRatio
-                }
+                if (hMode == View.MeasureSpec.EXACTLY) mMeasuredHeight = h
+                if (hMode == View.MeasureSpec.AT_MOST) mMeasuredHeight = (w / usedRatio).coerceAtMost(h)
             }
 
-            //Can't be bigger than...
+            // Can't be bigger than...
             View.MeasureSpec.AT_MOST -> {
 
-                mMeasuredWidth = w
-                mMeasuredHeight = w / usedRatio
+                mMeasuredWidth = w2
+                mMeasuredHeight = w2 / usedRatio
 
                 if (hMode == View.MeasureSpec.EXACTLY) {
-                    mMeasuredWidth = Math.min(h * usedRatio, w)
+                    mMeasuredWidth = (h * usedRatio).coerceAtMost(w)
                     mMeasuredHeight = h
                 }
 
                 if (hMode == View.MeasureSpec.AT_MOST) {
-                    mMeasuredWidth = Math.min(h2 * usedRatio, w2)
-                    mMeasuredHeight = Math.min(h2, w2 / usedRatio)
-                }
-
-                if (hMode == View.MeasureSpec.UNSPECIFIED) {
-                    mMeasuredWidth = w2
-                    mMeasuredHeight = w2 / usedRatio
+                    mMeasuredWidth = (h2 * usedRatio).coerceAtMost(w2)
+                    mMeasuredHeight = h2.coerceAtMost(w2 / usedRatio)
                 }
             }
 
-            //Be whatever you want
-//            View.MeasureSpec.UNSPECIFIED -> same as else
+            // Be whatever you want
+            // View.MeasureSpec.UNSPECIFIED -> same as else
             else -> {
                 mMeasuredWidth = w2
                 mMeasuredHeight = w2 / usedRatio
 
-                when (hMode) {
-                    View.MeasureSpec.EXACTLY -> {
-                        mMeasuredWidth = h * usedRatio
-                        mMeasuredHeight = h
-                    }
+                if (hMode == View.MeasureSpec.EXACTLY) {
+                    mMeasuredWidth = h * usedRatio
+                    mMeasuredHeight = h
+                }
 
-                    View.MeasureSpec.AT_MOST -> {
-                        mMeasuredWidth = h2 * usedRatio
-                        mMeasuredHeight = h2
-                    }
-
-                    View.MeasureSpec.UNSPECIFIED -> {
-                        mMeasuredWidth = w2
-                        mMeasuredHeight = w2 / usedRatio
-                    }
+                if (hMode == View.MeasureSpec.AT_MOST) {
+                    mMeasuredWidth = h2 * usedRatio
+                    mMeasuredHeight = h2
                 }
             }
-
         }
+    }
+
+    /** Calculates the ratio to use considering the shape mode and drawable's width and height */
+    private fun calculateRatioToUse(w: Float, h: Float) = when {
+        mShapeMode.isSquared() -> 1f
+        mShapeOptions.ratio <= 0 -> w / h
+        else -> mShapeOptions.ratio
     }
 
     /**
@@ -338,155 +303,102 @@ internal class ShapeDrawerManager
         if (mDrawable == null || scaleType == null)
             return
 
-        mShaderMatrix.reset()
-
-        //scale used for vector drawable fix (other bitmaps have dwidth = bitmap width)
+        // Scale used for vector drawable fix (other bitmaps have dwidth = bitmap width)
         var scaleX = 1f
         var scaleY = 1f
-        //if drawable is ColorDrawable, dWidth and dHeight is -1 -> let's convert it to 1
-        val dWidth = mDrawable?.intrinsicWidth?.let { if(it == -1) 1 else it } ?: 0
-        val dHeight = mDrawable?.intrinsicHeight?.let { if(it == -1) 1 else it } ?: 0
+        // If drawable is ColorDrawable, dWidth and dHeight is -1 -> let's convert it to 1
+        val dWidth = mDrawable?.intrinsicWidth?.let { if (it == -1) 1 else it } ?: 0
+        val dHeight = mDrawable?.intrinsicHeight?.let { if (it == -1) 1 else it } ?: 0
 
         if (mLastBitmap?.isRecycled == false) {
-            scaleX = dWidth.toFloat() / (mLastBitmap?.safeWidth() ?: dWidth).toFloat()
-            scaleY = dHeight.toFloat() / (mLastBitmap?.safeHeight() ?: dHeight).toFloat()
+            scaleX = dWidth.toFloat() / (mLastBitmap.safeWidth(dWidth)).toFloat()
+            scaleY = dHeight.toFloat() / (mLastBitmap.safeHeight(dHeight)).toFloat()
         }
 
+        recalculateShaderMatrix(scaleType, scaleX, scaleY, dWidth, dHeight)
+        mShapeDrawer.setMatrix(scaleType, mShaderMatrix)
+    }
+
+    private fun recalculateShaderMatrix(
+        scaleType: PivShapeScaleType,
+        scaleX: Float,
+        scaleY: Float,
+        dWidth: Int,
+        dHeight: Int
+    ) {
         val vWidth = mImageBounds.width()
         val vHeight = mImageBounds.height()
-        val padding = Rect(0, 0, 0, 0)
-
-        if (mView.get() != null) {
-            padding.set(
-                mView.get()?.paddingLeft ?: padding.left,
-                mView.get()?.paddingBottom ?: padding.right,
-                mView.get()?.paddingRight ?: padding.bottom,
-                mView.get()?.paddingTop ?: padding.top)
+        var scale: Float
+        var dx: Float
+        val dy: Float
+        val lastBitmapBounds = rectF(mLastBitmap.safeWidth(dWidth), mLastBitmap.safeHeight(dHeight))
+        /** Whether scaling should consider width or height (if increasing proportionally width and height makes the
+         * drawable width reach the view width before the height or not) */
+        val scaleOnWidth = dWidth * vHeight > vWidth * dHeight
+        if (scaleOnWidth) {
+            scale = vHeight / dHeight.toFloat()
+            dx = (vWidth - dWidth * scale) / 2
+        } else {
+            scale = vWidth / dWidth.toFloat()
+            dx = 0f
         }
 
-        val scale: Float
-        val dx: Float
-        val dy: Float
+        mShaderMatrix.reset()
 
         when (scaleType) {
 
             PivShapeScaleType.CENTER_CROP -> {
-                if (dWidth * vHeight > vWidth * dHeight) {
-                    scale = vHeight / dHeight.toFloat()
-                    dx = (vWidth - dWidth * scale) / 2
-                    dy = 0f
-
-                } else {
-                    scale = vWidth / dWidth.toFloat()
-                    dy = (vHeight - dHeight * scale) / 2
-                    dx = 0f
-                }
-
+                dy = if (scaleOnWidth) 0f else (vHeight - dHeight * scale) / 2
                 mShaderMatrix.setScale(scale * scaleX, scale * scaleY)
                 mShaderMatrix.postTranslate(dx + mImageBounds.left, dy + mImageBounds.top)
             }
 
             PivShapeScaleType.TOP_CROP -> {
-                if (dWidth * vHeight > vWidth * dHeight) {
-                    scale = vHeight / dHeight.toFloat()
-                    dx = (vWidth - dWidth * scale) / 2
-                    dy = 0f
-
-                } else {
-                    scale = vWidth / dWidth.toFloat()
-                    dy = 0f
-                    dx = 0f
-                }
-
+                dy = 0f
                 mShaderMatrix.setScale(scale * scaleX, scale * scaleY)
                 mShaderMatrix.postTranslate(dx + mImageBounds.left, dy + mImageBounds.top)
             }
 
             PivShapeScaleType.BOTTOM_CROP -> {
-                if (dWidth * vHeight > vWidth * dHeight) {
-                    scale = vHeight / dHeight.toFloat()
-                    dx = (vWidth - dWidth * scale) / 2
-                    dy = 0f
-
-                } else {
-                    scale = vWidth / dWidth.toFloat()
-                    dy = vHeight - dHeight * scale
-                    dx = 0f
-                }
-
+                dy = if (scaleOnWidth) 0f else vHeight - dHeight * scale
                 mShaderMatrix.setScale(scale * scaleX, scale * scaleY)
                 mShaderMatrix.postTranslate(dx + mImageBounds.left, dy + mImageBounds.top)
             }
 
             PivShapeScaleType.CENTER_INSIDE -> {
-                if (dWidth <= vWidth && dHeight <= vHeight) {
-                    scale = 1.0f
-                } else {
-                    scale = Math.min(vWidth / dWidth.toFloat(), vHeight / dHeight.toFloat())
-                }
-
+                // We scale down in case the drawable is bigger than the view, otherwise we don't scale (scale = 1)
+                scale = vWidth.div(dWidth).coerceAtMost(vHeight.div(dHeight)).coerceAtMost(1f)
                 dx = (vWidth - dWidth * scale) / 2
                 dy = (vHeight - dHeight * scale) / 2
-
                 mShaderMatrix.setScale(scale * scaleX, scale * scaleY)
                 mShaderMatrix.postTranslate(dx + mImageBounds.left, dy + mImageBounds.top)
             }
 
-            PivShapeScaleType.FIT_CENTER -> mShaderMatrix.setRectToRect(
-                RectF(
-                    0f,
-                    0f,
-                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
-                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
-                mImageBounds,
-                Matrix.ScaleToFit.CENTER)
-
-            PivShapeScaleType.FIT_END -> mShaderMatrix.setRectToRect(
-                RectF(
-                    0f,
-                    0f,
-                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
-                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
-                mImageBounds,
-                Matrix.ScaleToFit.END)
-
-            PivShapeScaleType.FIT_START -> mShaderMatrix.setRectToRect(
-                RectF(
-                    0f,
-                    0f,
-                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
-                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
-                mImageBounds,
-                Matrix.ScaleToFit.START)
-
-            PivShapeScaleType.FIT_XY -> mShaderMatrix.setRectToRect(
-                RectF(0f,
-                    0f,
-                    (mLastBitmap?.safeWidth() ?: dWidth).toFloat(),
-                    (mLastBitmap?.safeHeight() ?: dHeight).toFloat()),
-                mImageBounds,
-                Matrix.ScaleToFit.FILL)
+            PivShapeScaleType.FIT_CENTER, PivShapeScaleType.FIT_END, PivShapeScaleType.FIT_START,
+            PivShapeScaleType.FIT_XY -> {
+                val scaleToFit = scaleType.scaleToFit() ?: return
+                mShaderMatrix.setRectToRect(lastBitmapBounds, mImageBounds, scaleToFit)
+            }
 
             PivShapeScaleType.MATRIX -> {
                 mShaderMatrix.preScale(scaleX, scaleY)
-
-                if (mImageMatrix != null)
-                    mShaderMatrix.set(mImageMatrix)
-
+                mImageMatrix?.let { mShaderMatrix.set(it) }
                 mShaderMatrix.postTranslate(mImageBounds.left, mImageBounds.top)
             }
 
             PivShapeScaleType.CENTER -> {
                 mShaderMatrix.setScale(scaleX, scaleY)
                 mShaderMatrix.postTranslate(
-                    (vWidth - dWidth) / 2 + mImageBounds.left,
-                    (vHeight - dHeight) / 2 + mImageBounds.top)
+                    (vWidth - dWidth) / 2 + mImageBounds.left, (vHeight - dHeight) / 2 + mImageBounds.top
+                )
             }
         }
-
-        mShapeDrawer.setMatrix(scaleType, mShaderMatrix)
     }
 
+    /**
+     * Returns the [PivShapeScaleType].
+     * If a normal [android.widget.ImageView.ScaleType] was set, the corresponding [PivShapeScaleType] is returned.
+     */
     fun getScaleType(): PivShapeScaleType? = mScaleType
 
     /**
@@ -511,7 +423,6 @@ internal class ShapeDrawerManager
     /** @return The options of the shape */
     fun getShapeOptions(): ShapeOptions = mShapeOptions
 
-
     /** Called when an option that requires onMeasure() call is updated. */
     override fun onRequestMeasure(options: ShapeOptions) {
         mShapeOptions = options
@@ -535,7 +446,7 @@ internal class ShapeDrawerManager
     override fun onSizeUpdated(options: ShapeOptions) {
 
         mShapeOptions = options
-        //set calculated bounds to our progress bounds
+        // Set calculated bounds to our progress bounds
         mShapeBounds.set(mShapeOptions.shapeBounds)
         mBorderBounds.set(mShapeOptions.borderBounds)
         mImageBounds.set(mShapeOptions.imageBounds)
@@ -545,7 +456,6 @@ internal class ShapeDrawerManager
         mShapeDrawer.setup(mShapeOptions)
         mView.get()?.postInvalidate()
     }
-
 
     /**
      * Returns the measured height to be used in onMeasure() method of the view.
@@ -565,25 +475,4 @@ internal class ShapeDrawerManager
 
     /** @return The shape selected mode */
     fun getShapeMode(): PivShapeMode = mShapeMode
-
-
-    /** Saves state into a bundle.  */
-    fun saveInstanceState(): Bundle {
-        val bundle = Bundle()
-        bundle.putParcelable("shape_options", mShapeOptions)
-        bundle.putInt("shape_mode", mShapeMode.value)
-
-        return bundle
-    }
-
-    /** Restores state from a bundle.  */
-    fun restoreInstanceState(state: Bundle?) {
-        if (state == null)
-            return
-
-        mShapeOptions.setOptions(state.getParcelable<Parcelable>("shape_options") as ShapeOptions)
-        val shapeMode = PivShapeMode.fromValue(state.getInt("shape_mode"))
-        onSizeUpdated(mShapeOptions)
-        changeShapeMode(shapeMode)
-    }
 }

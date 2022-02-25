@@ -13,9 +13,8 @@ import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import java.lang.ref.WeakReference
 
-
 /** ShapeDrawer that draws an oval as shape. */
-internal abstract class BaseRoundedDrawer (bitmap: Bitmap?) : ShapeDrawer {
+internal abstract class BaseRoundedDrawer(bitmap: Bitmap?) : ShapeDrawer {
 
     /** Shader to efficiently draw the shape  */
     private var mBitmapShader: BitmapShader? = null
@@ -43,7 +42,6 @@ internal abstract class BaseRoundedDrawer (bitmap: Bitmap?) : ShapeDrawer {
 
     /** Matrix used to draw the shape  */
     private var mOrigBitmap: WeakReference<Bitmap>? = null
-
 
     init {
         if (bitmap != null && !bitmap.isRecycled) {
@@ -97,30 +95,38 @@ internal abstract class BaseRoundedDrawer (bitmap: Bitmap?) : ShapeDrawer {
 
     override fun draw(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {
 
-        //background
+        // Background
         if (mBackPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mBackPaint)
 
         mBackgroundDrawable?.setBounds(
-            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
+            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt()
+        )
         mBackgroundDrawable?.draw(canvas)
 
-        //image
-        if(mOrigBitmap?.get()?.isRecycled != true)
+        // Image
+        if (mOrigBitmap?.get()?.isRecycled != true)
             drawPaint(canvas, imageBounds, mBitmapPaint)
 
         mForegroundDrawable?.setBounds(
-            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt())
+            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt()
+        )
         mForegroundDrawable?.draw(canvas)
 
-        //foreground
+        // Foreground
         if (mFrontPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mFrontPaint)
 
-        //border
+        // Border
         if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT)
             drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
     }
 
     protected abstract fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint)
+
     protected abstract fun drawBorder(
-        canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint)
+        canvas: Canvas,
+        borderBounds: RectF,
+        shapeBounds: RectF,
+        imageBounds: RectF,
+        borderPaint: Paint
+    )
 }

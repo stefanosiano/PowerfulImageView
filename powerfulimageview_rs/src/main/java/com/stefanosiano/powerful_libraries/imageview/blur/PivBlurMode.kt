@@ -1,16 +1,16 @@
 package com.stefanosiano.powerful_libraries.imageview.blur
 
-
 /** Mode of the blur that will be used to blur the image */
 
 enum class PivBlurMode constructor(
-        val value: Int,
-        val fallbackMode: PivBlurMode?,
-        /** Returns the fallback mode to try in case of error (made for Renderscript)  */
-        val usesRenderscript: Boolean) {
+    val value: Int,
+    val fallbackMode: PivBlurMode,
+    /** Returns the fallback mode to try in case of error (made for Renderscript)  */
+    val usesRenderscript: Boolean
+) {
 
     /** No blur */
-    DISABLED(0, null, false),
+    DISABLED(0, DISABLED, false),
     /** Gaussian blur with area of 5x5 (java) */
     GAUSSIAN5X5(1, DISABLED, false),
     /** Gaussian blur with area of 5x5 (Renderscript). Available only on imageview_rs module */
@@ -34,7 +34,6 @@ enum class PivBlurMode constructor(
     /** Stack blur. Only Java method is available, but it's the fastest among the java methods.
      *  Use it if you don't want to use Renderscript */
     STACK(11, DISABLED, false);
-
 
     internal companion object {
 

@@ -1,22 +1,19 @@
 package com.stefanosiano.powerful_libraries.imageview.blur
 
-import android.os.Parcel
-import android.os.Parcelable
 import java.lang.ref.WeakReference
-
 
 /**
  * Class that helps managing the options that will be used to blur the image
  */
 
-class BlurOptions() : Parcelable {
+class BlurOptions() {
 
     /** Rate to downSample the image width and height, so that bitmap is no more than the view size divided by this rate
      * If a value less than 1 is passed, downSampling rate 1 is used. */
     var downSamplingRate: Float = 0f
         set(value) {
             field = value.coerceAtLeast(1f)
-            if(isInitialized)
+            if (isInitialized)
                 this.listener?.get()?.onDownsamplingRateChanged()
         }
 
@@ -25,7 +22,7 @@ class BlurOptions() : Parcelable {
     var isStaticBlur: Boolean = false
         set(value) {
             field = value
-            if(isInitialized)
+            if (isInitialized)
                 listener?.get()?.onStaticBlurChanged()
         }
 
@@ -42,7 +39,6 @@ class BlurOptions() : Parcelable {
     /** Flag to check if the object's constructor was called */
     private var isInitialized = false
 
-
     /**
      * Creates the object that will manage the blur options
      *
@@ -53,7 +49,7 @@ class BlurOptions() : Parcelable {
      * @param useRsFallback Whether the image should be blurred with a java equivalent of the renderscript algorithm
      *  if an error occurs
      */
-    constructor(downSamplingRate: Float, isStaticBlur: Boolean, useRsFallback: Boolean, numThreads: Int): this() {
+    constructor(downSamplingRate: Float, isStaticBlur: Boolean, useRsFallback: Boolean, numThreads: Int) : this() {
         this.downSamplingRate = downSamplingRate.coerceAtLeast(1f)
         this.isStaticBlur = isStaticBlur
         this.useRsFallback = useRsFallback
@@ -76,27 +72,4 @@ class BlurOptions() : Parcelable {
     }
 
     internal fun setListener(listener: BlurOptionsListener) { this.listener = WeakReference(listener) }
-
-
-    constructor(parcel: Parcel) : this() {
-        downSamplingRate = parcel.readFloat()
-        isStaticBlur = parcel.readByte() != 0.toByte()
-        useRsFallback = parcel.readByte() != 0.toByte()
-        numThreads = parcel.readInt()
-        isInitialized = true
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeFloat(downSamplingRate)
-        parcel.writeByte(if (isStaticBlur) 1 else 0)
-        parcel.writeByte(if (useRsFallback) 1 else 0)
-        parcel.writeInt(numThreads)
-    }
-
-    override fun describeContents(): Int = 0
-
-    companion object CREATOR : Parcelable.Creator<BlurOptions> {
-        override fun createFromParcel(parcel: Parcel): BlurOptions = BlurOptions(parcel)
-        override fun newArray(size: Int): Array<BlurOptions?> = arrayOfNulls(size)
-    }
 }

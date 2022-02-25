@@ -1,32 +1,30 @@
 package com.stefanosiano.powerful_libraries.imageview.shape
 
+import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import android.os.Parcel
-import android.os.Parcelable
 import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import java.lang.ref.WeakReference
-
 
 /**
  * Class that helps managing the options that will be used by the shape drawers.
  */
 
-class ShapeOptions() : Parcelable {
+class ShapeOptions() {
 
-    //Options used directly by drawers
+    // Options used directly by drawers
 
     /** Background color of the shape.
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
      * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var backgroundColor: Int = 0
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Foreground color of the shape.
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
      * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var foregroundColor: Int = 0
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Inner padding of the image relative to the shape  */
     var mInnerPadding: Int = 0
@@ -38,99 +36,79 @@ class ShapeOptions() : Parcelable {
     var borderOverlay: Boolean = false
         set(value) {
             field = value
-            if(isInitialized)
-                calculateBounds(mCalculatedLastW,
-                    mCalculatedLastH,
-                    mCalculatedLastPaddingLeft,
-                    mCalculatedLastPaddingTop,
-                    mCalculatedLastPaddingRight,
-                    mCalculatedLastPaddingBottom,
-                    mCalculatedLastMode)
+            if (isInitialized)
+                recalculateLastBounds()
         }
 
     /** Color of the shape border
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
      * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var borderColor: Int = 0
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /**
      * Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled */
     var cutGravity: PivShapeCutGravity = PivShapeCutGravity.BOTTOM
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Width of the shape border. If you want to use dp, set value using
      *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()) */
     var borderWidth: Int = 0
         set(value) {
             field = value
-            if(isInitialized)
-                calculateBounds(
-                    mCalculatedLastW,
-                    mCalculatedLastH,
-                    mCalculatedLastPaddingLeft,
-                    mCalculatedLastPaddingTop,
-                    mCalculatedLastPaddingRight,
-                    mCalculatedLastPaddingBottom,
-                    mCalculatedLastMode)
+            if (isInitialized)
+                recalculateLastBounds()
         }
-    
+
     /** Ratio of the shape. It's ignored in Circle and Square shapes. Width will be calculated as height * ratio */
     var ratio: Float = 0f
         set(value) {
             field = value
-            if(isInitialized)
-                calculateBounds(
-                    mCalculatedLastW,
-                    mCalculatedLastH,
-                    mCalculatedLastPaddingLeft,
-                    mCalculatedLastPaddingTop,
-                    mCalculatedLastPaddingRight,
-                    mCalculatedLastPaddingBottom,
-                    mCalculatedLastMode)
+            if (isInitialized)
+                recalculateLastBounds()
         }
 
     /** X radius of the rounded rectangles  */
     var radiusX: Float = 0f
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Y radius of the rounded rectangles  */
     var radiusY: Float = 0f
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 1 of the cut shapes */
     var cutRadius1: Int = 0
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 1 of the cut shapes, as a percentage */
     var cutRadius1Percent: Float = 0f
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 2 of the cut shapes */
     var cutRadius2: Int = 0
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Cut radius 2 of the cut shapes, as a percentage */
     var cutRadius2Percent: Float = 0f
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Color used by solid shapes
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
      * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
     var solidColor: Int = 0
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Foreground drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
     var foregroundDrawable: Drawable? = null
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     /** Background drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
     var backgroundDrawable: Drawable? = null
-        set(value) { field = value; if(isInitialized) listener.get()?.onOptionsUpdated(this) }
+        set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
     // ************** Calculated fields *****************
 
-    //bounds of the shape
+    // Bounds of the shape
     /** Bounds of the shape, calculated using [calculateBounds]. DON'T edit its values directly! */
     var shapeBounds = RectF(0f, 0f, 0f, 0f)
 
@@ -146,7 +124,7 @@ class ShapeOptions() : Parcelable {
     /** Calculated padding of the indicator shadow  */
     private var mCalculatedInnerPadding: Float = 0f
 
-    //last calculated width and height
+    // Last calculated width and height
     /** Last left padding calculated. Used when changing programmatically the options so bounds can be recalculated */
     private var mCalculatedLastPaddingLeft: Int = 0
 
@@ -198,11 +176,27 @@ class ShapeOptions() : Parcelable {
      *  "cutRadius2Percent" parameter
      * @param cutRadius2Percent Cut radius 2 in percentage. Used in cut shapes
      */
-    constructor(backgroundColor: Int, foregroundColor: Int, innerPadding: Int, innerPaddingPercent: Float,
-                borderOverlay: Boolean, cutGravity: Int, borderColor: Int, borderWidth: Int, ratio: Float,
-                radiusX: Float, radiusY: Float, solidColor: Int, backgroundDrawable: Drawable?,
-                foregroundDrawable: Drawable?, cutRadius1: Int, cutRadius1Percent: Float, cutRadius2: Int,
-                cutRadius2Percent: Float): this() {
+    @Suppress("LongParameterList")
+    constructor(
+        backgroundColor: Int,
+        foregroundColor: Int,
+        innerPadding: Int,
+        innerPaddingPercent: Float,
+        borderOverlay: Boolean,
+        cutGravity: Int,
+        borderColor: Int,
+        borderWidth: Int,
+        ratio: Float,
+        radiusX: Float,
+        radiusY: Float,
+        solidColor: Int,
+        backgroundDrawable: Drawable?,
+        foregroundDrawable: Drawable?,
+        cutRadius1: Int,
+        cutRadius1Percent: Float,
+        cutRadius2: Int,
+        cutRadius2Percent: Float
+    ) : this() {
         this.backgroundColor = backgroundColor
         this.foregroundColor = foregroundColor
         this.mInnerPadding = innerPadding
@@ -261,6 +255,22 @@ class ShapeOptions() : Parcelable {
     }
 
     /**
+     * Recalculates the bounds of the image, based on last calculated shape options and mode.
+     * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     */
+    private fun recalculateLastBounds() = calculateBounds(
+        mCalculatedLastW,
+        mCalculatedLastH,
+        Rect(
+            mCalculatedLastPaddingLeft,
+            mCalculatedLastPaddingTop,
+            mCalculatedLastPaddingRight,
+            mCalculatedLastPaddingBottom
+        ),
+        mCalculatedLastMode
+    )
+
+    /**
      * Calculates the bounds of the image, based on shape options and mode.
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
      *
@@ -270,23 +280,22 @@ class ShapeOptions() : Parcelable {
      * @param h Height of the View
      * @param mode Mode of the shape
      */
-    fun calculateBounds(w: Int, h: Int, paddingLeft: Int, paddingTop: Int, paddingRight: Int, paddingBottom: Int,
-                        mode: PivShapeMode) {
+    fun calculateBounds(w: Int, h: Int, padding: Rect, mode: PivShapeMode) {
 
-        //saving last width and height, so i can later call this function from this class
+        // Saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w
         mCalculatedLastH = h
+        mCalculatedLastPaddingLeft = padding.left
+        mCalculatedLastPaddingTop = padding.top
+        mCalculatedLastPaddingRight = padding.right
+        mCalculatedLastPaddingBottom = padding.bottom
         mCalculatedLastMode = mode
-        mCalculatedLastPaddingLeft = paddingLeft
-        mCalculatedLastPaddingTop = paddingTop
-        mCalculatedLastPaddingRight = paddingRight
-        mCalculatedLastPaddingBottom = paddingBottom
 
         viewBounds.set(0f, 0f, w.toFloat(), h.toFloat())
 
-        //smallest size (used for padding and square/circle shapes)
+        // Smallest size (used for padding and square/circle shapes)
         val smallSize: Float
-        //if no ratio was set, i use the view ratio
+        // If no ratio was set, i use the view ratio
         val usedRatio = if (ratio <= 0) w / h.toFloat() else ratio
 
         when (mode) {
@@ -303,8 +312,8 @@ class ShapeOptions() : Parcelable {
 
             PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE,
             PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> {
-                //Min between current size and calculated size (may be different sizes are set exactly, eg. 120dp, 80dp)
-                //In this case I center the shape into the view
+                // Min between current size and calculated size (maybe different sizes are set exactly, eg. 120dp, 80dp)
+                // In this case I center the shape into the view
                 val smallX = Math.min(w.toFloat(), h * usedRatio)
                 val smallY = Math.min(h.toFloat(), w / usedRatio)
                 smallSize = Math.min(smallX, smallY)
@@ -312,13 +321,15 @@ class ShapeOptions() : Parcelable {
             }
         }
 
-        shapeBounds.set(shapeBounds.left + paddingLeft,
-                shapeBounds.top + paddingTop,
-                shapeBounds.right - paddingRight,
-                shapeBounds.bottom - paddingBottom)
+        shapeBounds.set(
+            shapeBounds.left + padding.left,
+            shapeBounds.top + padding.top,
+            shapeBounds.right - padding.right,
+            shapeBounds.bottom - padding.bottom
+        )
 
-        //Border cannot be bigger than the shape! ("if" needed to avoid infinite recursion)
-        if(borderWidth != borderWidth.coerceAtMost((shapeBounds.width() / 2).toInt())) {
+        // Border cannot be bigger than the shape! ("if" needed to avoid infinite recursion)
+        if (borderWidth != borderWidth.coerceAtMost((shapeBounds.width() / 2).toInt())) {
             borderWidth = borderWidth.coerceAtMost((shapeBounds.width() / 2).toInt())
             return
         }
@@ -326,12 +337,12 @@ class ShapeOptions() : Parcelable {
         borderBounds.set(shapeBounds)
         borderBounds.inset((borderWidth / 2).toFloat(), (borderWidth / 2).toFloat())
 
-        //If border does not overlay, i shrink shape and image bounds
+        // If border does not overlay, i shrink shape and image bounds
         if (!borderOverlay)
             shapeBounds.inset(borderWidth.toFloat(), borderWidth.toFloat())
 
         mCalculatedInnerPadding = smallSize * mInnerPaddingPercent / 100
-        //if mInnerPadding is 0 or more, it overrides mInnerPaddingPercent parameter
+        // if mInnerPadding is 0 or more, it overrides mInnerPaddingPercent parameter
         if (mInnerPadding >= 0) mCalculatedInnerPadding = mInnerPadding.toFloat()
 
         mCalculatedInnerPadding = mCalculatedInnerPadding.coerceAtMost(smallSize / 2 - 1)
@@ -350,8 +361,6 @@ class ShapeOptions() : Parcelable {
      * @param listener Listener that will update the shape drawers on changes
      */
     fun setListener(listener: ShapeOptionsListener) { this.listener = WeakReference(listener) }
-
-
 
     /**
      * Returns the inner padding of the image, relative to the shape
@@ -385,14 +394,7 @@ class ShapeOptions() : Parcelable {
      */
     fun setInnerPadding(innerPadding: Int) {
         this.mInnerPadding = innerPadding
-        calculateBounds(
-            mCalculatedLastW,
-            mCalculatedLastH,
-            mCalculatedLastPaddingLeft,
-            mCalculatedLastPaddingTop,
-            mCalculatedLastPaddingRight,
-            mCalculatedLastPaddingBottom,
-            mCalculatedLastMode)
+        recalculateLastBounds()
     }
 
     /**
@@ -405,92 +407,12 @@ class ShapeOptions() : Parcelable {
     fun setInnerPadding(innerPaddingPercent: Float) {
         this.mInnerPadding = -1
         this.mInnerPaddingPercent = innerPaddingPercent
-        calculateBounds(
-            mCalculatedLastW,
-            mCalculatedLastH,
-            mCalculatedLastPaddingLeft,
-            mCalculatedLastPaddingTop,
-            mCalculatedLastPaddingRight,
-            mCalculatedLastPaddingBottom,
-            mCalculatedLastMode)
+        recalculateLastBounds()
     }
-
 
     interface ShapeOptionsListener {
         fun onOptionsUpdated(options: ShapeOptions)
         fun onSizeUpdated(options: ShapeOptions)
         fun onRequestMeasure(options: ShapeOptions)
-    }
-
-
-    //PARCELABLE STUFF
-
-    override fun describeContents(): Int = 0
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(backgroundColor)
-        dest.writeInt(foregroundColor)
-        dest.writeInt(mInnerPadding)
-        dest.writeFloat(mInnerPaddingPercent)
-        dest.writeByte((if (borderOverlay) 1 else 0).toByte())
-        dest.writeInt(cutGravity.value)
-        dest.writeInt(borderColor)
-        dest.writeInt(borderWidth)
-        dest.writeFloat(ratio)
-        dest.writeFloat(radiusX)
-        dest.writeFloat(radiusY)
-        dest.writeInt(cutRadius1)
-        dest.writeFloat(cutRadius1Percent)
-        dest.writeInt(cutRadius2)
-        dest.writeFloat(cutRadius2Percent)
-        dest.writeInt(solidColor)
-        dest.writeParcelable(shapeBounds, flags)
-        dest.writeParcelable(imageBounds, flags)
-        dest.writeParcelable(borderBounds, flags)
-        dest.writeParcelable(viewBounds, flags)
-        dest.writeFloat(mCalculatedInnerPadding)
-        dest.writeInt(mCalculatedLastPaddingLeft)
-        dest.writeInt(mCalculatedLastPaddingTop)
-        dest.writeInt(mCalculatedLastPaddingRight)
-        dest.writeInt(mCalculatedLastPaddingBottom)
-        dest.writeInt(mCalculatedLastW)
-        dest.writeInt(mCalculatedLastH)
-    }
-
-
-    private constructor(input: Parcel): this() {
-        backgroundColor = input.readInt()
-        foregroundColor = input.readInt()
-        mInnerPadding = input.readInt()
-        mInnerPaddingPercent = input.readFloat()
-        borderOverlay = input.readByte().toInt() != 0
-        borderColor = input.readInt()
-        cutGravity = PivShapeCutGravity.fromValue(input.readInt())
-        borderWidth = input.readInt()
-        ratio = input.readFloat()
-        radiusX = input.readFloat()
-        radiusY = input.readFloat()
-        cutRadius1 = input.readInt()
-        cutRadius1Percent = input.readFloat()
-        cutRadius2 = input.readInt()
-        cutRadius2Percent = input.readFloat()
-        solidColor = input.readInt()
-        shapeBounds = input.readParcelable(RectF::class.java.classLoader) ?: RectF(0f, 0f, 0f, 0f)
-        imageBounds = input.readParcelable(RectF::class.java.classLoader) ?: RectF(0f, 0f, 0f, 0f)
-        borderBounds = input.readParcelable(RectF::class.java.classLoader) ?: RectF(0f, 0f, 0f, 0f)
-        viewBounds = input.readParcelable(RectF::class.java.classLoader) ?: RectF(0f, 0f, 0f, 0f)
-        mCalculatedInnerPadding = input.readFloat()
-        mCalculatedLastPaddingLeft = input.readInt()
-        mCalculatedLastPaddingTop = input.readInt()
-        mCalculatedLastPaddingRight = input.readInt()
-        mCalculatedLastPaddingBottom = input.readInt()
-        mCalculatedLastW = input.readInt()
-        mCalculatedLastH = input.readInt()
-        isInitialized = true
-    }
-    
-    companion object CREATOR : Parcelable.Creator<ShapeOptions> {
-        override fun createFromParcel(parcel: Parcel): ShapeOptions = ShapeOptions(parcel)
-        override fun newArray(size: Int): Array<ShapeOptions?> = arrayOfNulls(size)
     }
 }

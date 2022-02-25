@@ -3,7 +3,6 @@ package com.stefanosiano.powerful_libraries.imageview.shape
 import android.graphics.Matrix
 import android.widget.ImageView
 
-
 /** Custom scale type of the image */
 enum class PivShapeScaleType constructor(internal val value: Int) {
     /**
@@ -71,6 +70,13 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
      */
     BOTTOM_CROP(9);
 
+    fun scaleToFit(): Matrix.ScaleToFit? = when (this) {
+        FIT_XY -> Matrix.ScaleToFit.FILL
+        FIT_START -> Matrix.ScaleToFit.START
+        FIT_CENTER -> Matrix.ScaleToFit.CENTER
+        FIT_END -> Matrix.ScaleToFit.END
+        else -> null
+    }
     companion object {
 
         /** Returns the custom scaleType from the android scaleType or CENTER if the scaleType passed is null  */
@@ -85,7 +91,6 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
             ImageView.ScaleType.CENTER_INSIDE -> CENTER_INSIDE
             else -> MATRIX
         }
-
 
         /** Returns the scale type associated to the passed value, or CENTER if the value is invalid  */
         fun fromValue(value: Int): PivShapeScaleType = when (value) {

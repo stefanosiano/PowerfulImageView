@@ -2,13 +2,10 @@ package com.stefanosiano.powerful_libraries.imageview.progress.drawers
 
 import android.graphics.Canvas
 import android.graphics.RectF
-import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import com.stefanosiano.powerful_libraries.imageview.progress.PivProgressMode
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 import java.lang.ref.WeakReference
-
 
 /**
  * Manager class for progress drawers. Used to initialize use the needed drawers.
@@ -23,9 +20,9 @@ internal class ProgressDrawerManager
  */
 (view: View, progressOptions: ProgressOptions) : ProgressOptions.ProgressOptionsListener {
 
-    //Variables used to initialize drawers
+    // Variables used to initialize drawers
 
-    //Using a weakRefence to be sure to not leak memory
+    // Using a weakRefence to be sure to not leak memory
     private val mView = WeakReference(view)
 
     /** Bounds in which the progress indicator will be drawn  */
@@ -37,7 +34,7 @@ internal class ProgressDrawerManager
     /** Bounds in which the progress indicator shadow will be drawn  */
     private val mProgressShadowBounds = RectF()
 
-    //Drawers
+    // Drawers
     private val mDummyProgressDrawer: DummyProgressDrawer by lazy { DummyProgressDrawer() }
     private val mCircularProgressDrawer: CircularProgressDrawer by lazy { CircularProgressDrawer() }
     private val mHorizontalProgressDrawer: HorizontalProgressDrawer by lazy { HorizontalProgressDrawer() }
@@ -48,7 +45,7 @@ internal class ProgressDrawerManager
         CircularIndeterminateProgressDrawer()
     }
 
-    //Shadow Drawers
+    // Shadow Drawers
     private val mDummyShadowDrawer: DummyShadowDrawer by lazy { DummyShadowDrawer() }
     private val mRectangularShadowDrawer: RectangularShadowDrawer by lazy { RectangularShadowDrawer() }
     private val mCircularShadowDrawer: CircularShadowDrawer by lazy { CircularShadowDrawer() }
@@ -72,18 +69,18 @@ internal class ProgressDrawerManager
         this.listener = object : ProgressDrawerListener {
             override fun onRequestInvalidate() {
                 // Invalidates only the area of the progress indicator, instead of the whole view. +1 e -1 are used to
-                // be sure to invalidate the whole progress indicator. It is more efficient then just postInvalidate():
+                // be sure to invalidate the whole progress indicator. It is more efficient then just postInvalidate() :
                 // if something is drawn outside the bounds, it will not be calculated again!
                 mView.get()?.postInvalidate(
                     mProgressBounds.left.toInt() - 1,
                     mProgressBounds.top.toInt() - 1,
                     mProgressBounds.right.toInt() + 1,
-                    mProgressBounds.bottom.toInt() + 1)
+                    mProgressBounds.bottom.toInt() + 1
+                )
             }
         }
         this.mProgressOptions.setListener(this)
     }
-
 
     /**
      * Updates the progress drawers to use and chooses the right one to use based on the mode.
@@ -118,7 +115,6 @@ internal class ProgressDrawerManager
         mProgressDrawer.setListener(listener)
     }
 
-
     /**
      * It calculates the bounds of the progress indicator.
      *
@@ -126,7 +122,7 @@ internal class ProgressDrawerManager
      * @param h Current height of this view.
      */
     fun onSizeChanged(w: Int, h: Int) {
-        mProgressOptions.calculateBounds(w, h, mProgressMode)
+        mProgressOptions.calculateSizeAndBounds(w, h, mProgressMode)
 
         onSizeUpdated(mProgressOptions)
     }
@@ -159,7 +155,6 @@ internal class ProgressDrawerManager
         mProgressDrawer.startIndeterminateAnimation()
     }
 
-
     /** Draws the progress indicator  */
     fun onDraw(canvas: Canvas) {
         mShadowDrawer.draw(canvas, mProgressShadowBorderBounds, mProgressShadowBounds)
@@ -177,7 +172,6 @@ internal class ProgressDrawerManager
         fun onRequestInvalidate()
     }
 
-
     /**
      * Called when an option is updated. It propagates the update to the progress drawers.
      */
@@ -186,7 +180,6 @@ internal class ProgressDrawerManager
         mProgressDrawer.setup(options)
         mProgressOptions = options
     }
-
 
     /**
      * Called when an option that changes the progress mode is updated: The drawer is calculated again.
@@ -205,32 +198,12 @@ internal class ProgressDrawerManager
 
         mProgressOptions = options
 
-        //set calculated bounds to our progress bounds
+        // Set calculated bounds to our progress bounds
         mProgressBounds.set(mProgressOptions.rect)
         mProgressShadowBorderBounds.set(mProgressOptions.shadowBorderRect)
         mProgressShadowBounds.set(mProgressOptions.shadowRect)
 
         mProgressDrawer.setup(mProgressOptions)
         mShadowDrawer.setup(mProgressOptions)
-    }
-
-
-    /** Saves state into a bundle.  */
-    fun saveInstanceState(): Bundle {
-        val bundle = Bundle()
-        bundle.putParcelable("progress_options", mProgressOptions)
-        bundle.putInt("progress_mode", mProgressMode.value)
-        return bundle
-    }
-
-    /** Restores state from a bundle.  */
-    fun restoreInstanceState(state: Bundle?) {
-        if (state == null)
-            return
-
-        mProgressOptions.setOptions(state.getParcelable<Parcelable>("progress_options") as ProgressOptions)
-        val progressMode = PivProgressMode.fromValue(state.getInt("progress_mode"))
-        onSizeUpdated(mProgressOptions)
-        changeProgressMode(progressMode, false)
     }
 }

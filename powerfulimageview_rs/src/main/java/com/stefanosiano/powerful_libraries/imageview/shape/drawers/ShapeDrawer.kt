@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 
-
 /**
  * Interface that handles options, drawing and updating of the image shapes on the View.
  */
@@ -20,7 +19,6 @@ internal interface ShapeDrawer {
      * @param drawable drawable to show on normal, square and rectangle shapes
      */
     fun changeDrawable(drawable: Drawable?)
-
 
     /**
      * Method that informs if the drawer requires the bitmap

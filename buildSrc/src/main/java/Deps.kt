@@ -13,4 +13,7 @@ object Deps {
 
     // Android things
     const val appCompat = "androidx.appcompat:appcompat:1.2.0"
+
+    // Other libraries
+    const val detektKtlintPlugin = "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
 }

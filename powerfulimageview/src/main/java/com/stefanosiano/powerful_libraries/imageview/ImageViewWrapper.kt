@@ -14,17 +14,16 @@ import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 
-
 /**
  * ImageView Wrapper that enables to catch all the methods where the image or a size changes and react accordingly.
  */
 
+@Suppress("TooManyFunctions")
 abstract class ImageViewWrapper : AppCompatImageView {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
 
     /**
      * Method called when the drawable has been changed, through a set..() method
@@ -35,7 +34,6 @@ abstract class ImageViewWrapper : AppCompatImageView {
     override fun setImageMatrix(matrix: Matrix) = super.setImageMatrix(matrix)
 
     override fun getCropToPadding(): Boolean = super.getCropToPadding()
-
 
     override fun drawableStateChanged() = super.drawableStateChanged()
 
@@ -58,19 +56,19 @@ abstract class ImageViewWrapper : AppCompatImageView {
 
     override fun setAdjustViewBounds(adjustViewBounds: Boolean) = super.setAdjustViewBounds(adjustViewBounds)
 
-    //these methods propagate their effects to the methods of the PIV
+    // These methods propagate their effects to the methods of the PIV
 
-    //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
+    // Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     override fun setImageResource(resId: Int) = super.setImageResource(resId)
 
     override fun setImageURI(uri: Uri?) { super.setImageURI(uri); onDrawableChanged() }
 
     override fun setImageDrawable(drawable: Drawable?) { super.setImageDrawable(drawable); onDrawableChanged() }
 
-    //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
+    // Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     override fun setImageIcon(icon: Icon?) = super.setImageIcon(icon)
 
-    //Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
+    // Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     override fun setImageBitmap(bm: Bitmap) = super.setImageBitmap(bm)
 
     override fun setScaleType(scaleType: ImageView.ScaleType) = super.setScaleType(scaleType)
@@ -78,5 +76,4 @@ abstract class ImageViewWrapper : AppCompatImageView {
     /** returns selected color (default color if selected color is not available) for any api level */
     protected fun getColor(a: TypedArray, colorId: Int, defaultColorId: Int): Int =
         a.getColor(colorId, ContextCompat.getColor(context, defaultColorId))
-
 }

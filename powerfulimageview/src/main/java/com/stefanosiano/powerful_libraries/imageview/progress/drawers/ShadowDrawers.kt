@@ -5,7 +5,6 @@ import android.graphics.Paint
 import android.graphics.RectF
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 
-
 /**
  * Interface that handles options, drawing and updating of the progress indicators shadow on the View.
  */
@@ -19,7 +18,6 @@ internal interface ShadowDrawer {
      */
     fun setup(progressOptions: ProgressOptions)
 
-
     /**
      * Draws the cancel progress indicator.
      * No operation should be performed here, except drawing, for efficiency.
@@ -30,7 +28,6 @@ internal interface ShadowDrawer {
      */
     fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF)
 }
-
 
 /**
  * Dummy progress drawer that doesn't do anything.
@@ -96,6 +93,7 @@ internal class RectangularShadowDrawer : ShadowDrawer {
             shadowBorderBounds.top,
             shadowBorderBounds.right,
             shadowBorderBounds.bottom,
-            mShadowBorderPaint)
+            mShadowBorderPaint
+        )
     }
 }

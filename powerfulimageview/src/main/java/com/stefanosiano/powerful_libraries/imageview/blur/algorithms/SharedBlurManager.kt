@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
-
 /**
  * Manager class for content shared through all instances of BlurManager
  * Renderscript related stuff
@@ -19,8 +18,7 @@ internal object SharedBlurManager {
 
     private val c = C()
 
-
-    fun getRenderScriptContext() = if(c.applicationContext != null) c.renderScript ?: c.buildRenderscript() else null
+    fun getRenderScriptContext() = if (c.applicationContext != null) c.renderScript ?: c.buildRenderscript() else null
 
     @Synchronized fun addRenderscriptContext(context: Context) {
         count.addAndGet(1)
@@ -31,7 +29,6 @@ internal object SharedBlurManager {
         val count = count.decrementAndGet()
         if (count == 0) {
             c.applicationContext = null
-            
             c.renderScript = null
         }
     }

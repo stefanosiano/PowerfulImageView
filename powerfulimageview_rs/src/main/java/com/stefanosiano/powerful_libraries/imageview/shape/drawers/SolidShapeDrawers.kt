@@ -8,13 +8,10 @@ import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import kotlin.math.absoluteValue
 
-
 /**
  * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
-internal class SolidRoundedRectangleShapeDrawer
-/** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it */
-(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
+internal class SolidRoundedRectangleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     /** Paint used to draw the solid color  */
     private val mSolidPaint = Paint()
@@ -29,7 +26,6 @@ internal class SolidRoundedRectangleShapeDrawer
     override fun setup(shapeOptions: ShapeOptions) {
         super.setup(shapeOptions)
 
-
         mRadiusX = shapeOptions.radiusX
         mRadiusY = shapeOptions.radiusY
 
@@ -38,15 +34,14 @@ internal class SolidRoundedRectangleShapeDrawer
         mFrontPaint.isAntiAlias = true
         mFrontPaint.style = Paint.Style.FILL_AND_STROKE
 
-
         mSolidPaint.color = shapeOptions.solidColor
         mSolidPaint.isAntiAlias = true
         mSolidPaint.style = Paint.Style.STROKE
 
-        //At maximum, the rounded rectangle can become an oval, so I calculate width in the same way of the oval.
-        //I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
-        //that is the hypotenuse of the triangle built over radii of the rounded rectangle.
-        //I also add any space between the image and the view (given by any padding)
+        // At maximum, the rounded rectangle can become an oval, so I calculate width in the same way of the oval.
+        // I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
+        // that is the hypotenuse of the triangle built over radii of the rounded rectangle.
+        // I also add any space between the image and the view (given by any padding)
         val width = Math.max(
             shapeOptions.viewBounds.width() - shapeOptions.borderBounds.width() + mRadiusX,
             shapeOptions.viewBounds.height() - shapeOptions.borderBounds.height() + mRadiusY
@@ -66,26 +61,22 @@ internal class SolidRoundedRectangleShapeDrawer
         borderBounds: RectF,
         shapeBounds: RectF,
         imageBounds: RectF,
-        borderPaint: Paint) =
-        canvas.drawRoundRect(
-                borderBounds,
-            mRadiusX * (borderBounds.width() / shapeBounds.width()),
-            mRadiusY * (borderBounds.height() / shapeBounds.height()),
-            borderPaint)
+        borderPaint: Paint
+    ) = canvas.drawRoundRect(
+        borderBounds,
+        mRadiusX * (borderBounds.width() / shapeBounds.width()),
+        mRadiusY * (borderBounds.height() / shapeBounds.height()),
+        borderPaint
+    )
 
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) =
-            canvas.drawRoundRect(mSolidRect, mRadiusX, mRadiusY, mSolidPaint)
-
-
+        canvas.drawRoundRect(mSolidRect, mRadiusX, mRadiusY, mSolidPaint)
 }
-
 
 /**
  * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
-internal class SolidOvalShapeDrawer
-/** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it */
-(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
+internal class SolidOvalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     /** Paint used to draw the solid color  */
     private val mSolidPaint = Paint()
@@ -101,15 +92,14 @@ internal class SolidOvalShapeDrawer
         mFrontPaint.isAntiAlias = true
         mFrontPaint.style = Paint.Style.FILL_AND_STROKE
 
-
         mSolidPaint.color = shapeOptions.solidColor
         mSolidPaint.isAntiAlias = true
         mSolidPaint.style = Paint.Style.STROKE
 
-        //I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
-        //that is the hypotenuse of the triangle built over half width and half height of the rectangle.
-        //I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
-        //Finally i subtract the shape radius, since it will
+        // I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
+        // that is the hypotenuse of the triangle built over half width and half height of the rectangle.
+        // I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
+        // Finally i subtract the shape radius, since it will
         val width =
             (shapeOptions.viewBounds.width() + shapeOptions.viewBounds.height() - shapeOptions.borderBounds.width()) / 2
 
@@ -126,21 +116,16 @@ internal class SolidOvalShapeDrawer
         borderBounds: RectF,
         shapeBounds: RectF,
         imageBounds: RectF,
-        borderPaint: Paint) =
-        canvas.drawOval(borderBounds, mBorderPaint)
+        borderPaint: Paint
+    ) = canvas.drawOval(borderBounds, mBorderPaint)
 
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) =
         canvas.drawOval(mSolidRect, mSolidPaint)
-
-
-
 }
 /**
  * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
  */
-internal class SolidCircleShapeDrawer
-/** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it */
-(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
+internal class SolidCircleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     /** Paint used to draw the solid color  */
     private val mSolidPaint = Paint()
@@ -160,7 +145,6 @@ internal class SolidCircleShapeDrawer
         mFrontPaint.isAntiAlias = true
         mFrontPaint.style = Paint.Style.FILL_AND_STROKE
 
-
         mSolidPaint.color = shapeOptions.solidColor
         mSolidPaint.isAntiAlias = true
         mSolidPaint.style = Paint.Style.STROKE
@@ -168,10 +152,10 @@ internal class SolidCircleShapeDrawer
         mCx = shapeOptions.borderBounds.centerX()
         mCy = shapeOptions.borderBounds.centerY()
 
-        //I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
-        //that is the hypotenuse of the triangle built over half width and half height of the rectangle.
-        //I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
-        //Finally i subtract the shape radius, since it will
+        // I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
+        // that is the hypotenuse of the triangle built over half width and half height of the rectangle.
+        // I could use Pythagoras formula, but using triangles maths, we know that width+height > hypotenuse
+        // Finally i subtract the shape radius, since it will
         val width =
             (shapeOptions.viewBounds.width() + shapeOptions.viewBounds.height() - shapeOptions.borderBounds.width()) / 2
 
@@ -189,17 +173,19 @@ internal class SolidCircleShapeDrawer
         canvas.drawCircle(mCx, mCy, mRadius, mBackPaint)
 
     override fun drawBorder(
-        canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint) =
-        canvas.drawCircle(mCx, mCy, mBorderRadius, mBorderPaint)
+        canvas: Canvas,
+        borderBounds: RectF,
+        shapeBounds: RectF,
+        imageBounds: RectF,
+        borderPaint: Paint
+    ) = canvas.drawCircle(mCx, mCy, mBorderRadius, mBorderPaint)
 
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) =
         canvas.drawCircle(mCx, mCy, mSolidRadius, mSolidPaint)
 }
 
-
-
-internal class SolidDiagonalShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(drawable) {
-//internal class SolidCircleShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(drawable) {
+internal class SolidDiagonalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
+    // internal class SolidCircleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
     private val mSolidPaint = Paint()
     private var mSolidBounds = RectF()
 
@@ -208,21 +194,21 @@ internal class SolidDiagonalShapeDrawer(drawable: Drawable?): BaseNormalShapeDra
 
         mSolidPaint.color = shapeOptions.solidColor
         mSolidPaint.isAntiAlias = true
-        mSolidPaint.style = Paint.Style.FILL//_AND_STROKE
-        mSolidPaint.strokeWidth = shapeOptions.shapeBounds.height()*0.75F
+        mSolidPaint.style = Paint.Style.FILL
+        mSolidPaint.strokeWidth = shapeOptions.shapeBounds.height() * 0.75F
 
-        //calculate solid line coordinates
+        // Calculate solid line coordinates
         val b = shapeOptions.shapeBounds
-        val cat1 = if(shapeOptions.cutRadius1 != 0)
+        val cat1 = if (shapeOptions.cutRadius1 != 0)
             shapeOptions.cutRadius1.toFloat()
-        else shapeOptions.cutRadius1Percent/100F*b.height()
-        val cat2 = if(shapeOptions.cutRadius2 != 0)
+        else shapeOptions.cutRadius1Percent / 100F * b.height()
+        val cat2 = if (shapeOptions.cutRadius2 != 0)
             shapeOptions.cutRadius2.absoluteValue.toFloat()
-        else shapeOptions.cutRadius2Percent.absoluteValue/100F*b.width()
-        val hypo = Math.sqrt((cat1*cat1 + cat2*cat2).toDouble())
-        val angle = Math.acos(cat1/hypo)
-        val h = (mSolidPaint.strokeWidth/2F*Math.sin(angle)).toFloat()
-        val w = (mSolidPaint.strokeWidth/2F*Math.cos(angle)).toFloat()
+        else shapeOptions.cutRadius2Percent.absoluteValue / 100F * b.width()
+        val hypo = Math.sqrt((cat1 * cat1 + cat2 * cat2).toDouble())
+        val angle = Math.acos(cat1 / hypo)
+        val h = (mSolidPaint.strokeWidth / 2F * Math.sin(angle)).toFloat()
+        val w = (mSolidPaint.strokeWidth / 2F * Math.cos(angle)).toFloat()
 
         when {
             shapeOptions.cutGravity.isGravityTop() || shapeOptions.cutGravity == PivShapeCutGravity.END -> {
@@ -244,21 +230,21 @@ internal class SolidDiagonalShapeDrawer(drawable: Drawable?): BaseNormalShapeDra
     override fun drawPaint(canvas: Canvas, shapeBounds: RectF, paint: Paint) = canvas.drawRect(shapeBounds, paint)
 
     override fun drawBorder(
-        canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF, borderPaint: Paint) =
-        canvas.drawRect(borderBounds, borderPaint)
+        canvas: Canvas,
+        borderBounds: RectF,
+        shapeBounds: RectF,
+        imageBounds: RectF,
+        borderPaint: Paint
+    ) = canvas.drawRect(borderBounds, borderPaint)
 
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {
         canvas.drawLine(mSolidBounds.left, mSolidBounds.top, mSolidBounds.right, mSolidBounds.bottom, mSolidPaint)
     }
 }
 
-
-
-
-
-
-internal class SolidArcShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(drawable) {
-//internal class SolidCircleShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(drawable) {
+/*
+internal class SolidArcShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
+//internal class SolidCircleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
     private val mSolidPaint = Paint()
     private var mSolidBounds = RectF()
     private var mStartAngle = 180f
@@ -272,10 +258,10 @@ internal class SolidArcShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(d
         //calculate solid line coordinates
         val b = shapeOptions.shapeBounds
 
-        val h = if(shapeOptions.cutRadius1 != 0)
+        val h = if (shapeOptions.cutRadius1 != 0)
             shapeOptions.cutRadius1.toFloat()
-        else 2f*shapeOptions.cutRadius1Percent/100F*b.height()
-        val w = if(shapeOptions.cutRadius2 != 0)
+        else 2f * shapeOptions.cutRadius1Percent / 100F * b.height()
+        val w = if (shapeOptions.cutRadius2 != 0)
             shapeOptions.cutRadius2.absoluteValue/2f
         else (shapeOptions.cutRadius2Percent.absoluteValue/2f)/100F*b.width()
 
@@ -325,16 +311,11 @@ internal class SolidArcShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(d
         canvas.drawArc(mSolidBounds, mStartAngle, 180f, false, mSolidPaint)
     }
 }
+*/
 
-
-
-
-
-
-
-
-//internal class SolidCornerShapeDrawer(drawable: Drawable?): BaseNormalShapeDrawer(drawable) {
-internal class SolidCircleShapeDrawer12(drawable: Drawable?): BaseNormalShapeDrawer(drawable) {
+/*
+//internal class SolidCornerShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
+internal class SolidCircleShapeDrawer12(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
     private val mSolidPaint = Paint()
     private var mSolidBounds = RectF()
 
@@ -347,12 +328,12 @@ internal class SolidCircleShapeDrawer12(drawable: Drawable?): BaseNormalShapeDra
         //calculate solid line coordinates
         val b = shapeOptions.shapeBounds
 
-        val h = (if(shapeOptions.cutRadius1 != 0)
+        val h = (if (shapeOptions.cutRadius1 != 0)
             2f * shapeOptions.cutRadius1.toFloat()
         else 2f*shapeOptions.cutRadius1Percent/100F*b.biggest())
             .absoluteValue.coerceAtMost(2f*b.biggest())
 
-        val w = (if(shapeOptions.cutRadius2 != 0)
+        val w = (if (shapeOptions.cutRadius2 != 0)
             shapeOptions.cutRadius2.toFloat()
         else shapeOptions.cutRadius2Percent/100F*b.biggest())
             .coerceAtMost(b.biggest())/2
@@ -379,7 +360,5 @@ internal class SolidCircleShapeDrawer12(drawable: Drawable?): BaseNormalShapeDra
         canvas.drawArc(mSolidBounds, -90f, 90f, false, mSolidPaint)
     }
 }
-
 fun RectF.biggest() = width().coerceAtMost(height())
-
-
+*/

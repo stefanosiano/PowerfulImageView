@@ -7,10 +7,8 @@ import android.graphics.RectF
 import android.view.animation.LinearInterpolator
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 
-
 /** Default animation duration  */
 private const val DEFAULT_ANIMATION_DURATION: Long = 100
-
 
 /** ProgressDrawer that shows a determinate circle as progress indicator */
 internal class CircularProgressDrawer : ProgressDrawer {
@@ -26,7 +24,6 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
     /** Custom animation duration. If it's less then 0, default duration is used  */
     private var mProgressAnimationDuration: Long = -1
-
 
     /** Start angle of the back arc  */
     private var mProgressBackStartAngle: Int = 0
@@ -60,10 +57,11 @@ internal class CircularProgressDrawer : ProgressDrawer {
         mProgressAnimator.duration = if (mProgressAnimationDuration < 0)
             DEFAULT_ANIMATION_DURATION
         else mProgressAnimationDuration
-        //Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
+        // Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mProgressAnimator.addUpdateListener {
             setRealProgressAngle(
-                (getOldSweepAngle() + (getSweepAngle() - getOldSweepAngle()) * it.animatedFraction).toInt())
+                (getOldSweepAngle() + (getSweepAngle() - getOldSweepAngle()) * it.animatedFraction).toInt()
+            )
         }
     }
 
@@ -83,19 +81,19 @@ internal class CircularProgressDrawer : ProgressDrawer {
         var mProgressAngle = (progressPercent * 3.6f).toInt()
         if (mProgressAngle > 360) mProgressAngle %= 360
 
-        //Saving last shown angle (will be used to animate, if needed)
+        // Saving last shown angle (will be used to animate, if needed)
         this.mOldProgressFrontSweepAngle = this.mCurrentProgressFrontSweepAngle
 
-        //Sets the value of the progress angle (the value the animation will go to)
+        // Sets the value of the progress angle (the value the animation will go to)
         this.mProgressFrontSweepAngle = mProgressAngle
 
         if (this.mUseProgressAnimation) {
-            //use the mProgressFrontSweepAngle to set the animation accordingly, after cancelling it.
-            //The animation will go from mOldProgressFrontSweepAngle to mProgressFrontSweepAngle
+            // Use the mProgressFrontSweepAngle to set the animation accordingly, after cancelling it.
+            // The animation will go from mOldProgressFrontSweepAngle to mProgressFrontSweepAngle
             mProgressAnimator.cancel()
             mProgressAnimator.start()
         } else {
-            //sets the mProgressFrontSweepAngle as the real angle to show
+            // Sets the mProgressFrontSweepAngle as the real angle to show
             setRealProgressAngle(mProgressAngle)
         }
     }
@@ -106,7 +104,7 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
     override fun setAnimationDuration(millis: Long) {
         mProgressAnimationDuration = if (millis < 0) DEFAULT_ANIMATION_DURATION else millis
-        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+        if (mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
                 mProgressAnimator.cancel()
@@ -139,7 +137,7 @@ internal class CircularProgressDrawer : ProgressDrawer {
         mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0)
             DEFAULT_ANIMATION_DURATION
         else progressOptions.animationDuration.toLong()
-        if(mProgressAnimator.duration != mProgressAnimationDuration) {
+        if (mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
                 mProgressAnimator.cancel()
@@ -159,22 +157,26 @@ internal class CircularProgressDrawer : ProgressDrawer {
                 mProgressBackStartAngle.toFloat(),
                 mProgressBackSweepAngle.toFloat(),
                 drawWedge,
-                mProgressBackPaint)
+                mProgressBackPaint
+            )
             canvas.drawArc(
                 progressBounds,
                 -90f,
                 mCurrentProgressFrontSweepAngle.toFloat(),
                 drawWedge,
-                mProgressFrontPaint)
+                mProgressFrontPaint
+            )
         } else {
             canvas.drawArc(
-                progressBounds, -90f, mProgressBackSweepAngle.toFloat(), drawWedge, mProgressBackPaint)
+                progressBounds, -90f, mProgressBackSweepAngle.toFloat(), drawWedge, mProgressBackPaint
+            )
             canvas.drawArc(
                 progressBounds,
                 -90f,
                 (-mCurrentProgressFrontSweepAngle).toFloat(),
                 drawWedge,
-                mProgressFrontPaint)
+                mProgressFrontPaint
+            )
         }
     }
 
@@ -185,5 +187,4 @@ internal class CircularProgressDrawer : ProgressDrawer {
 
     /** Returns the right angle to show (used as goal in animation)  */
     private fun getSweepAngle(): Int = mProgressFrontSweepAngle
-
 }

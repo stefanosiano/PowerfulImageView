@@ -37,7 +37,6 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
     /** Scale type selected  */
     private var mScaleType: PivShapeScaleType? = null
 
-
     override fun changeDrawable(drawable: Drawable?) { this.mDrawable = drawable }
 
     override fun requireBitmap() = false
@@ -64,21 +63,22 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
 
     override fun draw(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {
 
-        //background
+        // Background
         if (mBackPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mBackPaint)
 
-        //image
+        // Image
         if (mDrawable != null) {
-            //I save the state, apply the matrix and restore the state of the canvas
+            // I save the state, apply the matrix and restore the state of the canvas
             val saveCount = canvas.saveCount
 
-            //if scaleType is XY, we should draw the image on the whole view
+            // If scaleType is XY, we should draw the image on the whole view
             if (mScaleType == PivShapeScaleType.FIT_XY) {
                 mDrawable?.setBounds(
                     imageBounds.left.toInt(),
                     imageBounds.top.toInt(),
                     imageBounds.right.toInt(),
-                    imageBounds.bottom.toInt())
+                    imageBounds.bottom.toInt()
+                )
             } else {
                 canvas.save()
                 canvas.concat(mMatrix)
@@ -96,10 +96,10 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
                 canvas.restoreToCount(saveCount)
         }
 
-        //foreground
+        // Foreground
         if (mFrontPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mFrontPaint)
 
-        //border
+        // Border
         if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT)
             drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
 
@@ -112,11 +112,10 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
         borderBounds: RectF,
         shapeBounds: RectF,
         imageBounds: RectF,
-        borderPaint: Paint)
+        borderPaint: Paint
+    )
     protected abstract fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF)
-
 }
-
 
 /**
  * ShapeDrawer that draws the drawable directly into the shape.
@@ -132,9 +131,8 @@ internal class NormalShapeDrawer
         borderBounds: RectF,
         shapeBounds: RectF,
         imageBounds: RectF,
-        borderPaint: Paint) =
-        canvas.drawRect(borderBounds, borderPaint)
+        borderPaint: Paint
+    ) = canvas.drawRect(borderBounds, borderPaint)
 
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) { return }
-
 }

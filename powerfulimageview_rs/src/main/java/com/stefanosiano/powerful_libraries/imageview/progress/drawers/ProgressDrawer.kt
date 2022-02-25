@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.RectF
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 
-
 /**
  * Interface that handles options, drawing and updating of the progress indicators on the View.
  */
@@ -64,7 +63,6 @@ internal interface ProgressDrawer {
      */
     fun setListener(listener: ProgressDrawerManager.ProgressDrawerListener)
 }
-
 
 /**
  * Dummy progress drawer that doesn't do anything.

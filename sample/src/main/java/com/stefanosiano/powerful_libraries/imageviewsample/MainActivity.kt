@@ -5,7 +5,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

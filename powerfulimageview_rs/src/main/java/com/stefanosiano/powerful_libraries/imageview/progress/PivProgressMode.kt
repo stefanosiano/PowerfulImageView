@@ -1,6 +1,5 @@
 package com.stefanosiano.powerful_libraries.imageview.progress
 
-
 /** Mode of the progress indicator that will be drawn on the image  */
 enum class PivProgressMode constructor(val value: Int) {
 
