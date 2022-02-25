@@ -30,19 +30,20 @@ open class CreateNonRsTask : DefaultTask() {
             .replace("renderscriptSupportModeEnabled = true", "")
         }
         replaceInFile(File(algDir, "BoxAlgorithms.kt")) { content -> content
-            .replace("import androidx.renderscript.*".toRegex(), "")
-            .replaceAfterIncluding("//RENDERSCRIPT", "")
+            .replace("\nimport android.graphics.Bitmap\n".toRegex(), "")
+            .replace("import androidx.renderscript.*\n".toRegex(), "")
+            .replaceAfterIncluding("\n// RENDERSCRIPT", "")
         }
         replaceInFile(File(algDir, "GaussianAlgorithms.kt")) { content -> content
-            .replace("import androidx.renderscript.*".toRegex(), "")
-            .replaceAfterIncluding("//RENDERSCRIPT", "")
+            .replace("import androidx.renderscript.*\n".toRegex(), "")
+            .replaceAfterIncluding("// RENDERSCRIPT", "")
         }
         replaceInFile(File(algDir, "BaseConvolveRenderscriptBlurAlgorithm.kt")) { content -> content
-            .replace("import androidx.renderscript.*".toRegex(), "")
+            .replace("import androidx.renderscript.*\n".toRegex(), "")
             .replaceAfter("BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {", "}")
         }
         replaceInFile(File(algDir, "BlurAlgorithm.kt")) { content -> content
-            .replace("import androidx.renderscript.*".toRegex(), "")
+            .replace("import androidx.renderscript.*\n".toRegex(), "")
             .replace("renderscript: RenderScript?", "renderscript: Any?")
         }
         replaceInFile(File(algDir, "BlurManager.kt")) { content -> content
@@ -50,8 +51,8 @@ open class CreateNonRsTask : DefaultTask() {
         }
         replaceInFile(File(algDir, "SharedBlurManager.kt")) { content -> content
             .replace("import androidx.renderscript.*\n".toRegex(), "")
-            .replace("import com.stefanosiano.powerful_libraries.imageview.tryOrPrint.*\n".toRegex(), "")
-            .replace("c.renderScript?.destroy()", "")
+            .replace("import .*tryOrPrint.*\n".toRegex(), "")
+            .replace(".*c.renderScript\\?.destroy\\(\\)\n".toRegex(), "")
             .replace(": RenderScript?", ": Any?")
             .replace("tryOrPrint { RenderScript.create(applicationContext) }", "null")
         }
@@ -67,7 +68,7 @@ open class CreateNonRsTask : DefaultTask() {
      * Replace part of string after the first occurrence of given delimiter with the [replacement] string.
      * If the string does not contain the delimiter, returns [missingDelimiterValue] which defaults to the original string.
      */
-    private fun String.replaceAfterIncluding(delimiter: String, replacement: String, missingDelimiterValue: String = this): String {
+    private fun String.replaceAfterIncluding(delimiter: String, replacement: String, missingDelimiterValue: String = this) : String {
         val index = indexOf(delimiter)
         return if (index == -1) missingDelimiterValue else replaceRange(index, length, replacement)
     }

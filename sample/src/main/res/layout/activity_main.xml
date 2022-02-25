@@ -7,7 +7,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +21,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,7 +29,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:text="Circle"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,7 +36,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:text="Oval"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -56,7 +52,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -70,48 +65,38 @@
 
             app:srcCompat="@drawable/sf1" />
 
-<!--
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="oval"
-            app:piv_shape_ratio="1.4"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeMode="oval"
+            app:pivShapeRatio="1.4"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
 
             app:srcCompat="@drawable/sf1" />
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="rounded_rectangle"
-            app:piv_shape_ratio="1.4"
-            app:piv_shape_radius_x="48"
-            app:piv_shape_radius_y="32"
+            app:pivShapeMode="rounded_rectangle"
+            app:pivShapeRatio="1.4"
+            app:pivShapeRadiusX="48"
+            app:pivShapeRadiusY="32"
             android:padding="2dp"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
 
             app:srcCompat="@drawable/sf1" />
-
-
 
     </LinearLayout>
-
-
-
-
-
-
 
     <TextView
         android:layout_width="match_parent"
@@ -127,7 +112,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -136,7 +120,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:text="Solid Circle"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,7 +127,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:text="Solid Oval"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -161,67 +143,56 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
             app:pivShapeMode="solid_circle"
-            app:piv_shape_solid_color="#0AFAFA"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
-            app:piv_shape_cut_gravity="start"
-            app:piv_shape_cut_radius_1="30%"
-            app:piv_shape_cut_radius_2="50%"
+            app:pivShapeSolidColor="#0AFAFA"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
+            app:pivShapeCutGravity="start"
+            app:pivShapeCutRadius1="30%"
+            app:pivShapeCutRadius2="50%"
 
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="solid_oval"
-            app:piv_shape_solid_color="#FFFFFF"
-            app:piv_shape_ratio="1.5"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeMode="solid_oval"
+            app:pivShapeSolidColor="#FFFFFF"
+            app:pivShapeRatio="1.5"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
 
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="solid_rounded_rectangle"
-            app:piv_shape_solid_color="#6F6F6F"
-            app:piv_shape_ratio="1.5"
-            app:piv_shape_radius_x="48"
-            app:piv_shape_radius_y="32"
+            app:pivShapeMode="solid_rounded_rectangle"
+            app:pivShapeSolidColor="#6F6F6F"
+            app:pivShapeRatio="1.5"
+            app:pivShapeRadiusX="48"
+            app:pivShapeRadiusY="32"
             android:padding="2dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeBorderColor="#90000000"
 
             app:srcCompat="@drawable/sf1" />
-
-
 
     </LinearLayout>
-
-
-
-
-
-
 
     <TextView
         android:layout_width="match_parent"
@@ -237,7 +208,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -246,7 +216,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:text="Square"/>
 
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -254,7 +223,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:text="Normal"/>
-
 
         <TextView
             android:layout_width="0dp"
@@ -271,53 +239,46 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="2dp"
+            app:pivShapeScaleType="centerCrop"
+
+            app:pivShapeMode="square"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
+
+            app:srcCompat="@drawable/sf1" />
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="square"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeMode="normal"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
 
             app:srcCompat="@drawable/sf1" />
-
 
         <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
+            app:pivShapeScaleType="centerCrop"
 
-            app:piv_shape_mode="normal"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
-
-            app:srcCompat="@drawable/sf1" />
-
-
-        <com.stefanosiano.powerful_libraries.imageview.PowerfulImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="2dp"
-            app:piv_shape_scaleType="centerCrop"
-
-            app:piv_shape_mode="rectangle"
-            app:piv_shape_ratio="1.5"
-            app:piv_shape_border_width="1dp"
-            app:piv_shape_border_color="#90000000"
+            app:pivShapeMode="rectangle"
+            app:pivShapeRatio="1.5"
+            app:pivShapeBorderWidth="1dp"
+            app:pivShapeBorderColor="#90000000"
 
             app:srcCompat="@drawable/sf1" />
 
-
--->
     </LinearLayout>
-
-
 
 </LinearLayout>

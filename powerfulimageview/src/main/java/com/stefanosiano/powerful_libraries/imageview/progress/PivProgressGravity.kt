@@ -1,6 +1,5 @@
 package com.stefanosiano.powerful_libraries.imageview.progress
 
-
 /** Gravity of the progress indicator.  */
 enum class PivProgressGravity private constructor(val value: Int) {
     /** Indicator will be drawn at the center of the image  */
@@ -29,7 +28,6 @@ enum class PivProgressGravity private constructor(val value: Int) {
 
     /** Indicator will be drawn at the bottom|end of the image. It respect rtl layouts (on api 17+)  */
     BOTTOM_END(8);
-
 
     internal fun isGravityTop(): Boolean = when (this) {
         TOP, TOP_START, TOP_END -> true

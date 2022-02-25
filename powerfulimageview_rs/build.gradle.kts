@@ -32,13 +32,14 @@ dependencies {
     implementation(Deps.appCompat)
     implementation(Deps.kotlinStdLib)
     implementation(Deps.kotlinCoroutinesCore)
+    detektPlugins(Deps.detektKtlintPlugin)
 }
 
 apply("${rootProject.projectDir}/sonatype-publish.gradle")
 
-
 detekt {
     toolVersion = "1.19.0"
     config = files("${rootDir}/config/detekt/detekt.yml")
-    buildUponDefaultConfig = true
+    allRules = true
+//    buildUponDefaultConfig = true
 }

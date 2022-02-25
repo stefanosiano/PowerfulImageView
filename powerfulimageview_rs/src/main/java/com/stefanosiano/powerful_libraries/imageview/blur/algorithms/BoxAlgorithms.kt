@@ -25,8 +25,7 @@ internal class Box5x5BlurAlgorithm : BaseConvolveBlurAlgorithm() {
     override fun getFilter() = floatArrayOf(0.2f, 0.2f, 0.2f, 0.2f, 0.2f)
 }
 
-
-//RENDERSCRIPT ALGORITHMS
+// RENDERSCRIPT ALGORITHMS
 
 /**
  * Class that performs the box blur with 3x3 coefficient matrix using renderscript.
@@ -52,7 +51,6 @@ internal class Box3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlg
         return output
     }
 }
-
 
 /**
  * Class that performs the box blur with 5x5 coefficient matrix using renderscript.

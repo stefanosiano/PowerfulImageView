@@ -1,17 +1,6 @@
 complexity:
   TooManyFunctions:
-    active: false
     ignorePrivate: true
-  LongParameterList:
-    active: false
-  ComplexMethod:
-    active: false
-  LongMethod:
-    active: false
-  NestedBlockDepth:
-    active: false
-  ComplexCondition:
-    active: false
 
 style:
   # Numbers are used for enums and blur algorithms matrices
@@ -21,9 +10,12 @@ style:
                     '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
                     # numbers for degrees and percentages in progress and shape algorithms
                     '-90', '90', '100', '-180', '180', '-270', '270', '360', '3.6', '0.75']
-  MaxLineLength:
-    active: true
 
 naming:
   PackageNaming:
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9_]*)*'
+
+formatting:
+  # We already have MaxLineLength from detekt, which is suppressed in few cases. This rule cannot be suppressed with annotations
+  MaximumLineLength:
+    active: false
