@@ -40,5 +40,7 @@ apply("${rootProject.projectDir}/sonatype-publish.gradle")
 detekt {
     toolVersion = "1.19.0"
     config = files("${rootDir}/config/detekt/detekt.yml")
+//    allRules = true
     buildUponDefaultConfig = true
+    autoCorrect = false
 }

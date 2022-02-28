@@ -13,35 +13,35 @@ import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 
 internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer {
 
-    /** Paint used to draw the shape background  */
+    /** Paint used to draw the shape background. */
     protected val mBackPaint = Paint()
 
-    /** Paint used to draw the shape foreground  */
+    /** Paint used to draw the shape foreground. */
     protected val mFrontPaint = Paint()
 
-    /** Paint used to draw the shape border  */
+    /** Paint used to draw the shape border. */
     protected val mBorderPaint = Paint()
 
-    /** Matrix used to modify the canvas and draw  */
+    /** Matrix used to modify the canvas and draw. */
     private var mMatrix: Matrix = Matrix()
 
-    /** Drawable to draw in the shape  */
+    /** Drawable to draw in the shape. */
     private var mDrawable: Drawable? = drawable
 
-    /** Background drawable to draw under the shape  */
+    /** Background drawable to draw under the shape. */
     private var mBackgroundDrawable: Drawable? = null
 
-    /** Foreground drawable to draw over the shape  */
+    /** Foreground drawable to draw over the shape. */
     private var mForegroundDrawable: Drawable? = null
 
-    /** Scale type selected  */
+    /** Scale type selected. */
     private var mScaleType: PivShapeScaleType? = null
 
     override fun changeDrawable(drawable: Drawable?) { this.mDrawable = drawable }
 
     override fun requireBitmap() = false
 
-    override fun changeBitmap(bitmap: Bitmap?) { return }
+    override fun changeBitmap(bitmap: Bitmap?) {}
 
     override fun setMatrix(scaleType: PivShapeScaleType, matrix: Matrix) {
         this.mScaleType = scaleType
@@ -49,7 +49,6 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
     }
 
     override fun setup(shapeOptions: ShapeOptions) {
-
         mBackPaint.color = shapeOptions.backgroundColor
         mFrontPaint.color = shapeOptions.foregroundColor
         mForegroundDrawable = shapeOptions.foregroundDrawable
@@ -62,7 +61,6 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
     }
 
     override fun draw(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {
-
         // Background
         if (mBackPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mBackPaint)
 
@@ -92,16 +90,18 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
             mForegroundDrawable?.bounds = mDrawable?.bounds ?: Rect()
             mForegroundDrawable?.draw(canvas)
 
-            if (mScaleType == null || mScaleType != PivShapeScaleType.FIT_XY)
+            if (mScaleType == null || mScaleType != PivShapeScaleType.FIT_XY) {
                 canvas.restoreToCount(saveCount)
+            }
         }
 
         // Foreground
         if (mFrontPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mFrontPaint)
 
         // Border
-        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT)
+        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT) {
             drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
+        }
 
         drawSolid(canvas, borderBounds, shapeBounds, imageBounds)
     }
@@ -117,11 +117,9 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
     protected abstract fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF)
 }
 
-/**
- * ShapeDrawer that draws the drawable directly into the shape.
- */
+/** ShapeDrawer that draws the drawable directly into the shape. */
 internal class NormalShapeDrawer
-/** ShapeDrawer that draws the drawable directly into the shape */
+/** ShapeDrawer that draws the drawable directly into the shape. */
 (drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
     override fun drawPaint(canvas: Canvas, shapeBounds: RectF, paint: Paint) = canvas.drawRect(shapeBounds, paint)
@@ -134,5 +132,5 @@ internal class NormalShapeDrawer
         borderPaint: Paint
     ) = canvas.drawRect(borderBounds, borderPaint)
 
-    override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) { return }
+    override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {}
 }

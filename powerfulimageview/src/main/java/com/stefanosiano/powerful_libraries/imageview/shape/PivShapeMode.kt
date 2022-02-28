@@ -1,33 +1,33 @@
 package com.stefanosiano.powerful_libraries.imageview.shape
 
-/** Mode of the shape of the image  */
+/** Mode of the shape of the image. */
 enum class PivShapeMode constructor(internal val value: Int) {
 
-    /** Normal (default) shape  */
+    /** Normal (default) shape. */
     NORMAL(0),
 
-    /** Circle shape  */
+    /** Circle shape. */
     CIRCLE(1),
 
-    /** Square shape  */
+    /** Square shape. */
     SQUARE(2),
 
-    /** Rectangle shape  */
+    /** Rectangle shape. */
     RECTANGLE(3),
 
-    /** Oval shape  */
+    /** Oval shape. */
     OVAL(4),
 
-    /** Rounded rectangle shape  */
+    /** Rounded rectangle shape. */
     ROUNDED_RECTANGLE(5),
 
-    /** Solid circle shape  */
+    /** Solid circle shape. */
     SOLID_CIRCLE(6),
 
-    /** Solid oval shape  */
+    /** Solid oval shape. */
     SOLID_OVAL(7),
 
-    /** Solid rounded rectangle shape  */
+    /** Solid rounded rectangle shape. */
     SOLID_ROUNDED_RECTANGLE(8)
 /*
     /** Shape cut by a diagonal */
@@ -97,7 +97,7 @@ enum class PivShapeMode constructor(internal val value: Int) {
 
     companion object {
 
-        /** Returns the mode associated to the passed value, or normal if the value is invalid  */
+        /** Returns the mode associated to the passed value, or normal if the value is invalid. */
         fun fromValue(value: Int): PivShapeMode = when (value) {
             1 -> CIRCLE
             2 -> SQUARE

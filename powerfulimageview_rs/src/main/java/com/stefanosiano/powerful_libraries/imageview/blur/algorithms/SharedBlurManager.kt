@@ -8,9 +8,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * Manager class for content shared through all instances of BlurManager
- * Renderscript related stuff
- * ThreadPool for java blurring methods
+ * Manager class for content shared through all instances of BlurManager, including renderscript related stuff and a
+ * ThreadPool for java blurring methods.
  */
 internal object SharedBlurManager {
 

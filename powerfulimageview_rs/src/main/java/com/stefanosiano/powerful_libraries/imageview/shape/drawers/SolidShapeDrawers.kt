@@ -8,18 +8,16 @@ import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import kotlin.math.absoluteValue
 
-/**
- * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
- */
+/** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it. */
 internal class SolidRoundedRectangleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
-    /** Paint used to draw the solid color  */
+    /** Paint used to draw the solid color. */
     private val mSolidPaint = Paint()
 
-    /** Paint used to draw the solid color  */
+    /** Paint used to draw the solid color. */
     private val mSolidRect = RectF()
 
-    /** Variables used to draw the border and the solid color  */
+    /** Variables used to draw the border and the solid color. */
     private var mRadiusX: Float = 0f
     private var mRadiusY: Float = 0f
 
@@ -73,15 +71,13 @@ internal class SolidRoundedRectangleShapeDrawer(drawable: Drawable?) : BaseNorma
         canvas.drawRoundRect(mSolidRect, mRadiusX, mRadiusY, mSolidPaint)
 }
 
-/**
- * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
- */
+/** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it. */
 internal class SolidOvalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
-    /** Paint used to draw the solid color  */
+    /** Paint used to draw the solid color. */
     private val mSolidPaint = Paint()
 
-    /** Paint used to draw the solid color  */
+    /** Paint used to draw the solid color. */
     private val mSolidRect = RectF()
 
     override fun setup(shapeOptions: ShapeOptions) {
@@ -122,15 +118,14 @@ internal class SolidOvalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer
     override fun drawSolid(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) =
         canvas.drawOval(mSolidRect, mSolidPaint)
 }
-/**
- * ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it.
- */
+
+/** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it. */
 internal class SolidCircleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
 
-    /** Paint used to draw the solid color  */
+    /** Paint used to draw the solid color. */
     private val mSolidPaint = Paint()
 
-    /** Variables used to draw the border and the solid color  */
+    /** Variables used to draw the border and the solid color. */
     private var mCx: Float = 0f
     private var mCy: Float = 0f
     private var mRadius: Float = 0f
@@ -159,13 +154,17 @@ internal class SolidCircleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDraw
         val width =
             (shapeOptions.viewBounds.width() + shapeOptions.viewBounds.height() - shapeOptions.borderBounds.width()) / 2
 
-        mRadius = if (shapeOptions.shapeBounds.width() < shapeOptions.shapeBounds.height())
+        mRadius = if (shapeOptions.shapeBounds.width() < shapeOptions.shapeBounds.height()) {
             shapeOptions.shapeBounds.width() / 2
-        else shapeOptions.shapeBounds.height() / 2
+        } else {
+            shapeOptions.shapeBounds.height() / 2
+        }
         mSolidRadius = (shapeOptions.borderBounds.width() + width + shapeOptions.borderWidth.toFloat()) / 2
-        mBorderRadius = if (shapeOptions.borderBounds.width() < shapeOptions.borderBounds.height())
+        mBorderRadius = if (shapeOptions.borderBounds.width() < shapeOptions.borderBounds.height()) {
             shapeOptions.borderBounds.width() / 2
-        else shapeOptions.borderBounds.height() / 2
+        } else {
+            shapeOptions.borderBounds.height() / 2
+        }
         mSolidPaint.strokeWidth = width
     }
 
@@ -199,31 +198,33 @@ internal class SolidDiagonalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDr
 
         // Calculate solid line coordinates
         val b = shapeOptions.shapeBounds
-        val cat1 = if (shapeOptions.cutRadius1 != 0)
+        val cat1 = if (shapeOptions.cutRadius1 != 0) {
             shapeOptions.cutRadius1.toFloat()
-        else shapeOptions.cutRadius1Percent / 100F * b.height()
-        val cat2 = if (shapeOptions.cutRadius2 != 0)
+        } else {
+            shapeOptions.cutRadius1Percent / 100F * b.height()
+        }
+        val cat2 = if (shapeOptions.cutRadius2 != 0) {
             shapeOptions.cutRadius2.absoluteValue.toFloat()
-        else shapeOptions.cutRadius2Percent.absoluteValue / 100F * b.width()
+        } else {
+            shapeOptions.cutRadius2Percent.absoluteValue / 100F * b.width()
+        }
         val hypo = Math.sqrt((cat1 * cat1 + cat2 * cat2).toDouble())
         val angle = Math.acos(cat1 / hypo)
         val h = (mSolidPaint.strokeWidth / 2F * Math.sin(angle)).toFloat()
         val w = (mSolidPaint.strokeWidth / 2F * Math.cos(angle)).toFloat()
 
-        when {
-            shapeOptions.cutGravity.isGravityTop() || shapeOptions.cutGravity == PivShapeCutGravity.END -> {
-                mSolidBounds.left = b.left - (if (cat1 >= 0) cat2 - w - b.width() else -w)
-                mSolidBounds.top = b.top - h - cat1.coerceAtMost(0F)
-                mSolidBounds.right = b.right - (if (cat1 >= 0) -w else b.width() - cat2 - w)
-                mSolidBounds.bottom = b.top + cat1.coerceAtLeast(0F) - h
-            }
-//            shapeOptions.cutGravity.isGravityBottom() || shapeOptions.cutGravity == PivShapeCutGravity.END -> {
-            else -> {
-                mSolidBounds.left = b.left - (if (cat1 >= 0) cat2 - w - b.width() else -w)
-                mSolidBounds.top = b.bottom + h + cat1.coerceAtMost(0F)
-                mSolidBounds.right = b.right - (if (cat1 >= 0) -w else b.width() - cat2 - w)
-                mSolidBounds.bottom = b.bottom - cat1.coerceAtLeast(0F) + h
-            }
+        if (shapeOptions.cutGravity.isGravityTop() || shapeOptions.cutGravity == PivShapeCutGravity.END) {
+            mSolidBounds.left = b.left - (if (cat1 >= 0) cat2 - w - b.width() else -w)
+            mSolidBounds.top = b.top - h - cat1.coerceAtMost(0F)
+            mSolidBounds.right = b.right - (if (cat1 >= 0) -w else b.width() - cat2 - w)
+            mSolidBounds.bottom = b.top + cat1.coerceAtLeast(0F) - h
+        }
+        // shapeOptions.cutGravity.isGravityBottom() || shapeOptions.cutGravity == PivShapeCutGravity.END -> {
+        else {
+            mSolidBounds.left = b.left - (if (cat1 >= 0) cat2 - w - b.width() else -w)
+            mSolidBounds.top = b.bottom + h + cat1.coerceAtMost(0F)
+            mSolidBounds.right = b.right - (if (cat1 >= 0) -w else b.width() - cat2 - w)
+            mSolidBounds.bottom = b.bottom - cat1.coerceAtLeast(0F) + h
         }
     }
 

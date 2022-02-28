@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import com.stefanosiano.powerful_libraries.imageview.extensions.setBounds
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import java.lang.ref.WeakReference
@@ -16,31 +17,31 @@ import java.lang.ref.WeakReference
 /** ShapeDrawer that draws an oval as shape. */
 internal abstract class BaseRoundedDrawer(bitmap: Bitmap?) : ShapeDrawer {
 
-    /** Shader to efficiently draw the shape  */
+    /** Shader to efficiently draw the shape. */
     private var mBitmapShader: BitmapShader? = null
 
-    /** Paint used to draw the image  */
+    /** Paint used to draw the image. */
     private var mBitmapPaint = Paint()
 
-    /** Paint used to draw the shape background  */
+    /** Paint used to draw the shape background. */
     private var mBackPaint = Paint()
 
-    /** Paint used to draw the shape border  */
+    /** Paint used to draw the shape border. */
     private var mBorderPaint = Paint()
 
-    /** Paint used to draw the shape foreground  */
+    /** Paint used to draw the shape foreground. */
     private var mFrontPaint = Paint()
 
-    /** Background drawable to draw under the shape  */
+    /** Background drawable to draw under the shape. */
     private var mBackgroundDrawable: Drawable? = null
 
-    /** Foreground drawable to draw over the shape  */
+    /** Foreground drawable to draw over the shape. */
     private var mForegroundDrawable: Drawable? = null
 
-    /** Matrix used to draw the shape  */
+    /** Matrix used to draw the shape. */
     private var mMatrix: Matrix? = null
 
-    /** Matrix used to draw the shape  */
+    /** Matrix used to draw the shape. */
     private var mOrigBitmap: WeakReference<Bitmap>? = null
 
     init {
@@ -51,7 +52,7 @@ internal abstract class BaseRoundedDrawer(bitmap: Bitmap?) : ShapeDrawer {
         }
     }
 
-    override fun changeDrawable(drawable: Drawable?) { return }
+    override fun changeDrawable(drawable: Drawable?) {}
 
     override fun requireBitmap(): Boolean = true
 
@@ -75,7 +76,6 @@ internal abstract class BaseRoundedDrawer(bitmap: Bitmap?) : ShapeDrawer {
     }
 
     override fun setup(shapeOptions: ShapeOptions) {
-
         mForegroundDrawable = shapeOptions.foregroundDrawable
         mBackgroundDrawable = shapeOptions.backgroundDrawable
 
@@ -94,30 +94,27 @@ internal abstract class BaseRoundedDrawer(bitmap: Bitmap?) : ShapeDrawer {
     }
 
     override fun draw(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {
-
         // Background
         if (mBackPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mBackPaint)
 
-        mBackgroundDrawable?.setBounds(
-            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt()
-        )
+        mBackgroundDrawable?.setBounds(imageBounds)
         mBackgroundDrawable?.draw(canvas)
 
         // Image
-        if (mOrigBitmap?.get()?.isRecycled != true)
+        if (mOrigBitmap?.get()?.isRecycled != true) {
             drawPaint(canvas, imageBounds, mBitmapPaint)
+        }
 
-        mForegroundDrawable?.setBounds(
-            imageBounds.left.toInt(), imageBounds.top.toInt(), imageBounds.right.toInt(), imageBounds.bottom.toInt()
-        )
+        mForegroundDrawable?.setBounds(imageBounds)
         mForegroundDrawable?.draw(canvas)
 
         // Foreground
         if (mFrontPaint.color != Color.TRANSPARENT) drawPaint(canvas, shapeBounds, mFrontPaint)
 
         // Border
-        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT)
+        if (mBorderPaint.strokeWidth > 0 && mBorderPaint.color != Color.TRANSPARENT) {
             drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
+        }
     }
 
     protected abstract fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint)

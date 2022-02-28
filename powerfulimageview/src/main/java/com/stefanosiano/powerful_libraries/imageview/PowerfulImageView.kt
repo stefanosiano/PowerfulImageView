@@ -80,20 +80,20 @@ open class PowerfulImageView : ImageViewWrapper {
     private val defaultBlurStatic = false
     private val defaultBlurMode = PivBlurMode.DISABLED.value
 
-    /** Helper class to manage the progress indicator and its options  */
+    /** Helper class to manage the progress indicator and its options. */
     private val mProgressDrawerManager: ProgressDrawerManager
 
-    /** Helper class to manage the shape of the image and its options  */
+    /** Helper class to manage the shape of the image and its options. */
     private val mShapeDrawerManager: ShapeDrawerManager
 
-    /** Helper class to manage the blurring of the image and its options  */
+    /** Helper class to manage the blurring of the image and its options. */
     private val mBlurManager: BlurManager
 
-    /** Flag used to control if blurring bitmap should be checked  */
+    /** Flag used to control if blurring bitmap should be checked. */
     private var mCheckBlur = false
 
     /** Flag used to control if I should try to remove the progress on drawable changed
-     * (used in constructor and on size change)  */
+     * (used in constructor and on size change). */
     private var mShouldCheckRemoveProgress = true
 
     private var initialized = false
@@ -132,21 +132,32 @@ open class PowerfulImageView : ImageViewWrapper {
             if (isInEditMode) false else useDeterminateAnimation,
             a.getInt(
                 R.styleable.PowerfulImageView_pivProgressAnimationDuration,
-                if (useDeterminateAnimation) defaultProgressIndeterminateAnimationDuration
-                else defaultProgressAnimationDuration
+                if (useDeterminateAnimation) {
+                    defaultProgressIndeterminateAnimationDuration
+                } else {
+                    defaultProgressAnimationDuration
+                }
             ),
-            if (tvBorderWidth.type == TypedValue.TYPE_DIMENSION)
+            if (tvBorderWidth.type == TypedValue.TYPE_DIMENSION) {
                 tvBorderWidth.getDimension(resources.displayMetrics).toInt()
-            else defaultProgressWidth,
-            if (tvBorderWidth.type == TypedValue.TYPE_FRACTION)
+            } else {
+                defaultProgressWidth
+            },
+            if (tvBorderWidth.type == TypedValue.TYPE_FRACTION) {
                 tvBorderWidth.getFraction(100f, 100f)
-            else defaultProgressWidthPercent,
-            if (tvSize.type == TypedValue.TYPE_DIMENSION)
+            } else {
+                defaultProgressWidthPercent
+            },
+            if (tvSize.type == TypedValue.TYPE_DIMENSION) {
                 tvSize.getDimension(resources.displayMetrics).toInt()
-            else defaultProgressSize,
-            if (tvSize.type == TypedValue.TYPE_FRACTION)
+            } else {
+                defaultProgressSize
+            },
+            if (tvSize.type == TypedValue.TYPE_FRACTION) {
                 tvSize.getFraction(100f, 100f)
-            else defaultProgressSizePercent,
+            } else {
+                defaultProgressSizePercent
+            },
             a.getDimensionPixelSize(
                 R.styleable.PowerfulImageView_pivProgressPadding,
                 TypedValue.applyDimension(
@@ -182,12 +193,16 @@ open class PowerfulImageView : ImageViewWrapper {
                 R.styleable.PowerfulImageView_pivProgressShadowColor,
                 R.color.piv_default_progress_shadow_color
             ),
-            if (tvShadowPadding.type == TypedValue.TYPE_DIMENSION)
+            if (tvShadowPadding.type == TypedValue.TYPE_DIMENSION) {
                 tvShadowPadding.getDimension(resources.displayMetrics).toInt()
-            else defaultProgressShadowPadding,
-            if (tvShadowPadding.type == TypedValue.TYPE_FRACTION)
+            } else {
+                defaultProgressShadowPadding
+            },
+            if (tvShadowPadding.type == TypedValue.TYPE_FRACTION) {
                 tvShadowPadding.getFraction(100f, 100f)
-            else defaultProgressShadowPaddingPercent,
+            } else {
+                defaultProgressShadowPaddingPercent
+            },
             a.getDimensionPixelSize(
                 R.styleable.PowerfulImageView_pivProgressShadowBorderWidth,
                 TypedValue.applyDimension(
@@ -211,12 +226,16 @@ open class PowerfulImageView : ImageViewWrapper {
         val shapeOptions = ShapeOptions(
             getColor(a, R.styleable.PowerfulImageView_pivShapeBackgroundColor, android.R.color.transparent),
             getColor(a, R.styleable.PowerfulImageView_pivShapeForegroundColor, android.R.color.transparent),
-            if (tvShapeInnerPadding.type == TypedValue.TYPE_DIMENSION)
+            if (tvShapeInnerPadding.type == TypedValue.TYPE_DIMENSION) {
                 tvShapeInnerPadding.getDimension(resources.displayMetrics).toInt()
-            else defaultShapeInnerPadding,
-            if (tvShapeInnerPadding.type == TypedValue.TYPE_FRACTION)
+            } else {
+                defaultShapeInnerPadding
+            },
+            if (tvShapeInnerPadding.type == TypedValue.TYPE_FRACTION) {
                 tvShapeInnerPadding.getFraction(100f, 100f)
-            else defaultShapeInnerPaddingPercent,
+            } else {
+                defaultShapeInnerPaddingPercent
+            },
             a.getBoolean(R.styleable.PowerfulImageView_pivShapeBorderOverlay, defaultShapeBorderOverlay),
             a.getInteger(R.styleable.PowerfulImageView_pivShapeCutGravity, defaultShapeCutGravity),
             getColor(a, R.styleable.PowerfulImageView_pivShapeBorderColor, android.R.color.transparent),
@@ -234,18 +253,26 @@ open class PowerfulImageView : ImageViewWrapper {
             getColor(a, R.styleable.PowerfulImageView_pivShapeSolidColor, R.color.piv_default_shape_solid_color),
             a.getDrawable(R.styleable.PowerfulImageView_pivShapeBackground),
             a.getDrawable(R.styleable.PowerfulImageView_pivShapeForeground),
-            if (tvCutRadius1.type == TypedValue.TYPE_DIMENSION)
+            if (tvCutRadius1.type == TypedValue.TYPE_DIMENSION) {
                 tvCutRadius1.getDimension(resources.displayMetrics).toInt()
-            else defaultShapeCutRadius1,
-            if (tvCutRadius1.type == TypedValue.TYPE_FRACTION)
+            } else {
+                defaultShapeCutRadius1
+            },
+            if (tvCutRadius1.type == TypedValue.TYPE_FRACTION) {
                 tvCutRadius1.getFraction(100f, 100f)
-            else defaultShapeCutRadius1Percent,
-            if (tvCutRadius2.type == TypedValue.TYPE_DIMENSION)
+            } else {
+                defaultShapeCutRadius1Percent
+            },
+            if (tvCutRadius2.type == TypedValue.TYPE_DIMENSION) {
                 tvCutRadius2.getDimension(resources.displayMetrics).toInt()
-            else defaultShapeCutRadius2,
-            if (tvCutRadius2.type == TypedValue.TYPE_FRACTION)
+            } else {
+                defaultShapeCutRadius2
+            },
+            if (tvCutRadius2.type == TypedValue.TYPE_FRACTION) {
                 tvCutRadius2.getFraction(100f, 100f)
-            else defaultShapeCutRadius2Percent
+            } else {
+                defaultShapeCutRadius2Percent
+            }
         )
 
         val shapeMode =
@@ -314,11 +341,11 @@ open class PowerfulImageView : ImageViewWrapper {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-
         // If it's called in super constructor, I don't have the objects instantiated
         // I go further only if there is a custom shape selected
-        if (!initialized) // || mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
+        if (!initialized) { // || mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
             return super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        }
 
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
@@ -331,9 +358,8 @@ open class PowerfulImageView : ImageViewWrapper {
         setMeasuredDimension(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight())
     }
 
-    /** Method called when the drawable has been changed */
+    /** Method called when the drawable has been changed. */
     override fun onDrawableChanged() {
-
         // If it's called in super constructor, I don't have the objects instantiated
         if (!initialized) return
 
@@ -341,12 +367,14 @@ open class PowerfulImageView : ImageViewWrapper {
         if (blurBitmap(true)) return
 
         // When initializing (in constructor) it gets called, but it is still null
-        if (mShouldCheckRemoveProgress && drawable != null)
+        if (mShouldCheckRemoveProgress && drawable != null) {
             mProgressDrawerManager.changeDrawable()
+        }
 
         // When initializing (in constructor) it gets called, but it is still null
-        if (drawable != null)
+        if (drawable != null) {
             mShapeDrawerManager.changeDrawable(drawable.current)
+        }
     }
 
     override fun setScaleType(scaleType: ScaleType) {
@@ -439,14 +467,15 @@ open class PowerfulImageView : ImageViewWrapper {
      * False if the image doesn't need to be blurred
      */
     private fun blurBitmap(changeDrawable: Boolean): Boolean {
-
-        if (!mCheckBlur || drawable == null)
+        if (!mCheckBlur || drawable == null) {
             return false
+        }
 
         val shouldBlur = mBlurManager.shouldBlur(drawable.current, changeDrawable)
 
-        if (changeDrawable)
+        if (changeDrawable) {
             mBlurManager.changeDrawable(drawable.current)
+        }
 
         var blurredBitmap: Bitmap? = null
         if (shouldBlur) {
@@ -462,32 +491,32 @@ open class PowerfulImageView : ImageViewWrapper {
         return shouldBlur && blurredBitmap != null && !blurredBitmap.isRecycled
     }
 
-    /** @param isIndeterminate whether the progress indicator is indeterminate or not */
+    /** @param isIndeterminate whether the progress indicator is indeterminate or not. */
     fun setProgressIndeterminate(isIndeterminate: Boolean) =
         mProgressDrawerManager.getProgressOptions().setIsIndeterminate(isIndeterminate)
 
-    /** @return The options of the progress indicator */
+    /** @return The options of the progress indicator. */
     fun getProgressOptions(): ProgressOptions = mProgressDrawerManager.getProgressOptions()
 
-    /** @return The progress, expressed as a percentage, from 0 to 100 */
+    /** @return The progress, expressed as a percentage, from 0 to 100. */
     fun getProgress(): Float = mProgressDrawerManager.getProgressOptions().valuePercent
 
-    /** @return The selected progress mode */
+    /** @return The selected progress mode. */
     fun getProgressMode(): PivProgressMode = mProgressDrawerManager.getProgressMode()
 
-    /** @return The selected shape mode */
+    /** @return The selected shape mode. */
     fun getShapeMode(): PivShapeMode = mShapeDrawerManager.getShapeMode()
 
-    /** @return The selected shape mode */
+    /** @return The selected shape mode. */
     fun getBlurMode(): PivBlurMode = mBlurManager.getBlurMode()
 
-    /** @return The options of the shape */
+    /** @return The options of the shape. */
     fun getShapeOptions(): ShapeOptions = mShapeDrawerManager.getShapeOptions()
 
-    /** @return The options of the blur */
+    /** @return The options of the blur. */
     fun getBlurOptions(): BlurOptions = mBlurManager.getBlurOptions()
 
-    /** @return The selected radius used for blurring */
+    /** @return The selected radius used for blurring. */
     fun getBlurRadius(): Int = mBlurManager.getRadius()
 
     /**

@@ -10,8 +10,10 @@ internal fun <T> tryOrPrint(function: () -> T) = try { function.invoke() } catch
     Log.e(function::class.java.name, e.message ?: "")
     null
 }
+
 @Suppress("SwallowedException", "TooGenericExceptionCaught")
 internal fun <T> tryOr(value: T, function: () -> T): T = try { function.invoke() } catch (e: Exception) { value }
+
 @Suppress("SwallowedException", "TooGenericExceptionCaught")
 internal fun <T> tryOrNull(function: () -> T): T? = try { function.invoke() } catch (e: Exception) { null }
 

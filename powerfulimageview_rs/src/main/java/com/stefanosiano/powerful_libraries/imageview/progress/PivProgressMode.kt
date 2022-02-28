@@ -1,20 +1,20 @@
 package com.stefanosiano.powerful_libraries.imageview.progress
 
-/** Mode of the progress indicator that will be drawn on the image  */
+/** Mode of the progress indicator that will be drawn on the image. */
 enum class PivProgressMode constructor(val value: Int) {
 
-    /** No progress indicator  */
+    /** No progress indicator. */
     NONE(0),
 
-    /** Circular progress indicator  */
+    /** Circular progress indicator. */
     CIRCULAR(1),
 
-    /** Horizontal progress indicator  */
+    /** Horizontal progress indicator. */
     HORIZONTAL(2);
 
     companion object {
 
-        /** Returns the mode associated to the passed value, or none if the value is invalid  */
+        /** Returns the mode associated to the passed [value], or none if the value is invalid. */
         fun fromValue(value: Int): PivProgressMode {
             return when (value) {
                 1 -> CIRCULAR

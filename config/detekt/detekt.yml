@@ -2,7 +2,30 @@ complexity:
   TooManyFunctions:
     ignorePrivate: true
 
+empty-blocks:
+  EmptyFunctionBlock:
+    ignoreOverridden: true
+
+comments:
+  EndOfSentenceFormat:
+    active: true
+
 style:
+  MandatoryBracesIfStatements:
+    active: true
+  MandatoryBracesLoops:
+    active: true
+  UseIfInsteadOfWhen:
+    active: true
+  ExpressionBodySyntax:
+    active: true
+  UnnecessaryParentheses:
+    active: false
+  ClassOrdering:
+    active: true
+  CollapsibleIfStatements:
+    active: true
+
   # Numbers are used for enums and blur algorithms matrices
   MagicNumber:
     ignoreNumbers: ['-1', '0', '1',
@@ -14,8 +37,26 @@ style:
 naming:
   PackageNaming:
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9_]*)*'
+  FunctionMaxLength:
+    active: false
 
 formatting:
   # We already have MaxLineLength from detekt, which is suppressed in few cases. This rule cannot be suppressed with annotations
   MaximumLineLength:
     active: false
+  MultiLineIfElse:
+    active: true
+    autoCorrect: true
+  NoEmptyFirstLineInMethodBlock:
+    active: true
+    autoCorrect: true
+  SpacingBetweenDeclarationsWithComments:
+    active: true
+    autoCorrect: true
+  ArgumentListWrapping:
+    active: true
+    autoCorrect: false
+  NoUnusedImports:
+    active: true
+    autoCorrect: true
+

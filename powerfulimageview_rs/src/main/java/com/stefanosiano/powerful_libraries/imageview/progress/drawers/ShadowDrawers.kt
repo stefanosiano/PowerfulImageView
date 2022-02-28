@@ -5,26 +5,17 @@ import android.graphics.Paint
 import android.graphics.RectF
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 
-/**
- * Interface that handles options, drawing and updating of the progress indicators shadow on the View.
- */
+/** Interface that handles options, drawing and updating of the progress indicators shadow on the View. */
 
 internal interface ShadowDrawer {
 
-    /**
-     * Initialize or updates all the variables needed to work.
-     *
-     * @param progressOptions Options to take values from
-     */
+    /** Initialize or updates all the variables needed to work, reading values from [progressOptions]. */
     fun setup(progressOptions: ProgressOptions)
 
     /**
-     * Draws the cancel progress indicator.
+     * Draws the cancel progress indicator, using [canvas], [shadowBorderBounds] and [shadowBounds].
      * No operation should be performed here, except drawing, for efficiency.
      * No object creation, no allocation, no calculation and no if/else. Just draw.
-     *
-     * @param canvas Canvas of the View
-     * @param shadowBounds Bounds of the progress indicator shadow
      */
     fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF)
 }
@@ -34,17 +25,17 @@ internal interface ShadowDrawer {
  * Used when cancel progress is disabled, so functions can be called without checks with no problem.
  */
 internal class DummyShadowDrawer : ShadowDrawer {
-    override fun setup(progressOptions: ProgressOptions) { return }
-    override fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF) { return }
+    override fun setup(progressOptions: ProgressOptions) {}
+    override fun draw(canvas: Canvas, shadowBorderBounds: RectF, shadowBounds: RectF) {}
 }
 
-/** ShadowDrawer that shows a circular shadow background */
+/** ShadowDrawer that shows a circular shadow background. */
 internal class CircularShadowDrawer : ShadowDrawer {
 
-    /** Paint used to draw the shadow  */
+    /** Paint used to draw the shadow. */
     private var mShadowPaint = Paint()
 
-    /** Paint used to draw the shadow border  */
+    /** Paint used to draw the shadow border. */
     private var mShadowBorderPaint = Paint()
 
     override fun setup(progressOptions: ProgressOptions) {
@@ -65,13 +56,13 @@ internal class CircularShadowDrawer : ShadowDrawer {
     }
 }
 
-/** ShadowDrawer that shows a rectangular shadow background */
+/** ShadowDrawer that shows a rectangular shadow background. */
 internal class RectangularShadowDrawer : ShadowDrawer {
 
-    /** Paint used to draw the shadow  */
+    /** Paint used to draw the shadow. */
     private var mShadowPaint: Paint = Paint()
 
-    /** Paint used to draw the shadow border  */
+    /** Paint used to draw the shadow border. */
     private var mShadowBorderPaint: Paint = Paint()
 
     override fun setup(progressOptions: ProgressOptions) {

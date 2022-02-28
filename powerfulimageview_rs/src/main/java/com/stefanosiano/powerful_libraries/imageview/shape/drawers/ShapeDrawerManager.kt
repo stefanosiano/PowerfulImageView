@@ -34,34 +34,34 @@ internal class ShapeDrawerManager
     // Using a weakRefence to be sure to not leak memory
     private val mView = WeakReference(view)
 
-    /** Bounds of the shape  */
+    /** Bounds of the shape. */
     private val mShapeBounds = RectF()
 
-    /** Bounds of the shape border  */
+    /** Bounds of the shape border. */
     private val mBorderBounds = RectF()
 
-    /** Bounds of the image  */
+    /** Bounds of the image. */
     private val mImageBounds = RectF()
 
-    /** Matrix used by the drawers to scale the image  */
+    /** Matrix used by the drawers to scale the image. */
     private val mShaderMatrix = Matrix()
 
-    /** Custom matrix used with MATRIX scale type  */
+    /** Custom matrix used with MATRIX scale type. */
     private var mImageMatrix: Matrix? = null
 
-    /** Scale type of the image  */
+    /** Scale type of the image. */
     private var mScaleType: PivShapeScaleType? = null
 
-    /** Drawable of the view  */
+    /** Drawable of the view. */
     private var mDrawable: Drawable? = null
 
-    /** Last bitmap calculated (i reuse this, so I don't decode it again)  */
+    /** Last bitmap calculated (i reuse this, so I don't decode it again). */
     private var mLastBitmap: Bitmap? = null
 
-    /** Measured width, based on mode  */
+    /** Measured width, based on mode. */
     private var mMeasuredWidth: Float = 0f
 
-    /** Measured height, based on mode  */
+    /** Measured height, based on mode. */
     private var mMeasuredHeight: Float = 0f
 
     // Drawers
@@ -69,6 +69,7 @@ internal class ShapeDrawerManager
     private val mNormalShapeDrawer by lazy { NormalShapeDrawer(mDrawable) }
     private val mOvalShapeDrawer by lazy { OvalShapeDrawer(getBitmapFromDrawable(mDrawable, mDrawable)) }
     private val mSolidCircleShapeDrawer by lazy { SolidCircleShapeDrawer(mDrawable) }
+
     // private val mSolidArcShapeDrawer by lazy { SolidArcShapeDrawer(mDrawable) }
     // private val mSolidDiagonalShapeDrawer by lazy { SolidDiagonalShapeDrawer(mDrawable) }
     private val mRoundedRectangleShapeDrawer by lazy {
@@ -77,13 +78,13 @@ internal class ShapeDrawerManager
     private val mSolidOvalShapeDrawer by lazy { SolidOvalShapeDrawer(mDrawable) }
     private val mSolidRoundedRectangleShapeDrawer by lazy { SolidRoundedRectangleShapeDrawer(mDrawable) }
 
-    /** Interface used to switch between its implementations, based on the shape and options selected.  */
+    /** Interface used to switch between its implementations, based on the shape and options selected. */
     private var mShapeDrawer: ShapeDrawer = NormalShapeDrawer(null)
 
-    /** Shape mode of the image  */
+    /** Shape mode of the image. */
     private var mShapeMode: PivShapeMode = PivShapeMode.NORMAL
 
-    /** Options used by shape drawers  */
+    /** Options used by shape drawers. */
     private var mShapeOptions: ShapeOptions = shapeOptions
 
     init {
@@ -91,11 +92,7 @@ internal class ShapeDrawerManager
         this.mShaderMatrix.reset()
     }
 
-    /**
-     * Method that updates the drawable and bitmap to show
-     *
-     * @param drawable drawable to show
-     */
+    /** Method that updates the [drawable] and bitmap to show. */
     fun changeDrawable(drawable: Drawable?) {
         val mLastDrawable = mDrawable
         this.mDrawable = drawable
@@ -103,14 +100,13 @@ internal class ShapeDrawerManager
         if (mShapeDrawer.requireBitmap()) {
             mLastBitmap = getBitmapFromDrawable(mLastDrawable, drawable)
             mShapeDrawer.changeBitmap(mLastBitmap)
-        } else
+        } else {
             mLastBitmap = null
+        }
         setScaleType(mScaleType)
     }
 
-    /**
-     * @return Returns the bitmap of the drawable
-     */
+    /** Returns the bitmap of the drawable. */
     private fun getBitmapFromDrawable(mLastDrawable: Drawable?, drawable: Drawable?): Bitmap? = when {
         drawable == null || mMeasuredWidth <= 0 || mMeasuredHeight <= 0 -> null
         drawable is BitmapDrawable && drawable.bitmap.isRecycled -> null
@@ -118,12 +114,15 @@ internal class ShapeDrawerManager
         else -> try {
             // Single color bitmap will be created of 1x1 pixel
             val bitmap: Bitmap =
-                if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 || drawable is ColorDrawable)
+                if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 || drawable is ColorDrawable) {
                     Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                else createBitmap(drawable, mLastDrawable)
+                } else {
+                    createBitmap(drawable, mLastDrawable)
+                }
 
-            if (bitmap.isRecycled) null
-            else {
+            if (bitmap.isRecycled) {
+                null
+            } else {
                 val canvas = Canvas(bitmap)
                 drawable.setBounds(0, 0, canvas.width, canvas.height)
                 drawable.draw(canvas)
@@ -163,21 +162,19 @@ internal class ShapeDrawerManager
         }
 
         // If i already decoded the bitmap i reuse it
-        return if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable)
+        return if (sizeX > 0 && sizeY > 0 && mLastDrawable === mDrawable) {
             mLastBitmap?.takeIf { !it.isRecycled }
                 ?: Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
-        else
+        } else {
             Bitmap.createBitmap(sizeX, sizeY, Bitmap.Config.ARGB_8888)
+        }
     }
 
     /**
-     * Updates the drawers to use and chooses the right one to use based on the mode.
+     * Updates the drawers to use and chooses the right one to use based on the [shapeMode].
      * If the drawer doesn't exist, it will be instantiated.
-     *
-     * @param shapeMode Mode of the shape, used to choose the right drawers.
      */
     private fun updateDrawers(shapeMode: PivShapeMode?) {
-
         // If there's no mode, i set it as normal
         mShapeDrawer = when (shapeMode ?: PivShapeMode.NORMAL) {
             PivShapeMode.CIRCLE -> mCircleShapeDrawer
@@ -192,22 +189,14 @@ internal class ShapeDrawerManager
         }
     }
 
-    /**
-     * It calculates the bounds of the image.
-     *
-     * @param w Current width of this view.
-     * @param h Current height of this view.
-     */
+    /** It calculates the bounds of the image, using [w], [h] and [padding]. */
     fun onSizeChanged(w: Int, h: Int, padding: Rect) {
         mShapeOptions.calculateBounds(w, h, padding, mShapeMode)
         onSizeUpdated(mShapeOptions)
     }
 
-    /**
-     * Measure the view and its content to determine the measured width and the measured height
-     */
+    /** Measure the view and its content to determine the measured width and the measured height. */
     fun onMeasure(w: Float, h: Float, wMode: Int, hMode: Int, view: View) {
-
         // EXACTLY: size value was set to a specific value. This can also get triggered when match_parent
         // is used, to set the size exactly to the parent view (this is layout dependent).
 
@@ -228,7 +217,6 @@ internal class ShapeDrawerManager
         val h2 = drawableHeight?.coerceAtMost(h) ?: h
 
         when (wMode) {
-
             // Must be this size
             View.MeasureSpec.EXACTLY -> {
                 mMeasuredWidth = w
@@ -240,7 +228,6 @@ internal class ShapeDrawerManager
 
             // Can't be bigger than...
             View.MeasureSpec.AT_MOST -> {
-
                 mMeasuredWidth = w2
                 mMeasuredHeight = w2 / usedRatio
 
@@ -274,34 +261,26 @@ internal class ShapeDrawerManager
         }
     }
 
-    /** Calculates the ratio to use considering the shape mode and drawable's width and height */
+    /** Calculates the ratio to use considering the shape mode and drawable's width and height. */
     private fun calculateRatioToUse(w: Float, h: Float) = when {
         mShapeMode.isSquared() -> 1f
         mShapeOptions.ratio <= 0 -> w / h
         else -> mShapeOptions.ratio
     }
 
-    /**
-     * Sets the custom matrix to be used with the MATRIX scale type
-     *
-     * @param matrix Custom matrix to be used with the MATRIX scale type
-     */
+    /** Sets the custom [matrix] to be used with the MATRIX scale type. */
     fun setImageMatrix(matrix: Matrix) {
         this.mImageMatrix = matrix
         setScaleType(PivShapeScaleType.MATRIX)
     }
 
-    /**
-     * Sets the scale type used to draw the image
-     *
-     * @param scaleType Scale type used to draw the image
-     */
+    /** Sets the [scaleType] used to draw the image. */
     fun setScaleType(scaleType: PivShapeScaleType?) {
-
         mScaleType = scaleType
 
-        if (mDrawable == null || scaleType == null)
+        if (mDrawable == null || scaleType == null) {
             return
+        }
 
         // Scale used for vector drawable fix (other bitmaps have dwidth = bitmap width)
         var scaleX = 1f
@@ -311,8 +290,8 @@ internal class ShapeDrawerManager
         val dHeight = mDrawable?.intrinsicHeight?.let { if (it == -1) 1 else it } ?: 0
 
         if (mLastBitmap?.isRecycled == false) {
-            scaleX = dWidth.toFloat() / (mLastBitmap.safeWidth(dWidth)).toFloat()
-            scaleY = dHeight.toFloat() / (mLastBitmap.safeHeight(dHeight)).toFloat()
+            scaleX = dWidth.toFloat() / mLastBitmap.safeWidth(dWidth).toFloat()
+            scaleY = dHeight.toFloat() / mLastBitmap.safeHeight(dHeight).toFloat()
         }
 
         recalculateShaderMatrix(scaleType, scaleX, scaleY, dWidth, dHeight)
@@ -332,8 +311,9 @@ internal class ShapeDrawerManager
         var dx: Float
         val dy: Float
         val lastBitmapBounds = rectF(mLastBitmap.safeWidth(dWidth), mLastBitmap.safeHeight(dHeight))
+
         /** Whether scaling should consider width or height (if increasing proportionally width and height makes the
-         * drawable width reach the view width before the height or not) */
+         * drawable width reach the view width before the height or not). */
         val scaleOnWidth = dWidth * vHeight > vWidth * dHeight
         if (scaleOnWidth) {
             scale = vHeight / dHeight.toFloat()
@@ -346,7 +326,6 @@ internal class ShapeDrawerManager
         mShaderMatrix.reset()
 
         when (scaleType) {
-
             PivShapeScaleType.CENTER_CROP -> {
                 dy = if (scaleOnWidth) 0f else (vHeight - dHeight * scale) / 2
                 mShaderMatrix.setScale(scale * scaleX, scale * scaleY)
@@ -389,7 +368,8 @@ internal class ShapeDrawerManager
             PivShapeScaleType.CENTER -> {
                 mShaderMatrix.setScale(scaleX, scaleY)
                 mShaderMatrix.postTranslate(
-                    (vWidth - dWidth) / 2 + mImageBounds.left, (vHeight - dHeight) / 2 + mImageBounds.top
+                    (vWidth - dWidth) / 2 + mImageBounds.left,
+                    (vHeight - dHeight) / 2 + mImageBounds.top
                 )
             }
         }
@@ -401,14 +381,11 @@ internal class ShapeDrawerManager
      */
     fun getScaleType(): PivShapeScaleType? = mScaleType
 
-    /**
-     * Changes the shape mode of the image.
-     *
-     * @param shapeMode mode to change the image into
-     */
+    /** Changes the [shapeMode] of the image. */
     fun changeShapeMode(shapeMode: PivShapeMode) {
-        if (mShapeMode == shapeMode)
+        if (mShapeMode == shapeMode) {
             return
+        }
 
         mShapeMode = shapeMode
         updateDrawers(mShapeMode)
@@ -417,10 +394,10 @@ internal class ShapeDrawerManager
         mView.get()?.postInvalidate()
     }
 
-    /** Draws the image  */
+    /** Draws the image. */
     fun onDraw(canvas: Canvas) = mShapeDrawer.draw(canvas, mBorderBounds, mShapeBounds, mImageBounds)
 
-    /** @return The options of the shape */
+    /** @return The options of the shape. */
     fun getShapeOptions(): ShapeOptions = mShapeOptions
 
     /** Called when an option that requires onMeasure() call is updated. */
@@ -430,9 +407,7 @@ internal class ShapeDrawerManager
         mShapeDrawer.setup(options)
     }
 
-    /**
-     * Called when an option is updated. It propagates the update to the shape drawers.
-     */
+    /** Called when an option is updated. It propagates the update to the shape drawers. */
     override fun onOptionsUpdated(options: ShapeOptions) {
         mShapeOptions = options
         mShapeDrawer.setup(options)
@@ -444,7 +419,6 @@ internal class ShapeDrawerManager
      * The bounds are calculated again, and it propagates the update to the shape drawers.
      */
     override fun onSizeUpdated(options: ShapeOptions) {
-
         mShapeOptions = options
         // Set calculated bounds to our progress bounds
         mShapeBounds.set(mShapeOptions.shapeBounds)
@@ -460,19 +434,15 @@ internal class ShapeDrawerManager
     /**
      * Returns the measured height to be used in onMeasure() method of the view.
      * It is calculated based on the shape of the image and its size.
-     *
-     * @return Measured height to be used in onMeasure() method of the view.
      */
     fun getMeasuredHeight(): Int = mMeasuredHeight.toInt()
 
     /**
      * Returns the measured width to be used in onMeasure() method of the view.
      * It is calculated based on the shape of the image and its size.
-     *
-     * @return Measured width to be used in onMeasure() method of the view.
      */
     fun getMeasuredWidth(): Int = mMeasuredWidth.toInt()
 
-    /** @return The shape selected mode */
+    /** Returns the current shape mode. */
     fun getShapeMode(): PivShapeMode = mShapeMode
 }

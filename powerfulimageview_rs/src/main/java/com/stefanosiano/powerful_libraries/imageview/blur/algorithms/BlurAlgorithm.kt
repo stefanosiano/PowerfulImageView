@@ -4,17 +4,15 @@ import android.graphics.Bitmap
 import androidx.renderscript.RenderScript
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 
-/**
- * Algorithm to blur the image
- */
+/** Algorithm to blur the image. */
 
 internal interface BlurAlgorithm {
 
-    /** Sets the renderscript context to this algorithm. Pass it before blurring!  */
-    fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm { return this }
+    /** Sets the renderscript context to this algorithm. Pass it before blurring! */
+    fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm = this
 
     /**
-     * Blurs the image
+     * Blurs the image.
      *
      * @param original Bitmap to blur
      * @param radius Radius of the algorithm
@@ -26,7 +24,7 @@ internal interface BlurAlgorithm {
     fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap?
 }
 
-/** Dummy algorithm that doesn't do anything */
+/** Dummy algorithm that doesn't do anything. */
 internal class DummyBlurAlgorithm : BlurAlgorithm {
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions) = original
 }

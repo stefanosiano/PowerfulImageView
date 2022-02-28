@@ -3,7 +3,7 @@ package com.stefanosiano.powerful_libraries.imageview.shape
 import android.graphics.Matrix
 import android.widget.ImageView
 
-/** Custom scale type of the image */
+/** Custom scale type of the image. */
 enum class PivShapeScaleType constructor(internal val value: Int) {
     /**
      * Scale using the image matrix when drawing. The image matrix can be set using
@@ -11,32 +11,38 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
      * `app:piv_shape_scaleType="matrix"`.
      */
     MATRIX(0),
+
     /**
      * Scale the image using [Matrix.ScaleToFit.FILL].
      * From XML, use this syntax: `app:piv_shape_scaleType="fitXY"`.
      */
     FIT_XY(1),
+
     /**
      * Scale the image using [Matrix.ScaleToFit.START].
      * From XML, use this syntax: `app:piv_shape_scaleType="fitStart"`.
      */
     FIT_START(2),
+
     /**
      * Scale the image using [Matrix.ScaleToFit.CENTER].
      * From XML, use this syntax:
      * `app:piv_shape_scaleType="fitCenter"`.
      */
     FIT_CENTER(3),
+
     /**
      * Scale the image using [Matrix.ScaleToFit.END].
      * From XML, use this syntax: `app:piv_shape_scaleType="fitEnd"`.
      */
     FIT_END(4),
+
     /**
      * Center the image in the view, but perform no scaling.
      * From XML, use this syntax: `app:piv_shape_scaleType="center"`.
      */
     CENTER(5),
+
     /**
      * Scale the image uniformly (maintain the image's aspect ratio) so
      * that both dimensions (width and height) of the image will be equal
@@ -45,6 +51,7 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
      * From XML, use this syntax: `app:piv_shape_scaleType="centerCrop"`.
      */
     CENTER_CROP(6),
+
     /**
      * Scale the image uniformly (maintain the image's aspect ratio) so
      * that both dimensions (width and height) of the image will be equal
@@ -53,6 +60,7 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
      * From XML, use this syntax: `app:piv_shape_scaleType="centerInside"`.
      */
     CENTER_INSIDE(7),
+
     /**
      * Scale the image uniformly (maintain the image's aspect ratio) so
      * that both dimensions (width and height) of the image will be equal
@@ -61,6 +69,7 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
      * From XML, use this syntax: `app:piv_shape_scaleType="topCrop"`.
      */
     TOP_CROP(8),
+
     /**
      * Scale the image uniformly (maintain the image's aspect ratio) so
      * that both dimensions (width and height) of the image will be equal
@@ -79,7 +88,7 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
     }
     companion object {
 
-        /** Returns the custom scaleType from the android scaleType or CENTER if the scaleType passed is null  */
+        /** Returns the custom scaleType from the android scaleType or CENTER if the scaleType passed is null. */
         fun getFromScaleType(scaleType: ImageView.ScaleType?): PivShapeScaleType = when (scaleType ?: CENTER) {
             ImageView.ScaleType.MATRIX -> MATRIX
             ImageView.ScaleType.FIT_XY -> FIT_XY
@@ -92,7 +101,7 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
             else -> MATRIX
         }
 
-        /** Returns the scale type associated to the passed value, or CENTER if the value is invalid  */
+        /** Returns the scale type associated to the passed value, or CENTER if the value is invalid. */
         fun fromValue(value: Int): PivShapeScaleType = when (value) {
             0 -> MATRIX
             1 -> FIT_XY

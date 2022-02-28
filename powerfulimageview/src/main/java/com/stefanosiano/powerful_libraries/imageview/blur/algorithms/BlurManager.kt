@@ -23,43 +23,43 @@ internal class BlurManager
  * @param blurOptions Options of the blur
  */(view: ImageView, blurOptions: BlurOptions) : BlurOptions.BlurOptionsListener {
 
-    /** Drawable of the imageview to blur  */
+    /** Drawable of the imageview to blur. */
     private var mDrawable: Drawable? = null
 
-    /** Original bitmap, downsampled if needed  */
+    /** Original bitmap, downsampled if needed. */
     private var mOriginalBitmap: Bitmap? = null
 
-    /** Last blurred bitmap  */
+    /** Last blurred bitmap. */
     private var mBlurredBitmap: Bitmap? = null
 
-    /** Options to use to blur bitmap  */
+    /** Options to use to blur bitmap. */
     private var mBlurOptions: BlurOptions = blurOptions
 
-    /** Mode to use to blur the image  */
+    /** Mode to use to blur the image. */
     private var mMode: PivBlurMode = PivBlurMode.DISABLED
 
-    /** Strength of the blur  */
+    /** Strength of the blur. */
     private var mRadius: Int = 0
 
-    /** Whether the renderscript context is managed: if I added this view's context to the SharedBlurManager  */
+    /** Whether the renderscript context is managed: if I added this view's context to the SharedBlurManager. */
     private var mIsRenderscriptManaged: Boolean = false
 
-    /** Whether the bitmap has been already blurred. On static blur, it will only  blur once!  */
+    /** Whether the bitmap has been already blurred. On static blur, it will only  blur once! */
     private var mIsAlreadyBlurred: Boolean = false
 
-    /** Width of the view. Used to calculate the original bitmap  */
+    /** Width of the view. Used to calculate the original bitmap. */
     private var mWidth: Int = 0
 
-    /** Height of the view. Used to calculate the original bitmap  */
+    /** Height of the view. Used to calculate the original bitmap. */
     private var mHeight: Int = 0
 
-    /** Last width of the calculated bitmap. Used to calculate the original bitmap  */
+    /** Last width of the calculated bitmap. Used to calculate the original bitmap. */
     private var mLastSizeX: Int = 0
 
-    /** Last height of the calculated bitmap. Used to calculate the original bitmap  */
+    /** Last height of the calculated bitmap. Used to calculate the original bitmap. */
     private var mLastSizeY: Int = 0
 
-    /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius  */
+    /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius. */
     private var mLastRadius: Int = -1
 
     // Using a weakRefence to be sure to not leak memory
@@ -79,14 +79,10 @@ internal class BlurManager
     private val mStackBlurAlgorithm by lazy { StackBlurAlgorithm() }
     private val mDummyBlurAlgorithm by lazy { DummyBlurAlgorithm() }
 
-    /** Selected algorithm to blur the image  */
+    /** Selected algorithm to blur the image. */
     private var mBlurAlgorithm: BlurAlgorithm = mDummyBlurAlgorithm
 
-    /**
-     * Method that updates the drawable and bitmap to show
-     *
-     * @param drawable drawable to show
-     */
+    /** Method that updates the [drawable] and bitmap to show. */
     fun changeDrawable(drawable: Drawable?) {
         if (drawable == mDrawable) return
 
@@ -104,17 +100,12 @@ internal class BlurManager
         }
     }
 
-    /**
-     * Changes the blur mode of the image.
-     *
-     * @param blurMode mode to use to blur the image
-     * @param radius strength of the image
-     */
+    /** Changes the [blurMode] and/or [radius] of the image. */
     fun changeMode(blurMode: PivBlurMode, radius: Int) {
-
         // If there's no change, I don't do anything
-        if (blurMode == mMode && radius == mRadius)
+        if (blurMode == mMode && radius == mRadius) {
             return
+        }
 
         removeContext(true)
         mMode = blurMode
@@ -126,18 +117,12 @@ internal class BlurManager
         mRadius = radius
     }
 
-    /**
-     * Changes the blur mode of the image.
-     *
-     * @param radius strength of the image
-     */
+    /** Changes the [radius] (strength) of the blur method. */
     fun changeRadius(radius: Int) = changeMode(mMode, radius)
 
     /**
-     * Blurs the image, if not already blurred.
-     * To get the image call getLastBlurredBitmap()!
-     *
-     * @param radius Strength of the blurring
+     * Blurs the image with the specified [radius], if not already blurred.
+     * To get the image call [getLastBlurredBitmap].
      */
     fun blur(radius: Int) {
         mRadius = radius
@@ -145,17 +130,19 @@ internal class BlurManager
         val origBitmap = mOriginalBitmap ?: return
 
         // If I already blurred the image with this radius, I won't do anything
-        val blurredWithLastRadius = (mLastRadius == radius && mBlurredBitmap != null)
+        val blurredWithLastRadius = mLastRadius == radius && mBlurredBitmap != null
         // If I already blurred the image and it's a static blur, I won't have to blur anymore
-        val blurredStatic = (mIsAlreadyBlurred && mBlurOptions.isStaticBlur)
+        val blurredStatic = mIsAlreadyBlurred && mBlurOptions.isStaticBlur
 
-        if (origBitmap.isRecycled || blurredWithLastRadius || blurredStatic)
+        if (origBitmap.isRecycled || blurredWithLastRadius || blurredStatic) {
             return
+        }
 
         this.mLastRadius = radius
 
-        if (origBitmap != mBlurredBitmap)
+        if (origBitmap != mBlurredBitmap) {
             mBlurredBitmap?.recycle()
+        }
 
         var bitmap: Bitmap?
         addContext(false)
@@ -187,32 +174,31 @@ internal class BlurManager
         }
 
         removeContext(false)
-        if (mBlurOptions.isStaticBlur)
+        if (mBlurOptions.isStaticBlur) {
             mOriginalBitmap = bitmap ?: origBitmap
+        }
 
         mBlurredBitmap = bitmap ?: mBlurredBitmap
     }
 
-    /** Updates the saved width and height, used to calculate the blurred bitmap  */
+    /** Updates the saved width and height, used to calculate the blurred bitmap. */
     fun onSizeChanged(width: Int, height: Int, drawable: Drawable?) {
         this.mWidth = width
         this.mHeight = height
-        if (drawable != null)
+        if (drawable != null) {
             changeDrawable(drawable)
+        }
     }
 
-    /**
-     * Updates the algorithm used to blur the image
-     *
-     * @param blurMode Algorithm to use
-     */
+    /** Updates the algorithm used to blur the image, based on [blurMode]. */
     private fun updateAlgorithms(blurMode: PivBlurMode?) {
         val renderScript = SharedBlurManager.getRenderScriptContext()
         mMode = blurMode ?: PivBlurMode.DISABLED
 
         // If renderscript is null and the mode uses it, there was a problem getting it: let's use java or dummy
-        if (mMode.usesRenderscript) renderScript
-            ?: return updateAlgorithms(if (mBlurOptions.useRsFallback) mMode.fallbackMode else PivBlurMode.DISABLED)
+        if (mMode.usesRenderscript && renderScript == null) {
+            return updateAlgorithms(mMode.getFallbackMode(mBlurOptions.useRsFallback))
+        }
 
         addContext(false)
 
@@ -235,24 +221,21 @@ internal class BlurManager
         PivBlurMode.DISABLED -> mDummyBlurAlgorithm
     }
 
-    /**
-     * Check if the current options require the bitmap to be blurred
-     *
-     * @return True if the bitmap should be blurred, false otherwise
-     */
+    /** Check if the current options require the bitmap to be blurred. */
     fun shouldBlur(drawable: Drawable?, checkDrawable: Boolean): Boolean =
         mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
 
-    /** @return The blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned. */
+    /** Returns the blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned. */
     fun getLastBlurredBitmap(): Bitmap? {
         blur(mRadius)
         return mBlurredBitmap ?: mOriginalBitmap
     }
 
-    /** @return Returns the bitmap of the drawable, downsampled if needed */
+    /** Returns the bitmap of the drawable, downsampled if needed. */
     private fun getOriginalBitmapFromDrawable(mLastDrawable: Drawable?, drawable: Drawable?): Bitmap? {
-        if (drawable == null || mWidth <= 0 || mHeight <= 0)
+        if (drawable == null || mWidth <= 0 || mHeight <= 0) {
             return null
+        }
 
         // Bitmap size should not be bigger than the view size
         val ratio = drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat()
@@ -275,15 +258,17 @@ internal class BlurManager
         val originalBitmapValid = mOriginalBitmap?.isRecycled == false && mLastDrawable === drawable
 
         // If i already decoded the bitmap i reuse it
-        return if (!sizeChanged && originalBitmapValid)
+        return if (!sizeChanged && originalBitmapValid) {
             mOriginalBitmap
-        else try {
-            mLastSizeX = sizeX
-            mLastSizeY = sizeY
-            drawable.createBitmap(sizeX, sizeY)
-        } catch (e: IllegalArgumentException) {
-            Log.e(BlurManager::class.java.simpleName, e.message ?: "")
-            mOriginalBitmap
+        } else {
+            try {
+                mLastSizeX = sizeX
+                mLastSizeY = sizeY
+                drawable.createBitmap(sizeX, sizeY)
+            } catch (e: IllegalArgumentException) {
+                Log.e(BlurManager::class.java.simpleName, e.message ?: "")
+                mOriginalBitmap
+            }
         }
     }
 
@@ -291,19 +276,17 @@ internal class BlurManager
      * Adds the context to the renderscript manager, if needed.
      * If the blur is static renderscript context is managed by the manager itself, to release it as soon as possible.
      * If the blur is not static renderscript context is managed by the view itself, to keep it as long as it needs.
-     *
-     * @param fromView If the function was called by the view
+     * [fromView] specifies if the function was called by the view.
      */
     fun addContext(fromView: Boolean) {
-        if (mIsRenderscriptManaged || mView.get() == null)
+        if (mIsRenderscriptManaged || mView.get() == null) {
             return
+        }
 
         val context = mView.get()?.context?.applicationContext ?: return
-        if (mBlurOptions.isStaticBlur != fromView) {
-            if (mMode.usesRenderscript) {
-                mIsRenderscriptManaged = true
-                SharedBlurManager.addRenderscriptContext(context.applicationContext)
-            }
+        if (mBlurOptions.isStaticBlur != fromView && mMode.usesRenderscript) {
+            mIsRenderscriptManaged = true
+            SharedBlurManager.addRenderscriptContext(context.applicationContext)
         }
     }
 
@@ -311,19 +294,17 @@ internal class BlurManager
      * Removes the context from the renderscript manager, if needed.
      * If the blur is static renderscript context is managed by the manager itself, to release it as soon as possible.
      * If the blur is not static renderscript context is managed by the view itself, to keep it as long as it needs.
-     *
-     * @param fromView If the function was called by the view
+     * [fromView] specifies if the function was called by the view.
      */
     fun removeContext(fromView: Boolean) {
-        if (!mIsRenderscriptManaged)
+        if (!mIsRenderscriptManaged) {
             return
+        }
 
-        if (mBlurOptions.isStaticBlur != fromView) {
-            if (mMode.usesRenderscript) {
-                mIsRenderscriptManaged = false
-                SharedBlurManager.removeRenderscriptContext()
-                updateAlgorithms(mMode)
-            }
+        if (mBlurOptions.isStaticBlur != fromView && mMode.usesRenderscript) {
+            mIsRenderscriptManaged = false
+            SharedBlurManager.removeRenderscriptContext()
+            updateAlgorithms(mMode)
         }
     }
 
@@ -345,25 +326,23 @@ internal class BlurManager
         // If downSampling rate changes, i reload the bitmap and blur it
         changeDrawable(mDrawable)
         blur(mRadius)
-        if (mView.get() != null) {
-            val bitmap = getLastBlurredBitmap()
-            if (bitmap != null)
-                mView.get()?.setImageBitmap(getLastBlurredBitmap())
+        getLastBlurredBitmap()?.let {
+            mView.get()?.setImageBitmap(it)
         }
     }
 
-    /** Returns the selected mode used for blurring  */
+    /** Returns the selected mode used for blurring. */
     fun getBlurMode(): PivBlurMode = mMode
 
-    /** Returns the options used for blurring  */
+    /** Returns the options used for blurring. */
     fun getBlurOptions(): BlurOptions = mBlurOptions
 
-    /** Returns the selected radius used for blurring  */
+    /** Returns the selected radius used for blurring. */
     fun getRadius(): Int = mRadius
 
     /**
-     * @return The original bitmap used to blur. If static blur option is enabled, this will be the
-     * same as the blurred one, since the original bitmap has been released.
+     * Returns the original bitmap used to blur.
+     * If static blur is enabled, this will be the same as the blurred one, since the original bitmap has been released.
      */
     fun getOriginalBitmap(): Bitmap? = mOriginalBitmap
 }

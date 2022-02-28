@@ -18,13 +18,14 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
     private var w: Int = 0
     private var h: Int = 0
 
-    /** Returns a 1D gaussian filter to perform the 2D blur  */
+    /** Returns a 1D gaussian filter to perform the 2D blur. */
     internal abstract fun getFilter(): FloatArray
 
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap? {
-        if (radius == 0)
+        if (radius == 0) {
             return original
+        }
 
         w = original.width
         h = original.height
@@ -79,7 +80,6 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
     }
 
     private fun apply(srcPix: IntArray, w: Int, h: Int, radius: Int, cores: Int, core: Int, step: Int) {
-
         // Getting gaussian filter
         val gaussianFilter = getFilter()
         val filterLength = gaussianFilter.size
@@ -89,7 +89,6 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
 
         // Horizontal filtering
         if (step == 1) {
-
             // Repeating radius times
             (0 until radius).forEach { _ ->
 
@@ -98,12 +97,10 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
                 val minIndex = minY * w
 
                 for (y in minY until maxY) {
-
                     val row = y * w
                     var position = 0
 
                     for (x in 0 until w) {
-
                         val sum: Int
                         var r = 0
                         var g = 0
@@ -124,23 +121,24 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
 
                         // Store the pixel
                         position = row + x
-                        if (position >= minIndex + filterLength)
+                        if (position >= minIndex + filterLength) {
                             srcPix[position - filterLength] = tmpPix[position % filterLength]
+                        }
 
                         tmpPix[position % filterLength] = sum
                     }
 
                     // Store remaining pixels to src vector
                     position++
-                    for (i in 0 until filterLength)
+                    for (i in 0 until filterLength) {
                         srcPix[position - filterLength + i] = tmpPix[(position + i) % filterLength]
+                    }
                 }
             }
         }
 
         // Vertical filtering
         if (step == 2) {
-
             // Repeating radius times
             (0 until radius).forEach { _ ->
 
@@ -148,12 +146,10 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
                 val maxX = (core + 1) * w / cores
 
                 for (x in minX until maxX) {
-
                     var row = x
                     var position = 0
 
                     for (y in 0 until h) {
-
                         val sum: Int
                         var r = 0
                         var g = 0
@@ -172,8 +168,9 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
 
                         sum = Color.argb(a, r, g, b)
 
-                        if (position >= filterLength)
+                        if (position >= filterLength) {
                             srcPix[row - filterLength * w] = tmpPix[position % filterLength]
+                        }
 
                         tmpPix[position % filterLength] = sum
 
@@ -182,8 +179,9 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
                     }
 
                     // Store remaining pixels to src vector
-                    for (i in 0 until filterLength)
+                    for (i in 0 until filterLength) {
                         srcPix[row - (filterLength - i) * w] = tmpPix[(position + i) % filterLength]
+                    }
                 }
             }
         }

@@ -48,8 +48,9 @@ internal class StackBlurAlgorithm : BlurAlgorithm {
 
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap? {
-        if (radius == 0)
+        if (radius == 0) {
             return original
+        }
 
         val w = original.width
         val h = original.height
@@ -357,7 +358,8 @@ internal class StackBlurAlgorithm : BlurAlgorithm {
         private val coreIndex: Int,
         private val round: Int
     ) : Callable<Void> {
-        @Throws(Exception::class) override fun call(): Void? {
+        @Throws(Exception::class)
+        override fun call(): Void? {
             blurIteration(src, w, h, radius, totalCores, coreIndex, round)
             return null
         }

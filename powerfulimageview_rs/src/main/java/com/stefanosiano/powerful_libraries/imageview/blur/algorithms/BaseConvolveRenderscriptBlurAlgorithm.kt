@@ -14,9 +14,9 @@ import java.lang.ref.WeakReference
 
 internal abstract class BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {
 
-    abstract fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation
-
     private var renderscript: WeakReference<RenderScript?>? = null
+
+    abstract fun runScript(radius: Int, rs: RenderScript, original: Bitmap): Allocation
 
     override fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm {
         this.renderscript = WeakReference(renderscript)
@@ -25,8 +25,9 @@ internal abstract class BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {
 
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap {
-        if (radius == 0)
+        if (radius == 0) {
             return original
+        }
 
         val rs = renderscript?.get() ?: throw RenderscriptException("Renderscript is null!")
 

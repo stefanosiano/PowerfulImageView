@@ -8,7 +8,7 @@ import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 
 internal class RoundedRectangleShapeDrawer(bitmap: Bitmap?) : BaseRoundedDrawer(bitmap) {
 
-    /** Variables used to draw the rounded rectangle  */
+    /** Variables used to draw the rounded rectangle. */
     private var mRadiusX: Float = 0f
     private var mRadiusY: Float = 0f
 
@@ -47,12 +47,16 @@ internal class CircleShapeDrawer(bitmap: Bitmap?) : BaseRoundedDrawer(bitmap) {
         super.setup(shapeOptions)
         mCx = shapeOptions.shapeBounds.centerX()
         mCy = shapeOptions.shapeBounds.centerY()
-        mRadius = if (shapeOptions.shapeBounds.width() < shapeOptions.shapeBounds.height())
+        mRadius = if (shapeOptions.shapeBounds.width() < shapeOptions.shapeBounds.height()) {
             shapeOptions.shapeBounds.width() / 2
-        else shapeOptions.shapeBounds.height() / 2
-        mBorderRadius = if (shapeOptions.borderBounds.width() < shapeOptions.borderBounds.height())
+        } else {
+            shapeOptions.shapeBounds.height() / 2
+        }
+        mBorderRadius = if (shapeOptions.borderBounds.width() < shapeOptions.borderBounds.height()) {
             shapeOptions.borderBounds.width() / 2
-        else shapeOptions.borderBounds.height() / 2
+        } else {
+            shapeOptions.borderBounds.height() / 2
+        }
     }
 
     override fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint) = canvas.drawCircle(mCx, mCy, mRadius, paint)

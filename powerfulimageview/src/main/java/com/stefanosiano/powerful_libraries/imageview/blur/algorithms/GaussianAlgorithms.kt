@@ -31,6 +31,10 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
 
     private var radius: Int = 0
 
+    init {
+        radius = 0
+    }
+
     override fun getFilter(): FloatArray {
         val filter = FloatArray(radius * 2 + 1)
 
@@ -52,14 +56,11 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
         return filter.map { it * sum }.toFloatArray()
     }
 
-    init {
-        radius = 0
-    }
-
     @Throws(RenderscriptException::class)
     override fun blur(original: Bitmap, radius: Int, options: BlurOptions): Bitmap? {
-        if (radius == 0)
+        if (radius == 0) {
             return original
+        }
         this.radius = radius
         return super.blur(original, 1, options)
     }

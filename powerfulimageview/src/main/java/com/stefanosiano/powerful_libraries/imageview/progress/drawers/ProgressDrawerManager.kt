@@ -7,31 +7,23 @@ import com.stefanosiano.powerful_libraries.imageview.progress.PivProgressMode
 import com.stefanosiano.powerful_libraries.imageview.progress.ProgressOptions
 import java.lang.ref.WeakReference
 
-/**
- * Manager class for progress drawers. Used to initialize use the needed drawers.
- */
+/** Manager class for progress drawers. Used to initialize use the needed drawers. */
 
-internal class ProgressDrawerManager
-/**
- * Manager class for progress drawers. Used to initialize and get the instances of the needed drawers.
- *
- * @param view View to show progress indicator into
- * @param progressOptions Options of the progress indicator
- */
-(view: View, progressOptions: ProgressOptions) : ProgressOptions.ProgressOptionsListener {
+internal class ProgressDrawerManager(view: View, progressOptions: ProgressOptions) :
+    ProgressOptions.ProgressOptionsListener {
 
     // Variables used to initialize drawers
 
     // Using a weakRefence to be sure to not leak memory
     private val mView = WeakReference(view)
 
-    /** Bounds in which the progress indicator will be drawn  */
+    /** Bounds in which the progress indicator will be drawn. */
     private val mProgressBounds = RectF()
 
-    /** Bounds in which the progress indicator shadow will be drawn  */
+    /** Bounds in which the progress indicator shadow will be drawn. */
     private val mProgressShadowBorderBounds = RectF()
 
-    /** Bounds in which the progress indicator shadow will be drawn  */
+    /** Bounds in which the progress indicator shadow will be drawn. */
     private val mProgressShadowBounds = RectF()
 
     // Drawers
@@ -50,19 +42,19 @@ internal class ProgressDrawerManager
     private val mRectangularShadowDrawer: RectangularShadowDrawer by lazy { RectangularShadowDrawer() }
     private val mCircularShadowDrawer: CircularShadowDrawer by lazy { CircularShadowDrawer() }
 
-    /** Interface used to switch between its implementations, based on the progress mode and options selected.  */
+    /** Interface used to switch between its implementations, based on the progress mode and options selected. */
     private var mShadowDrawer: ShadowDrawer = mDummyShadowDrawer
 
-    /** Interface used to switch between its implementations, based on the progress mode selected.  */
+    /** Interface used to switch between its implementations, based on the progress mode selected. */
     private var mProgressDrawer: ProgressDrawer = mDummyProgressDrawer
 
-    /** Mode of the progress drawer  */
+    /** Mode of the progress drawer. */
     private var mProgressMode = PivProgressMode.NONE
 
-    /** Options used by progress drawers  */
+    /** Options used by progress drawers. */
     private var mProgressOptions = progressOptions
 
-    /** Listener to handle things from drawers  */
+    /** Listener to handle things from drawers. */
     private val listener: ProgressDrawerListener
 
     init {
@@ -83,28 +75,30 @@ internal class ProgressDrawerManager
     }
 
     /**
-     * Updates the progress drawers to use and chooses the right one to use based on the mode.
+     * Updates the progress drawers to use and chooses the right one to use based on the [progressMode].
      * If the drawer doesn't exist, it will be instantiated.
      * If the shadow drawer doesn't exist, it will be instantiated.
-     *
-     * @param progressMode Mode of the progress, used to choose the right drawers.
      */
     private fun updateDrawers(progressMode: PivProgressMode?) {
-
         when (progressMode ?: PivProgressMode.NONE) {
-
             PivProgressMode.CIRCULAR -> {
-                mProgressDrawer = if (mProgressOptions.isIndeterminate)
+                mProgressDrawer = if (mProgressOptions.isIndeterminate) {
                     mCircularIndeterminateProgressDrawer
-                else mCircularProgressDrawer
-                mShadowDrawer = if (mProgressOptions.shadowEnabled)
+                } else {
+                    mCircularProgressDrawer
+                }
+                mShadowDrawer = if (mProgressOptions.shadowEnabled) {
                     mCircularShadowDrawer
-                else mDummyShadowDrawer
+                } else {
+                    mDummyShadowDrawer
+                }
             }
             PivProgressMode.HORIZONTAL -> {
-                mProgressDrawer = if (mProgressOptions.isIndeterminate)
+                mProgressDrawer = if (mProgressOptions.isIndeterminate) {
                     mHorizontalIndeterminateProgressDrawer
-                else mHorizontalProgressDrawer
+                } else {
+                    mHorizontalProgressDrawer
+                }
                 mShadowDrawer = if (mProgressOptions.shadowEnabled) mRectangularShadowDrawer else mDummyShadowDrawer
             }
             PivProgressMode.NONE -> {
@@ -115,35 +109,29 @@ internal class ProgressDrawerManager
         mProgressDrawer.setListener(listener)
     }
 
-    /**
-     * It calculates the bounds of the progress indicator.
-     *
-     * @param w Current width of this view.
-     * @param h Current height of this view.
-     */
+    /** It calculates the bounds of the progress indicator, based on [w] and [h]. */
     fun onSizeChanged(w: Int, h: Int) {
         mProgressOptions.calculateSizeAndBounds(w, h, mProgressMode)
 
         onSizeUpdated(mProgressOptions)
     }
 
-    /** Signals the manager that the drawable changed */
+    /** Signals the manager that the drawable changed. */
     fun changeDrawable() {
-        if (mProgressOptions.isRemovedOnChange)
+        if (mProgressOptions.isRemovedOnChange) {
             changeProgressMode(PivProgressMode.NONE, false)
+        }
     }
 
     /**
-     * Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate).
+     * Changes the [progressMode] of the indicator (e.g. passing from determinate to indeterminate).
      * It also starts animation of indeterminate progress indicator.
-     *
-     * @param progressMode mode to change the progress indicator into
-     * @param forceUpdate if the drawer should be updated, regardless of anything (may occur when changing indeterminate
-     * flag)
+     * [forceUpdate] can be used to force the drawer to be updated (like when changing indeterminate flag).
      */
     fun changeProgressMode(progressMode: PivProgressMode?, forceUpdate: Boolean) {
-        if (mProgressMode == progressMode ?: mProgressMode && !forceUpdate)
+        if (mProgressMode == progressMode ?: mProgressMode && !forceUpdate) {
             return
+        }
 
         mProgressDrawer.stopIndeterminateAnimation()
 
@@ -155,26 +143,24 @@ internal class ProgressDrawerManager
         mProgressDrawer.startIndeterminateAnimation()
     }
 
-    /** Draws the progress indicator  */
+    /** Draws the progress indicator. */
     fun onDraw(canvas: Canvas) {
         mShadowDrawer.draw(canvas, mProgressShadowBorderBounds, mProgressShadowBounds)
         mProgressDrawer.draw(canvas, mProgressBounds)
     }
 
-    /** @return The options of the progress indicator */
+    /** @return The options of the progress indicator. */
     fun getProgressOptions(): ProgressOptions = mProgressOptions
 
-    /** @return The selected progress mode */
+    /** @return The selected progress mode. */
     fun getProgressMode(): PivProgressMode = mProgressMode
 
     interface ProgressDrawerListener {
-        /** Request to invalidate the progress indicator bounds  */
+        /** Request to invalidate the progress indicator bounds. */
         fun onRequestInvalidate()
     }
 
-    /**
-     * Called when an option is updated. It propagates the update to the progress drawers.
-     */
+    /** Called when an option is updated. It propagates the update to the progress drawers. */
     override fun onOptionsUpdated(options: ProgressOptions) {
         mShadowDrawer.setup(options)
         mProgressDrawer.setup(options)
@@ -183,7 +169,7 @@ internal class ProgressDrawerManager
 
     /**
      * Called when an option that changes the progress mode is updated: The drawer is calculated again.
-     * This may occur when changing the indeterminate flag, or setting a progress value,
+     * This may occur when changing the indeterminate flag, or setting a progress value.
      */
     override fun onModeUpdated(options: ProgressOptions) {
         mProgressOptions = options
@@ -195,7 +181,6 @@ internal class ProgressDrawerManager
      * The bounds are calculated again, and it propagates the update to the progress drawers.
      */
     override fun onSizeUpdated(options: ProgressOptions) {
-
         mProgressOptions = options
 
         // Set calculated bounds to our progress bounds
