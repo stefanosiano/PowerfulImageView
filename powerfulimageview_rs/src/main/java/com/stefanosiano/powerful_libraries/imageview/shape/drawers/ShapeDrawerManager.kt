@@ -6,10 +6,10 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
+import com.stefanosiano.powerful_libraries.imageview.extensions.hasNoIntrinsicSize
 import com.stefanosiano.powerful_libraries.imageview.extensions.isVector
 import com.stefanosiano.powerful_libraries.imageview.extensions.rectF
 import com.stefanosiano.powerful_libraries.imageview.extensions.safeHeight
@@ -31,7 +31,7 @@ internal class ShapeDrawerManager
  * @param shapeOptions Options of the shape
  */(view: View, shapeOptions: ShapeOptions) : ShapeOptions.ShapeOptionsListener {
 
-    // Using a weakRefence to be sure to not leak memory
+    // Using a weakReference to be sure to not leak memory
     private val mView = WeakReference(view)
 
     /** Bounds of the shape. */
@@ -114,7 +114,7 @@ internal class ShapeDrawerManager
         else -> try {
             // Single color bitmap will be created of 1x1 pixel
             val bitmap: Bitmap =
-                if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 || drawable is ColorDrawable) {
+                if (drawable.hasNoIntrinsicSize()) {
                     Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
                 } else {
                     createBitmap(drawable, mLastDrawable)
@@ -268,13 +268,13 @@ internal class ShapeDrawerManager
         else -> mShapeOptions.ratio
     }
 
-    /** Sets the custom [matrix] to be used with the MATRIX scale type. */
+    /** Set the custom [matrix] to be used with the MATRIX scale type. */
     fun setImageMatrix(matrix: Matrix) {
         this.mImageMatrix = matrix
         setScaleType(PivShapeScaleType.MATRIX)
     }
 
-    /** Sets the [scaleType] used to draw the image. */
+    /** Set the [scaleType] used to draw the image. */
     fun setScaleType(scaleType: PivShapeScaleType?) {
         mScaleType = scaleType
 
@@ -282,7 +282,7 @@ internal class ShapeDrawerManager
             return
         }
 
-        // Scale used for vector drawable fix (other bitmaps have dwidth = bitmap width)
+        // Scale used for vector drawable fix (other bitmaps have dWidth = bitmap width)
         var scaleX = 1f
         var scaleY = 1f
         // If drawable is ColorDrawable, dWidth and dHeight is -1 -> let's convert it to 1

@@ -20,7 +20,7 @@ internal interface ShapeDrawer {
     /** Method that updates the [bitmap] to show on rounded, circle and oval shapes. */
     fun changeBitmap(bitmap: Bitmap?)
 
-    /** Sets the [matrix] to be used in the shape, and the current [scaleType]. */
+    /** Set the [matrix] to be used in the shape, and the current [scaleType]. */
     fun setMatrix(scaleType: PivShapeScaleType, matrix: Matrix)
 
     /** Initialize or updates all the variables needed to work, reading all values from [shapeOptions]. */

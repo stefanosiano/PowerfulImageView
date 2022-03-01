@@ -387,12 +387,8 @@ open class PowerfulImageView : ImageViewWrapper {
     }
 
     /**
-     *
-     * Controls how the image should be resized or moved to match the size of this ImageView.
+     * Set the [scaleType] to control how the image should be resized or moved to match the size of this ImageView.
      * Added to provide additional custom scale types.
-     * Overrides ImageView's changeScaleType(ImageView.ScaleType) method.
-     *
-     * @param scaleType The desired scaling mode.
      */
     fun setShapeScaleType(scaleType: PivShapeScaleType) {
         super.setScaleType(ScaleType.MATRIX)
@@ -421,27 +417,16 @@ open class PowerfulImageView : ImageViewWrapper {
     }
 
     /**
-     * Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate).
+     * Changes the [progressMode] of the indicator (e.g. passing from determinate to indeterminate).
      * It also starts animation of indeterminate progress indicator.
-     *
-     * @param progressMode mode to change the progress indicator into
      */
     fun setProgressMode(progressMode: PivProgressMode) =
         mProgressDrawerManager.changeProgressMode(progressMode, false)
 
-    /**
-     * Changes the shape of the image.
-     *
-     * @param shapeMode shape to change the image into
-     */
+    /** Changes the [shapeMode] of the image. */
     fun setShapeMode(shapeMode: PivShapeMode) = mShapeDrawerManager.changeShapeMode(shapeMode)
 
-    /**
-     * Changes the blur mode and the radius to blur the image.
-     *
-     * @param blurMode mode to use to blur the image
-     * @param radius radius to use when blurring the image: the higher the radius, the more the blurring.
-     */
+    /** Changes the [blurMode] and [radius] to blur the image. */
     fun setBlurMode(blurMode: PivBlurMode, radius: Int) {
         mCheckBlur = blurMode != PivBlurMode.DISABLED
 
@@ -491,7 +476,7 @@ open class PowerfulImageView : ImageViewWrapper {
         return shouldBlur && blurredBitmap != null && !blurredBitmap.isRecycled
     }
 
-    /** @param isIndeterminate whether the progress indicator is indeterminate or not. */
+    /** Set whether the progress indicator [isIndeterminate]. */
     fun setProgressIndeterminate(isIndeterminate: Boolean) =
         mProgressDrawerManager.getProgressOptions().setIsIndeterminate(isIndeterminate)
 
@@ -540,7 +525,7 @@ open class PowerfulImageView : ImageViewWrapper {
     fun getBlurOriginalBitmap(): Bitmap? = mBlurManager.getOriginalBitmap()
 
     /**
-     * Sets the progress of the current indicator.
+     * Set the progress of the current indicator.
      * If the drawer is indeterminate, it will change its state and make it determinate.
      *
      * @param progress Percentage value of the progress
@@ -559,16 +544,29 @@ open class PowerfulImageView : ImageViewWrapper {
         mBlurManager.removeContext(true)
     }
 
+    /** Set the [progressGravity] of the progress indicator. It will follow rtl (on api 17+), if not disabled. */
     fun setPivProgressGravity(progressGravity: PivProgressGravity) { getProgressOptions().gravity = progressGravity }
 
+    /**
+     * Changes the [progressMode] of the indicator (e.g. passing from determinate to indeterminate).
+     * It also starts animation of indeterminate progress indicator.
+     */
     fun setPivProgressMode(progressMode: PivProgressMode) { setProgressMode(progressMode) }
 
-    fun setPivProgressIndeterminate(progressIndeterminate: Boolean) {
-        getProgressOptions().setIsIndeterminate(progressIndeterminate)
-    }
+    /** Set whether the progress indicator is [progressIndeterminate]. */
+    fun setPivProgressIndeterminate(progressIndeterminate: Boolean) = setProgressIndeterminate(progressIndeterminate)
 
+    /** Set the progress animation [duration] in milliseconds. */
     fun setPivProgressAnimationDuration(duration: Int) { getProgressOptions().animationDuration = duration }
 
+    /**
+     * Set the [progressValue] of the progress indicator, used by determinate drawers.
+     * If the drawer is indeterminate, it will change its state and make it determinate.
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     * If the percentage is lower than 0, it is treated as 0.
+     * If the drawer is not determinate or horizontal_determinate it's ignored.
+     * Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0!
+     */
     fun setPivProgressValue(progressValue: Float) {
         if (getProgress() == 100F && progressValue != 100F && getProgressOptions().determinateAnimationEnabled) {
             getProgressOptions().determinateAnimationEnabled = false
@@ -578,113 +576,203 @@ open class PowerfulImageView : ImageViewWrapper {
         setProgressValue(progressValue)
     }
 
+    /**
+     * Set the [progressSize] of the progress indicator.
+     *
+     * Note that it may be different from the actual size used to draw the progress, since it is
+     * calculated based on the View size and on the padding option.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics)
+     */
     fun setPivProgressSize(progressSize: Int) { getProgressOptions().setSize(progressSize) }
 
+    /**
+     * Set the [progressSize] of the progress indicator as a percentage of the whole View.
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     */
     fun setPivProgressSizePercent(progressSize: Float) { getProgressOptions().setSize(progressSize) }
 
+    /**
+     * Set the [progressPadding] of the progress indicator.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
+     */
     fun setPivProgressPadding(progressPadding: Int) { getProgressOptions().padding = progressPadding }
 
+    /**
+     * Set the [progressBorderWidth] of the progress indicator. If it's lower than 0, it is ignored.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
+     * If you want the real progress border width, check [ProgressOptions.calculatedBorderWidth].
+     */
     fun setPivProgressBorderWidth(progressBorderWidth: Int) { getProgressOptions().borderWidth = progressBorderWidth }
 
+    /**
+     * Set the [progressBorderWidth] of the progress indicator as percentage of the progress indicator size.
+     * It's used only if borderWidth is less than 0.
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     */
     fun setPivProgressBorderWidthPercent(progressBorderWidth: Float) {
         getProgressOptions().setBorderWidth(progressBorderWidth)
     }
 
+    /**
+     * Set the [progressShadowBorderWidth] of the progress indicator shadow border.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics)
+     * If you want the real shadow border width, check [ProgressOptions.calculatedShadowBorderWidth].
+     */
     fun setPivProgressShadowBorderWidth(progressShadowBorderWidth: Float) {
         getProgressOptions().shadowBorderWidth = progressShadowBorderWidth
     }
 
+    /**
+     * Set the [progressShadowPadding] of the progress indicator relative to its shadow.
+     * If it's lower than 0, it is ignored.
+     * If you want the real shadow padding, check [ProgressOptions.calculatedShadowPadding].
+     */
     fun setPivProgressShadowPadding(progressShadowPadding: Int) {
         getProgressOptions().shadowPadding = progressShadowPadding
     }
 
+    /**
+     * Set the [progressShadowPadding] of the progress indicator relative to its shadow as a percentage of the shadow.
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     */
     fun setPivProgressShadowPaddingPercent(progressShadowPadding: Float) {
         getProgressOptions().setShadowPadding(progressShadowPadding)
     }
 
+    /** Set if [progressShadowEnabled], that is, if the progress indicator should show a shadow. */
     fun setPivProgressShadowEnabled(progressShadowEnabled: Boolean) {
         getProgressOptions().shadowEnabled = progressShadowEnabled
     }
 
+    /** Set if a determinate progress mode should update its progress with an animation. */
     fun setPivProgressDeterminateAnimationEnabled(progressDeterminateAnimationEnabled: Boolean) {
         getProgressOptions().determinateAnimationEnabled = progressDeterminateAnimationEnabled
     }
 
+    /** Set whether the view should disable right to left layout (used for gravity option and progress direction). */
     fun setPivProgressRtlDisabled(progressRtlDisabled: Boolean) {
         getProgressOptions().isRtlDisabled = progressRtlDisabled
     }
 
+    /** Set if the circular progress mode should show a wedge. If the mode is not determinate it's ignored. */
     fun setPivProgressDrawWedge(progressDrawWedge: Boolean) { getProgressOptions().drawWedge = progressDrawWedge }
 
+    /** Set whether the progress should reverse its animation. */
     fun setPivProgressReversed(progressReversed: Boolean) {
         getProgressOptions().isProgressReversed = progressReversed
     }
 
+    /** Set whether the progress should be reset on drawable change. */
     fun setPivProgressRemovedOnChange(progressRemovedOnChange: Boolean) {
         getProgressOptions().isRemovedOnChange = progressRemovedOnChange
     }
 
+    /** Set the [progressFrontColor] of the progress indicator, used by determinate modes. */
     fun setPivProgressFrontColor(progressFrontColor: Int) { getProgressOptions().frontColor = progressFrontColor }
 
+    /** Set the [progressBackColor] of the progress indicator, used by determinate modes. */
     fun setPivProgressBackColor(progressBackColor: Int) { getProgressOptions().backColor = progressBackColor }
 
+    /** Set the [progressIndeterminateColor] of the progress indicator, used by indeterminate modes. */
     fun setPivProgressIndeterminateColor(progressIndeterminateColor: Int) {
         getProgressOptions().indeterminateColor = progressIndeterminateColor
     }
 
+    /** Set the [progressShadowColor] of the progress indicator's shadow. */
     fun setPivProgressShadowColor(progressShadowColor: Int) { getProgressOptions().shadowColor = progressShadowColor }
 
+    /** Set the [progressShadowBorderColor] of the progress indicator's shadow. */
     fun setPivProgressShadowBorderColor(progressShadowBorderColor: Int) {
         getProgressOptions().shadowBorderColor = progressShadowBorderColor
     }
 
+    /** Changes the [shapeMode] of the image. */
     fun setPivShapeMode(shapeMode: PivShapeMode) { setShapeMode(shapeMode) }
 
+    /**
+     * Set the [shapeScaleType] to control how the image should be resized or moved to match the size of this ImageView.
+     * Added to provide additional custom scale types.
+     */
     fun setPivShapeScaleType(shapeScaleType: PivShapeScaleType) { setShapeScaleType(shapeScaleType) }
 
+    /** Set the [shapeInnerPadding] of the image relative to the shape. If it's lower than 0, it is ignored. */
     fun setPivShapeInnerPadding(shapeInnerPadding: Int) { getShapeOptions().setInnerPadding(shapeInnerPadding) }
 
+    /**
+     * Set the [shapeInnerPadding] of the image relative to the shape, as a percentage of the shape size.
+     * If the percentage is higher than 100, it is treated as (value % 100).
+     */
     fun setPivShapeInnerPaddingPercent(shapeInnerPadding: Float) {
         getShapeOptions().setInnerPadding(shapeInnerPadding)
     }
 
+    /**
+     * Set the [shapeBorderWidth] of the shape border.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
+     */
     fun setPivShapeBorderWidth(shapeBorderWidth: Int) { getShapeOptions().borderWidth = shapeBorderWidth }
 
+    /** Set the [shapeRatio] of the shape. Ignored in Circle and Square shapes. Width = height * ratio. */
     fun setPivShapeRatio(shapeRatio: Float) { getShapeOptions().ratio = shapeRatio }
 
+    /** Set the [shapeRadiusX] radius of the rounded rectangles. */
     fun setPivShapeRadiusX(shapeRadiusX: Float) { getShapeOptions().radiusX = shapeRadiusX }
 
+    /** Set the [shapeRadiusY] radius of the rounded rectangles. */
     fun setPivShapeRadiusY(shapeRadiusY: Float) { getShapeOptions().radiusY = shapeRadiusY }
 
+    /** Set if the border should be drawn over the image ([shapeBorderOverlay] true) or the shape should be shrank. */
     fun setPivShapeBorderOverlay(shapeBorderOverlay: Boolean) { getShapeOptions().borderOverlay = shapeBorderOverlay }
 
+    /** Set the [shapeSolidColor] used by solid shapes. */
     fun setPivShapeSolidColor(shapeSolidColor: Int) { getShapeOptions().solidColor = shapeSolidColor }
 
+    /** Set the [shapeBackgroundColor] of the shape. */
     fun setPivShapeBackgroundColor(shapeBackgroundColor: Int) {
         getShapeOptions().backgroundColor = shapeBackgroundColor
     }
 
+    /** Set the [shapeForegroundColor] of the shape. */
     fun setPivShapeForegroundColor(shapeForegroundColor: Int) {
         getShapeOptions().foregroundColor = shapeForegroundColor
     }
 
+    /** Set the [shapeBackground] drawable to be drawn under the image, using the shape. Ignored on rounded shapes. */
     fun setPivShapeBackground(shapeBackground: Drawable) { getShapeOptions().backgroundDrawable = shapeBackground }
 
+    /** Set the [shapeForeground] drawable to be drawn over the image, using the shape. Ignored on rounded shapes. */
     fun setPivShapeForeground(shapeForeground: Drawable) { getShapeOptions().foregroundDrawable = shapeForeground }
 
+    /** Set the [shapeBorderColor] of the shape border. */
     fun setPivShapeBorderColor(shapeBorderColor: Int) { getShapeOptions().borderColor = shapeBorderColor }
 
+    /** Changes the [blurMode] to blur the image. */
     fun setPivBlurMode(blurMode: PivBlurMode) { setBlurMode(blurMode, getBlurRadius()) }
 
+    /** Changes the [blurRadius] to blur the image. */
     fun setPivBlurRadius(blurRadius: Int) { setBlurRadius(blurRadius) }
 
+    /**
+     * Set the [blurDownSamplingRate] to blur the image, so that it's no more than the view size divided by the rate.
+     * If a value less than 1 is passed, downSampling rate 1 is used.
+     */
     fun setPivBlurDownSamplingRate(blurDownSamplingRate: Int) {
         getBlurOptions().downSamplingRate = blurDownSamplingRate.toFloat()
     }
 
+    /**
+     * Set whether the original bitmap should be blurred only once.
+     * If [blurStatic] is true, optimizations occur.
+     * If [blurStatic]is false, trying to blur a second time won't have effect.
+     */
     fun setPivBlurStatic(blurStatic: Boolean) { getBlurOptions().isStaticBlur = blurStatic }
 
+    /** Set if the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs. */
     fun setPivBlurUseRsFallback(blurUseRsFallback: Boolean) { getBlurOptions().useRsFallback = blurUseRsFallback }
 
+    /**
+     * Set the number of threads to use to blur the image, ignored when using native renderscript modes.
+     * If [blurNumThreads] is 0 or negative, available cores number will be used.
+     */
     fun setPivBlurNumThreads(blurNumThreads: Int) { getBlurOptions().numThreads = blurNumThreads }
 }

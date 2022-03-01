@@ -10,23 +10,15 @@ import com.stefanosiano.powerful_libraries.imageview.extensions.createBitmap
 import com.stefanosiano.powerful_libraries.imageview.extensions.isVector
 import java.lang.ref.WeakReference
 
-/**
- * Manager class for blurring. Used to manage and blur the image.
- */
+/** Manager class for blurring. Used to manage and blur the image. */
 
 @Suppress("TooManyFunctions")
-internal class BlurManager
-/**
- * Manager class for blur. Used to initialize and blur the image with the right algorithm.
- *
- * @param view View to show the blurred image into
- * @param blurOptions Options of the blur
- */(view: ImageView, blurOptions: BlurOptions) : BlurOptions.BlurOptionsListener {
+internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOptions.BlurOptionsListener {
 
     /** Drawable of the imageview to blur. */
     private var mDrawable: Drawable? = null
 
-    /** Original bitmap, downsampled if needed. */
+    /** Original bitmap, down-sampled if needed. */
     private var mOriginalBitmap: Bitmap? = null
 
     /** Last blurred bitmap. */
@@ -62,7 +54,7 @@ internal class BlurManager
     /** Last radius used to blur the image. Used to avoid blurring twice again the same image with the same radius. */
     private var mLastRadius: Int = -1
 
-    // Using a weakRefence to be sure to not leak memory
+    // Using a weakReference to be sure not to leak memory
     private var mView: WeakReference<ImageView> = WeakReference(view)
 
     // Algorithms
@@ -231,7 +223,7 @@ internal class BlurManager
         return mBlurredBitmap ?: mOriginalBitmap
     }
 
-    /** Returns the bitmap of the drawable, downsampled if needed. */
+    /** Returns the bitmap of the drawable, down-sampled if needed. */
     private fun getOriginalBitmapFromDrawable(mLastDrawable: Drawable?, drawable: Drawable?): Bitmap? {
         if (drawable == null || mWidth <= 0 || mHeight <= 0) {
             return null
@@ -322,7 +314,7 @@ internal class BlurManager
         }
     }
 
-    override fun onDownsamplingRateChanged() {
+    override fun onDownSamplingRateChanged() {
         // If downSampling rate changes, i reload the bitmap and blur it
         changeDrawable(mDrawable)
         blur(mRadius)

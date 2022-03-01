@@ -1,7 +1,7 @@
 package com.stefanosiano.powerful_libraries.imageview.progress
 
 /** Gravity of the progress indicator. */
-enum class PivProgressGravity private constructor(val value: Int) {
+enum class PivProgressGravity constructor(internal val value: Int) {
     /** Indicator will be drawn at the center of the image. */
     CENTER(0),
 
@@ -51,7 +51,7 @@ enum class PivProgressGravity private constructor(val value: Int) {
         else -> false
     }
 
-    companion object {
+    internal companion object {
 
         /** Returns the gravity associated to the passed [value], or center if the value is invalid. */
         fun fromValue(value: Int): PivProgressGravity = when (value) {

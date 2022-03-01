@@ -8,6 +8,8 @@ import androidx.renderscript.ScriptIntrinsicBlur
 import androidx.renderscript.ScriptIntrinsicConvolve3x3
 import androidx.renderscript.ScriptIntrinsicConvolve5x5
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
+import kotlin.math.exp
+import kotlin.math.sqrt
 
 /**
  * Class that performs the gaussian blur with 3x3 coefficient matrix.
@@ -45,13 +47,13 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
         val filter = FloatArray(radius * 2 + 1)
 
         val sigma = (radius * 2 + 2) / 6.toFloat()
-        val coeff = 1 / Math.sqrt(2.0 * Math.PI * sigma.toDouble() * sigma.toDouble())
+        val coefficient = 1 / sqrt(2.0 * Math.PI * sigma.toDouble() * sigma.toDouble())
         val exponent = -1 / (2f * sigma * sigma).toDouble()
 
         var sum = 0f
         for (i in filter.indices) {
             val x = (i - radius).toDouble()
-            val value = (coeff * Math.exp(exponent * x * x)).toFloat()
+            val value = (coefficient * exp(exponent * x * x)).toFloat()
 
             filter[i] = value
             sum += value
@@ -104,7 +106,7 @@ internal class Gaussian3x3RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBl
  */
 internal class Gaussian5x5RenderscriptBlurAlgorithm : BaseConvolveRenderscriptBlurAlgorithm() {
 
-    @Suppress("MagicNumber", "MaxLineLength", "MaximumLineLength")
+    @Suppress("MagicNumber", "MaxLineLength")
     private val coefficientMatrix =
         floatArrayOf(0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0219f, 0.0983f, 0.1621f, 0.0983f, 0.0219f, 0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f, 0.0030f, 0.0133f, 0.0219f, 0.0133f, 0.0030f)
 

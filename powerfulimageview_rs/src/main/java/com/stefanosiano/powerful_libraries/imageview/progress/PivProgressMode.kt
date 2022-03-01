@@ -1,7 +1,7 @@
 package com.stefanosiano.powerful_libraries.imageview.progress
 
 /** Mode of the progress indicator that will be drawn on the image. */
-enum class PivProgressMode constructor(val value: Int) {
+enum class PivProgressMode constructor(internal val value: Int) {
 
     /** No progress indicator. */
     NONE(0),
@@ -12,7 +12,7 @@ enum class PivProgressMode constructor(val value: Int) {
     /** Horizontal progress indicator. */
     HORIZONTAL(2);
 
-    companion object {
+    internal companion object {
 
         /** Returns the mode associated to the passed [value], or none if the value is invalid. */
         fun fromValue(value: Int): PivProgressMode {

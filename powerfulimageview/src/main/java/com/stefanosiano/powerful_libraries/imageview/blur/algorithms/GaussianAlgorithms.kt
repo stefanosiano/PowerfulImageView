@@ -2,6 +2,8 @@ package com.stefanosiano.powerful_libraries.imageview.blur.algorithms
 
 import android.graphics.Bitmap
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
+import kotlin.math.exp
+import kotlin.math.sqrt
 
 /**
  * Class that performs the gaussian blur with 3x3 coefficient matrix.
@@ -39,13 +41,13 @@ internal class GaussianBlurAlgorithm : BaseConvolveBlurAlgorithm() {
         val filter = FloatArray(radius * 2 + 1)
 
         val sigma = (radius * 2 + 2) / 6.toFloat()
-        val coeff = 1 / Math.sqrt(2.0 * Math.PI * sigma.toDouble() * sigma.toDouble())
+        val coefficient = 1 / sqrt(2.0 * Math.PI * sigma.toDouble() * sigma.toDouble())
         val exponent = -1 / (2f * sigma * sigma).toDouble()
 
         var sum = 0f
         for (i in filter.indices) {
             val x = (i - radius).toDouble()
-            val value = (coeff * Math.exp(exponent * x * x)).toFloat()
+            val value = (coefficient * exp(exponent * x * x)).toFloat()
 
             filter[i] = value
             sum += value

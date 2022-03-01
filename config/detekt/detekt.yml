@@ -7,10 +7,22 @@ empty-blocks:
     ignoreOverridden: true
 
 comments:
+  CommentOverPrivateProperty:
+    active: false
+  CommentOverPrivateFunction:
+    active: false
   EndOfSentenceFormat:
+    active: true
+  UndocumentedPublicClass:
+    active: true
+  UndocumentedPublicFunction:
+    active: true
+  UndocumentedPublicProperty:
     active: true
 
 style:
+  UnnecessaryParentheses:
+    active: false
   MandatoryBracesIfStatements:
     active: true
   MandatoryBracesLoops:
@@ -19,8 +31,6 @@ style:
     active: true
   ExpressionBodySyntax:
     active: true
-  UnnecessaryParentheses:
-    active: false
   ClassOrdering:
     active: true
   CollapsibleIfStatements:

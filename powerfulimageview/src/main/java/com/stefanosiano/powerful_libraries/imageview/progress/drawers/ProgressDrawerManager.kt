@@ -14,7 +14,7 @@ internal class ProgressDrawerManager(view: View, progressOptions: ProgressOption
 
     // Variables used to initialize drawers
 
-    // Using a weakRefence to be sure to not leak memory
+    // Using a weakReference to be sure not to leak memory
     private val mView = WeakReference(view)
 
     /** Bounds in which the progress indicator will be drawn. */
@@ -82,23 +82,22 @@ internal class ProgressDrawerManager(view: View, progressOptions: ProgressOption
     private fun updateDrawers(progressMode: PivProgressMode?) {
         when (progressMode ?: PivProgressMode.NONE) {
             PivProgressMode.CIRCULAR -> {
-                mProgressDrawer = if (mProgressOptions.isIndeterminate) {
-                    mCircularIndeterminateProgressDrawer
-                } else {
-                    mCircularProgressDrawer
-                }
-                mShadowDrawer = if (mProgressOptions.shadowEnabled) {
-                    mCircularShadowDrawer
-                } else {
-                    mDummyShadowDrawer
-                }
+                mProgressDrawer =
+                    if (mProgressOptions.isIndeterminate) {
+                        mCircularIndeterminateProgressDrawer
+                    } else {
+                        mCircularProgressDrawer
+                    }
+                mShadowDrawer =
+                    if (mProgressOptions.shadowEnabled) mCircularShadowDrawer else mDummyShadowDrawer
             }
             PivProgressMode.HORIZONTAL -> {
-                mProgressDrawer = if (mProgressOptions.isIndeterminate) {
-                    mHorizontalIndeterminateProgressDrawer
-                } else {
-                    mHorizontalProgressDrawer
-                }
+                mProgressDrawer =
+                    if (mProgressOptions.isIndeterminate) {
+                        mHorizontalIndeterminateProgressDrawer
+                    } else {
+                        mHorizontalProgressDrawer
+                    }
                 mShadowDrawer = if (mProgressOptions.shadowEnabled) mRectangularShadowDrawer else mDummyShadowDrawer
             }
             PivProgressMode.NONE -> {

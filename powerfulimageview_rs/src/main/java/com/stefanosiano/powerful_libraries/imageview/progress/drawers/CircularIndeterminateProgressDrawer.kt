@@ -65,11 +65,8 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
         // Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mOffsetAnimator.addUpdateListener { mOffset = (360 * it.animatedFraction).toInt() }
 
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) {
-            DEFAULT_ANIMATION_DURATION
-        } else {
-            mProgressAnimationDuration
-        }
+        mProgressAnimator.duration =
+            if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
         mProgressAnimator.interpolator = AccelerateDecelerateInterpolator()
         mProgressAnimator.repeatCount = ValueAnimator.INFINITE
         mProgressAnimator.addListener(object : Animator.AnimatorListener {
@@ -121,7 +118,7 @@ internal class CircularIndeterminateProgressDrawer : ProgressDrawer {
     }
 
     /**
-     * Sets the [startAngleOffset], used when progress is shrinking (summing), and [sweepAngleOffset], used when
+     * Set the [startAngleOffset], used when progress is shrinking (summing), and [sweepAngleOffset], used when
      * progress is shrinking (subtracting) or expanding (summing), of the angles of the arcs that will be drawn.
      */
     private fun setProgressAngle(startAngleOffset: Int, sweepAngleOffset: Int) {

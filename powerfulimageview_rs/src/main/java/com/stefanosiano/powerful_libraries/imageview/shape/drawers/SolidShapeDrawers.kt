@@ -7,6 +7,10 @@ import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 import kotlin.math.absoluteValue
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 /** ShapeDrawer that draws the drawable directly into the shape and then draws a solid color over it. */
 internal class SolidRoundedRectangleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDrawer(drawable) {
@@ -40,8 +44,7 @@ internal class SolidRoundedRectangleShapeDrawer(drawable: Drawable?) : BaseNorma
         // I must be sure to fill the whole view -> the maximum distance of the rectangle of the view
         // that is the hypotenuse of the triangle built over radii of the rounded rectangle.
         // I also add any space between the image and the view (given by any padding)
-        val width = Math.max(
-            shapeOptions.viewBounds.width() - shapeOptions.borderBounds.width() + mRadiusX,
+        val width = (shapeOptions.viewBounds.width() - shapeOptions.borderBounds.width() + mRadiusX).coerceAtLeast(
             shapeOptions.viewBounds.height() - shapeOptions.borderBounds.height() + mRadiusY
         ) / 2
 
@@ -154,17 +157,9 @@ internal class SolidCircleShapeDrawer(drawable: Drawable?) : BaseNormalShapeDraw
         val width =
             (shapeOptions.viewBounds.width() + shapeOptions.viewBounds.height() - shapeOptions.borderBounds.width()) / 2
 
-        mRadius = if (shapeOptions.shapeBounds.width() < shapeOptions.shapeBounds.height()) {
-            shapeOptions.shapeBounds.width() / 2
-        } else {
-            shapeOptions.shapeBounds.height() / 2
-        }
+        mRadius = shapeOptions.shapeBounds.width().coerceAtMost(shapeOptions.shapeBounds.height()) / 2
         mSolidRadius = (shapeOptions.borderBounds.width() + width + shapeOptions.borderWidth.toFloat()) / 2
-        mBorderRadius = if (shapeOptions.borderBounds.width() < shapeOptions.borderBounds.height()) {
-            shapeOptions.borderBounds.width() / 2
-        } else {
-            shapeOptions.borderBounds.height() / 2
-        }
+        mBorderRadius = shapeOptions.borderBounds.width().coerceAtMost(shapeOptions.borderBounds.height()) / 2
         mSolidPaint.strokeWidth = width
     }
 
@@ -203,15 +198,16 @@ internal class SolidDiagonalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDr
         } else {
             shapeOptions.cutRadius1Percent / 100F * b.height()
         }
-        val cat2 = if (shapeOptions.cutRadius2 != 0) {
-            shapeOptions.cutRadius2.absoluteValue.toFloat()
-        } else {
-            shapeOptions.cutRadius2Percent.absoluteValue / 100F * b.width()
-        }
-        val hypo = Math.sqrt((cat1 * cat1 + cat2 * cat2).toDouble())
-        val angle = Math.acos(cat1 / hypo)
-        val h = (mSolidPaint.strokeWidth / 2F * Math.sin(angle)).toFloat()
-        val w = (mSolidPaint.strokeWidth / 2F * Math.cos(angle)).toFloat()
+        val cat2 =
+            if (shapeOptions.cutRadius2 != 0) {
+                shapeOptions.cutRadius2.absoluteValue.toFloat()
+            } else {
+                shapeOptions.cutRadius2Percent.absoluteValue / 100F * b.width()
+            }
+        val hypo = sqrt((cat1 * cat1 + cat2 * cat2).toDouble())
+        val angle = acos(cat1 / hypo)
+        val h = (mSolidPaint.strokeWidth / 2F * sin(angle)).toFloat()
+        val w = (mSolidPaint.strokeWidth / 2F * cos(angle)).toFloat()
 
         if (shapeOptions.cutGravity.isGravityTop() || shapeOptions.cutGravity == PivShapeCutGravity.END) {
             mSolidBounds.left = b.left - (if (cat1 >= 0) cat2 - w - b.width() else -w)

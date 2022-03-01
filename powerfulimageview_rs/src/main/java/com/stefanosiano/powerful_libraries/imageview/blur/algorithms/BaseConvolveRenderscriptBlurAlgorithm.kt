@@ -11,7 +11,6 @@ import java.lang.ref.WeakReference
  * Class that performs the gaussian blur with 3x3 coefficient matrix using renderscript.
  * Changing radius will repeat the process radius times.
  */
-
 internal abstract class BaseConvolveRenderscriptBlurAlgorithm : BlurAlgorithm {
 
     private var renderscript: WeakReference<RenderScript?>? = null

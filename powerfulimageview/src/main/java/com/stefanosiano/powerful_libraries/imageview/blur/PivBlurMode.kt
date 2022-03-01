@@ -3,10 +3,10 @@ package com.stefanosiano.powerful_libraries.imageview.blur
 /** Mode of the blur that will be used to blur the image. */
 
 enum class PivBlurMode constructor(
-    val value: Int,
-    val fallbackMode: PivBlurMode,
+    internal val value: Int,
+    internal val fallbackMode: PivBlurMode,
     /** Returns the fallback mode to try in case of error (made for Renderscript). */
-    val usesRenderscript: Boolean
+    internal val usesRenderscript: Boolean
 ) {
 
     /** No blur. */
@@ -46,7 +46,7 @@ enum class PivBlurMode constructor(
      *  Use it if you don't want to use Renderscript. */
     STACK(11, DISABLED, false);
 
-    fun getFallbackMode(useRsFallback: Boolean) = fallbackMode.takeIf { useRsFallback } ?: DISABLED
+    internal fun getFallbackMode(useRsFallback: Boolean) = fallbackMode.takeIf { useRsFallback } ?: DISABLED
 
     internal companion object {
 

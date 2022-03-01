@@ -45,11 +45,8 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
     private var listener: ProgressDrawerManager.ProgressDrawerListener? = null
 
     init {
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) {
-            DEFAULT_ANIMATION_DURATION
-        } else {
-            mProgressAnimationDuration
-        }
+        mProgressAnimator.duration =
+            if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
         mProgressAnimator.interpolator = AccelerateDecelerateInterpolator()
         mProgressAnimator.repeatCount = ValueAnimator.INFINITE
         mProgressAnimator.addListener(object : Animator.AnimatorListener {
@@ -76,11 +73,9 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
 
         mIsProgressReversed = progressOptions.isProgressReversed
 
-        mProgressAnimationDuration = if (progressOptions.animationDuration.toLong() < 0) {
-            DEFAULT_ANIMATION_DURATION
-        } else {
-            progressOptions.animationDuration.toLong()
-        }
+        val optionAnimationDuration = progressOptions.animationDuration.toLong()
+        mProgressAnimationDuration =
+            if (optionAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else optionAnimationDuration
         if (mProgressAnimator.duration != mProgressAnimationDuration) {
             mProgressAnimator.duration = mProgressAnimationDuration
             if (mProgressAnimator.isRunning) {
@@ -90,7 +85,7 @@ internal class HorizontalIndeterminateProgressDrawer : ProgressDrawer {
         }
     }
 
-    /** Sets the x coordinate of the rectangle that will be drawn.
+    /** Set the x coordinate of the rectangle that will be drawn.
      * [currentX] is used when progress is shrinking (as start) or expanding (as end).
      */
     private fun setProgressValues(currentX: Float) {

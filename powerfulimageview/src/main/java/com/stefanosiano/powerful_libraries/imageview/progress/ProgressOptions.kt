@@ -19,9 +19,9 @@ class ProgressOptions() {
             }
         }
 
-    /** Width of the progress indicator. If it's lower than 0, it is ignored.
-     * If you want to use dp, use
-     *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
+    /**
+     * Width of the progress indicator. If it's lower than 0, it is ignored.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
      * If you want the real progress border width, check [calculatedBorderWidth].
      */
     var borderWidth: Int = 0
@@ -50,12 +50,14 @@ class ProgressOptions() {
     /** Percentage value of the progress indicator, used by determinate drawers. */
     var valuePercent: Float = 0f
 
-    /** Front color of the progress indicator, used by determinate drawers.
+    /**
+     * Front color of the progress indicator, used by determinate drawers.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
      *
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details. */
+     * pre-multiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     */
     var frontColor: Int = 0
         set(value) {
             field = value
@@ -64,12 +66,14 @@ class ProgressOptions() {
             }
         }
 
-    /** Back color of the progress indicator, used by determinate drawers.
+    /**
+     * Back color of the progress indicator, used by determinate drawers.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
      *
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details. */
+     * pre-multiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     */
     var backColor: Int = 0
         set(value) {
             field = value
@@ -78,12 +82,14 @@ class ProgressOptions() {
             }
         }
 
-    /** Color of the progress indicator, used by indeterminate drawers.
+    /**
+     * Color of the progress indicator, used by indeterminate drawers.
      * If the drawer is not indeterminate or horizontal_indeterminate it's ignored.
      *
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details. */
+     * pre-multiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     */
     var indeterminateColor: Int = 0
         set(value) {
             field = value
@@ -110,10 +116,12 @@ class ProgressOptions() {
             }
         }
 
-    /** Shadow color of the progress indicator.
+    /**
+     * Shadow color of the progress indicator.
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details. */
+     * pre-multiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     */
     var shadowColor: Int = 0
         set(value) {
             field = value
@@ -122,8 +130,10 @@ class ProgressOptions() {
             }
         }
 
-    /** Padding of the progress indicator relative to its shadow. If it's lower than 0, it is ignored.
-     * If you want the real shadow padding, check [calculatedShadowPadding]. */
+    /**
+     * Padding of the progress indicator relative to its shadow. If it's lower than 0, it is ignored.
+     * If you want the real shadow padding, check [calculatedShadowPadding].
+     */
     var shadowPadding: Int = 0
         set(value) {
             field = value
@@ -132,14 +142,17 @@ class ProgressOptions() {
             }
         }
 
-    /** Padding of the progress indicator relative to its shadow, as a percentage of the whole shadow.
-     * If you want the real shadow padding, check [calculatedShadowPadding]. */
+    /**
+     * Padding of the progress indicator relative to its shadow, as a percentage of the whole shadow.
+     * If you want the real shadow padding, check [calculatedShadowPadding].
+     */
     var shadowPaddingPercent: Float = 0f
 
-    /** Width of the progress indicator shadow border.
-     * If you want to use dp, use
-     *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics)
-     * If you want the real shadow border width, check [calculatedShadowBorderWidth]. */
+    /**
+     * Width of the progress indicator shadow border.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics)
+     * If you want the real shadow border width, check [calculatedShadowBorderWidth].
+     */
     var shadowBorderWidth: Float = 0f
         set(value) {
             field = value
@@ -151,10 +164,12 @@ class ProgressOptions() {
     /** Width of the progress indicator shadow border after calculations. */
     var calculatedShadowBorderWidth: Float = 0f
 
-    /** Color of the progress indicator shadow border.
+    /**
+     * Color of the progress indicator shadow border.
      * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not
-     * premultiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
-     * See the Color class for more details. */
+     * pre-multiplied, meaning that its alpha can be any value, regardless of the values of r,g,b.
+     * See the Color class for more details.
+     */
     var shadowBorderColor: Int = 0
         set(value) {
             field = value
@@ -170,8 +185,8 @@ class ProgressOptions() {
 
     /**
      * Padding of the progress indicator.
-     * If you want to use dp, use
-     *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics). */
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
+     */
     var padding: Int = 0
         set(value) {
             field = value
@@ -184,8 +199,7 @@ class ProgressOptions() {
      * If you want the real progress indicator size, check [calculatedSize]. */
     var sizePercent: Float = 0f
 
-    /**
-     * Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled. */
+    /** Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled. */
     var gravity: PivProgressGravity? = null
         set(value) {
             field = value
@@ -263,32 +277,31 @@ class ProgressOptions() {
     /**
      * Creates the object that will be used by progress drawers.
      *
-     * @param determinateAnimationEnabled If the determinate drawer should update its progress with an animation
-     * @param borderWidth Width of the progress indicator. If it's 0 or more, it applies and overrides
-     *  "borderWidthPercent" parameter
-     * @param borderWidthPercent Width of the progress indicator as a percentage of the progress indicator size
-     * @param size Size of the progress indicator. If it's 0 or more, it applies and overrides
-     *  "sizePercent" parameter
-     * @param padding Padding of the progress indicator
-     * @param sizePercent Size of the progress indicator as a percentage of the whole View
-     * @param valuePercent Percentage value of the progress indicator, used by determinate drawers
-     * @param frontColor Front color of the indicator, used by determinate drawers
-     * @param backColor Back color of the indicator, used by determinate drawers
-     * @param indeterminateColor Color of the indicator, used by indeterminate drawers
-     * @param gravity Gravity of the indicator
-     * @param rtl Whether the view should use right to left layout (used for gravity option)
-     * @param disableRtlSupport If true, rtl attribute will be ignored (start will always be treated as left)
-     * @param isIndeterminate If true, indeterminate progress is drawn
-     * @param drawWedge If should show a wedge, used by circular determinate drawer
-     * @param shadowEnabled If should show a shadow under progress indicator
-     * @param shadowColor Color of the shadow
-     * @param shadowPadding Padding of the progress indicator, relative to its shadow.
-     *  If it's 0 or more, it applies and overrides "shadowPaddingPercent" parameter
-     * @param shadowPaddingPercent Padding of the progress indicator, relative to its shadow,
-     *  as a percentage of the shadow
-     * @param shadowBorderWidth Width of the progress indicator shadow border
-     * @param shadowBorderColor Color of the progress indicator shadow border
-     * @param isProgressReversed Whether the progress should be reversed
+     * [determinateAnimationEnabled] If the determinate drawer should update its progress with an animation
+     * [animationDuration] Progress animation duration (in milliseconds)
+     * [borderWidth] Width of the progress indicator. If it's 0 or more, it applies and overrides [borderWidthPercent]
+     * [borderWidthPercent] Width of the progress indicator as a percentage of the progress indicator size
+     * [size] Size of the progress indicator. If it's 0 or more, it applies and overrides [sizePercent]
+     * [sizePercent] Size of the progress indicator as a percentage of the whole View
+     * [padding] Padding of the progress indicator
+     * [valuePercent] Percentage value of the progress indicator, used by determinate drawers
+     * [frontColor] Front color of the indicator, used by determinate drawers
+     * [backColor] Back color of the indicator, used by determinate drawers
+     * [indeterminateColor] Color of the indicator, used by indeterminate drawers
+     * [gravity] Gravity of the indicator
+     * [rtl] Whether the view should use right to left layout (used for gravity option)
+     * [disableRtlSupport] If true, rtl attribute will be ignored (start will always be treated as left)
+     * [isIndeterminate] If true, indeterminate progress is drawn
+     * [drawWedge] If should show a wedge, used by circular determinate drawer
+     * [shadowEnabled] If should show a shadow under progress indicator
+     * [shadowColor] Color of the shadow
+     * [shadowPadding] Padding of the progress indicator, relative to its shadow.
+     *  If it's 0 or more, it applies and overrides [shadowPaddingPercent]
+     * [shadowPaddingPercent] Padding of the progress indicator, relative to its shadow, as a percentage of the shadow
+     * [shadowBorderWidth] Width of the progress indicator shadow border
+     * [shadowBorderColor] Color of the progress indicator shadow border
+     * [isProgressReversed] Whether the progress should be reversed
+     * [isRemovedOnChange] Whether the progress should be reset on drawable change
      */
     @Suppress("LongParameterList")
     constructor(
@@ -389,21 +402,15 @@ class ProgressOptions() {
      * Forces recalculation of the bounds of the progress indicator, based on progress options and [mode].
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
      */
-    fun recalculateBounds(mode: PivProgressMode) {
+    internal fun recalculateBounds(mode: PivProgressMode) {
         calculateSizeAndBounds(mCalculatedLastW, mCalculatedLastH, mode)
     }
 
     /**
-     * Calculates the bounds of the progress indicator, based on progress options and mode.
+     * Calculates the bounds of the progress indicator, based on [w], [h] and [mode].
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
-     *
-     * Do not use this method directly! If you want the size to be calculated again, call requestLayout()!
-     *
-     * @param w Width of the View
-     * @param h Height of the View
-     * @param mode Mode of the progress indicator
      */
-    fun calculateSizeAndBounds(w: Int, h: Int, mode: PivProgressMode) {
+    internal fun calculateSizeAndBounds(w: Int, h: Int, mode: PivProgressMode) {
         // Saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w
         mCalculatedLastH = h
@@ -421,11 +428,11 @@ class ProgressOptions() {
         }
 
         // Calculate the maximum possible size of the progress indicator
-        var maxSize = if (w < h) w else h
+        var maxSize = w.coerceAtMost(h)
 
         when (mode) {
             // Calculation of circular bounds
-            PivProgressMode.CIRCULAR -> maxSize = if (w < h) w else h
+            PivProgressMode.CIRCULAR -> maxSize = w.coerceAtMost(h)
             PivProgressMode.HORIZONTAL -> maxSize = w
             PivProgressMode.NONE -> mSize = 0
         }
@@ -450,7 +457,7 @@ class ProgressOptions() {
         // ********** BORDER WIDTH ***********
         calculatedBorderWidth =
             ((calculatedSize - calculatedShadowBorderWidth * 2) * borderWidthPercent / 100).roundToInt()
-        // If borderWidth is 0 or more, it overrides borderWidthPercent paramenter
+        // If borderWidth is 0 or more, it overrides borderWidthPercent parameter
         if (borderWidth >= 0) calculatedBorderWidth = borderWidth
 
         // Width of the border should be at least 1 px
@@ -532,41 +539,26 @@ class ProgressOptions() {
     }
 
     /**
-     * Width of the progress indicator as percentage of the progress indicator size.
+     * Set the [borderWidthPercent] of the progress indicator as percentage of the progress indicator size.
      * It's used only if borderWidth is less than 0.
      * If the percentage is higher than 100, it is treated as (value % 100).
-     *
-     * @param borderWidthPercent Percentage of the progress indicator size, as a float from 0 to 100
      */
     fun setBorderWidth(borderWidthPercent: Float) {
-        var borderWidthPercent = borderWidthPercent
         this.borderWidth = -1
-        if (borderWidthPercent > 100) {
-            borderWidthPercent %= 100
-        }
-        this.borderWidthPercent = borderWidthPercent
+        this.borderWidthPercent = if (borderWidthPercent > 100) borderWidthPercent % 100 else borderWidthPercent
         calculateSizeAndBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode)
     }
 
     /**
-     * Percentage value of the progress indicator, used by determinate drawers.
+     * Set the [valuePercent] of the progress indicator, used by determinate drawers.
      * If the drawer is indeterminate, it will change its state and make it determinate.
      * If the percentage is higher than 100, it is treated as (value % 100).
      * If the percentage is lower than 0, it is treated as 0.
      * If the drawer is not determinate or horizontal_determinate it's ignored.
      * Note: multiplies of 100 (e.g. 200, 300, ...) will be treated as 0!
-     *
-     * @param valuePercent Percentage of the progress indicator, as a float from 0 to 100
      */
     fun setValue(valuePercent: Float) {
-        var valuePercent = valuePercent
-        if (valuePercent > 100) {
-            valuePercent %= 100
-        }
-        if (valuePercent < 0) {
-            valuePercent = 0f
-        }
-        this.valuePercent = valuePercent
+        this.valuePercent = if (valuePercent > 100) valuePercent % 100 else valuePercent.coerceAtLeast(0F)
 
         // If it's indeterminate, I change it to determinate changing the mode, otherwise I just update current drawer
         val modeChanged = isIndeterminate
@@ -581,14 +573,11 @@ class ProgressOptions() {
     }
 
     /**
-     * Size of the progress indicator.
+     * Set the [size] of the progress indicator.
      *
      * Note that it may be different from the actual size used to draw the progress, since it is
      * calculated based on the View size and on the padding option.
-     * If you want to use dp, use
-     *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics)
-     *
-     * @param size Size of the progress indicator
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics)
      */
     fun setSize(size: Int) {
         this.mSize = size
@@ -596,19 +585,12 @@ class ProgressOptions() {
     }
 
     /**
-     * Set the size of the progress indicator.
-     *
+     * Set the [sizePercent] of the progress indicator as a percentage of the whole View.
      * If the percentage is higher than 100, it is treated as (value % 100).
-     *
-     * @param sizePercent Progress indicator size as a percentage of the whole View, as a float from 0 to 100
      */
     fun setSize(sizePercent: Float) {
-        var sizePercent = sizePercent
         this.mSize = -1
-        if (sizePercent > 100) {
-            sizePercent %= 100
-        }
-        this.sizePercent = sizePercent
+        this.sizePercent = if (sizePercent > 100) sizePercent % 100 else sizePercent
         calculateSizeAndBounds(mCalculatedLastW, mCalculatedLastH, mCalculatedLastMode)
     }
 
@@ -626,11 +608,8 @@ class ProgressOptions() {
     }
 
     /**
-     * Set the padding of the progress indicator relative to its shadow.
+     * Set the [paddingPercent] of the progress indicator relative to its shadow as a percentage of the shadow.
      * If the percentage is higher than 100, it is treated as (value % 100).
-     *
-     * @param paddingPercent Progress indicator shadow padding as a percentage of the whole shadow, as a float
-     *  from 0 to 100
      */
     fun setShadowPadding(paddingPercent: Float) {
         this.shadowPadding = -1
@@ -642,16 +621,10 @@ class ProgressOptions() {
 
     // *************** Fields used by drawers ****************
 
-    /**
-     * Set the listener that will update the progress drawers on changes
-     *
-     * Do not use this method, as it is intended for internal reasons!
-     *
-     * @param listener Listener that will update the progress drawers on changes
-     */
-    fun setListener(listener: ProgressOptionsListener) { this.listener = WeakReference(listener) }
+    /** Set the [listener] that will update the progress drawers on changes. */
+    internal fun setListener(listener: ProgressOptionsListener) { this.listener = WeakReference(listener) }
 
-    interface ProgressOptionsListener {
+    internal interface ProgressOptionsListener {
         fun onOptionsUpdated(options: ProgressOptions)
         fun onSizeUpdated(options: ProgressOptions)
         fun onModeUpdated(options: ProgressOptions)

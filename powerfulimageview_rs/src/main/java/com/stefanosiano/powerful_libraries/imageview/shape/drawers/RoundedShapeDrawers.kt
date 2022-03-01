@@ -47,16 +47,8 @@ internal class CircleShapeDrawer(bitmap: Bitmap?) : BaseRoundedDrawer(bitmap) {
         super.setup(shapeOptions)
         mCx = shapeOptions.shapeBounds.centerX()
         mCy = shapeOptions.shapeBounds.centerY()
-        mRadius = if (shapeOptions.shapeBounds.width() < shapeOptions.shapeBounds.height()) {
-            shapeOptions.shapeBounds.width() / 2
-        } else {
-            shapeOptions.shapeBounds.height() / 2
-        }
-        mBorderRadius = if (shapeOptions.borderBounds.width() < shapeOptions.borderBounds.height()) {
-            shapeOptions.borderBounds.width() / 2
-        } else {
-            shapeOptions.borderBounds.height() / 2
-        }
+        mRadius = shapeOptions.shapeBounds.width().coerceAtMost(shapeOptions.shapeBounds.height()) / 2
+        mBorderRadius = shapeOptions.borderBounds.width().coerceAtMost(shapeOptions.borderBounds.height()) / 2
     }
 
     override fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint) = canvas.drawCircle(mCx, mCy, mRadius, paint)

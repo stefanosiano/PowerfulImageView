@@ -27,16 +27,16 @@ internal interface ProgressDrawer {
     fun stopIndeterminateAnimation()
 
     /**
-     * Sets the [progressPercent] as percentage of the progress (for determinate drawers).
+     * Set the [progressPercent] as percentage of the progress (for determinate drawers).
      * The transition from the current value to the new one is done through animation, if enabled in options.
      */
     fun setProgressPercent(progressPercent: Float)
 
-    /** Sets if the animation is [enabled] (for determinate drawers). */
+    /** Set if the animation is [enabled] (for determinate drawers). */
     fun setAnimationEnabled(enabled: Boolean)
 
     /**
-     * Sets the duration of the animation in [millis] milliseconds (valid for all drawers).
+     * Set the duration of the animation in [millis] milliseconds (valid for all drawers).
      * On determinate drawers it sets the duration of transition from old percentage value to new one.
      * On indeterminate drawers it sets the duration of the expanding/shrinking animation.
      */

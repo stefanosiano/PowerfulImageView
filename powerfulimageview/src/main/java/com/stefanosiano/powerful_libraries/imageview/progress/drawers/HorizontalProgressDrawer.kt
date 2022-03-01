@@ -54,18 +54,15 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
 
     init {
         mProgressAnimator.interpolator = LinearInterpolator()
-        mProgressAnimator.duration = if (mProgressAnimationDuration < 0) {
-            DEFAULT_ANIMATION_DURATION
-        } else {
-            mProgressAnimationDuration
-        }
+        mProgressAnimator.duration =
+            if (mProgressAnimationDuration < 0) DEFAULT_ANIMATION_DURATION else mProgressAnimationDuration
         // Using animation.getAnimatedFraction() because animation.getAnimatedValue() leaks memory
         mProgressAnimator.addUpdateListener {
             setRealProgress(getOldProgress() + (getProgress() - getOldProgress()) * it.animatedFraction)
         }
     }
 
-    /** Sets the [progress] that will be used to draw the front and back rectangles. */
+    /** Set the [progress] that will be used to draw the front and back rectangles. */
     private fun setRealProgress(progress: Float) {
         this.mCurrentProgress = progress
         this.mCurrentFrontX = mLeft + (mRight - mLeft) * (progress / 100)
@@ -80,7 +77,7 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
         // Saving last shown progress (will be used to animate, if needed)
         this.mOldProgress = mCurrentProgress
 
-        // Sets the value of the progress (the value the animation will go to)
+        // Set the value of the progress (the value the animation will go to)
         this.mProgress = mProgress
 
         if (this.mUseProgressAnimation) {
@@ -89,7 +86,7 @@ internal class HorizontalProgressDrawer : ProgressDrawer {
             mProgressAnimator.cancel()
             mProgressAnimator.start()
         } else {
-            // Sets the mProgress as the real progress to show
+            // Set the mProgress as the real progress to show
             setRealProgress(mProgress)
         }
     }

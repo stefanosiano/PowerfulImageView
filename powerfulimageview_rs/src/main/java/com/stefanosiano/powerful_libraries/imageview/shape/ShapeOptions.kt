@@ -6,23 +6,24 @@ import android.graphics.drawable.Drawable
 import com.stefanosiano.powerful_libraries.imageview.progress.PivShapeCutGravity
 import java.lang.ref.WeakReference
 
-/**
- * Class that helps managing the options that will be used by the shape drawers.
- */
-
+/** Class that helps managing the options that will be used by the shape drawers. */
 class ShapeOptions() {
 
     // Options used directly by drawers
 
-    /** Background color of the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
-     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    /**
+     * Background color of the shape.
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not pre-multiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details
+     */
     var backgroundColor: Int = 0
         set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
-    /** Foreground color of the shape.
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
-     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    /**
+     * Foreground color of the shape.
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not pre-multiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details
+     */
     var foregroundColor: Int = 0
         set(value) { field = value; if (isInitialized) listener.get()?.onOptionsUpdated(this) }
 
@@ -32,7 +33,7 @@ class ShapeOptions() {
     /** Inner padding of the image relative to the shape, as a percentage. */
     var mInnerPaddingPercent: Float = 0f
 
-    /** Whether the border should be drawn over the image or the shape should be shrinked. */
+    /** Whether the border should be drawn over the image or the shape should be shrank. */
     var borderOverlay: Boolean = false
         set(value) {
             field = value
@@ -41,9 +42,11 @@ class ShapeOptions() {
             }
         }
 
-    /** Color of the shape border
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
-     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details. */
+    /**
+     * Color of the shape border
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not pre-multiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details.
+     */
     var borderColor: Int = 0
         set(value) {
             field = value
@@ -52,8 +55,7 @@ class ShapeOptions() {
             }
         }
 
-    /**
-     * Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled. */
+    /** Gravity of the progress indicator. It will follow the right to left layout (on api 17+), if not disabled. */
     var cutGravity: PivShapeCutGravity = PivShapeCutGravity.BOTTOM
         set(value) {
             field = value
@@ -62,8 +64,10 @@ class ShapeOptions() {
             }
         }
 
-    /** Width of the shape border. If you want to use dp, set value using
-     *  TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, getResources().getDisplayMetrics()). */
+    /**
+     * Width of the shape border.
+     * To use dp, use TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderWidth, resources.displayMetrics).
+     */
     var borderWidth: Int = 0
         set(value) {
             field = value
@@ -135,9 +139,11 @@ class ShapeOptions() {
             }
         }
 
-    /** Color used by solid shapes
-     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not premultiplied, meaning
-     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details */
+    /**
+     * Color used by solid shapes
+     * Note that the color is an int containing alpha as well as r,g,b. This 32bit value is not pre-multiplied, meaning
+     * that its alpha can be any value, regardless of the values of r,g,b. See the Color class for more details
+     */
     var solidColor: Int = 0
         set(value) {
             field = value
@@ -146,7 +152,7 @@ class ShapeOptions() {
             }
         }
 
-    /** Foreground drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
+    /** Foreground drawable to be drawn over the image, using the shape. Ignored on rounded shapes. */
     var foregroundDrawable: Drawable? = null
         set(value) {
             field = value
@@ -155,7 +161,7 @@ class ShapeOptions() {
             }
         }
 
-    /** Background drawable to be drawn under the image, using the shape. Note: Does not work on rounded shapes! */
+    /** Background drawable to be drawn under the image, using the shape. Ignored on rounded shapes. */
     var backgroundDrawable: Drawable? = null
         set(value) {
             field = value
@@ -213,26 +219,25 @@ class ShapeOptions() {
     /**
      * Creates the object that will be used by shape drawers.
      *
-     * @param backgroundColor Background color of the shape
-     * @param foregroundColor Foreground color of the shape
-     * @param innerPadding Inner padding of the image relative to the shape. If it's 0 or more, it applies and overrides
-     *  "innerPaddingPercent" parameter
-     * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage
-     * @param borderOverlay Whether the border should be drawn over the image or not
-     * @param borderColor Color of the shape border
-     * @param borderWidth Width of the shape border
-     * @param ratio Ratio of the shape. Width will be equal to (height * ratio). Ignored in square and circle shapes
-     * @param radiusX X radius of the image. Used in rounded rectangles
-     * @param radiusY Y radius of the image. Used in rounded rectangles
-     * @param solidColor Solid color used by solid shapes
-     * @param backgroundDrawable Background drawable to draw under the image. Does not follow rounded shapes
-     * @param foregroundDrawable Fackground drawable to draw under the image. Does not follow rounded shapes
-     * @param cutRadius1 Cut radius 1. Used in cut shapes. If it's 0 or more, it applies and overrides
-     *  "cutRadius1Percent" parameter
-     * @param cutRadius1Percent Cut radius 1 in percentage. Used in cut shapes
-     * @param cutRadius2 Cut radius 2. Used in cut shapes. If it's 0 or more, it applies and overrides
-     *  "cutRadius2Percent" parameter
-     * @param cutRadius2Percent Cut radius 2 in percentage. Used in cut shapes
+     * [backgroundColor] Background color of the shape
+     * [foregroundColor] Foreground color of the shape
+     * [innerPadding] Inner padding of the image relative to the shape. If it's 0 or more, it applies and overrides
+     *  [innerPaddingPercent]
+     * [innerPaddingPercent] Inner padding of the image relative to the shape, as a percentage
+     * [borderOverlay] Whether the border should be drawn over the image or not
+     * [cutGravity] Gravity of the progress indicator. It will follow the rtl layout (on api 17+), if not disabled
+     * [borderColor] Color of the shape border
+     * [borderWidth] Width of the shape border
+     * [ratio] Ratio of the shape. Width will be equal to (height * ratio). Ignored in square and circle shapes
+     * [radiusX] X radius of the image. Used in rounded rectangles
+     * [radiusY] Y radius of the image. Used in rounded rectangles
+     * [solidColor] Solid color used by solid shapes
+     * [backgroundDrawable] Background drawable to draw under the image. Does not follow rounded shapes
+     * [foregroundDrawable] Foreground drawable to draw under the image. Does not follow rounded shapes
+     * [cutRadius1] Cut radius 1. Used in cut shapes. If it's 0 or more, it applies and overrides [cutRadius1Percent]
+     * [cutRadius1Percent] Cut radius 1 in percentage. Used in cut shapes
+     * [cutRadius2] Cut radius 2. Used in cut shapes. If it's 0 or more, it applies and overrides [cutRadius2Percent]
+     * [cutRadius2Percent] Cut radius 2 in percentage. Used in cut shapes
      */
     @Suppress("LongParameterList")
     constructor(
@@ -329,16 +334,10 @@ class ShapeOptions() {
     )
 
     /**
-     * Calculates the bounds of the image, based on shape options and mode.
+     * Calculates the bounds of the image, based on [w], [h], [padding] and [mode].
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
-     *
-     * Do not use this method directly! If you want the size to be calculated again, call requestLayout()!
-     *
-     * @param w Width of the View
-     * @param h Height of the View
-     * @param mode Mode of the shape
      */
-    fun calculateBounds(w: Int, h: Int, padding: Rect, mode: PivShapeMode) {
+    internal fun calculateBounds(w: Int, h: Int, padding: Rect, mode: PivShapeMode) {
         // Saving last width and height, so i can later call this function from this class
         mCalculatedLastW = w
         mCalculatedLastH = h
@@ -357,22 +356,22 @@ class ShapeOptions() {
 
         when (mode) {
             PivShapeMode.CIRCLE, PivShapeMode.SQUARE, PivShapeMode.SOLID_CIRCLE -> {
-                smallSize = Math.min(h, w).toFloat()
+                smallSize = h.coerceAtMost(w).toFloat()
                 shapeBounds.set((w - smallSize) / 2, (h - smallSize) / 2, (w + smallSize) / 2, (h + smallSize) / 2)
             }
 
             PivShapeMode.NORMAL -> {
                 shapeBounds.set(0f, 0f, w.toFloat(), h.toFloat())
-                smallSize = Math.min(w, h).toFloat()
+                smallSize = w.coerceAtMost(h).toFloat()
             }
 
             PivShapeMode.RECTANGLE, PivShapeMode.ROUNDED_RECTANGLE, PivShapeMode.SOLID_ROUNDED_RECTANGLE,
             PivShapeMode.OVAL, PivShapeMode.SOLID_OVAL -> {
                 // Min between current size and calculated size (maybe different sizes are set exactly, eg. 120dp, 80dp)
                 // In this case I center the shape into the view
-                val smallX = Math.min(w.toFloat(), h * usedRatio)
-                val smallY = Math.min(h.toFloat(), w / usedRatio)
-                smallSize = Math.min(smallX, smallY)
+                val smallX = w.toFloat().coerceAtMost(h * usedRatio)
+                val smallY = h.toFloat().coerceAtMost(w / usedRatio)
+                smallSize = smallX.coerceAtMost(smallY)
                 shapeBounds.set((w - smallX) / 2, (h - smallY) / 2, (w + smallX) / 2, (h + smallY) / 2)
             }
         }
@@ -410,56 +409,36 @@ class ShapeOptions() {
         listener.get()?.onSizeUpdated(this)
     }
 
-    /**
-     * Set the listener that will update the shape drawers on changes
-     *
-     * Do not use this method, as it is intended for internal reasons!
-     *
-     * @param listener Listener that will update the shape drawers on changes
-     */
-    fun setListener(listener: ShapeOptionsListener) { this.listener = WeakReference(listener) }
+    /** Set the [listener] that will update the shape drawers on changes. */
+    internal fun setListener(listener: ShapeOptionsListener) { this.listener = WeakReference(listener) }
 
     /**
-     * Returns the inner padding of the image, relative to the shape
+     * Returns the inner padding of the image, relative to the shape.
      * If you want to get the real inner padding used to show the image, call getCalculatedInnerPadding().
-     *
-     * @return Inner padding of the image, relative to the shape
      */
     fun getInnerPadding(): Int = mInnerPadding
 
     /**
      * Returns the inner padding of the image, relative to the shape, as a percentage value.
      * If you want to get the real inner padding used to show the image, call getCalculatedInnerPadding().
-     *
-     * @return Inner padding of the image, relative to the shape, as a percentage value.
      */
     fun getInnerPaddingPercent(): Float = mInnerPaddingPercent
 
     /**
      * Inner padding of the image relative to the shape, after calculations.
      * This will return the real value used by the shape drawer.
-     *
-     * @return Inner padding of the image relative to the shape, after calculations
      */
     fun getCalculatedInnerPadding(): Float = mCalculatedInnerPadding
 
-    /**
-     * Set the inner padding of the image relative to the shape.
-     * If it's lower than 0, it is ignored.
-     *
-     * @param innerPadding Inner padding of the image relative to the shape
-     */
+    /** Set the [innerPadding] of the image relative to the shape. If it's lower than 0, it is ignored. */
     fun setInnerPadding(innerPadding: Int) {
         this.mInnerPadding = innerPadding
         recalculateLastBounds()
     }
 
     /**
-     * Set the inner padding of the image relative to the shape, as a percentage of the shape size.
+     * Set the [innerPaddingPercent] of the image relative to the shape, as a percentage of the shape size.
      * If the percentage is higher than 100, it is treated as (value % 100).
-     *
-     * @param innerPaddingPercent Inner padding of the image relative to the shape, as a percentage of the shape size,
-     *  as a float from 0 to 100
      */
     fun setInnerPadding(innerPaddingPercent: Float) {
         this.mInnerPadding = -1
@@ -467,7 +446,7 @@ class ShapeOptions() {
         recalculateLastBounds()
     }
 
-    interface ShapeOptionsListener {
+    internal interface ShapeOptionsListener {
         fun onOptionsUpdated(options: ShapeOptions)
         fun onSizeUpdated(options: ShapeOptions)
         fun onRequestMeasure(options: ShapeOptions)

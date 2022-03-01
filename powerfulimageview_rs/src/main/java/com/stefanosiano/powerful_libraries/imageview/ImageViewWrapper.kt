@@ -9,8 +9,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.util.AttributeSet
-import android.widget.ImageView
-import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 
@@ -31,28 +29,9 @@ abstract class ImageViewWrapper : AppCompatImageView {
     /* Methods to check! They are here just as a reminder of what i could use */
     override fun setImageMatrix(matrix: Matrix) = super.setImageMatrix(matrix)
 
-    override fun getCropToPadding(): Boolean = super.getCropToPadding()
-
-    override fun drawableStateChanged() = super.drawableStateChanged()
-
     override fun setColorFilter(cf: ColorFilter) = super.setColorFilter(cf)
 
-    override fun setImageAlpha(alpha: Int) = super.setImageAlpha(alpha)
-
-    @Deprecated("", ReplaceWith("imageAlpha = alpha"))
-    override fun setAlpha(alpha: Int) { imageAlpha = alpha }
-
-    override fun onAttachedToWindow() = super.onAttachedToWindow()
-
-    override fun onDetachedFromWindow() = super.onDetachedFromWindow()
-
-    override fun jumpDrawablesToCurrentState() = super.jumpDrawablesToCurrentState()
-
-    override fun invalidateDrawable(@NonNull dr: Drawable) = super.invalidateDrawable(dr)
-
     override fun hasOverlappingRendering(): Boolean = false
-
-    override fun setAdjustViewBounds(adjustViewBounds: Boolean) = super.setAdjustViewBounds(adjustViewBounds)
 
     // These methods propagate their effects to the methods of the PIV
 
@@ -69,7 +48,7 @@ abstract class ImageViewWrapper : AppCompatImageView {
     // Just a remainder: it calls setImageDrawable, so there's no need to call onDrawableChanged()!
     override fun setImageBitmap(bm: Bitmap) = super.setImageBitmap(bm)
 
-    override fun setScaleType(scaleType: ImageView.ScaleType) = super.setScaleType(scaleType)
+    override fun setScaleType(scaleType: ScaleType) = super.setScaleType(scaleType)
 
     /** Returns selected color (default color if selected color is not available) for any api level. */
     protected fun getColor(a: TypedArray, colorId: Int, defaultColorId: Int): Int =

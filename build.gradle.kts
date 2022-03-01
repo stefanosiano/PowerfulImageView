@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.stefanosiano.powerful_libraries.imageview.plugins_non_rs")
-    id("io.gitlab.arturbosch.detekt").version("1.19.0")
+    id(Deps.createNonRsPlugin)
+    id(Deps.detektPlugin).version(Deps.detektPluginVersion)
 }
 buildscript {
 
@@ -22,7 +22,7 @@ allprojects {
 }
 
 detekt {
-    toolVersion = "1.19.0"
+    toolVersion = Deps.detektPluginVersion
     config = files("config/detekt/detekt.yml")
     buildUponDefaultConfig = true
 }

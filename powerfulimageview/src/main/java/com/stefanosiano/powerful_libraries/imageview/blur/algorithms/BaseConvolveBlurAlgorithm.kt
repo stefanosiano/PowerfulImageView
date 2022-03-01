@@ -70,7 +70,7 @@ internal abstract class BaseConvolveBlurAlgorithm : BlurAlgorithm {
     private fun getPixel(x2: Int, y2: Int, pix: IntArray): Int {
         var x = x2
         var y = y2
-        // If the pixel doen't exists i return a transparent pixel
+        // If the pixel doesn't exists i return a transparent pixel
         if (x < 0) x = 0
         if (x >= w) x = w - 1
         if (y < 0) y = 0

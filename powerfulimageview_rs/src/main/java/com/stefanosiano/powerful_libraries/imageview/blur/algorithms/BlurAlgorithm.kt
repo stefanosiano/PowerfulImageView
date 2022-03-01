@@ -5,10 +5,9 @@ import androidx.renderscript.RenderScript
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 
 /** Algorithm to blur the image. */
-
 internal interface BlurAlgorithm {
 
-    /** Sets the renderscript context to this algorithm. Pass it before blurring! */
+    /** Set the renderscript context to this algorithm. Pass it before blurring! */
     fun setRenderscript(renderscript: RenderScript?): BlurAlgorithm = this
 
     /**

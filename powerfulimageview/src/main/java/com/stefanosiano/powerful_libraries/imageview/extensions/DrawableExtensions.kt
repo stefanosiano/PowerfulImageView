@@ -7,9 +7,9 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 
-class DrawableExtensions
+internal class DrawableExtensions
 
-/** Return [true] if no intrinsic width or height is available, or if this drawable represents a [ColorDrawable]. */
+/** Return true if no intrinsic width or height is available, or if this drawable represents a [ColorDrawable]. */
 internal fun Drawable.hasNoIntrinsicSize() = intrinsicWidth <= 0 || intrinsicHeight <= 0 || this is ColorDrawable
 internal fun Drawable.isVector() = javaClass.name == "android.graphics.drawable.VectorDrawable" ||
     this is VectorDrawableCompat

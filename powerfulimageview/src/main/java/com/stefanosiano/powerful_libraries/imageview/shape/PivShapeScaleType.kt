@@ -1,6 +1,6 @@
 package com.stefanosiano.powerful_libraries.imageview.shape
 
-import android.graphics.Matrix
+import android.graphics.Matrix.ScaleToFit
 import android.widget.ImageView
 
 /** Custom scale type of the image. */
@@ -13,26 +13,26 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
     MATRIX(0),
 
     /**
-     * Scale the image using [Matrix.ScaleToFit.FILL].
+     * Scale the image using [ScaleToFit.FILL].
      * From XML, use this syntax: `app:piv_shape_scaleType="fitXY"`.
      */
     FIT_XY(1),
 
     /**
-     * Scale the image using [Matrix.ScaleToFit.START].
+     * Scale the image using [ScaleToFit.START].
      * From XML, use this syntax: `app:piv_shape_scaleType="fitStart"`.
      */
     FIT_START(2),
 
     /**
-     * Scale the image using [Matrix.ScaleToFit.CENTER].
+     * Scale the image using [ScaleToFit.CENTER].
      * From XML, use this syntax:
      * `app:piv_shape_scaleType="fitCenter"`.
      */
     FIT_CENTER(3),
 
     /**
-     * Scale the image using [Matrix.ScaleToFit.END].
+     * Scale the image using [ScaleToFit.END].
      * From XML, use this syntax: `app:piv_shape_scaleType="fitEnd"`.
      */
     FIT_END(4),
@@ -79,11 +79,12 @@ enum class PivShapeScaleType constructor(internal val value: Int) {
      */
     BOTTOM_CROP(9);
 
-    fun scaleToFit(): Matrix.ScaleToFit? = when (this) {
-        FIT_XY -> Matrix.ScaleToFit.FILL
-        FIT_START -> Matrix.ScaleToFit.START
-        FIT_CENTER -> Matrix.ScaleToFit.CENTER
-        FIT_END -> Matrix.ScaleToFit.END
+    /** Returns the [ScaleToFit] corresponding to [FIT_CENTER], [FIT_START], [FIT_END] and [FIT_XY], null otherwise. */
+    fun scaleToFit(): ScaleToFit? = when (this) {
+        FIT_XY -> ScaleToFit.FILL
+        FIT_START -> ScaleToFit.START
+        FIT_CENTER -> ScaleToFit.CENTER
+        FIT_END -> ScaleToFit.END
         else -> null
     }
     companion object {

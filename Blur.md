@@ -68,7 +68,7 @@ Convenience methods are provided for:
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
 |setProgressMode|PivProgressMode|Changes the progress mode of the indicator (e.g. passing from determinate to indeterminate). It also starts animation of indeterminate progress indicator.|
-|setProgressValue|float|Sets the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
+|setProgressValue|float|Set the progress of the current indicator. If the drawer is indeterminate, it will change its state and make it determinate.|
 |setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate or not|
 |getProgressMode| |Get the current progress mode selected.|
 |setShapeMode|PivShapeMode|Changes the shape of the image.|

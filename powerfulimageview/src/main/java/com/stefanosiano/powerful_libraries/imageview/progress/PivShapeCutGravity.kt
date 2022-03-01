@@ -1,7 +1,7 @@
 package com.stefanosiano.powerful_libraries.imageview.progress
 
 /** Gravity of the progress indicator. */
-enum class PivShapeCutGravity private constructor(val value: Int) {
+enum class PivShapeCutGravity constructor(internal val value: Int) {
 
     /** Shape will be cut at the start of the image. It respect rtl layouts (on api 17+). */
     START(1),
@@ -37,19 +37,11 @@ enum class PivShapeCutGravity private constructor(val value: Int) {
         else -> false
     }
 
-    internal fun isGravityLeft(isRtl: Boolean): Boolean = when (this) {
-        START, BOTTOM_START, TOP_START -> !isRtl
-        END, BOTTOM_END, TOP_END -> isRtl
-        else -> false
-    }
+    internal fun isGravityStart(): Boolean = this == START || this == BOTTOM_START || this == TOP_START
 
-    internal fun isGravityRight(isRtl: Boolean): Boolean = when (this) {
-        START, BOTTOM_START, TOP_START -> isRtl
-        END, BOTTOM_END, TOP_END -> !isRtl
-        else -> false
-    }
+    internal fun isGravityEnd(): Boolean = this == END || this == BOTTOM_END || this == TOP_END
 
-    companion object {
+    internal companion object {
 
         /** Returns the gravity associated to the passed value, or center if the value is invalid. */
         fun fromValue(value: Int): PivShapeCutGravity = when (value) {

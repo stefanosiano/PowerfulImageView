@@ -133,7 +133,7 @@ Convenience methods are provided for:
 | Name | Param | Description |
 |:----:|:-----:|:-----------:|
 |setProgressMode|PivProgressMode|Changes the progress mode.|
-|setProgressValue|float|Sets the progress of the current indicator. It will change its mode to determinate, if necessary.|
+|setProgressValue|float|Set the progress of the current indicator. It will change its mode to determinate, if necessary.|
 |setProgressIndeterminate|boolean|Whether the progress indicator is indeterminate.|
 |getProgressMode| |Get the current progress mode selected.|
 |setShapeMode|PivShapeMode|Changes the shape of the image.|
