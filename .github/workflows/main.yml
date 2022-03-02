@@ -1,4 +1,4 @@
-name: Push to public repository
+name: Publish to mavenCentral
           
 # Controls when the workflow will run
 on:
@@ -14,9 +14,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Publish to mavenCentral
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Create gpg file
         run:
           bash echo '${{ secrets.SONATYPE_GPG_CONTENT }}' > "${{ secrets.SONATYPE_GPG_PATH }}"
