@@ -16,11 +16,14 @@ jobs:
     steps:
       - name: Publish to mavenCentral
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - run:
+        uses: actions/checkout@v2
+      - name: Create gpg file
+        run:
           bash echo '${{ secrets.SONATYPE_GPG_CONTENT }}' > "${{ secrets.SONATYPE_GPG_PATH }}"
-      - run: |
+      - name: Build and publish
+        run: |
           ./gradlew build
           SONATYPE_USER="${{ secrets.SONATYPE_USER }}" SONATYPE_PWD="${{ secrets.SONATYPE_PWD }}" SONATYPE_GPG_KEY="${{ secrets.SONATYPE_GPG_KEY }}" SONATYPE_GPG_PWD="${{ secrets.SONATYPE_GPG_PWD }}" SONATYPE_GPG_PATH="${{ secrets.SONATYPE_GPG_PATH }}" ./gradlew publish
-      - run:
+      - name: Cleanup
+        run:
           bash rm -f "${{ secrets.SONATYPE_GPG_PATH }}"
