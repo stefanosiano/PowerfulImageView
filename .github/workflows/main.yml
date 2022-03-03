@@ -16,9 +16,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Create gpg file, Build and publish
+      - name: Create gpg file
         run:
-          bash echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > "${{secrets.SONATYPE_GPG_PATH}}"
+          echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > "${{secrets.SONATYPE_GPG_PATH}}"
+        shell: bash
+
+      - name: Build and publish
+        run: |
           ./gradlew build
           ./gradlew publish
         env:
