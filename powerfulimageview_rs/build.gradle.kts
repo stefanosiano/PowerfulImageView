@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    set("LIB_VERSION", "1.0.22") // This is the library version used when deploying the artifact
+    set("LIB_VERSION", "1.0.23") // This is the library version used when deploying the artifact
     set("ENABLE_DEPLOY", "true") //Flag whether the ci/cd workflow should deploy to sonatype or not
 
     set("LIB_GROUP_ID", "io.github.stefanosiano.powerful_libraries")                              // Maven Group ID for the artifact
