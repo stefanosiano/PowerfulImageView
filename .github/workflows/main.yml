@@ -23,7 +23,8 @@ jobs:
 
       - name: Build and publish
         run: |
-          ./gradlew build
+          ./gradlew :powerfulimageview:build
+          ./gradlew :powerfulimageview_rs:build
           ./gradlew publish
         env:
           SONATYPE_USER: '${{secrets.SONATYPE_USER}}'
@@ -34,4 +35,5 @@ jobs:
 
       - name: Cleanup
         run:
-          bash rm -f "${{secrets.SONATYPE_GPG_PATH}}"
+          rm -f "${{secrets.SONATYPE_GPG_PATH}}"
+        shell: bash
