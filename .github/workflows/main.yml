@@ -19,10 +19,6 @@ jobs:
       - name: Create gpg file, Build and publish
         run:
           echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > "${{secrets.SONATYPE_GPG_PATH}}"
-        shell: bash
-
-      - name: Build and publish
-        run: |
           ./gradlew build
           ./gradlew publish
         env:
