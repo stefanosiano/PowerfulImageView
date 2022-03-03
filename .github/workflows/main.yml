@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create gpg file, Build and publish
         run:
-          echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > "${{secrets.SONATYPE_GPG_PATH}}"
+          bash echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > "${{secrets.SONATYPE_GPG_PATH}}"
           ./gradlew build
           ./gradlew publish
         env:
