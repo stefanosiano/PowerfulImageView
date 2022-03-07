@@ -2,7 +2,13 @@ name: Publish to mavenCentral
           
 # Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
+  # Run this workflow automatically when a branch starting with "releases/" is pushed
+  push:
+    branches:
+      - 'releases/**'
+    tags:
+      - v**
+      # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -18,22 +24,24 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create gpg file
         run:
-          echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > "${{secrets.SONATYPE_GPG_PATH}}"
-        shell: bash
+          # Files in $HOME (/home/runner/) in github actions are maintained for the full job duration
+          echo "${{secrets.SONATYPE_GPG_CONTENT}}" | base64 -d > /home/runner/private.pgp
 
-      - name: Build and publish
+      - name: Build
         run: |
           ./gradlew :powerfulimageview:build
           ./gradlew :powerfulimageview_rs:build
+
+      - name: Publish
+        run:
           ./gradlew publish
         env:
           SONATYPE_USER: '${{secrets.SONATYPE_USER}}'
           SONATYPE_PWD: '${{secrets.SONATYPE_PWD}}'
           SONATYPE_GPG_KEY: '${{secrets.SONATYPE_GPG_KEY}}'
           SONATYPE_GPG_PWD: '${{secrets.SONATYPE_GPG_PWD}}'
-          SONATYPE_GPG_PATH: "${{secrets.SONATYPE_GPG_PATH}}"
+          SONATYPE_GPG_PATH: "/home/runner/private.pgp"
 
       - name: Cleanup
         run:
-          rm -f "${{secrets.SONATYPE_GPG_PATH}}"
-        shell: bash
+          rm -f /home/runner/private.pgp
