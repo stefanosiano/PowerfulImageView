@@ -11,10 +11,8 @@ internal fun <T> tryOrPrint(function: () -> T) = try { function.invoke() } catch
     null
 }
 
-@Suppress("SwallowedException", "TooGenericExceptionCaught")
-internal fun <T> tryOr(value: T, function: () -> T): T = try { function.invoke() } catch (e: Exception) { value }
+internal fun <T> tryOr(value: T, function: () -> T): T = try { function.invoke() } catch (ignored: Exception) { value }
 
-@Suppress("SwallowedException", "TooGenericExceptionCaught")
-internal fun <T> tryOrNull(function: () -> T): T? = try { function.invoke() } catch (e: Exception) { null }
+internal fun <T> tryOrNull(function: () -> T): T? = try { function.invoke() } catch (ignored: Exception) { null }
 
 internal fun rectF(width: Int, height: Int) = RectF(0f, 0f, width.toFloat(), height.toFloat())

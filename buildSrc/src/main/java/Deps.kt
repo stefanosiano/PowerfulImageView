@@ -8,6 +8,9 @@ object Deps {
     const val androidGradlePlugin = "com.android.tools.build:gradle:$agpVersion"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val createNonRsPlugin = "com.stefanosiano.powerful_libraries.imageview.plugins_non_rs"
+    const val detektPlugin = "io.gitlab.arturbosch.detekt"
+    const val androidLibrary = "com.android.library"
+    const val androidApplication = "com.android.application"
 
     // Kotlin things
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
@@ -17,6 +20,5 @@ object Deps {
     const val appCompat = "androidx.appcompat:appcompat:1.2.0"
 
     // Other libraries
-    const val detektPlugin = "io.gitlab.arturbosch.detekt"
-    const val detektKtlintPlugin = "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
+    const val detektKtlintDependency = "io.gitlab.arturbosch.detekt:detekt-formatting:$detektPluginVersion"
 }

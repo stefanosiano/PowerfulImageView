@@ -32,7 +32,7 @@ dependencies {
     implementation(Deps.appCompat)
     implementation(Deps.kotlinStdLib)
     implementation(Deps.kotlinCoroutinesCore)
-    detektPlugins(Deps.detektKtlintPlugin)
+    detektPlugins(Deps.detektKtlintDependency)
 }
 
 apply("${rootProject.projectDir}/sonatype-publish.gradle")

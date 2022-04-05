@@ -1,9 +1,56 @@
 complexity:
   TooManyFunctions:
+    active: true
     ignorePrivate: true
+  LongParameterList:
+    active: true
+  ComplexMethod:
+    active: true
+  LongMethod:
+    active: true
+  NestedBlockDepth:
+    active: true
+  ComplexCondition:
+    active: true
+
+style:
+  WildcardImport:
+    active: true
+  NewLineAtEndOfFile:
+    active: true
+  MaxLineLength:
+    active: true
+  ReturnCount:
+    active: true
+  UnusedPrivateMember:
+    active: true
+  UnnecessaryParentheses:
+    active: true
+  MandatoryBracesIfStatements:
+    active: true
+  MandatoryBracesLoops:
+    active: true
+  UseIfInsteadOfWhen:
+    active: true
+  ExpressionBodySyntax:
+    active: true
+  ClassOrdering:
+    active: true
+  CollapsibleIfStatements:
+    active: true
+  SpacingBetweenPackageAndImports:
+    active: true
+  # Numbers are used for enums and blur algorithms matrices
+  MagicNumber:
+    ignoreNumbers: ['-1', '0', '1',
+                    # numbers for enums
+                    '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
+                    # numbers for degrees and percentages in progress and shape algorithms
+                    '-90', '90', '100', '-180', '180', '-270', '270', '360', '3.6', '0.75']
 
 empty-blocks:
   EmptyFunctionBlock:
+    active: true
     ignoreOverridden: true
 
 comments:
@@ -20,33 +67,21 @@ comments:
   UndocumentedPublicProperty:
     active: true
 
-style:
-  UnnecessaryParentheses:
-    active: false
-  MandatoryBracesIfStatements:
+exceptions:
+  TooGenericExceptionCaught:
     active: true
-  MandatoryBracesLoops:
+  PrintStackTrace:
     active: true
-  UseIfInsteadOfWhen:
+  SwallowedException:
     active: true
-  ExpressionBodySyntax:
-    active: true
-  ClassOrdering:
-    active: true
-  CollapsibleIfStatements:
-    active: true
-
-  # Numbers are used for enums and blur algorithms matrices
-  MagicNumber:
-    ignoreNumbers: ['-1', '0', '1',
-                    # numbers for enums
-                    '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
-                    # numbers for degrees and percentages in progress and shape algorithms
-                    '-90', '90', '100', '-180', '180', '-270', '270', '360', '3.6', '0.75']
 
 naming:
   PackageNaming:
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9_]*)*'
+  ConstructorParameterNaming:
+    active: true
+  VariableNaming:
+    active: true
   FunctionMaxLength:
     active: false
 
