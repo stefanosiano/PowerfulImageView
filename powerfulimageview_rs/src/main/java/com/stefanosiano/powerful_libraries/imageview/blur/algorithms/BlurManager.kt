@@ -214,6 +214,7 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
     }
 
     /** Check if the current options require the bitmap to be blurred. */
+    @Suppress("UnnecessaryParentheses")
     fun shouldBlur(drawable: Drawable?, checkDrawable: Boolean): Boolean =
         mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
 

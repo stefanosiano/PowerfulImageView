@@ -183,6 +183,7 @@ internal class SolidDiagonalShapeDrawer(drawable: Drawable?) : BaseNormalShapeDr
     private val mSolidPaint = Paint()
     private var mSolidBounds = RectF()
 
+    @Suppress("UnnecessaryParentheses")
     override fun setup(shapeOptions: ShapeOptions) {
         super.setup(shapeOptions)
 

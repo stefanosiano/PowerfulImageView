@@ -74,7 +74,7 @@ open class PowerfulImageView : ImageViewWrapper {
 
     // Blur initialization constants
     private val defaultBlurRadius = 0
-    private val defaultBlurDownsamplingRate = 4f
+    private val defaultBlurDownSamplingRate = 4f
     private val defaultBlurUseRenderscriptFallback = true
     private val defaultBlurNumThreads = 0
     private val defaultBlurStatic = false
@@ -286,7 +286,7 @@ open class PowerfulImageView : ImageViewWrapper {
         )
 
         val blurOptions = BlurOptions(
-            a.getFloat(R.styleable.PowerfulImageView_pivBlurDownSamplingRate, defaultBlurDownsamplingRate),
+            a.getFloat(R.styleable.PowerfulImageView_pivBlurDownSamplingRate, defaultBlurDownSamplingRate),
             a.getBoolean(R.styleable.PowerfulImageView_pivBlurStatic, defaultBlurStatic),
             a.getBoolean(R.styleable.PowerfulImageView_pivBlurUseRsFallback, defaultBlurUseRenderscriptFallback),
             a.getInteger(R.styleable.PowerfulImageView_pivBlurNumThreads, defaultBlurNumThreads)

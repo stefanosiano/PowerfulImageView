@@ -469,6 +469,7 @@ class ProgressOptions() {
         listener.get()?.onSizeUpdated(this)
     }
 
+    @Suppress("UnnecessaryParentheses")
     private fun calculateBounds(mode: PivProgressMode, w: Int, h: Int) {
         val considerRtl = isRtl && !isRtlDisabled
         // Horizontal gravity
