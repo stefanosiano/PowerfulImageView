@@ -5,6 +5,7 @@ on:
     # Run this workflow automatically when a branch starting with "releases/" or master is pushed, and on every pr
     branches:
       - main
+      - master
       - releases/**
     tags:
       - v**
