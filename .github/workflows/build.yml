@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+    # Run this workflow automatically when a branch starting with "releases/" or master is pushed, and on every pr
+    branches:
+      - main
+      - releases/**
+    tags:
+      - v**
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      # Clean, check formatting, build and do a dry release
+      - name: Make all
+        run: make all
