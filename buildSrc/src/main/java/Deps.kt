@@ -1,7 +1,7 @@
 object Deps {
-    private const val agpVersion = "7.0.4"
-    private const val kotlinVersion = "1.4.30"
-    private const val coroutinesVersion = "1.4.1"
+    private const val agpVersion = "7.2.1"
+    private const val kotlinVersion = "1.6.10"
+    private const val coroutinesVersion = "1.5.1"
     const val detektPluginVersion = "1.19.0"
 
     // Gradle plugins
