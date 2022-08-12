@@ -33,6 +33,17 @@ dependencies {
     implementation(Deps.kotlinStdLib)
     implementation(Deps.kotlinCoroutinesCore)
     detektPlugins(Deps.detektKtlintDependency)
+
+    testImplementation(Deps.kotlinTestJunit)
+    testImplementation(Deps.robolectric)
+    testImplementation(Deps.androidxCore)
+    testImplementation(Deps.androidxRunner)
+    testImplementation(Deps.androidxTestCoreKtx)
+    testImplementation(Deps.androidxTestRules)
+    testImplementation(Deps.androidxJunit)
+    testImplementation(Deps.androidxCoreKtx)
+    testImplementation(Deps.mockitoKotlin)
+    testImplementation(Deps.mockk)
 }
 
 apply("${rootProject.projectDir}/sonatype-publish.gradle")

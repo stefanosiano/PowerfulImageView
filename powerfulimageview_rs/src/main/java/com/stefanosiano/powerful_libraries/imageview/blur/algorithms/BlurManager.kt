@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.ImageView
+import androidx.annotation.VisibleForTesting
 import com.stefanosiano.powerful_libraries.imageview.blur.BlurOptions
 import com.stefanosiano.powerful_libraries.imageview.blur.PivBlurMode
 import com.stefanosiano.powerful_libraries.imageview.extensions.createBitmap
@@ -75,8 +76,8 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
     private var mBlurAlgorithm: BlurAlgorithm = mDummyBlurAlgorithm
 
     /** Method that updates the [drawable] and bitmap to show. */
-    fun changeDrawable(drawable: Drawable?) {
-        if (drawable == mDrawable) return
+    fun changeDrawable(drawable: Drawable?, forceDrawableChange: Boolean = false) {
+        if (drawable == mDrawable && !forceDrawableChange) return
 
         if (!shouldBlur(drawable, true)) return
 
@@ -111,6 +112,11 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
 
     /** Changes the [radius] (strength) of the blur method. */
     fun changeRadius(radius: Int) = changeMode(mMode, radius)
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun setLastRadius(r: Int) {
+        mLastRadius = r
+    }
 
     /**
      * Blurs the image with the specified [radius], if not already blurred.
@@ -175,10 +181,11 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
 
     /** Updates the saved width and height, used to calculate the blurred bitmap. */
     fun onSizeChanged(width: Int, height: Int, drawable: Drawable?) {
+        val forceDrawableChange = mWidth != width || mHeight != height
         this.mWidth = width
         this.mHeight = height
         if (drawable != null) {
-            changeDrawable(drawable)
+            changeDrawable(drawable, forceDrawableChange)
         }
     }
 

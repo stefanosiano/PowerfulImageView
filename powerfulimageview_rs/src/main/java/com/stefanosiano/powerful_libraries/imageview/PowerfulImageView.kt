@@ -458,7 +458,7 @@ open class PowerfulImageView : ImageViewWrapper {
 
         val shouldBlur = mBlurManager.shouldBlur(drawable.current, changeDrawable)
 
-        if (changeDrawable) {
+        if (changeDrawable || mBlurManager.getOriginalBitmap() == null) {
             mBlurManager.changeDrawable(drawable.current)
         }
 
