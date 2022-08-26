@@ -329,11 +329,7 @@ open class PowerfulImageView : ImageViewWrapper {
 
         mShapeDrawerManager.onSizeChanged(w, h, Rect(paddingLeft, paddingTop, paddingRight, paddingBottom))
 
-        mBlurManager.onSizeChanged(
-            mShapeDrawerManager.getMeasuredWidth(),
-            mShapeDrawerManager.getMeasuredHeight(),
-            drawable?.current ?: drawable
-        )
+        mBlurManager.onSizeChanged(mShapeDrawerManager.getMeasuredWidth(), mShapeDrawerManager.getMeasuredHeight())
 
         mShouldCheckRemoveProgress = false
         blurBitmap(false)
@@ -428,7 +424,10 @@ open class PowerfulImageView : ImageViewWrapper {
 
     /** Changes the [blurMode] and [radius] to blur the image. */
     fun setBlurMode(blurMode: PivBlurMode, radius: Int) {
-        mCheckBlur = blurMode != PivBlurMode.DISABLED
+        val modeChanged = mBlurManager.getBlurMode() != blurMode
+        val radiusToUse = radius.takeIf { it > 0 } ?: -1
+        val radiusChanged = mBlurManager.getRadius() != radiusToUse
+        mCheckBlur = blurMode != PivBlurMode.DISABLED || modeChanged || radiusToUse != 0 || radiusChanged
 
         mBlurManager.changeMode(blurMode, radius)
         blurBitmap(false)
@@ -440,10 +439,7 @@ open class PowerfulImageView : ImageViewWrapper {
      * @param radius radius to use when blurring the image: the higher the radius, the more but slower the blurring.
      */
     fun setBlurRadius(radius: Int) {
-        mCheckBlur = mBlurManager.getBlurMode() !== PivBlurMode.DISABLED
-
-        mBlurManager.changeRadius(radius)
-        blurBitmap(false)
+        setBlurMode(mBlurManager.getBlurMode(), radius)
     }
 
     /**

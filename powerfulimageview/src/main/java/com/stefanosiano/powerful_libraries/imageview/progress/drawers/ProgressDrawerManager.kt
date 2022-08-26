@@ -127,8 +127,9 @@ internal class ProgressDrawerManager(view: View, progressOptions: ProgressOption
      * It also starts animation of indeterminate progress indicator.
      * [forceUpdate] can be used to force the drawer to be updated (like when changing indeterminate flag).
      */
+    @Suppress("UnnecessaryParentheses")
     fun changeProgressMode(progressMode: PivProgressMode?, forceUpdate: Boolean) {
-        if (mProgressMode == progressMode ?: mProgressMode && !forceUpdate) {
+        if (mProgressMode == (progressMode ?: mProgressMode) && !forceUpdate) {
             return
         }
 

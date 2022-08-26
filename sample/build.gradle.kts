@@ -15,6 +15,9 @@ android {
         versionName = "1.0"
         vectorDrawables.useSupportLibrary = true
 
+        renderscriptTargetApi = 18
+        renderscriptSupportModeEnabled = true
+
         testInstrumentationRunner = Deps.androidJUnitRunner
     }
 

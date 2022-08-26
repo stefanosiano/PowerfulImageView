@@ -34,7 +34,7 @@ class BlurOptions() {
      * Whether the image should be blurred with a java equivalent of the renderscript algorithm if an error occurs.
      * Used only if a renderscript mode is selected.
      */
-    var useRsFallback: Boolean = false
+    var useRsFallback: Boolean = true
 
     /** Number of threads to use to blur the image. If 0 or negative, available cores number will be used. */
     var numThreads: Int = 0

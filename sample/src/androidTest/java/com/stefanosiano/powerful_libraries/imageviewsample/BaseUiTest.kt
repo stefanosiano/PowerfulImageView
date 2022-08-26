@@ -1,6 +1,10 @@
 package com.stefanosiano.powerful_libraries.imageviewsample
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnitRunner
@@ -20,4 +24,41 @@ abstract class BaseUiTest {
         context = ApplicationProvider.getApplicationContext()
         context.cacheDir.deleteRecursively()
     }
+}
+
+// todo check imageview equals to piv without any custom feature for setImage, setDrawable, setBitmap, setVector
+
+internal fun Bitmap?.contentEquals(b2: Bitmap?): Boolean {
+    if (this == null && b2 == null) {
+        return true
+    }
+    if (this == null || b2 == null) {
+        return false
+    }
+    if (byteCount != b2.byteCount) {
+        return false
+    }
+    for (i in 0 until width) {
+        for (j in 0 until height) {
+            val c1 = getColor(i, j)
+            val c2 = b2.getColor(i, j)
+            if (c1 != c2) {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+internal fun Drawable.createBitmap(): Bitmap {
+    val bitmap = if (intrinsicWidth <= 0 || intrinsicHeight <= 0 || this is ColorDrawable) {
+        Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+    } else {
+        Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
+    }
+
+    val canvas = Canvas(bitmap)
+    setBounds(0, 0, canvas.width, canvas.height)
+    draw(canvas)
+    return bitmap
 }

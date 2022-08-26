@@ -75,11 +75,23 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
     /** Selected algorithm to blur the image. */
     private var mBlurAlgorithm: BlurAlgorithm = mDummyBlurAlgorithm
 
-    /** Method that updates the [drawable] and bitmap to show. */
-    fun changeDrawable(drawable: Drawable?, forceDrawableChange: Boolean = false) {
-        if (drawable == mDrawable && !forceDrawableChange) return
+    init {
+        this.mBlurOptions.setListener(this)
+    }
 
-        if (!shouldBlur(drawable, true)) return
+    /** Method that updates the [drawable] and bitmap to show. */
+    fun changeDrawable(drawable: Drawable?) {
+        if (drawable == mDrawable) {
+            return
+        }
+
+        if (!shouldBlur(drawable, true)) {
+            mBlurredBitmap = null
+            // If mDrawable is null, it means we never used the blur manager, so we can skip any work
+            if (mDrawable == null) {
+                return
+            }
+        }
 
         val mLastDrawable = mDrawable
         val lastOriginalBitmap = mOriginalBitmap
@@ -108,6 +120,10 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
         updateAlgorithms(blurMode)
         mLastRadius = -1
         mRadius = radius
+
+        if (!shouldBlur(mDrawable, false)) {
+            mBlurredBitmap = null
+        }
     }
 
     /** Changes the [radius] (strength) of the blur method. */
@@ -180,13 +196,9 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
     }
 
     /** Updates the saved width and height, used to calculate the blurred bitmap. */
-    fun onSizeChanged(width: Int, height: Int, drawable: Drawable?) {
-        val forceDrawableChange = mWidth != width || mHeight != height
+    fun onSizeChanged(width: Int, height: Int) {
         this.mWidth = width
         this.mHeight = height
-        if (drawable != null) {
-            changeDrawable(drawable, forceDrawableChange)
-        }
     }
 
     /** Updates the algorithm used to blur the image, based on [blurMode]. */
@@ -223,7 +235,9 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
     /** Check if the current options require the bitmap to be blurred. */
     @Suppress("UnnecessaryParentheses")
     fun shouldBlur(drawable: Drawable?, checkDrawable: Boolean): Boolean =
-        mMode != PivBlurMode.DISABLED && (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
+        mMode != PivBlurMode.DISABLED &&
+            mRadius > 0 &&
+            (mLastRadius != mRadius || (checkDrawable && mDrawable != drawable))
 
     /** Returns the blurred bitmap. If any problem occurs, the original bitmap (nullable) will be returned. */
     fun getLastBlurredBitmap(): Bitmap? {
@@ -323,6 +337,7 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
     }
 
     override fun onDownSamplingRateChanged() {
+        mLastRadius = -1
         // If downSampling rate changes, i reload the bitmap and blur it
         changeDrawable(mDrawable)
         blur(mRadius)

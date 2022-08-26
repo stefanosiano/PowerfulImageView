@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.stefanosiano.powerful_libraries.imageviewsample.databinding.ActivityBlurBinding
 
-class BlurActivity : AppCompatActivity() {
+internal class BlurActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityBlurBinding
+    private lateinit var binding: ActivityBlurBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
