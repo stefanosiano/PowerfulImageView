@@ -81,7 +81,7 @@ internal class BlurManager(view: ImageView, blurOptions: BlurOptions) : BlurOpti
 
     /** Method that updates the [drawable] and bitmap to show. */
     fun changeDrawable(drawable: Drawable?) {
-        if (drawable == mDrawable) {
+        if (drawable == mDrawable && mOriginalBitmap != null) {
             return
         }
 
