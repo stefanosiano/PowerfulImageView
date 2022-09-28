@@ -28,6 +28,7 @@ android {
         renderscriptSupportModeEnabled = true
     }
 }
+
 dependencies {
     implementation(Deps.appCompat)
     implementation(Deps.kotlinStdLib)
