@@ -79,8 +79,8 @@ Gradle
   
 ```
 dependencies {
-    implementation 'io.github.stefanosiano.powerful_libraries:imageview:1.0.24' //Use this if you don't need renderscript
-    implementation 'io.github.stefanosiano.powerful_libraries:imageview_rs:1.0.24' //Use this if you need renderscript
+    implementation 'io.github.stefanosiano.powerful_libraries:imageview:1.0.25' //Use this if you don't need renderscript
+    implementation 'io.github.stefanosiano.powerful_libraries:imageview_rs:1.0.25' //Use this if you need renderscript
 }
 ```
   
