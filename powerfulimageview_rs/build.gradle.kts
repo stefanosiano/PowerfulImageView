@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    set("LIB_VERSION", "1.0.24") // This is the library version used when deploying the artifact
+    set("LIB_VERSION", "1.0.25") // This is the library version used when deploying the artifact
     set("ENABLE_DEPLOY", "true") //Flag whether the ci/cd workflow should deploy to sonatype or not
 
     set("LIB_GROUP_ID", "io.github.stefanosiano.powerful_libraries")                              // Maven Group ID for the artifact
@@ -17,11 +17,11 @@ ext {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = Deps.sdkCompile
 
     defaultConfig {
-        minSdk = 14
-        targetSdk = 32
+        minSdk = Deps.sdkMin
+        targetSdk = Deps.sdkTarget
         consumerProguardFiles("piv-proguard-rules.txt")
         vectorDrawables.useSupportLibrary = true
 

@@ -1,5 +1,12 @@
 object Deps {
-    private const val agpVersion = "7.2.1"
+
+    // Sdk versions
+    const val sdkCompile = 33
+    const val sdkTarget = sdkCompile
+    const val sdkMin = 14
+
+
+    private const val agpVersion = "7.3.0"
     private const val kotlinVersion = "1.6.10"
     private const val coroutinesVersion = "1.5.1"
     private const val espressoVersion = "3.4.0"
