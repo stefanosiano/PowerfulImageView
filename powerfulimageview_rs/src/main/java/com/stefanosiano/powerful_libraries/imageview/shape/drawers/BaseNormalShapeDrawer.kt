@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import com.stefanosiano.powerful_libraries.imageview.extensions.setBounds
 import com.stefanosiano.powerful_libraries.imageview.shape.PivShapeScaleType
 import com.stefanosiano.powerful_libraries.imageview.shape.ShapeOptions
 
@@ -37,6 +38,9 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
     /** Scale type selected. */
     private var mScaleType: PivShapeScaleType? = null
 
+    /** Solid color selected. */
+    private var mSolidColor: Int? = null
+
     override fun changeDrawable(drawable: Drawable?) { this.mDrawable = drawable }
 
     override fun requireBitmap() = false
@@ -49,15 +53,23 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
     }
 
     override fun setup(shapeOptions: ShapeOptions) {
-        mBackPaint.color = shapeOptions.backgroundColor
-        mFrontPaint.color = shapeOptions.foregroundColor
         mForegroundDrawable = shapeOptions.foregroundDrawable
         mBackgroundDrawable = shapeOptions.backgroundDrawable
+
+        mBackPaint.color = shapeOptions.backgroundColor
+        mBackPaint.isAntiAlias = true
+        mBackPaint.style = Paint.Style.FILL
 
         mBorderPaint.color = shapeOptions.borderColor
         mBorderPaint.isAntiAlias = true
         mBorderPaint.style = Paint.Style.STROKE
         mBorderPaint.strokeWidth = shapeOptions.borderWidth.toFloat()
+
+        mFrontPaint.color = shapeOptions.foregroundColor
+        mFrontPaint.isAntiAlias = true
+        mFrontPaint.style = Paint.Style.FILL
+
+        mSolidColor = shapeOptions.solidColor
     }
 
     override fun draw(canvas: Canvas, borderBounds: RectF, shapeBounds: RectF, imageBounds: RectF) {
@@ -71,12 +83,7 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
 
             // If scaleType is XY, we should draw the image on the whole view
             if (mScaleType == PivShapeScaleType.FIT_XY) {
-                mDrawable?.setBounds(
-                    imageBounds.left.toInt(),
-                    imageBounds.top.toInt(),
-                    imageBounds.right.toInt(),
-                    imageBounds.bottom.toInt()
-                )
+                mDrawable?.setBounds(imageBounds)
             } else {
                 canvas.save()
                 canvas.concat(mMatrix)
@@ -103,7 +110,9 @@ internal abstract class BaseNormalShapeDrawer(drawable: Drawable?) : ShapeDrawer
             drawBorder(canvas, borderBounds, shapeBounds, imageBounds, mBorderPaint)
         }
 
-        drawSolid(canvas, borderBounds, shapeBounds, imageBounds)
+        if (mSolidColor != Color.TRANSPARENT) {
+            drawSolid(canvas, borderBounds, shapeBounds, imageBounds)
+        }
     }
 
     protected abstract fun drawPaint(canvas: Canvas, shapeBounds: RectF, paint: Paint)

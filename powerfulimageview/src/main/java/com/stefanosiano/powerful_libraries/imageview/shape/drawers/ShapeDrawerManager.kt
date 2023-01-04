@@ -192,7 +192,6 @@ internal class ShapeDrawerManager
     /** It calculates the bounds of the image, using [w], [h] and [padding]. */
     fun onSizeChanged(w: Int, h: Int, padding: Rect) {
         mShapeOptions.calculateBounds(w, h, padding, mShapeMode)
-        onSizeUpdated(mShapeOptions)
     }
 
     /** Measure the view and its content to determine the measured width and the measured height. */
@@ -389,6 +388,13 @@ internal class ShapeDrawerManager
 
         mShapeMode = shapeMode
         updateDrawers(mShapeMode)
+        if (mShapeDrawer.requireBitmap()) {
+            mLastBitmap = getBitmapFromDrawable(mDrawable, mDrawable)
+            mShapeDrawer.changeBitmap(mLastBitmap)
+        } else {
+            mLastBitmap = null
+        }
+        mShapeOptions.recalculateLastBounds(shapeMode)
         mShapeDrawer.setup(mShapeOptions)
         setScaleType(mScaleType)
         mView.get()?.postInvalidate()

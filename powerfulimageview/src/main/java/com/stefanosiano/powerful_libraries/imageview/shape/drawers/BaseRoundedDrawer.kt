@@ -50,6 +50,10 @@ internal abstract class BaseRoundedDrawer(bitmap: Bitmap?) : ShapeDrawer {
             this.mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
             mBitmapShader?.setLocalMatrix(mMatrix)
         }
+
+        mBitmapPaint.shader = mBitmapShader
+        mBitmapPaint.isAntiAlias = true
+        mBitmapPaint.style = Paint.Style.FILL
     }
 
     override fun changeDrawable(drawable: Drawable?) {}
