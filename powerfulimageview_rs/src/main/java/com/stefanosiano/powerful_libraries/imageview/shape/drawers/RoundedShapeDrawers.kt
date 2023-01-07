@@ -51,7 +51,8 @@ internal class CircleShapeDrawer(bitmap: Bitmap?) : BaseRoundedDrawer(bitmap) {
         mBorderRadius = shapeOptions.borderBounds.width().coerceAtMost(shapeOptions.borderBounds.height()) / 2
     }
 
-    override fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint) = canvas.drawCircle(mCx, mCy, mRadius, paint)
+    override fun drawPaint(canvas: Canvas, bounds: RectF, paint: Paint) =
+        canvas.drawCircle(mCx, mCy, mRadius, paint)
 
     override fun drawBorder(
         canvas: Canvas,

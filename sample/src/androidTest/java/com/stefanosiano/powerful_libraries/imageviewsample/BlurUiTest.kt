@@ -260,16 +260,6 @@ class BlurUiTest : BaseUiTest() {
         }
     }
 
-    private fun assertBitmapsDifferent(vararg bitmaps: Bitmap?) {
-        for (i in bitmaps.indices) {
-            for (j in bitmaps.indices) {
-                if (i != j) {
-                    assertFalse(bitmaps[i].contentEquals(bitmaps[j]))
-                }
-            }
-        }
-    }
-
     private fun resetAndBlurBitmaps(piv: PowerfulImageView, mode: PivBlurMode): Array<Bitmap?> {
         val bitmaps = (1..MAX_RADIUS_TO_TEST).map { radius ->
             resetAndBlurSingleBitmap(piv, mode, radius)

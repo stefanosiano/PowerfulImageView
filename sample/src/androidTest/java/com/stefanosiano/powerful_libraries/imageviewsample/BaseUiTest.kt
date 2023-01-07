@@ -5,10 +5,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnitRunner
 import kotlin.test.BeforeTest
+import kotlin.test.assertFalse
 
 abstract class BaseUiTest {
 
@@ -23,6 +25,16 @@ abstract class BaseUiTest {
         runner = InstrumentationRegistry.getInstrumentation() as AndroidJUnitRunner
         context = ApplicationProvider.getApplicationContext()
         context.cacheDir.deleteRecursively()
+    }
+
+    protected fun assertBitmapsDifferent(vararg bitmaps: Bitmap?) {
+        for (i in bitmaps.indices) {
+            for (j in bitmaps.indices) {
+                if (i != j) {
+                    assertFalse(bitmaps[i].contentEquals(bitmaps[j]))
+                }
+            }
+        }
     }
 }
 
@@ -59,6 +71,19 @@ internal fun Drawable.createBitmap(): Bitmap {
 
     val canvas = Canvas(bitmap)
     setBounds(0, 0, canvas.width, canvas.height)
+    draw(canvas)
+    return bitmap
+}
+
+internal fun ImageView.createBitmap(): Bitmap {
+    val bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0 || drawable is ColorDrawable) {
+        Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+    } else {
+        Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    }
+
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
     draw(canvas)
     return bitmap
 }

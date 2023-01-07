@@ -334,6 +334,22 @@ class ShapeOptions() {
     )
 
     /**
+     * Recalculates the bounds of the image, based on last calculated shape options, but a new [mode].
+     * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
+     */
+    internal fun recalculateLastBounds(mode: PivShapeMode) = calculateBounds(
+        mCalculatedLastW,
+        mCalculatedLastH,
+        Rect(
+            mCalculatedLastPaddingLeft,
+            mCalculatedLastPaddingTop,
+            mCalculatedLastPaddingRight,
+            mCalculatedLastPaddingBottom
+        ),
+        mode
+    )
+
+    /**
      * Calculates the bounds of the image, based on [w], [h], [padding] and [mode].
      * Calculated bounds are accessible after this call through getLeft(), getTop(), getRight() and getBottom() methods.
      */

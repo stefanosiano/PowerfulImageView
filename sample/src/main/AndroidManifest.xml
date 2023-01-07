@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BlurActivity" android:exported="false" />
+        <activity android:name=".ShapeActivity" android:exported="false" />
     </application>
 
 </manifest>
