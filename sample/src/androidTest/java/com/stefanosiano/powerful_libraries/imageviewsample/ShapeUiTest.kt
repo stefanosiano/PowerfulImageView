@@ -22,8 +22,6 @@ class ShapeUiTest : BaseUiTest() {
 
     @BeforeTest
     fun setup() {
-        val d = context.resources.getDrawable(R.drawable.sf1)
-
         shapeActivityScenario = launchActivity<ShapeActivity>()
         shapeActivityScenario.onActivity {
             piv = it.binding.shapeImage

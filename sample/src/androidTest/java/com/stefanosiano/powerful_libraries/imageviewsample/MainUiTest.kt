@@ -10,18 +10,16 @@ import kotlin.test.BeforeTest
 @RunWith(AndroidJUnit4::class)
 class MainUiTest : BaseUiTest() {
 
-    private lateinit var normalBitmap: Bitmap
+//    private lateinit var normalBitmap: Bitmap
 //    private lateinit var piv: PowerfulImageView
     private lateinit var mainActivityScenario: ActivityScenario<MainActivity>
 
     @BeforeTest
     fun setup() {
-        val d = context.resources.getDrawable(R.drawable.sf1)
-        normalBitmap = d.createBitmap()
-
         mainActivityScenario = launchActivity<MainActivity>()
         mainActivityScenario.onActivity {
 //            piv = it.binding.blurImage
+//            normalBitmap = piv.createBitmap()
         }
     }
 }

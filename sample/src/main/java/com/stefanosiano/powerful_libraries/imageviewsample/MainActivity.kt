@@ -6,7 +6,7 @@ import com.stefanosiano.powerful_libraries.imageviewsample.databinding.ActivityM
 
 internal class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    internal lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
