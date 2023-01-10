@@ -38,8 +38,6 @@ abstract class BaseUiTest {
     }
 }
 
-// todo check imageview equals to piv without any custom feature for setImage, setDrawable, setBitmap, setVector
-
 internal fun Bitmap?.contentEquals(b2: Bitmap?): Boolean {
     if (this == null && b2 == null) {
         return true
