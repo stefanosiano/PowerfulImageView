@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".BlurActivity" android:exported="false" />
         <activity android:name=".ShapeActivity" android:exported="false" />
+        <activity android:name=".ProgressActivity" android:exported="false" />
     </application>
 
 </manifest>

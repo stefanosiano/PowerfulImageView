@@ -2,15 +2,15 @@ package com.stefanosiano.powerful_libraries.imageviewsample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.stefanosiano.powerful_libraries.imageviewsample.databinding.ActivityMainBinding
+import com.stefanosiano.powerful_libraries.imageviewsample.databinding.ActivityProgressBinding
 
-internal class MainActivity : AppCompatActivity() {
+internal class ProgressActivity : AppCompatActivity() {
 
-    internal lateinit var binding: ActivityMainBinding
+    internal lateinit var binding: ActivityProgressBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityProgressBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 }
