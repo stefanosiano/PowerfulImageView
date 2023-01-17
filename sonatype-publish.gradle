@@ -152,4 +152,3 @@ signing {
     if (!enableDeploy) return true //don't sign anything if not allowed
     sign publishing.publications.release
 }
-

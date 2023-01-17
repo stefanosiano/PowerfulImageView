@@ -338,8 +338,7 @@ open class PowerfulImageView : ImageViewWrapper {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // If it's called in super constructor, I don't have the objects instantiated
-        // I go further only if there is a custom shape selected
-        if (!initialized) { // || mShapeDrawerManager.getShapeMode() == PivShapeMode.NORMAL)
+        if (!initialized) {
             return super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         }
 
@@ -427,7 +426,7 @@ open class PowerfulImageView : ImageViewWrapper {
         val modeChanged = mBlurManager.getBlurMode() != blurMode
         val radiusToUse = radius.takeIf { it > 0 } ?: -1
         val radiusChanged = mBlurManager.getRadius() != radiusToUse
-        mCheckBlur = blurMode != PivBlurMode.DISABLED || modeChanged || radiusToUse != 0 || radiusChanged
+        mCheckBlur = blurMode != PivBlurMode.DISABLED || modeChanged || radiusToUse >= 0 || radiusChanged
 
         mBlurManager.changeMode(blurMode, radius)
         blurBitmap(false)
