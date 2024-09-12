@@ -35,8 +35,8 @@ jobs:
         run:
           make publish
         env:
-          SONATYPE_USER: '${{secrets.SONATYPE_USER}}'
-          SONATYPE_PWD: '${{secrets.SONATYPE_PWD}}'
+          SONATYPE_USER: '${{secrets.SONATYPE_USERTOKEN_USER}}'
+          SONATYPE_PWD: '${{secrets.SONATYPE_USERTOKEN_PASSWORD}}'
           SONATYPE_GPG_KEY: '${{secrets.SONATYPE_GPG_KEY}}'
           SONATYPE_GPG_PWD: '${{secrets.SONATYPE_GPG_PWD}}'
           SONATYPE_GPG_PATH: "/home/runner/private.pgp"
